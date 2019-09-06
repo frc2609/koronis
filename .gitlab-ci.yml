@@ -1,0 +1,20 @@
+image: node:8.11.1
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+pages:
+  stage: deploy
+  script:
+    - npm run build
+    - rm -rf public
+    - mv build public
+  artifacts:
+    paths:
+      - public
+  only:
+    - dev
