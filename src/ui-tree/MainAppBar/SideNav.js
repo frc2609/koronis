@@ -1,12 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 
 export default class SideNav extends React.Component {
   constructor(props) {
@@ -15,7 +10,8 @@ export default class SideNav extends React.Component {
   render() {return (
     <div>
     <Drawer open={this.props.menuState} onClose={this.props.onMenuClose}>
-      This is a Test
+      <Link to='/'>Home</Link>
+      <Link to='/record'>Record</Link>
     </Drawer>
     </div>
   );}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 import MainAppBar from "ui-tree/MainAppBar";
 import Main from "ui-tree/Main";
@@ -13,8 +14,10 @@ export default class App extends React.Component {
   render() {return (
     <div className="App">
       <CssBaseline />
-      <MainAppBar title="Home"/>
-      <Main />
+      <BrowserRouter>
+        <MainAppBar title="KSS"/>
+        <Main />
+      </BrowserRouter>
     </div>
   );}
 }
