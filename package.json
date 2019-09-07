@@ -10,8 +10,8 @@
   },
   "homepage": "https://koronis-scouting-system.gitlab.io/kss-client",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "NODE_ENV=production react-scripts build",
+    "start": "NODE_ENV=development NODE_PATH=./src react-scripts start",
+    "build": "NODE_ENV=production NODE_PATH=./src react-scripts build",
     "test": "NODE_ENV=production react-scripts test",
     "eject": "react-scripts eject"
   },
