@@ -15,21 +15,12 @@ export default class App extends React.Component {
     super(props);
     this.state = {ed: engineDriver};
   }
-  componentDidMount() {
-    this.state.ed.requestHandler({
-      engineComponentType: 'TestMessage',
-      requestData: 'This should be replaced'
-    }, (message) => {
-      console.log('Got reply');
-      console.log(message);
-    });
-  }
   render() {return (
     <div className="App">
       <CssBaseline />
       <BrowserRouter>
-        <MainAppBar title="KSS"/>
-        <Main />
+        <MainAppBar ed={this.state.ed} title="KSS"/>
+        <Main ed={this.state.ed}/>
       </BrowserRouter>
     </div>
   );}
