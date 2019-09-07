@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import SideNav from 'ui-tree/MainAppBar/SideNav';
+import SideNav from 'uiTree/MainAppBar/SideNav';
 
 export default class MainAppBar extends React.Component {
   constructor(props) {
