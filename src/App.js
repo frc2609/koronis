@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter } from 'react-router-dom';
 
-function App() {
-  return (
+import MainAppBar from "ui-tree/MainAppBar";
+import Main from "ui-tree/Main";
+
+import 'App.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CssBaseline />
+      <BrowserRouter>
+        <MainAppBar title="KSS"/>
+        <Main />
+      </BrowserRouter>
     </div>
-  );
+  );}
 }
-
-export default App;
