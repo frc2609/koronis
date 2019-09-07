@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import Home from 'ui-tree/Main/Home';
-import Record from 'ui-tree/Main/Record';
+import Home from 'uiTree/Main/Home';
+import Record from 'uiTree/Main/Record';
 
 export default class Main extends React.Component {
   constructor(props) {
