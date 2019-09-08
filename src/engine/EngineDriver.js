@@ -3,7 +3,7 @@ import EngineWorkerAssembler from 'engine/EngineWorkerAssembler';
 import TestMessage from 'engine/engineComponents/TestMessage';
 import AppState from 'engine/engineComponents/AppState';
 
-export default class EngineDriver {
+class EngineDriver {
   constructor() {
     this.engineComponentsList = [];
     this.engineComponentsList.push(TestMessage);
@@ -39,4 +39,10 @@ export default class EngineDriver {
       }
     }
   }
+}
+
+const engineDriver = new EngineDriver();
+
+export const request = (requestMessage, callback) => {
+  return engineDriver.requestHandler(requestMessage, callback);
 }
