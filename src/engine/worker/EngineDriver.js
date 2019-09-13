@@ -1,7 +1,7 @@
-import EngineWorkerAssembler from 'engine/EngineWorkerAssembler';
+import EngineWorkerAssembler from 'engine/worker/EngineWorkerAssembler';
 
-import TestMessage from 'engine/engineComponents/TestMessage';
-import AppState from 'engine/engineComponents/AppState';
+import TestMessage from 'engine/worker/engineComponents/TestMessage';
+import AppState from 'engine/worker/engineComponents/AppState';
 
 class EngineDriver {
   constructor() {
