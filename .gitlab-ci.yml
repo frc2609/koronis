@@ -1,10 +1,5 @@
 image: node:8.11.1
 
-cache:
-  paths:
-    - dev/node_modules/
-    - prod/node_modules/
-
 pages:
   stage: deploy
   script:
@@ -23,14 +18,8 @@ pages:
     - npm install
     - CI=false npm run build
     - cd ..
-    - mv dev/build public
-    - cd public
-    - mv build dev
-    - cd ..
-    - mv prod/build public
-    - cd public
-    - mv build latest
-    - cd ..
+    - mv dev/build/* public/dev
+    - mv prod/build/* public/latest
   artifacts:
     paths:
       - public
