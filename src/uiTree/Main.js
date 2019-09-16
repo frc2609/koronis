@@ -11,8 +11,8 @@ export default class Main extends React.Component {
   }
   render() {return (
     <div>
-      <Route exact path={Config.baseUrl + '/'} component={Home} />
-      <Route exact path={Config.baseUrl + '/record'} component={Record} />
+      <Route exact path='/' component={Home} />
+      <Route exact path='/record' component={Record} />
     </div>
   );}
 }

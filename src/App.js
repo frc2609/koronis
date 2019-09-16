@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import * as Worker from 'engine/worker/EngineDriver';
 import * as Database from 'db/Db';
 import * as Package from 'package/PackageCollector';
+import * as Config from 'Config';
 
 import MainAppBar from "uiTree/MainAppBar";
 import Main from "uiTree/Main";
@@ -19,7 +20,7 @@ export default class App extends React.Component {
   render() {return (
     <div className="App">
       <CssBaseline />
-      <BrowserRouter>
+      <BrowserRouter basename={Config.baseUrl} >
         <MainAppBar title="KSS"/>
         <Main />
       </BrowserRouter>
