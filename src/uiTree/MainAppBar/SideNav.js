@@ -11,8 +11,8 @@ export default class SideNav extends React.Component {
   render() {return (
     <div>
     <Drawer open={this.props.menuState} onClose={this.props.onMenuClose}>
-      <Link to={Config.baseUrl + '/'}>Home</Link>
-      <Link to={Config.baseUrl + '/record'}>Record</Link>
+      <Link to='/'>Home</Link>
+      <Link to='/record'>Record</Link>
     </Drawer>
     </div>
   );}
