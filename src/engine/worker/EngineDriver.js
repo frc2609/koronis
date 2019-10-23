@@ -5,27 +5,27 @@ import AppState from 'engine/worker/engineComponents/AppState';
 
 class EngineDriver {
   constructor() {
-    this.engineComponentsList = [];
-    this.engineComponentsList.push(TestMessage);
-    this.engineComponentsList.push(AppState);
+    this.engineComponentList = [];
+    this.engineComponentList.push({ec: TestMessage, type: 'TEST_MESSAGE'});
+    this.engineComponentList.push({ec: AppState, type: 'APP_STATE'});
 
     this.callbackList = [];
     this.callbackId = 0;
 
     this.requestHandler = this.requestHandler.bind(this);
     this.replyHandler = this.replyHandler.bind(this);
-    this.ew = new EngineWorkerAssembler(this.engineComponentsList);
+    this.ew = new EngineWorkerAssembler(this.engineComponentList);
     this.ew.onmessage = this.replyHandler;
   }
   requestHandler(requestMessage, callback) {
     console.log('[Driver] Handling Request: ' + JSON.stringify(requestMessage));
-    for(var i = 0;i < this.engineComponentsList.length;i++) {
-      if(this.engineComponentsList[i].name === requestMessage.engineComponentType) {
+    for(var i = 0;i < this.engineComponentList.length;i++) {
+      if(this.engineComponentList[i].type === requestMessage.engineComponentType) {
         this.callbackList.push({requestMessage: requestMessage, callback: callback, callbackId: this.callbackId});
         var newRequestMessage = requestMessage;
         newRequestMessage.callbackId = this.callbackId;
         this.callbackId++;
-        this.engineComponentsList[i].prototype.appRequest(requestMessage, this.ew);
+        this.engineComponentList[i].ec.prototype.appRequest(requestMessage, this.ew);
       }
     }
   }
