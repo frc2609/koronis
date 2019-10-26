@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import * as Config from 'Config';
 
 import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import { Home, FiberManualRecord } from '@material-ui/icons';
+
+import SectionLink from 'uiTree/MainAppBar/SectionLink';
 
 export default class SideNav extends React.Component {
   constructor(props) {
@@ -10,10 +13,12 @@ export default class SideNav extends React.Component {
   }
   render() {return (
     <div>
-    <Drawer open={this.props.menuState} onClose={this.props.onMenuClose}>
-      <Link to='/'>Home</Link>
-      <Link to='/record'>Record</Link>
-    </Drawer>
+      <Drawer open={this.props.menuState} onClose={this.props.closeMenuCallback}>
+        <List>
+          <SectionLink to='/' title='Home' icon={<Home />} closeMenuCallback={this.props.closeMenuCallback} />
+          <SectionLink to='/record' title='Record' icon={<FiberManualRecord />} closeMenuCallback={this.props.closeMenuCallback} />
+        </List>
+      </Drawer>
     </div>
   );}
 }

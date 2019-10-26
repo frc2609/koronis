@@ -26,7 +26,7 @@ export default class MainAppBar extends React.Component {
       flexGrow: 1
     }}>
       <AppBar position="static">
-        <SideNav menuState={this.state.menuState} onMenuClose={this.closeMenu}/>
+        <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu}/>
 
         <Toolbar>
           <IconButton onClick={this.openMenu} edge="start" style={{

@@ -17,6 +17,9 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
   }
+  async componentDidMount() {
+    console.log(await Package.getByYear('2019'));
+  }
   render() {return (
     <div className="App">
       <CssBaseline />

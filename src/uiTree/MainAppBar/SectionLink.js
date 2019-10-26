@@ -1,18 +1,28 @@
+import React from 'react';
 import { Redirect } from 'react-router';
 
-export default class SectionLink {
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
+export default class SectionLink extends React.Component {
   constructor(props) {
+    super(props);
     this.state = {redirect: false};
   }
   handleOnClick = () => {
     this.setState({redirect: true});
+    this.props.closeMenuCallback();
   }
-
   render() {
-    if (this.state.redirect) {
-      return <Redirect push to={this.props.to} />;
-    }
-
-    return <button onClick={this.handleOnClick} type="button">Button</button>;
+    return (
+      <ListItem button onClick={this.handleOnClick} style={{
+        width: '45vw'
+      }}>
+        <ListItemIcon>{this.props.icon}</ListItemIcon>
+        <ListItemText primary={this.props.title} />
+        {this.state.redirect ? <Redirect push to={this.props.to} /> : null}
+      </ListItem>
+    );
   }
 }
