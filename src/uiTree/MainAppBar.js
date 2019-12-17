@@ -22,10 +22,10 @@ export default class MainAppBar extends React.Component {
   openMenu() {this.setState({menuState: true});}
   closeMenu() {this.setState({menuState: false});}
   render() {return (
-    <div style={{
-      flexGrow: 1
-    }}>
-      <AppBar position="static">
+    <div>
+      <AppBar position="static" style={{
+        marginBottom: '2vh'
+      }}>
         <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu}/>
 
         <Toolbar>

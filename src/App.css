@@ -1,3 +1,9 @@
 .App {
   text-align: center;
 }
+
+.Content {
+  margin-bottom: 2vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+}
