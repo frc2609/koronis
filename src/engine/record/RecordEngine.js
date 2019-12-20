@@ -5,9 +5,9 @@ import * as Package from 'package/PackageCollector';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 
-import ControlBar from 'engine/RecordEngine/ControlBar';
-import ButtonStack from 'engine/RecordEngine/ButtonStack';
-import RenderCanvas from 'engine/RecordEngine/RenderCanvas';
+import ControlBar from 'engine/record/RecordEngine/ControlBar';
+import ButtonStack from 'engine/record/RecordEngine/ButtonStack';
+import RenderCanvas from 'engine/record/RecordEngine/RenderCanvas';
 
 var store = require('store');
 var deepcopy = require('deep-copy');

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RecordEngine from 'engine/RecordEngine';
+import RecordEngine from 'engine/record/RecordEngine';
 
 export default class Record extends React.Component {
   constructor(props) {
