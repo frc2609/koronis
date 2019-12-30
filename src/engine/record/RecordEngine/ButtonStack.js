@@ -14,252 +14,352 @@ export default class ButtonStack extends React.Component {
     this.buttonStackWrapperElement = {};
     this.buttonStackCtx = {};
 
-    this.buttonIndex = null;
-    this.buttonState = {
-      watcherIds: [],
-      visibleIds: [],
-      selectedIds: [],
-      selectedHeights: [],
-      selectedTree: [],
-      currentHeightMultiplier: 0,
-      finalIds: [],
-      finalHeights: []
-    };
+    this.buttonInitialized = false;
+    this.buttonStates = [];
+    this.touchState = {x: 0, y: 0};
   }
   touchStart(event) {
     var rect = this.buttonStackElement.getBoundingClientRect();
-    var x = event.touches[0].clientX - rect.left;
-    var y = event.touches[0].clientY - rect.top;
-    this.buttonState.selectedIds = [];
-    this.buttonState.selectedHeights = [];
-    this.buttonState.selectedTree = [];
-    for(var i = 0;i < this.buttonState.finalHeights.length-1;i++) {
-      if(this.buttonState.finalHeights[i] <= y && this.buttonState.finalHeights[i+1] >= y) {
-        this.buttonState.selectedIds.push(this.buttonState.finalIds[i]);
-        this.buttonState.selectedTree.push(this.buttonState.finalIds[i]);
-        this.buttonState.selectedHeights.push(this.buttonState.finalHeights[i]);
-        this.buttonState.selectedHeights.push(this.buttonState.finalHeights[i+1] < y + 10 ? this.buttonState.finalHeights[i+1] : y + 10);
+    var index = 0;
+    var x = event.touches[index].clientX - rect.left;
+    var y = event.touches[index].clientY - rect.top;
+    while((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
+      index++;
+      x = event.touches[index].clientX - rect.left;
+      y = event.touches[index].clientY - rect.top;
+    }
+    this.touchState.x = x;
+    this.touchState.y = y;
+    var offset = 10;
+    for(var i = 0;i < this.buttonStates.length;i++) {
+      if(this.buttonStates[i].position.y <= y && this.buttonStates[i].visible) {
+        if(this.buttonStates[i].position.y + this.buttonStates[i].size.y >= y) {
+          if(this.buttonStates[i].position.x <= x) {
+            if(this.buttonStates[i].position.x + this.buttonStates[i].size.x >= x) {
+              this.buttonStates[i].selected = true;
+              if(y + offset < this.buttonStates[i].size.y - this.buttonStates[i].position.y) {
+                if(y + offset > this.buttonStates[i].size.y/2 + this.buttonStates[i].position.y) {
+                  this.buttonStates[i].size.y = (y + offset) - this.buttonStates[i].position.y;
+                }
+              }
+              if(x + offset < this.buttonStates[i].size.x - this.buttonStates[i].position.x) {
+                if(x + offset > this.buttonStates[i].size.x/2 + this.buttonStates[i].position.x) {
+                  this.buttonStates[i].size.x = (x + offset) - this.buttonStates[i].position.x;
+                }
+              }
+            }
+          }
+        }
       }
     }
-    this.buttonState.selectedHeights.sort((e1, e2) => {return e1 > e2});
-    var tmp = [];
-    for(var i = 0;i < this.buttonState.selectedHeights.length;i++) {
-      if(!tmp.includes(this.buttonState.selectedHeights[i])) {
-        tmp.push(this.buttonState.selectedHeights[i]);
-      }
-    }
-    this.buttonState.selectedHeights = tmp.slice();
     this.update.bind(this)();
   }
   touchMove(event) {
     var rect = this.buttonStackElement.getBoundingClientRect();
-    var x = event.touches[0].clientX - rect.left;
-    var y = event.touches[0].clientY - rect.top;
-    var currId = -1;
-    this.buttonState.selectedTree = [];
-    for(var i = 0;i < this.buttonState.finalHeights.length-1;i++) {
-      if(this.buttonState.finalHeights[i] <= y && this.buttonState.finalHeights[i+1] >= y) {
-        currId = this.buttonState.finalIds[i];
-        this.buttonState.selectedTree.push(this.buttonState.finalIds[i]);
-        if(!this.buttonState.selectedIds.includes(this.buttonState.finalIds[i])) {
-          this.buttonState.selectedIds.push(this.buttonState.finalIds[i]);
-          this.buttonState.selectedHeights.push(this.buttonState.finalHeights[i]);
-          this.buttonState.selectedHeights.push(this.buttonState.finalHeights[i+1]);
-        }
-      }
+    var index = 0;
+    var x = event.touches[index].clientX - rect.left;
+    var y = event.touches[index].clientY - rect.top;
+    while((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
+      index++;
+      x = event.touches[index].clientX - rect.left;
+      y = event.touches[index].clientY - rect.top;
     }
-    this.buttonState.selectedHeights.sort((e1, e2) => {return e1 > e2});
-    var tmp = [];
-    for(var i = 0;i < this.buttonState.selectedHeights.length;i++) {
-      if(!tmp.includes(this.buttonState.selectedHeights[i])) {
-        tmp.push(this.buttonState.selectedHeights[i]);
-      }
-    }
-    this.buttonState.selectedHeights = tmp.slice();
-    //update button selected tree
-    var recurseFunct = (currId) => {
-      var currButton = this.props.buttonDefinitions[this.buttonIndex[currId]];
-      if(typeof currButton != 'undefined') {
-        var arr = currButton.parentIds;
-        if(arr.length > 0) {
-          this.buttonState.selectedTree.push(arr);
-          for(var i = 0;i < arr.length;i++) {
-            recurseFunct(arr[i]);
+    this.touchState.x = x;
+    this.touchState.y = y;
+    //this.update.bind(this)();
+  }
+  touchEnd(event) {
+    var btnS = [];
+    for(var i = 0;i < this.buttonStates.length;i++) {
+      if(this.buttonStates[i].selected) {
+        if(this.buttonStates[i].position.y <= this.touchState.y) {
+          if(this.buttonStates[i].position.y + this.buttonStates[i].size.y >= this.touchState.y) {
+            if(this.buttonStates[i].position.x <= this.touchState.x) {
+              if(this.buttonStates[i].position.x + this.buttonStates[i].size.x >= this.touchState.x) {
+                btnS.push(deepcopy(this.buttonStates[i]));
+              }
+            }
           }
         }
       }
+      this.buttonStates[i].selected = false;
     }
-    recurseFunct(currId);
-    this.buttonState.selectedTree = this.buttonState.selectedTree.flat(64);
-    this.update.bind(this)();
-  }
-  touchEnd(event) {
-    this.buttonState.selectedIds = [];
-    this.buttonState.selectedHeights = [];
-    this.buttonState.selectedTree = [];
-    console.log(event);
+    this.props.buttonStackUpdate(btnS);
     this.update.bind(this)();
   }
   draw() {
     this.buttonStackCtx.clearRect(0, 0, this.state.canvasSize.x, this.state.canvasSize.y);
-    for(var i = 0;i < this.buttonState.finalIds.length;i++) {
-      var currButton = this.props.buttonDefinitions[this.buttonIndex[this.buttonState.finalIds[i]]];
-      var top = this.buttonState.finalHeights[i];
-      var bottom = this.buttonState.finalHeights[i+1];
-      var colorPaletteArr = [];
-      this.buttonStackCtx.font = (Math.round(this.state.canvasSize.y/15) + 'px Arial');
-      this.buttonStackCtx.textAlign = 'center';
-      this.buttonStackCtx.textBaseline = 'middle';
-      this.buttonStackCtx.lineWidth = this.state.canvasSize.y/40;
-      var buttonStyleObj = {};
-      if(!this.buttonState.selectedTree.includes(this.buttonState.finalIds[i])) {
-        buttonStyleObj = currButton.style.released;
-      }
-      else {
-        buttonStyleObj = currButton.style.depressed;
-      }
-      colorPaletteArr = this.props.colorPalette[buttonStyleObj.palette];
-      for(var j = 0;j < colorPaletteArr.length;j++) {
-        if(colorPaletteArr[j].name == buttonStyleObj.fill) {
-          this.buttonStackCtx.fillStyle = colorPaletteArr[j].hex;
+    for(var i = 0;i < this.buttonStates.length;i++) {
+      if(this.buttonStates[i].visible) {
+        this.buttonStackCtx.font = (Math.round(this.state.canvasSize.y/15) + 'px Arial');
+        this.buttonStackCtx.lineWidth = this.state.canvasSize.y/40;
+        var colorPaletteArr = [];
+        var buttonStyleObj = {};
+        if(this.buttonStates[i].selected) {
+          buttonStyleObj = this.buttonStates[i].style.depressed;
         }
-        if(colorPaletteArr[j].name == buttonStyleObj.outline) {
-          this.buttonStackCtx.strokeStyle = colorPaletteArr[j].hex;
+        else {
+          buttonStyleObj = this.buttonStates[i].style.released;
         }
+        colorPaletteArr = this.props.colorPalette[buttonStyleObj.palette];
+        this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name == buttonStyleObj.fill})].hex;
+        this.buttonStackCtx.strokeStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name == buttonStyleObj.outline})].hex;
+        this.buttonStackCtx.fillRect(
+          this.buttonStates[i].position.x,
+          this.buttonStates[i].position.y,
+          this.buttonStates[i].size.x,
+          this.buttonStates[i].size.y
+        );
+        this.buttonStackCtx.strokeRect(
+          this.buttonStates[i].position.x,
+          this.buttonStates[i].position.y,
+          this.buttonStates[i].size.x,
+          this.buttonStates[i].size.y
+        );
+        this.buttonStackCtx.textAlign = 'center';
+        this.buttonStackCtx.textBaseline = 'middle';
+        this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name == buttonStyleObj.text})].hex;
+        this.buttonStackCtx.fillText(
+          this.buttonStates[i].title,
+          this.buttonStates[i].position.x + this.buttonStates[i].size.x/2,
+          this.buttonStates[i].position.y + this.buttonStates[i].size.y/2,
+          this.buttonStates[i].size.x * 0.9
+        );
       }
-      this.buttonStackCtx.fillRect(0, top+this.wrapperOffset/2, this.state.canvasSize.x, bottom-top);
-      this.buttonStackCtx.strokeRect(0, top+this.wrapperOffset/2, this.state.canvasSize.x, bottom-top);
-      for(var j = 0;j < colorPaletteArr.length;j++) {
-        if(colorPaletteArr[j].name == buttonStyleObj.text) {
-          this.buttonStackCtx.fillStyle = colorPaletteArr[j].hex;
-        }
-      }
-      this.buttonStackCtx.fillText(currButton.title, this.state.canvasSize.x/2, (bottom+top)/2);
     }
   }
   update() {
-    this.buttonState.watcherIds = [];
-
-    this.buttonState.visibleIds = [];
-    this.buttonState.finalIds = [];
-    this.buttonState.finalHeights = [];
-    this.buttonState.currentHeightMultiplier = 0;
-
-    var bD = this.props.buttonDefinitions;
-    //buttonIndex generation
-    if(this.buttonIndex == null) {
-      this.buttonIndex = {};
-      for(var i = 0;i < bD.length;i++) {
-        this.buttonIndex[bD[i].id] = i;
-      }
+    //Resize if needed
+    this.resize();
+    
+    //Set buttonStates
+    if(!this.buttonInitialized) {
+      this.buttonStates = deepcopy(this.props.buttonDefinitions);
+      this.buttonInitialized = true;
     }
-    //buttonStack Resizing
-    if(this.buttonStackWrapperElement.offsetWidth != this.state.canvasSize.x+this.wrapperOffset) {
-      if(this.buttonStackWrapperElement.offsetHeight != this.state.canvasSize.y+this.wrapperOffset) {
-        this.setState({canvasSize: {x:this.buttonStackWrapperElement.offsetWidth-this.wrapperOffset,y:this.buttonStackWrapperElement.offsetHeight-this.wrapperOffset}});
-      }
+    //Check which buttons should be visible
+    for(var i = 0;i < this.buttonStates.length;i++) {
+      this.buttonStates[i].visible = (
+        this.buttonStates[i].watcherFunct(
+          this.props.gameStateDefinition.gameState,
+          this.props.fieldStateDefinition.fieldState,
+          this.props.botStateDefinition.botState
+        ) || this.buttonStates[i].selected
+      );
     }
-    //Add all unselected buttons to watcher
-    for(var i = 0;i < bD.length;i++) {
-      if(bD[i].watcherFunct(
-        this.props.gameStateDefinition.gameState,
-        this.props.fieldStateDefinition.fieldState,
-        this.props.botStateDefinition.botState
-      )) {
-        if(!this.buttonState.selectedIds.includes(bD[i].id)) {
-          this.buttonState.watcherIds.push(bD[i].id);
-        }
-      }
-    }
-    //Add visible buttons from watcher array
-    for(var i = 0;i < this.buttonState.watcherIds.length;i++) {
-      var parentIds = bD[this.buttonIndex[this.buttonState.watcherIds[i]]].parentIds;
-      var visible = (parentIds.length <= 0);
-      for(var j = 0;j < parentIds.length;j++) {
-        if(this.buttonState.selectedIds.includes(parentIds[j])) {
-          visible = true;
-        }
-      }
-      if(visible) {
-        this.buttonState.visibleIds.push(this.buttonState.watcherIds[i]);
-      }
-    }
-    //Calculate common height
-    var nonSelectedIds = [];
-    for(var i = 0;i < this.buttonState.visibleIds.length;i++) {
-      if(!this.buttonState.selectedIds.includes(this.buttonState.visibleIds[i])) {nonSelectedIds.push(this.buttonState.visibleIds[i])}
-    }
-    var availableHeight = this.state.canvasSize.y-4;
-    var verticalDivider = 0;
-    if(this.buttonState.selectedHeights.length > 1) {
-      availableHeight = availableHeight - (this.buttonState.selectedHeights[this.buttonState.selectedHeights.length-1]-this.buttonState.selectedHeights[0]);
-    }
-    for(var i = 0;i < nonSelectedIds.length;i++) {
-      verticalDivider += bD[this.buttonIndex[nonSelectedIds[i]]].verticalWeight;
-    }
-    this.buttonState.currentHeightMultiplier = (availableHeight/(verticalDivider > 0 ? verticalDivider : 1));
-    //Calculate final ids and final heights of the button stack
-    var currHeight = 0;
-    var selectedHeightIndex = 0;
-    this.buttonState.finalIds = [];
-    this.buttonState.finalHeights = [0];
-    for(var i = 0;i < this.buttonState.visibleIds.length;i++) {
-      var buttonHeight = bD[this.buttonIndex[this.buttonState.visibleIds[i]]].verticalWeight*this.buttonState.currentHeightMultiplier;
-      for(var j = selectedHeightIndex;j < this.buttonState.selectedHeights.length-1;j++) {
-        if(currHeight >= this.buttonState.selectedHeights[j]) {
-          this.buttonState.finalIds.push(this.buttonState.selectedIds[j]);
-          if(this.buttonState.selectedHeights[j] != currHeight) {
-            this.buttonState.finalHeights.push(this.buttonState.selectedHeights[j]);
-          }
-          this.buttonState.finalHeights.push(this.buttonState.selectedHeights[j+1]);
-          currHeight = this.buttonState.selectedHeights[j+1];
-          selectedHeightIndex = j + 1;
-        }
-      }
-      if(i < this.buttonState.visibleIds.length - 1 && !this.buttonState.selectedIds.includes(this.buttonState.visibleIds[i]) && this.buttonState.selectedIds.includes(this.buttonState.visibleIds[i+1])) {
-        this.buttonState.finalHeights.push(this.buttonState.selectedHeights[0]);
-        this.buttonState.finalIds.push(this.buttonState.visibleIds[i]);
-        currHeight = this.buttonState.selectedHeights[0];
-      }
-      else if(this.buttonState.selectedIds.includes(this.buttonState.visibleIds[i])) {
-        var res = -1;
-        for(var j = 0;j < this.buttonState.selectedIds.length;j++) {
-          if(this.buttonState.selectedIds[j] == this.buttonState.visibleIds[i]) {
-            res = this.buttonState.selectedHeights[0];
+    //Create button groups
+    var buttonGroups = [];
+    for(var i = 0;i < this.buttonStates.length;i++) {
+      if(this.buttonStates[i].visible) {
+        var buttonGroupIndex = buttonGroups.findIndex((e) => {return e.group == this.buttonStates[i].group});
+        if(buttonGroupIndex != -1) {
+          buttonGroups[buttonGroupIndex].buttonIds.push(this.buttonStates[i].id);
+          //Assign max VW
+          if(this.buttonStates[i].verticalWeight > buttonGroups[buttonGroupIndex].verticalWeight && !buttonGroups[buttonGroupIndex].selected) {
+            buttonGroups[buttonGroupIndex].verticalWeight = this.buttonStates[i].verticalWeight;
           }
         }
-        this.buttonState.finalIds.push(this.buttonState.visibleIds[i]);
-        this.buttonState.finalHeights.push(res);
-        currHeight = res;
+        else {
+          buttonGroups.push({
+            group: this.buttonStates[i].group,
+            buttonIds: [this.buttonStates[i].id],
+            verticalWeight: this.buttonStates[i].verticalWeight,
+            selected: false,
+            positionY: 0,
+            sizeY: 0
+          });
+          buttonGroupIndex = buttonGroups.findIndex((e) => {return e.group == this.buttonStates[i].group});
+        }
+        if(this.buttonStates[i].selected && !buttonGroups[buttonGroupIndex].selected) {
+          buttonGroups[buttonGroupIndex].verticalWeight = this.buttonStates[i].verticalWeight;
+          buttonGroups[buttonGroupIndex].selected = this.buttonStates[i].selected;
+          buttonGroups[buttonGroupIndex].positionY = this.buttonStates[i].position.y;
+          buttonGroups[buttonGroupIndex].sizeY = this.buttonStates[i].size.y;
+        }
+      }
+    }
+    //Get sum of usable space and total VW
+    var availableCanvas = this.state.canvasSize.y;
+    var totalVerticalWeights = 0;
+    for(var i = 0;i < buttonGroups.length;i++) {
+      if(!buttonGroups[i].selected) {
+        totalVerticalWeights += buttonGroups[i].verticalWeight;
       }
       else {
-        this.buttonState.finalIds.push(this.buttonState.visibleIds[i]);
-        this.buttonState.finalHeights.push(buttonHeight + currHeight);
-        currHeight += buttonHeight;
+        availableCanvas -= buttonGroups[i].sizeY;
       }
     }
-    //Final check for any selected buttons
-    for(var j = selectedHeightIndex;j < this.buttonState.selectedHeights.length-1;j++) {
-      if(currHeight >= this.buttonState.selectedHeights[j]) {
-        this.buttonState.finalIds.push(this.buttonState.selectedIds[j]);
-        if(this.buttonState.selectedHeights[j] != currHeight) {
-          this.buttonState.finalHeights.push(this.buttonState.selectedHeights[j]);
+    //Map unselected button groups
+    var currHeight = 0;
+    for(var i = 0;i < buttonGroups.length;i++) {
+      if(!buttonGroups[i].selected) {
+        buttonGroups[i].positionY = currHeight;
+        buttonGroups[i].sizeY = buttonGroups[i].verticalWeight * (availableCanvas/totalVerticalWeights);
+        currHeight += buttonGroups[i].sizeY;
+      }
+    }
+    //Insert selected button groups
+    var selectedButtonGroup = buttonGroups.findIndex((e) => {return e.selected;});
+    while (selectedButtonGroup != -1) {
+      var targetTop = buttonGroups[selectedButtonGroup].positionY;
+      var targetBottom = targetTop + buttonGroups[selectedButtonGroup].sizeY;
+      for(var i = 0;i < buttonGroups.length;i++) {
+        if(!buttonGroups[i].selected) {
+          var currTop = buttonGroups[i].positionY;
+          var currBottom = currTop + buttonGroups[i].sizeY;
+          var currMid = (currTop + currBottom)/2;
+          if(targetBottom > currTop && targetTop < currBottom) {
+            var newTop = 0;
+            var newBottom = 0;
+            if(currMid < targetTop) {
+              newTop = currTop;
+              newBottom = targetTop;
+            }
+            else {
+              newTop = targetBottom;
+              newBottom = newTop + (currBottom - currTop);
+              //Push the stack down
+              var pushAmount = targetBottom - currTop;
+              for(var j = 0;j < buttonGroups.length;j++) {
+                if(buttonGroups[j].positionY > buttonGroups[i].positionY && j != i && !buttonGroups[j].selected) {
+                  buttonGroups[j].positionY += pushAmount;
+                }
+              }
+            }
+            buttonGroups[i].positionY = newTop;
+            buttonGroups[i].sizeY = newBottom - newTop;
+          }
         }
-        this.buttonState.finalHeights.push(this.buttonState.selectedHeights[j+1]);
-        currHeight = this.buttonState.selectedHeights[j+1];
-        selectedHeightIndex = j + 1;
+      }
+      selectedButtonGroup = buttonGroups.findIndex((e, i) => {return e.selected && i > selectedButtonGroup;});
+    }
+    //Sort from top to bottom
+    buttonGroups.sort((e1, e2) => {return e1.positionY - e2.positionY});
+    //Fill gaps
+    for(var i = 0;i < buttonGroups.length;i++) {
+      if(i < buttonGroups.length - 1) {
+        buttonGroups[i].sizeY = buttonGroups[i+1].positionY - buttonGroups[i].positionY;
+      }
+      else {
+        buttonGroups[i].sizeY = this.state.canvasSize.y - buttonGroups[i].positionY;
       }
     }
-    console.log(deepcopy(this.buttonState));
+    //One last sort
+    buttonGroups.sort((e1, e2) => {return e1.positionY - e2.positionY});
+    
+    //Sort out buttons in buttonGroups
+    for(var i = 0;i < buttonGroups.length;i++) {
+      //Get current buttons in current buttonGroup
+      var currButtons = [];
+      for(var j = 0;j < buttonGroups[i].buttonIds.length;j++) {
+        var currButtonIndex = this.buttonStates.findIndex((e) => {return e.id == buttonGroups[i].buttonIds[j];});
+        if(currButtonIndex != -1) {
+          currButtons.push(this.buttonStates[currButtonIndex]);
+        }
+      }
+      //Get sum of usable space and total HW
+      var availableCanvas = this.state.canvasSize.x;
+      var totalHorizontalWeights = 0;
+      for(var j = 0;j < currButtons.length;j++) {
+        if(!currButtons[j].selected) {
+          totalHorizontalWeights += currButtons[j].verticalWeight;
+        }
+        else {
+          availableCanvas -= currButtons[j].size.x;
+        }          
+      }
+      //Map unselected buttons and set vertical position and size
+      var currWidth = 0;
+      for(var j = 0;j < currButtons.length;j++) {
+        currButtons[j].position.y = buttonGroups[i].positionY;
+        currButtons[j].size.y = buttonGroups[i].sizeY;
+        if(!currButtons[j].selected) {
+          currButtons[j].position.x = currWidth;
+          currButtons[j].size.x = currButtons[j].horizontalWeight * (availableCanvas/totalHorizontalWeights);
+          currWidth += currButtons[j].size.x;
+        }
+      }
+      
+      //Insert selected button
+      var selectedButton = currButtons.findIndex((e) => {return e.selected;});
+      while (selectedButton != -1) {
+        var targetLeft = currButtons[selectedButton].position.x;
+        var targetRight = targetLeft + currButtons[selectedButton].size.x;
+        for(var j = 0;j < currButtons.length;j++) {
+          if(!currButtons[j].selected) {
+            var currLeft = currButtons[j].position.x;
+            var currRight = currLeft + currButtons[j].size.x;
+            var currMid = (currLeft + currRight)/2;
+            if(targetRight > currLeft && targetLeft < currRight) {
+              var newLeft = 0;
+              var newRight = 0;
+              if(currMid < targetLeft) {
+                newLeft = currLeft;
+                newRight = targetLeft;
+              }
+              else {
+                newLeft = targetRight;
+                newRight = newLeft + (currRight - currLeft);
+                //Push the stack down
+                var pushAmount = targetRight - currLeft;
+                for(var k = 0;k < currButtons.length;k++) {
+                  if(currButtons[k].position.x > currButtons[j].position.x && k != j && !currButtons[k].selected) {
+                    currButtons[k].position.x += pushAmount;
+                  }
+                }
+              }
+              currButtons[j].position.x = newLeft;
+              currButtons[j].size.x = newRight - newLeft;
+            }
+          }
+        }
+        selectedButton = currButtons.findIndex((e, i) => {return e.selected && i > selectedButton;});
+      }
+      
+      //Sort from left to right
+      currButtons.sort((e1, e2) => {return e1.position.x - e2.position.x});
+      //Fill gaps
+      for(var j = 0;j < currButtons.length;j++) {
+        if(j < currButtons.length - 1) {
+          currButtons[j].size.x = currButtons[j+1].position.x - currButtons[j].position.x;
+        }
+        else {
+          currButtons[j].size.x = this.state.canvasSize.x - currButtons[j].position.x;
+        }
+      }
+      //One last sort
+      currButtons.sort((e1, e2) => {return e1.position.x - e2.position.x});
+    }
+    //Call the draw function
     raf(this.draw.bind(this));
+  }
+  resize() {
+    //Resize canvas if needed
+    if(this.buttonStackWrapperElement.offsetWidth != this.state.canvasSize.x + this.wrapperOffset || this.buttonStackWrapperElement.offsetHeight != this.state.canvasSize.y + this.wrapperOffset) {
+      this.setState({canvasSize: {x: this.buttonStackWrapperElement.offsetWidth - this.wrapperOffset, y: this.buttonStackWrapperElement.offsetHeight - this.wrapperOffset}});
+    }
+  }
+  throttle(fn) {
+    let lastCall = 0;
+    return function(...args) {
+      const now = (new Date).getTime();
+      if(now - lastCall < this.props.settings.updateInterval) {
+        return;
+      }
+      lastCall = now;
+      return fn(...args);
+    };
   }
   componentDidMount() {
     this.buttonStackElement = this.refs.buttonStack;
     this.buttonStackWrapperElement = this.refs.buttonStackWrapper;
     this.buttonStackCtx = this.buttonStackElement.getContext('2d');
+    //Bind touch events
     this.buttonStackElement.ontouchstart = this.touchStart.bind(this);
-    this.buttonStackElement.ontouchmove = this.touchMove.bind(this);
+    this.buttonStackElement.ontouchmove = this.throttle(this.touchMove.bind(this)).bind(this);
     this.buttonStackElement.ontouchend = this.touchEnd.bind(this);
+
+    this.resize();
   }
   render() {return (
     <div ref='buttonStackWrapper' style={{width: '100%', height: '100%'}}>

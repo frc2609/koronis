@@ -112,3 +112,10 @@ export const getByYear = async (inYear) => {
   }
   return result;
 }
+
+export const getYears = async () => {
+  if(!Package.initialized) {
+    await init();
+  }
+  return store.get('package/availableYears');
+}

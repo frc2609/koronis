@@ -23,25 +23,25 @@ export default class MainAppBar extends React.Component {
   closeMenu() {this.setState({menuState: false});}
   render() {return (
     <div>
-      <AppBar position="static" style={{
+      <AppBar position='static' style={{
         marginBottom: '2vh'
       }}>
         <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu}/>
 
         <Toolbar>
-          <IconButton onClick={this.openMenu} edge="start" style={{
+          <IconButton onClick={this.openMenu} edge='start' style={{
             marginRight: '4vw'
-          }} color="inherit" aria-label="menu">
+          }} color='inherit' aria-label='menu'>
             <MenuIcon />
           </IconButton>
 
-          <Typography variant="h6" style={{
+          <Typography variant='h6' style={{
             flexGrow: 1
           }}>
             {this.props.title}
           </Typography>
 
-          <Button color="inherit">
+          <Button color='inherit'>
             Login
           </Button>
         </Toolbar>
