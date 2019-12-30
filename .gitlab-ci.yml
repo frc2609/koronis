@@ -13,7 +13,7 @@ pages:
     - git clone -b master https://gitlab.com/koronis-scouting-system/kss-client prod
     - cd dev
     - npm install
-    - CI=false npm run build
+    - CI=false npm run devbuild
     - cd ../prod
     - npm install
     - CI=false npm run build
