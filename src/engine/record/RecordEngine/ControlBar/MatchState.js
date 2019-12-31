@@ -30,7 +30,8 @@ export default class MatchState extends React.Component {
       targetTeamNumber: -1,
       matchNumber: -1,
       matchType: 't', //t, pf, pm, qm, ef, qf, sf, f
-      isRed: true
+      isRed: true,
+      comments: ''
     };
   }
   open() {
@@ -44,7 +45,7 @@ export default class MatchState extends React.Component {
       this.setState({matchStartDate: 0});
     }
     else {
-      this.setState({matchStartDate: date.unix()});
+      this.setState({matchStartDate: date.valueOf()});
     }
   }
   targetTeamNumberHandler(event) {
@@ -59,6 +60,9 @@ export default class MatchState extends React.Component {
   isRedHandler(event) {
     this.setState({isRed: event.target.checked});
   }
+  commentsHandler(event) {
+    this.setState({comments: event.target.value});
+  }
   submit() {
     if(this.state.matchNumber > 0) {
       if(this.state.targetTeamNumber > 0) {
@@ -68,7 +72,8 @@ export default class MatchState extends React.Component {
             targetTeamNumber: this.state.targetTeamNumber,
             matchNumber: this.state.matchNumber,
             matchType: this.state.matchType,
-            isRed: this.state.isRed
+            isRed: this.state.isRed,
+            comments: this.state.comments
           });
           this.setState({open: false});
         }
@@ -113,7 +118,7 @@ export default class MatchState extends React.Component {
       inputVariant='outlined'
       label='Match Date'
       fullWidth
-      value={this.state.matchStartDate > 0 ? (this.state.matchStartDate * 1000) : (new Date())}
+      value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (new Date())}
       onChange={this.matchStartDateHandler.bind(this)}
           />
           </Grid>
@@ -168,6 +173,18 @@ export default class MatchState extends React.Component {
               <InputLabel shrink>Alliance</InputLabel>
             </FormControl>
             <ColorSwitch onChange={this.isRedHandler.bind(this)}/>
+          </Grid>
+          <Grid item xs={6} style={{minWidth: '250px'}}>
+            <TextField
+      ref='comments'
+      variant='outlined'
+      multiline
+      fullWidth
+      rowsMax='5'
+      label='Comments'
+      placeholder='Enter Comments Here'
+      onChange={this.commentsHandler.bind(this)}
+            />
           </Grid>
         </Grid>
         </Container>

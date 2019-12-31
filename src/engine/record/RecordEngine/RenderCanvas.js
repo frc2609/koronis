@@ -15,7 +15,7 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasCtx = {};
 
     this.canvasState = {
-      mag: 1,
+      mag: 0.975,
       xSize: 0,
       ySize: 0,
       xMulti: 0,
@@ -49,6 +49,7 @@ export default class RenderCanvas extends React.Component {
     this.canvasState.xMulti = (this.canvasState.xSize/this.props.fieldStateDefinition.fieldState.dimensions.x) * this.canvasState.mag;
     this.canvasState.yMulti = (this.canvasState.ySize/this.props.fieldStateDefinition.fieldState.dimensions.y) * this.canvasState.mag;
     this.canvasState.xOffset = -(this.props.botStateDefinition.botState.position.x*0.2-this.canvasState.xMulti*0.2);
+    this.canvasState.yOffset = this.canvasState.yMulti*0.035;
     //Draw field elements
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
     this.renderCanvasCtx.setLineDash([]);

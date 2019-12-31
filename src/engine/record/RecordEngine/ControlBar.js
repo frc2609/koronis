@@ -21,6 +21,9 @@ export default class ControlBar extends React.Component {
       status: []
     };
   }
+  reset() {
+    this.setState({completeInfo: false});
+  }
   start() {
     if(this.state.playing) {
       this.setState({playing: false});
@@ -61,8 +64,8 @@ export default class ControlBar extends React.Component {
   settings() {
     this.refs.settings.open();
   }
-  matchStateHandler() {
-    this.props.matchStateUpdate();
+  matchStateHandler(mS) {
+    this.props.matchStateUpdate(mS);
     this.setState({completeInfo: true});
   }
   update() {
@@ -80,14 +83,14 @@ export default class ControlBar extends React.Component {
               var fill = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name == e.style.fill;})].hex;
               var outline = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name == e.style.outline;})].hex;
               var text = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name == e.style.text;})].hex;
-               return <Button key={i} style={{
+              return (<Button key={i} style={{
                 height:'100%',
                 backgroundColor: fill,
                 outlineColor: outline,
                 color: text
               }} disableRipple={true} disableFocusRipple={true}>
                 {e.title}
-              </Button>
+              </Button>);
             })
           }
           <Button style={{height:'100%'}} color='default' disableRipple={true} disableFocusRipple={true}>
@@ -96,9 +99,12 @@ export default class ControlBar extends React.Component {
           <Button style={{height:'100%'}} onClick={this.start.bind(this)} color='primary'>
             {this.state.playing ? <Pause /> : <PlayArrow />}
           </Button>
-          <Button style={{height:'100%'}} onClick={this.save.bind(this)} color='default'>
-            {this.state.completeInfo ? <Save /> : <Create />}
+          <Button style={{height:'100%'}} onClick={this.matchStateOpen.bind(this)} color='default'>
+            <Create />
           </Button>
+          {this.state.completeInfo ? <Button style={{height:'100%'}} onClick={this.save.bind(this)} color='default'>
+             <Save />
+          </Button> : '' }
           <Button style={{height:'100%'}} onClick={this.settings.bind(this)} color='default'>
             <SettingsIcon />
           </Button>

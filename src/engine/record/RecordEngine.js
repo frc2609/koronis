@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as Package from 'package/PackageCollector';
+import * as Save from 'engine/record/Save';
 
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -22,7 +23,6 @@ export default class RecordEngine extends React.Component {
     
     this.settings = {};
     this.engineState = {};
-    this.matchState = {}
     this.colorPalette = {};
     this.gameStateDefinition = {};
     this.fieldStateDefinition = {};
@@ -32,7 +32,16 @@ export default class RecordEngine extends React.Component {
     this.statusUpdateDefinition = {};
     this.buttonState = [];
     this.eventLog = [];
-    this.posLog = [];
+    this.positionLog = [];
+    this.matchState = {
+      matchStartDate: 0, //Could be different from engineState.startDate if scouting via video
+      targetTeamNumber: 0,
+      matchNumber: 0,
+      matchType: 't',
+      isRed: true,
+      comments: ''
+    };
+    this.resizeListener = () => {};
     
     this.init();
   }
@@ -59,17 +68,9 @@ export default class RecordEngine extends React.Component {
       startDate: 0,
       currDate: 0,
       currTime: 0,
-      inverted: {x: false, y: false}
+      flip: false
     };
 
-    this.matchState = {
-      matchStartDate: 0, //Could be different from engineState.startDate if scouting via video
-      targetTeamNumber: 0,
-      matchNumber: 0,
-      matchType: 't',
-      isRed: true
-    }
-    
     this.colorPalette = {};
     this.gameStateDefinition = {
       gameState: {
@@ -285,19 +286,24 @@ export default class RecordEngine extends React.Component {
             this.botStateDefinition.botState,
             this.buttonState
           );
-          Object.assign(this.eventDefinitions[i],{variables: emit});
           
           //Push triggered event to eventLog
-          this.eventLog.push(deepcopy(this.eventDefinitions[i]));
+          var newObj = deepcopy(this.eventDefinitions[i]);
+          this.eventLog.push({
+            id: newObj.id,
+            name: newObj.name,
+            variables: emit,
+            timeStamp: this.botStateDefinition.botState.position.t
+          });
         }
         this.eventDefinitions[i].prevWatcherState = currWatcherState;
       }
       
       //Push latest robot position to posLog
-      this.posLog.push({
-        x: this.botStateDefinition.botState.position.x,
-        y: this.botStateDefinition.botState.position.y,
-        t: this.botStateDefinition.botState.position.t
+      this.positionLog.push({
+        x: Math.round(this.botStateDefinition.botState.position.x),
+        y: Math.round(this.botStateDefinition.botState.position.y),
+        timeStamp: this.botStateDefinition.botState.position.t
       });
 
       //Update status
@@ -350,6 +356,7 @@ export default class RecordEngine extends React.Component {
     if(this.engineState.initialized) {
       console.log('[Record Engine] Stopping recording engine');
       this.init();
+      this.refs.controlBar.reset();
     }
   }
   resume() {
@@ -370,21 +377,25 @@ export default class RecordEngine extends React.Component {
     }
   }
   close() {
+    this.pause();
     console.log('[Record Engine] Exiting recording engine');
+    if(typeof this.props.onClose == 'function') { this.props.onClose(); }
   }
   save() {
     console.log('[Record Engine] Saving recording engine');
+    Save.saveRecord(this.gameStateDefinition, this.matchState, this.engineState, this.eventLog, this.positionLog, this.close.bind(this));
   }
   componentDidMount() {
     this.init();
     this.resize();
     this.refs.controlBar.matchStateOpen();
-    this.resizeListener = window.addEventListener('resize', () => {
+    this.resizeListener = () => {
       this.resize();
       setTimeout(this.update.bind(this), 500);
-    });
+    };
+    window.addEventListener('resize', this.resizeListener);
   }
-  componentWillUmount() {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.resizeListener);
   }
   render() {return (
