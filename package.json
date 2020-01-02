@@ -32,8 +32,8 @@
   "homepage": ".",
   "scripts": {
     "start": "NODE_ENV=development NODE_PATH=./src react-scripts start",
-    "build": "NODE_ENV=production NODE_PATH=./src react-scripts build",
-    "devbuild": "NODE_ENV=development NODE_PATH=./src react-scripts build",
+    "build": "NODE_ENV=production NODE_PATH=./src react-scripts --max_old_space_size=4096 build",
+    "devbuild": "NODE_ENV=development NODE_PATH=./src react-scripts --max_old_space_size=4096 build",
     "test": "NODE_ENV=production react-scripts test",
     "eject": "react-scripts eject"
   },
