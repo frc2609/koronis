@@ -50,18 +50,19 @@ export default class RecordCard extends React.Component {
   render() {
     return(
       <Card>
-        <CardHeader
+        <CardHeader style={{textAlign: 'left'}}
         avatar={
           <Avatar style={{backgroundColor: (this.props.record.isRedAlliance ? '#f73c3c' : '#008ae6')}}>
             {this.props.record.matchType.toUpperCase()}
           </Avatar>
         }
         title={
+          'Team ' +
+          this.props.record.teamNumber +
+          ' - ' +
           this.matchTypeFormat(this.props.record.matchType) +
           ' ' +
-          this.props.record.matchNumber +
-          ' - Team ' +
-          this.props.record.teamNumber  
+          this.props.record.matchNumber
         }
         action={
           <>
@@ -84,7 +85,7 @@ export default class RecordCard extends React.Component {
           moment.unix(this.props.record.startDate).format('ddd, MMM Do YYYY')
         }
         />
-        <CardContent>
+        <CardContent style={{textAlign: 'left'}}>
           <Typography variant='body2' paragraph>
             {this.props.record.comments}
           </Typography>

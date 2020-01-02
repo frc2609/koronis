@@ -14,7 +14,7 @@ export default class EngineWorkerAssembler {
       onMessageCode += 'if(requestMessage.engineComponentType === \'' + engineComponentList[i].type + '\'){\n' + currOnMessageCode + '}\n';
     }
 
-    var code = initCode + 'onmessage = (message) => {\nvar requestMessage = message.data;\nconsole.log(\'[Engine] Recieved Request: \' + JSON.stringify(requestMessage));\n' + onMessageCode + '};';
+    var code = initCode + 'onmessage = (message) => {\nvar requestMessage = message.data;\nconsole.log(\'[Engine] Recieved Request: \' + JSON.stringify(requestMessage.engineComponentType));\n' + onMessageCode + '};';
     const blob = new Blob([code], { type: "application/javascript" });
     return new Worker(URL.createObjectURL(blob));
   }

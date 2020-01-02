@@ -3,62 +3,64 @@ import React from 'react';
 import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
 import * as Layout from 'config/Layout';
+import { request as workerRequest } from 'engine/worker/EngineDriver';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import SyncAltIcon from '@material-ui/icons/SyncAlt';
 
+import TransferRecords from 'engine/transfer/TransferRecords';
 import RecordView from 'uiTree/components/RecordView';
 import RecordQueryBar from 'uiTree/components/RecordQueryBar';
-import RecordEngine from 'engine/record/RecordEngine';
 
-export default class Record extends React.Component {
+export default class Transfer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      recording: false,
+      transfering: false,
       loading: true,
-      records: []
+      records: [],
+      selectedRecords: []
     };
     this.queryObj = {};
   }
-  startRecording() {
-    this.setState({recording: true});
+  startTransfering() {
+    this.setState({transfering: true});
   }
-  recordingEngineHandler() {
-    this.setState({recording: false});
+  stopTransfering() {
+    this.setState({transfering: false});
   }
   refresh() {
     this.setState({loading: true, records: []});
     this.queryObj = this.refs.recordQueryBar.getQueryObj();
     Interface.getRecords(this.queryObj, {lastModified: 'desc'}).then((docs) => {
-      this.setState({records: docs, loading: false});
+      this.setState({records: docs, selectedRecords: docs, loading: false});
     });
   }
   componentDidMount() {
     this.refresh();
   }
   componentDidUpdate(prevProps, prevState) {
-    if(!this.state.recording && prevState.recording) {
+    if(!this.state.transfering && prevState.transfering) {
       this.refresh();
     }
   }
   render() {
     return (
-      this.state.recording ? <RecordEngine onClose={this.recordingEngineHandler.bind(this)}/> : 
+      this.state.transfering ? <TransferRecords onClose={this.stopTransfering.bind(this)} selectedRecords={this.state.selectedRecords} /> : 
       <>
       <Container>
-      <RecordQueryBar ref='recordQueryBar' name='record' button onSubmit={this.refresh.bind(this)}/>
+      <RecordQueryBar ref='recordQueryBar' name='transfer' button onSubmit={this.refresh.bind(this)}/>
       {this.state.loading ? <CircularProgress /> : <RecordView records={this.state.records} onRemove={this.refresh.bind(this)} />}
       </Container>
-      <Fab color='primary' onClick={this.startRecording.bind(this)} style={{
+      <Fab color='primary' onClick={this.startTransfering.bind(this)} style={{
         position: 'fixed',
         bottom: '20px',
         right: '20px'}}
       >
-        <AddIcon />
+        <SyncAltIcon />
       </Fab>
       </>
     );

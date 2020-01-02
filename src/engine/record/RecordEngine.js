@@ -4,7 +4,7 @@ import * as Package from 'package/PackageCollector';
 import * as Save from 'engine/record/Save';
 
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
+import Box from '@material-ui/core/Box';
 
 import ControlBar from 'engine/record/RecordEngine/ControlBar';
 import ButtonStack from 'engine/record/RecordEngine/ButtonStack';
@@ -47,7 +47,7 @@ export default class RecordEngine extends React.Component {
   }
   init() {
     this.settings = {
-      currentYear: 'template',
+      currentYear: 0,
       buttonStackWidth: 30,
       updateInterval: (1000/15)
     };
@@ -326,6 +326,8 @@ export default class RecordEngine extends React.Component {
     }
   }
   resize() {
+    var containerRect = this.refs.mainContainer.getBoundingClientRect();
+    this.refs.mainContainer.style = 'height: ' + (window.innerHeight - containerRect.top - 1) + 'px';
     if(this.settings.buttonStackWidth != this.state.buttonStackWidth) {
       this.setState({buttonStackWidth: this.settings.buttonStackWidth});
     }
@@ -399,7 +401,7 @@ export default class RecordEngine extends React.Component {
     window.removeEventListener('resize', this.resizeListener);
   }
   render() {return (
-    <Card className='Content' style={{height:'77vh'}}>
+    <Box ref='mainContainer'>
       <ControlBar 
     ref='controlBar'
     play={this.start.bind(this)}
@@ -449,6 +451,6 @@ export default class RecordEngine extends React.Component {
           />
         </Grid>
       </Grid>
-    </Card>
+    </Box>
   );}
 }
