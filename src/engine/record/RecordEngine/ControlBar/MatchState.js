@@ -64,8 +64,8 @@ export default class MatchState extends React.Component {
     this.setState({comments: event.target.value});
   }
   submit() {
-    if(this.state.matchNumber > 0) {
-      if(this.state.targetTeamNumber > 0) {
+    if(this.state.matchNumber > 0 && Number.isInteger(this.state.matchNumber)) {
+      if(this.state.targetTeamNumber > 0 && Number.isInteger(this.state.targetTeamNumber)) {
         if(typeof this.props.submit != 'undefined') {
           this.props.submit({
             matchStartDate: this.state.matchStartDate,
@@ -79,19 +79,17 @@ export default class MatchState extends React.Component {
         }
       }
     }
-    if(this.state.matchNumber == -1) {
+    if(this.state.matchNumber == -1 || !Number.isInteger(this.state.matchNumber)) {
       this.setState({matchNumber: 0});
     }
-    if(this.state.targetTeamNumber == -1) {
+    if(this.state.targetTeamNumber == -1 || !Number.isInteger(this.state.targetTeamNumber)) {
       this.setState({targetTeamNumber: 0});
     }
   }
   render() {
     return (
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
-        <AppBar position='static' style={{
-          marginBottom: '3vh'
-        }}>
+        <AppBar position='fixed'>
           <Toolbar>
             <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
               marginRight: '4vw'
@@ -108,6 +106,7 @@ export default class MatchState extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
+        <Toolbar style={{marginBottom: '4vh'}} />
         <Container>
         <Grid container spacing={3}>
           <Grid item xs style={{minWidth: '200px'}}>

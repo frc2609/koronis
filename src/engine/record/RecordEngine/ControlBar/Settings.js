@@ -25,8 +25,8 @@ export default class Settings extends React.Component {
     super(props);    
     this.state = {
       open: false,
-      currentYear: 'template',
-      availableYears: [],
+      currentYear: 0,
+      gameStates: [],
       buttonStackWidth: 30,
       updateInterval: (1000/15)
     };
@@ -71,17 +71,18 @@ export default class Settings extends React.Component {
       this.setState({open: false});
     }
   }
-  componentDidMount() {
-    Package.getYears().then((results) => {
-      this.setState({availableYears: results});
+  refresh() {
+    Package.getGameStates().then((results) => {
+      this.setState({gameStates: results});
     });
+  }
+  componentDidMount() {
+    this.refresh();
   }
   render() {
     return (
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
-        <AppBar position='static' style={{
-          marginBottom: '3vh'
-        }}>
+        <AppBar position='fixed'>
           <Toolbar>
             <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
               marginRight: '4vw'
@@ -98,6 +99,7 @@ export default class Settings extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
+        <Toolbar style={{marginBottom: '4vh'}} />
         <Container>
         <Grid container spacing={4}>
           <Grid item xs={6} style={{minWidth: '200px'}}>
@@ -109,9 +111,9 @@ export default class Settings extends React.Component {
       value={this.state.currentYear}
       fullWidth
               >
-                {(typeof this.state.availableYears == 'undefined') ? '' :
-                  this.state.availableYears.map((e, i) => {
-                    return <MenuItem key={i} value={e}>{e.toUpperCase()}</MenuItem>
+                {(typeof this.state.gameStates == 'undefined') ? '' :
+                  this.state.gameStates.map((e, i) => {
+                    return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
                   })
                 }
               </Select>

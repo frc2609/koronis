@@ -2,6 +2,7 @@ import { packageUrl } from 'Config';
 var axios = require('axios');
 var store = require('store');
 var deepcopy = require('deep-copy');
+
 var Package = {initialized: false};
 
 async function perYearInit(year) {
@@ -100,7 +101,7 @@ export const getByYear = async (inYear) => {
   var availableYears = store.get('package/availableYears');
   for(var i = 0;i < availableYears.length;i++) {
     var currYear = availableYears[i];
-    if(currYear == inYear) {
+    if(store.get('package/' + currYear + '/gameStateDefinition').gameState.year == inYear) {
       result.botStateDefinition = store.get('package/' + currYear + '/botStateDefinition');
       result.buttonDefinitions = store.get('package/' + currYear + '/buttonDefinitions');
       result.colorPalette = store.get('package/' + currYear + '/colorPalette');
@@ -117,5 +118,24 @@ export const getYears = async () => {
   if(!Package.initialized) {
     await init();
   }
-  return store.get('package/availableYears');
+  var result = [];
+  var availableYears = store.get('package/availableYears');
+  for(var i = 0;i < availableYears.length;i++) {
+    var currYear = availableYears[i];
+    result.push(store.get('package/' + currYear + '/gameStateDefinition').year);
+  }
+  return result;
+}
+
+export const getGameStates = async () => {
+  if(!Package.initialized) {
+    await init();
+  }
+  var result = [];
+  var availableYears = store.get('package/availableYears');
+  for(var i = 0;i < availableYears.length;i++) {
+    var currYear = availableYears[i];
+    result.push(deepcopy(store.get('package/' + currYear + '/gameStateDefinition').gameState));
+  }
+  return result;
 }
