@@ -7,7 +7,7 @@ export const teamSchema = {
       type: 'string' ,
       primary: true
     },
-    team_number: {
+    teamNumber: {
       type: 'integer'
     },
     nickname: {
@@ -19,7 +19,7 @@ export const teamSchema = {
     city: {
       type: 'string'
     },
-    state_prov: {
+    stateProv: {
       type: 'string'
     },
     country: {
@@ -28,7 +28,7 @@ export const teamSchema = {
     website: {
       type: 'string'
     },
-    rookie_year: {
+    rookieYear: {
       type: 'integer'
     },
     motto: {

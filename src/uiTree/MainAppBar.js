@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -23,11 +24,8 @@ export default class MainAppBar extends React.Component {
   closeMenu() {this.setState({menuState: false});}
   render() {return (
     <div>
-      <AppBar position='static' style={{
-        marginBottom: '2vh'
-      }}>
+      <AppBar position='fixed'>
         <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu}/>
-
         <Toolbar>
           <IconButton onClick={this.openMenu} edge='start' style={{
             marginRight: '4vw'
@@ -46,6 +44,7 @@ export default class MainAppBar extends React.Component {
           </Button>
         </Toolbar>
       </AppBar>
+      <Toolbar style={{marginBottom: '2vh'}} />
     </div>
   );}
 }
