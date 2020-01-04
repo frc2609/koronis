@@ -3,6 +3,7 @@ import React from 'react';
 import * as Interface from 'db/Interface';
 import { request as workerRequest } from 'engine/worker/EngineDriver';
 import * as Layout from 'config/Layout';
+import * as StringConversion from 'engine/transfer/StringConversion';
 
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -14,14 +15,14 @@ var qrcode = require('qrcode-generator');
 var deepcopy = require('deep-copy');
 var raf = require('raf');
 
-export default class SendRecords extends React.Component {
+export default class SendString extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       canvasSize: 0,
-      qrCodeType: 5,
-      drawInterval: 1000/3,
+      qrCodeType: 10,
+      drawInterval: 2000,
       qrCodeArrLength: 0
     };
     this.resizeListener = () => {};
@@ -32,9 +33,10 @@ export default class SendRecords extends React.Component {
     this.qrcodeDimensions = 0;
     this.qrObjs = [];
     this.qrCodeTypeDict = {
-      1: [17, 21], 2: [32, 25], 3: [53, 29], 4: [78, 33], 5: [106, 37],
-      6: [134, 41], 7: [154, 45], 8: [192, 49], 9: [230, 53], 10: [271, 57],
-      11: [321, 61], 12: [367, 65], 13: [425, 69], 14: [458, 73], 15: [520, 77]
+      1: [41, 21], 2: [77, 25], 3: [127, 29], 4: [187, 33], 5: [255, 37],
+      6: [322, 41], 7: [370, 45], 8: [461, 49], 9: [552, 53], 10: [652, 57],
+      11: [772, 61], 12: [883, 65], 13: [1022, 69], 14: [1101, 73], 15: [1250, 77],
+      16: [1408, 81], 17: [1548, 85], 18: [1725, 89], 19: [1903, 93], 20: [2061, 97]
     };
   }
   update() {
@@ -45,27 +47,32 @@ export default class SendRecords extends React.Component {
     var qrcodeStringLength = qrcodeProperties[0];
     this.qrcodeDimensions = qrcodeProperties[1];
 
-    var targetString = deepcopy(this.props.targetString);
+    var targetString = StringConversion.strToNumStr(this.props.targetString);
     var targetStringArr = [];
-    while(targetString.length > qrcodeStringLength - 2) {
-      targetStringArr.push(targetString.substring(0, qrcodeStringLength - 2));
-      targetString = targetString.substring(qrcodeStringLength - 2);
+    while(targetString.length > qrcodeStringLength - 9) {
+      targetStringArr.push(targetString.substring(0, qrcodeStringLength - 9));
+      targetString = targetString.substring(qrcodeStringLength - 9);
     }
     if(targetString.length > 0) {
       var lastString = targetString.substring(0);
-      while(lastString.length < qrcodeStringLength - 2) {
-        lastString += String.fromCharCode(0);
+      while(lastString.length < qrcodeStringLength - 9) {
+        lastString += '0';
       }
       targetStringArr.push(lastString);
     }
+    //Unknown why, but last two digits break the scanner
+    console.log(targetStringArr);
     for(var i = 0;i < targetStringArr.length;i++) {
-      var twoChar = (((i & 16383) << 14) + (targetStringArr.length & 16383));
-      var firstChar = String.fromCharCode((twoChar & 4294901760) >> 16);
-      var secondChar = String.fromCharCode(twoChar & 65535);
-      targetStringArr[i] = firstChar + secondChar + targetStringArr[i];
+      var indexStr = (i % 1000).toString();
+      while(indexStr.length < 3) {indexStr = '0' + indexStr;}
+      var lengthStr = (targetStringArr.length % 1000).toString();
+      while(lengthStr.length < 3) {lengthStr = '0' + lengthStr;}
+      targetStringArr[i] = '0' + indexStr + lengthStr + targetStringArr[i];
       
-      this.qrObjs.push(qrcode(this.state.qrCodeType, 'L'));     
-      this.qrObjs[i].addData(targetStringArr[i], 'Byte');
+      this.qrObjs.push(qrcode(this.state.qrCodeType, 'L'));
+      //this.qrObjs[i].stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
+      this.qrObjs[i].addData(targetStringArr[i], 'Numeric');
+      console.log(targetStringArr);
       this.qrObjs[i].make();
     }
     this.setState({loading: false, qrCodeArrLength: this.qrObjs.length});
@@ -100,7 +107,7 @@ export default class SendRecords extends React.Component {
     this.setState({qrCodeType: value});
   }
   drawIntervalHandler(event, value) {
-    this.setState({drawInterval: (1000/value)});
+    this.setState({drawInterval: (1000*value)});
   }
   resize() {
     //Resize canvas if needed
@@ -154,19 +161,19 @@ export default class SendRecords extends React.Component {
       valueLabelDisplay='auto'
       step={1}
       min={1}
-      max={15}
+      max={20}
             />
           </Grid>
           <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
             <Typography gutterBottom>
-              QR Codes Per Second
+              QR Codes Frequency
             </Typography>
             <Slider
-      value={(1000/this.state.drawInterval)}
+      value={(this.state.drawInterval/1000)}
       onChange={this.drawIntervalHandler.bind(this)}
       valueLabelDisplay='auto'
       valueLabelFormat={(val) => {return val.toFixed(0)}}
-      step={1}
+      step={0.5}
       min={1}
       max={15}
             />

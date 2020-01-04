@@ -11,10 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 
-import SendRecords from 'engine/transfer/SendRecords';
-import RecieveRecords from 'engine/transfer/RecieveRecords';
+import SendRecords from 'engine/transfer/SendString';
+import RecieveRecords from 'engine/transfer/RecieveString';
 
-export default class TransferRecords extends React.Component {
+export default class TransferHandler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,13 +26,25 @@ export default class TransferRecords extends React.Component {
     this.setState({tab: value});
   }
   componentDidMount() {
-    workerRequest({engineComponentType: 'RECORD_SERIALIZER', requestData: this.props.selectedRecords, isEncoding: true, isArray: true, isString: true}, (encoded) => {
-      console.log(encoded.requestData);
-      this.setState({selectedRecordsStr: encoded.requestData});
-    });
+    console.log(this.props.selectedRecords);
+    if(this.props.selectedRecords.length > 0) {
+      workerRequest({engineComponentType: 'RECORD_SERIALIZER', requestData: this.props.selectedRecords, isEncoding: true, isArray: true, isString: true}, (encoded) => {
+        console.log(encoded.requestData);
+        this.setState({selectedRecordsStr: encoded.requestData});
+      });
+    }
   }
   onClose() {
     if(typeof this.props.onClose == 'function') {this.props.onClose();}
+  }
+  onScanned(data) {
+    console.log(data);
+    workerRequest({engineComponentType: 'RECORD_SERIALIZER', requestData: data, isEncoding: false, isArray: true, isString: true}, (decoded) => {
+      console.log(decoded.requestData);
+      for(var i = 0;i < decoded.requestData.length;i++) {
+        Interface.insertRecord(decoded.requestData[i]);
+      }
+    });
   }
   render() {
     return (
@@ -52,7 +64,7 @@ export default class TransferRecords extends React.Component {
         </Tabs>
         {this.state.tab == 'sending' ?
          <SendRecords ref='sendRecords' targetString={this.state.selectedRecordsStr} /> :
-         <RecieveRecords ref='recieveRecords' />
+         <RecieveRecords ref='recieveRecords' onFinish={this.onScanned.bind(this)} />
         }
         </Card>
       </Container>

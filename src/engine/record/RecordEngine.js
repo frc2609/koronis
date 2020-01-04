@@ -381,7 +381,7 @@ export default class RecordEngine extends React.Component {
   close() {
     this.pause();
     console.log('[Record Engine] Exiting recording engine');
-    if(typeof this.props.onClose == 'function') { this.props.onClose(); }
+    if(typeof this.props.onClose == 'function') { setTimeout(this.props.onClose.bind(this), 500); }
   }
   save() {
     console.log('[Record Engine] Saving recording engine');
