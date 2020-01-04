@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
 
-import TransferRecords from 'engine/transfer/TransferRecords';
+import TransferHandler from 'engine/transfer/TransferHandler';
 import RecordView from 'uiTree/components/RecordView';
 import RecordQueryBar from 'uiTree/components/RecordQueryBar';
 
@@ -49,7 +49,7 @@ export default class Transfer extends React.Component {
   }
   render() {
     return (
-      this.state.transfering ? <TransferRecords onClose={this.stopTransfering.bind(this)} selectedRecords={this.state.selectedRecords} /> : 
+      this.state.transfering ? <TransferHandler onClose={this.stopTransfering.bind(this)} selectedRecords={this.state.selectedRecords} /> : 
       <>
       <Container>
       <RecordQueryBar ref='recordQueryBar' name='transfer' button onSubmit={this.refresh.bind(this)}/>

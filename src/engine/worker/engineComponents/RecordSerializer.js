@@ -16,14 +16,14 @@ export default class RecordSerializer {
     var intToBin = (inInteger) => {
       var actualInteger = Math.abs(inInteger % 65536);
       var binArr = [];
-      binArr.push(actualInteger >> 8);
-      binArr.push(actualInteger & 255);
+      binArr.push(actualInteger >>> 8);
+      binArr.push((actualInteger & 255) >>> 0);
       return binArr;
     }
     var binToInt = (inBin) => {
       var firstByte = (inBin.length > 0 ? inBin[0] << 8 : 0);
       var secondByte = (inBin.length > 1 ? inBin[1] : 0);
-      return firstByte + secondByte;
+      return (firstByte + secondByte) >>> 0;
     }
     var binStreamToInt = (inBinStream) => {
       var output = binToInt(inBinStream);
@@ -33,10 +33,10 @@ export default class RecordSerializer {
     var dateToBin = (inInteger) => {
       var actualInteger = Math.abs(inInteger % 4294967296);
       var binArr = [];
-      binArr.push((actualInteger & 4278190080) >> 24);
-      binArr.push((actualInteger & 16711680) >> 16);
-      binArr.push((actualInteger & 65280) >> 8);
-      binArr.push(actualInteger & 255);
+      binArr.push(((actualInteger & 4278190080) >>> 24) >>> 0);
+      binArr.push(((actualInteger & 16711680) >>> 16) >>> 0);
+      binArr.push(((actualInteger & 65280) >>> 8) >>> 0);
+      binArr.push((actualInteger & 255) >>> 0);
       return binArr;
     }
     var binToDate = (inBin) => {
@@ -44,7 +44,7 @@ export default class RecordSerializer {
       var secondByte = (inBin.length > 1 ? inBin[1] << 16 : 0);
       var thirdByte = (inBin.length > 2 ? inBin[2] << 8 : 0);
       var fourthByte = (inBin.length > 3 ? inBin[3] : 0);
-      return firstByte + secondByte + thirdByte + fourthByte;
+      return (firstByte + secondByte + thirdByte + fourthByte) >>> 0;
     }
     var binStreamToDate = (inBinStream) => {
       var output = binToDate(inBinStream);
@@ -54,10 +54,10 @@ export default class RecordSerializer {
     var numToBin = (inNum) => {
       var actualInteger = (Math.trunc(inNum*100000) % 4294967296);
       var binArr = [];
-      binArr.push((actualInteger & 4278190080) >> 24);
-      binArr.push((actualInteger & 16711680) >> 16);
-      binArr.push((actualInteger & 65280) >> 8);
-      binArr.push(actualInteger & 255);
+      binArr.push(((actualInteger & 4278190080) >>> 24) >>> 0);
+      binArr.push(((actualInteger & 16711680) >>> 16) >>> 0);
+      binArr.push(((actualInteger & 65280) >>> 8) >>> 0);
+      binArr.push((actualInteger & 255) >>> 0);
       return binArr;
     }
     var binToNum = (inBin) => {
@@ -65,7 +65,7 @@ export default class RecordSerializer {
       var secondByte = (inBin.length > 1 ? inBin[1] << 16 : 0);
       var thirdByte = (inBin.length > 2 ? inBin[2] << 8 : 0);
       var fourthByte = (inBin.length > 3 ? inBin[3] : 0);
-      return ((firstByte + secondByte + thirdByte + fourthByte))/100000;
+      return ((firstByte + secondByte + thirdByte + fourthByte) >>> 0)/100000;
     }
     var binStreamToNum = (inBinStream) => {
       var output = binToNum(inBinStream);
@@ -77,9 +77,9 @@ export default class RecordSerializer {
       var actualY = Math.abs(inPos.y) % 64;
       var actualT = Math.trunc(Math.abs(inPos.timeStamp) * 10);
       var binArr = [];
-      binArr[0] = (actualX << 2) + ((actualY & 48) >> 4);
-      binArr[1] = ((actualY & 15) << 4) + ((actualT & 3840) >> 8);
-      binArr[2] = (actualT & 255);
+      binArr[0] = (actualX << 2) + ((actualY & 48) >>> 4) >>> 0;
+      binArr[1] = ((actualY & 15) << 4) + ((actualT & 3840) >>> 8) >>> 0;
+      binArr[2] = (actualT & 255) >>> 0;
       return binArr;
     }
     var binToPos = (inBin) => {
@@ -87,9 +87,9 @@ export default class RecordSerializer {
       var secondByte = (inBin.length > 1 ? inBin[1] : 0);
       var thirdByte = (inBin.length > 2 ? inBin[2] : 0);
       var obj = {};
-      obj.x = ((firstByte & 252) >> 2);
-      obj.y = ((firstByte & 3) << 4) + ((secondByte & 240) >> 4);
-      obj.timeStamp = (((secondByte & 15) << 8) + thirdByte) / 10;
+      obj.x = ((firstByte & 252) >>> 2) >>> 0;
+      obj.y = ((firstByte & 3) << 4) + ((secondByte & 240) >>> 4) >>> 0;
+      obj.timeStamp = ((((secondByte & 15) << 8) + thirdByte) / 10) >>> 0;
       return obj;
     }
     var binStreamToPos = (inBinStream) => {
@@ -101,18 +101,15 @@ export default class RecordSerializer {
       //Will include null padding
       var binArr = [];
       for(var i = 0;i < inBinStr.length;i++) {
-        binArr.push(inBinStr.charCodeAt(i) >> 8);
-        binArr.push(inBinStr.charCodeAt(i) & 255);
+        binArr.push((inBinStr.charCodeAt(i) & 255) >>> 0);
       }
       return binArr;
     }
     var binArrToBinStr = (inBinArr) => {
       //Will be null padded to nearest 2 bytes
       var output = '';
-      for(var i = 0;i < inBinArr.length;i+=2) {
-        var firstInt = inBinArr[i] << 8;
-        var secondInt = (i+1 < inBinArr.length ? inBinArr[i+1] : 0);
-        output += String.fromCharCode(firstInt + secondInt);
+      for(var i = 0;i < inBinArr.length;i++) {
+        output += String.fromCharCode((inBinArr[i] & 255) >>> 0);
       }
       return output;
     }
@@ -127,9 +124,9 @@ export default class RecordSerializer {
       var isAscii = checkIsAscii(inString);
       var actualString = inString.substring(0, 32768);
       var binArr = [];
-      binArr[0] = isAscii ? 128 : 0;
-      binArr[0] += (actualString.length & 32512) >> 8;
-      binArr[1] = (actualString.length & 255);
+      binArr[0] = isAscii ? 128 >>> 0 : 0 >>> 0;
+      binArr[0] += ((actualString.length & 32512) >>> 8) >>> 0;
+      binArr[1] = (actualString.length & 255) >>> 0;
       for(var i = 0;i < actualString.length;i++) {
         if(isAscii) {
           binArr.push(actualString.charCodeAt(i));
@@ -142,7 +139,7 @@ export default class RecordSerializer {
     }
     var binToStr = (inBin, stream = false) => {
       if(inBin.length >= 2) {
-        var isAscii = (inBin[0] >> 7) > 0;
+        var isAscii = (inBin[0] >>> 7) > 0;
         var stringLength = ((inBin[0] & 127) << 8) + inBin[1];
         var output = '';
         for(var i = 0;i < stringLength;i++) {
