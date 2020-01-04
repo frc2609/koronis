@@ -29,7 +29,7 @@ class EngineDriver {
         var newRequestMessage = requestMessage;
         newRequestMessage.callbackId = this.callbackId;
         this.callbackId++;
-        this.engineComponentList[i].ec.prototype.appRequest(requestMessage, this.ew);
+        this.engineComponentList[i].ec.appRequest(requestMessage, this.ew);
       }
     }
   }

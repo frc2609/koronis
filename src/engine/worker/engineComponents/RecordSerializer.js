@@ -1,6 +1,5 @@
-export default class RecordSerializer {
-  constructor() {}
-  workerInit() {
+const RecordSerializerFuncs = {
+  workerInit: () => {
     //Code that is running in webworker
     var boolToBin = (inBool) => {
       return inBool ? [1] : [0];
@@ -261,8 +260,8 @@ export default class RecordSerializer {
       }
       return resArr;
     }
-  }
-  workerReply(requestMessage) {
+  },
+  workerReply: (requestMessage) => {
     //Code inside onmessage function in webworker
     var isEncoding = requestMessage.isEncoding;
     var isArray = requestMessage.isArray;
@@ -287,9 +286,16 @@ export default class RecordSerializer {
     }
     requestMessage.requestData = output;
     postMessage(requestMessage);
-  }
-  appRequest(requestMessage, ew) {
+  },
+  appRequest: (requestMessage, ew) => {
     //Code that initiates a postMessage
     ew.postMessage(requestMessage);
   }
 }
+
+const RecordSerializer = {
+  workerInit: RecordSerializerFuncs.workerInit.toString(),
+  workerReply: RecordSerializerFuncs.workerReply.toString(),
+  appRequest: RecordSerializerFuncs.appRequest
+}
+export default RecordSerializer;
