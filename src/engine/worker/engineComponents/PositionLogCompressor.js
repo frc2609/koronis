@@ -1,9 +1,8 @@
-export default class PositionLogCompressor {
-  constructor() {}
-  workerInit() {
+const PositionLogCompressorFuncs = {
+  workerInit: () => {
     //Code that is running in webworker
-  }
-  workerReply(requestMessage) {
+  },
+  workerReply: (requestMessage) => {
     //Code inside onmessage function in webworker
     var positionLog = requestMessage.requestData.slice();
     //Change timestamps to 12 bit integer
@@ -83,9 +82,16 @@ export default class PositionLogCompressor {
     var replyMessage = requestMessage;
     replyMessage.requestData = positionLog;
     postMessage(replyMessage);
-  }
-  appRequest(requestMessage, ew) {
+  },
+  appRequest: (requestMessage, ew) => {
     //Code that initiates a postMessage
     ew.postMessage(requestMessage);
   }
 }
+
+const PositionLogCompressor = {
+  workerInit: PositionLogCompressorFuncs.workerInit.toString(),
+  workerReply: PositionLogCompressorFuncs.workerReply.toString(),
+  appRequest: PositionLogCompressorFuncs.appRequest
+}
+export default PositionLogCompressor;
