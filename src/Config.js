@@ -12,5 +12,7 @@ else {
   packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/dev/';
 }
 
-export baseUrl;
-export packageUrl;
+export const exportedObj = {
+  baseUrl: baseUrl,
+  packageUrl: packageUrl
+};
