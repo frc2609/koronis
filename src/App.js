@@ -5,7 +5,7 @@ import MomentUtils from '@date-io/moment';
 
 import * as Worker from 'engine/worker/EngineDriver';
 import * as Database from 'db/Db';
-import * as Config from 'Config';
+import Config from 'Config';
 
 import FullscreenModal from 'uiTree/FullscreenModal';
 import MainAppBar from 'uiTree/MainAppBar';

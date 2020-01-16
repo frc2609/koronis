@@ -1,4 +1,4 @@
-import { packageUrl } from 'Config';
+import Config from 'Config';
 var axios = require('axios');
 var store = require('store');
 var deepcopy = require('deep-copy');
@@ -7,37 +7,37 @@ var Package = {initialized: false};
 
 async function perYearInit(year) {
   //Get bot definition
-  var bSD = await eval('import(\"' + packageUrl + year + '/bot.js\")');
+  var bSD = await eval('import(\"' + Config.packageUrl + year + '/bot.js\")');
   var botStateDefinition = deepcopy(bSD.default);
   store.set('package/' + year + '/botStateDefinition', botStateDefinition);
   
   //Get button definitions
-  var bD = await eval('import(\"' + packageUrl + year + '/button.js\")')
+  var bD = await eval('import(\"' + Config.packageUrl + year + '/button.js\")')
   var buttonDefinitions = deepcopy(bD.default);
   store.set('package/' + year + '/buttonDefinitions', buttonDefinitions);
   
   //Get event definitions
-  var eD = await eval('import(\"' + packageUrl + year + '/event.js\")')
+  var eD = await eval('import(\"' + Config.packageUrl + year + '/event.js\")')
   var eventDefinitions = deepcopy(eD.default);
   store.set('package/' + year + '/eventDefinitions', eventDefinitions);
   
   //Get field definition
-  var fD = await eval('import(\"' + packageUrl + year + '/field.js\")')
+  var fD = await eval('import(\"' + Config.packageUrl + year + '/field.js\")')
   var fieldStateDefinition = deepcopy(fD.default);
   store.set('package/' + year + '/fieldStateDefinition', fieldStateDefinition);
   
   //Get game definition
-  var gD = await eval('import(\"' + packageUrl + year + '/game.js\")')
+  var gD = await eval('import(\"' + Config.packageUrl + year + '/game.js\")')
   var gameStateDefinition = deepcopy(gD.default);
   store.set('package/' + year + '/gameStateDefinition', gameStateDefinition);
   
   //Get status definition
-  var sD = await eval('import(\"' + packageUrl + year + '/status.js\")')
+  var sD = await eval('import(\"' + Config.packageUrl + year + '/status.js\")')
   var statusUpdateDefinition = deepcopy(sD.default);
   store.set('package/' + year + '/statusUpdateDefinition', statusUpdateDefinition);
 
   //Get color palette
-  var colorPalette = (await axios.get(packageUrl + year + '/color.json', {responseType: 'json'})).data;
+  var colorPalette = (await axios.get(Config.packageUrl + year + '/color.json', {responseType: 'json'})).data;
   store.set('package/' + year + '/colorPalette', colorPalette);
   
   //Done loading
@@ -47,7 +47,7 @@ async function perYearInit(year) {
 export const init = async () => {
   try {
     //Check version number of repo and local
-    var repoIndex = (await axios.get(packageUrl + 'index.json')).data;
+    var repoIndex = (await axios.get(Config.packageUrl + 'index.json')).data;
     var versionNumberRepo = repoIndex.versionNumber;
     var versionNumberLocal = store.get('package/versionNumber');
     if(versionNumberLocal != versionNumberRepo) {
