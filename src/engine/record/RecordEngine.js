@@ -20,7 +20,7 @@ export default class RecordEngine extends React.Component {
       timestamp: 0,
       buttonStackWidth: 30
     };
-    
+
     this.settings = {};
     this.engineState = {};
     this.colorPalette = {};
@@ -42,7 +42,7 @@ export default class RecordEngine extends React.Component {
       comments: ''
     };
     this.resizeListener = () => {};
-    
+
     this.init();
   }
   init() {
@@ -99,7 +99,7 @@ export default class RecordEngine extends React.Component {
     this.statusUpdateDefinition = {
       statusState: []
     };
-    
+
     this.buttonState = [];
     this.eventLog = [];
     this.posLog = [];
@@ -119,7 +119,7 @@ export default class RecordEngine extends React.Component {
       Object.assign(this.gameStateDefinition.gameState, {
         startDatetime: 0
       });
-      
+
       //New fieldStateDefinition instance
       this.fieldStateDefinition = deepcopy(results.fieldStateDefinition);
       //Initialize init function from init string
@@ -138,10 +138,10 @@ export default class RecordEngine extends React.Component {
       this.botStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.botStateDefinition.update);
       //Assign default values to required fields
       Object.assign(this.botStateDefinition.botState, {
-        currentZones: [], 
+        currentZones: [],
         previousZones: []
       });
-      
+
       //New eventDefinitions instance
       this.eventDefinitions = deepcopy(results.eventDefinitions);
       for(var i = 0;i < this.eventDefinitions.length;i++) {
@@ -152,7 +152,7 @@ export default class RecordEngine extends React.Component {
         //Set previous watcher state variable to track changes in watcher state
         this.eventDefinitions[i].prevWatcherState = false;
       }
-      
+
       //New buttonDefinitions instance
       this.buttonDefinitions = deepcopy(results.buttonDefinitions);
       for(var i = 0;i < this.buttonDefinitions.length;i++) {
@@ -170,7 +170,7 @@ export default class RecordEngine extends React.Component {
       //New statusUpdateDefinition instance
       this.statusUpdateDefinition = deepcopy(results.statusUpdateDefinition);
       this.statusUpdateDefinition.updateFunct = new Function('gS', 'fS', 'bS', this.statusUpdateDefinition.update);
-      
+
       //Run initialization functions found in state definitions instances
       this.gameStateDefinition.initFunct(
         this.gameStateDefinition.gameState,
@@ -190,7 +190,7 @@ export default class RecordEngine extends React.Component {
         this.botStateDefinition.botState,
         this.botStateDefinition.drawnElements
       );
-            
+
       this.engineState.initialized = true;
       console.log('[Record Engine] Initialized required variables, states, and definitions');
       this.setState({timestamp: 0});
@@ -210,6 +210,7 @@ export default class RecordEngine extends React.Component {
   }
   matchStateHandler(mS) {
     Object.assign(this.matchState, mS);
+    this.update();
   }
   settingsHandler(s) {
     if(s.currentYear != this.settings.currentYear) {
@@ -234,22 +235,48 @@ export default class RecordEngine extends React.Component {
         this.setState({timestamp: this.engineState.currTime});
         console.log('[Record Engine] Update at ' + this.engineState.currTime.toFixed(2) + ' sec');
       }
-      
+
       //Assigning zones
       this.botStateDefinition.botState.previousZones = deepcopy(this.botStateDefinition.botState.currentZones);
       this.botStateDefinition.botState.currentZones = [];
       for(var i = 0;i < this.fieldStateDefinition.fieldState.zones.length;i++) {
-        if(this.botStateDefinition.botState.position.x >= this.fieldStateDefinition.fieldState.zones[i].position.x) {
-          if(this.botStateDefinition.botState.position.y >= this.fieldStateDefinition.fieldState.zones[i].position.y) {
-            if(this.botStateDefinition.botState.position.x <= this.fieldStateDefinition.fieldState.zones[i].position.x + this.fieldStateDefinition.fieldState.zones[i].size.x) {
-              if(this.botStateDefinition.botState.position.y <= this.fieldStateDefinition.fieldState.zones[i].position.y + this.fieldStateDefinition.fieldState.zones[i].size.y) {
-                this.botStateDefinition.botState.currentZones.push(deepcopy(this.fieldStateDefinition.fieldState.zones[i]));
+        if(typeof this.fieldStateDefinition.fieldState.zones[i].points == 'undefined') {
+          if(this.botStateDefinition.botState.position.x >= this.fieldStateDefinition.fieldState.zones[i].position.x) {
+            if(this.botStateDefinition.botState.position.y >= this.fieldStateDefinition.fieldState.zones[i].position.y) {
+              if(this.botStateDefinition.botState.position.x <= this.fieldStateDefinition.fieldState.zones[i].position.x + this.fieldStateDefinition.fieldState.zones[i].size.x) {
+                if(this.botStateDefinition.botState.position.y <= this.fieldStateDefinition.fieldState.zones[i].position.y + this.fieldStateDefinition.fieldState.zones[i].size.y) {
+                  var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]);
+                  tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied == this.matchState.isRed;
+                  this.botStateDefinition.botState.currentZones.push(tmp);
+                }
               }
             }
           }
         }
+        else {
+          var points = this.fieldStateDefinition.fieldState.zones[i].points;
+          var bot = this.botStateDefinition.botState.position;
+          var j = 0;
+          var k = points.length - 1;
+          var c = 0;
+          while(j < points.length) {
+            if(
+              ((points[j].y > bot.y) != (points[k].y > bot.y)) &&
+              (bot.x < (points[k].x-points[j].x) * (bot.y-points[j].y) / (points[k].y-points[j].y) + points[j].x)
+            ) {
+              c = c > 0 ? 0 : 1;
+            }
+            k = j;
+            j++;
+          }
+          if(c > 0) {
+            var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]);
+            tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied == this.matchState.isRed;
+            this.botStateDefinition.botState.currentZones.push(tmp);
+          }
+        }
       }
-      
+
       //Run update functions found in state definitions instances
       this.gameStateDefinition.updateFunct(
         this.gameStateDefinition.gameState,
@@ -286,7 +313,7 @@ export default class RecordEngine extends React.Component {
             this.botStateDefinition.botState,
             this.buttonState
           );
-          
+
           //Push triggered event to eventLog
           var newObj = deepcopy(this.eventDefinitions[i]);
           this.eventLog.push({
@@ -298,7 +325,7 @@ export default class RecordEngine extends React.Component {
         }
         this.eventDefinitions[i].prevWatcherState = currWatcherState;
       }
-      
+
       //Push latest robot position to posLog
       this.positionLog.push({
         x: Math.round(this.botStateDefinition.botState.position.x),
@@ -312,7 +339,7 @@ export default class RecordEngine extends React.Component {
         this.fieldStateDefinition.fieldState,
         this.botStateDefinition.botState
       );
-      
+
       //Trigger buttonStack, renderCanvas, and controlBar update functions
       this.refs.buttonStack.update();
       this.refs.renderCanvas.update();
@@ -402,7 +429,7 @@ export default class RecordEngine extends React.Component {
   }
   render() {return (
     <Box ref='mainContainer'>
-      <ControlBar 
+      <ControlBar
     ref='controlBar'
     play={this.start.bind(this)}
     stop={this.stop.bind(this)}
@@ -416,7 +443,7 @@ export default class RecordEngine extends React.Component {
 
     time={this.state.timestamp}
     progress={((this.state.timestamp/this.gameStateDefinition.gameState.gameLength)*100)}
-    
+
     colorPalette={this.colorPalette}
     status={this.statusUpdateDefinition}
     settings={this.settings}
