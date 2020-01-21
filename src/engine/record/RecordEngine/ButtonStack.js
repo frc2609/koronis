@@ -18,6 +18,12 @@ export default class ButtonStack extends React.Component {
     this.buttonStates = [];
     this.touchState = {x: 0, y: 0};
   }
+  init() {
+    this.buttonInitialized = false;
+    this.buttonStates = [];
+    this.touchState = {x: 0, y: 0};
+    this.update();
+  }
   touchStart(event) {
     var rect = this.buttonStackElement.getBoundingClientRect();
     var index = 0;
@@ -131,7 +137,7 @@ export default class ButtonStack extends React.Component {
   update() {
     //Resize if needed
     this.resize();
-    
+
     //Set buttonStates
     if(!this.buttonInitialized) {
       this.buttonStates = deepcopy(this.props.buttonDefinitions);
@@ -246,7 +252,7 @@ export default class ButtonStack extends React.Component {
     }
     //One last sort
     buttonGroups.sort((e1, e2) => {return e1.positionY - e2.positionY});
-    
+
     //Sort out buttons in buttonGroups
     for(var i = 0;i < buttonGroups.length;i++) {
       //Get current buttons in current buttonGroup
@@ -262,11 +268,11 @@ export default class ButtonStack extends React.Component {
       var totalHorizontalWeights = 0;
       for(var j = 0;j < currButtons.length;j++) {
         if(!currButtons[j].selected) {
-          totalHorizontalWeights += currButtons[j].verticalWeight;
+          totalHorizontalWeights += currButtons[j].horizontalWeight;
         }
         else {
           availableCanvas -= currButtons[j].size.x;
-        }          
+        }
       }
       //Map unselected buttons and set vertical position and size
       var currWidth = 0;
@@ -279,7 +285,7 @@ export default class ButtonStack extends React.Component {
           currWidth += currButtons[j].size.x;
         }
       }
-      
+
       //Insert selected button
       var selectedButton = currButtons.findIndex((e) => {return e.selected;});
       while (selectedButton != -1) {
@@ -315,7 +321,7 @@ export default class ButtonStack extends React.Component {
         }
         selectedButton = currButtons.findIndex((e, i) => {return e.selected && i > selectedButton;});
       }
-      
+
       //Sort from left to right
       currButtons.sort((e1, e2) => {return e1.position.x - e2.position.x});
       //Fill gaps
@@ -349,6 +355,11 @@ export default class ButtonStack extends React.Component {
       lastCall = now;
       return fn(...args);
     };
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.buttonDefinitions != this.props.buttonDefinitions) {
+      this.init();
+    }
   }
   componentDidMount() {
     this.buttonStackElement = this.refs.buttonStack;

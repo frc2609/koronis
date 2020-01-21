@@ -216,10 +216,12 @@ export default class RecordEngine extends React.Component {
     if(s.currentYear != this.settings.currentYear) {
       this.init();
     }
-    this.settings = s;
-    this.resize();
-    this.setState({buttonStackWidth: this.settings.buttonStackWidth});
-    setTimeout(this.update.bind(this), 500);
+    else {
+      this.settings = s;
+      setTimeout(this.update.bind(this), 500);
+      this.resize();
+      this.setState({buttonStackWidth: this.settings.buttonStackWidth});
+    }
   }
   update() {
     if(this.engineState.initialized) {
