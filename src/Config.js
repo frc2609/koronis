@@ -1,7 +1,7 @@
 var baseUrl = '';
 var packageUrl = '';
 
-if(process.env.NODE_ENV === 'production') {
+if(process.env.REACT_APP_ENV === 'production') {
   console.log('App is configured for production');
   baseUrl = '/kss-client/latest';
   packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/latest/';
