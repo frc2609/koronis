@@ -9,8 +9,6 @@ const PositionLogCompressorFuncs = {
     for(var i = 0;i < positionLog.length;i++) {
       positionLog[i].timeStamp = Math.trunc(positionLog[i].timeStamp * 10);
     }
-    console.log('32bit int');
-    console.log(positionLog.length);
     //Sort by timestamp
     positionLog.sort((e1, e2) => {return e1.timeStamp - e2.timeStamp});
     //Delete prematch movement
@@ -28,8 +26,6 @@ const PositionLogCompressorFuncs = {
       }
     }
     positionLog = newArr.slice();
-    console.log('Prematch');
-    console.log(positionLog.length);
     //Delete intermediate positions (standing still)
     newArr = [];
     var currPosX = 0;
@@ -53,12 +49,10 @@ const PositionLogCompressorFuncs = {
         }
         else {
           newArr.push(positionLog[i]);
-        }        
+        }
       }
     }
     positionLog = newArr.slice();
-    console.log('Dehold');
-    console.log(positionLog.length);
     //Delete duplicates
     var uniqueLog = [];
     var goodLog = [];
@@ -70,15 +64,13 @@ const PositionLogCompressorFuncs = {
       }
     }
     positionLog = goodLog.slice();
-    console.log('Dedupe');
-    console.log(positionLog.length);
     //Change timestamps to 32 bit float
     for(var i = 0;i < positionLog.length;i++) {
       positionLog[i].timeStamp = positionLog[i].timeStamp/10;
     }
     //Sort by timestamp (should be sorted already anyways)
     positionLog.sort((e1, e2) => {return e1.timeStamp - e2.timeStamp});
-    
+
     var replyMessage = requestMessage;
     replyMessage.requestData = positionLog;
     postMessage(replyMessage);

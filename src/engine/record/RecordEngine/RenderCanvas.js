@@ -53,14 +53,14 @@ export default class RenderCanvas extends React.Component {
     //Draw field elements
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
     this.renderCanvasCtx.setLineDash([]);
-    this.drawElements.bind(this)(this.props.gameStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
-    this.drawElements.bind(this)(this.props.fieldStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
-    this.drawElements.bind(this)(this.props.botStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
+    this.drawElements(this.props.gameStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
+    this.drawElements(this.props.fieldStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
+    this.drawElements(this.props.botStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
 
     //Draw the robot as a circle with crossing lines
     var botX = (this.props.botStateDefinition.botState.position.x + this.canvasState.xOffset) * this.canvasState.xMulti;
     var botY = (this.props.botStateDefinition.botState.position.y + this.canvasState.yOffset) * this.canvasState.yMulti;
-    
+
     //Draw crossing lines
     this.renderCanvasCtx.strokeStyle = 'rgb(0,0,0,0.5)'
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.6;
@@ -71,7 +71,7 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasCtx.moveTo(botX, 0);
     this.renderCanvasCtx.lineTo(botX, this.state.canvasSize.y);
     this.renderCanvasCtx.stroke();
-    
+
     //Draw circle
     this.renderCanvasCtx.fillStyle = (this.props.matchState.isRed ? '#dc3545' : '#008ae6');
     this.renderCanvasCtx.strokeStyle = '#000000';
@@ -86,12 +86,24 @@ export default class RenderCanvas extends React.Component {
     for(var i = 0;i < arr.length;i++) {
       this.renderCanvasCtx.fillStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name == arr[i].style.fill;}).hex;
       this.renderCanvasCtx.strokeStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name == arr[i].style.outline;}).hex;
-      var elemWidth = arr[i].size.x * xMulti;
-      var elemHeight = arr[i].size.y * yMulti;
-      var elemX = (arr[i].position.x + xOffset) * xMulti;
-      var elemY = (arr[i].position.y + yOffset) * yMulti;
-      this.renderCanvasCtx.fillRect(elemX, elemY, elemWidth, elemHeight);
-      this.renderCanvasCtx.strokeRect(elemX, elemY, elemWidth, elemHeight);
+      if(typeof arr[i].points == 'undefined') {
+        var elemWidth = arr[i].size.x * xMulti;
+        var elemHeight = arr[i].size.y * yMulti;
+        var elemX = (arr[i].position.x + xOffset) * xMulti;
+        var elemY = (arr[i].position.y + yOffset) * yMulti;
+        this.renderCanvasCtx.fillRect(elemX, elemY, elemWidth, elemHeight);
+        this.renderCanvasCtx.strokeRect(elemX, elemY, elemWidth, elemHeight);
+      }
+      else {
+        this.renderCanvasCtx.beginPath();
+        for(var j = 0;j < arr[i].points.length;j++) {
+          if(j == 0) { this.renderCanvasCtx.moveTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
+          else { this.renderCanvasCtx.lineTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
+        }
+        if(arr[i].points.length > 0) { this.renderCanvasCtx.lineTo((arr[i].points[0].x + xOffset) * xMulti, (arr[i].points[0].y + yOffset) * yMulti); }
+        this.renderCanvasCtx.fill();
+        this.renderCanvasCtx.stroke();
+      }
     }
   }
   update() {
@@ -102,7 +114,7 @@ export default class RenderCanvas extends React.Component {
     //Resize canvas if needed
     if(this.renderCanvasWrapperElement.offsetWidth != this.state.canvasSize.x + this.wrapperOffset || this.renderCanvasWrapperElement.offsetHeight != this.state.canvasSize.y + this.wrapperOffset) {
       this.setState({canvasSize: {x: this.renderCanvasWrapperElement.offsetWidth - this.wrapperOffset, y: this.renderCanvasWrapperElement.offsetHeight - this.wrapperOffset}});
-    }    
+    }
   }
   throttle(fn) {
     let lastCall = 0;
@@ -123,7 +135,7 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasElement.ontouchstart = this.touchStart.bind(this);
     this.renderCanvasElement.ontouchmove = this.throttle(this.touchStart.bind(this)).bind(this);
     this.renderCanvasElement.ontouchend = this.touchEnd.bind(this);
-    
+
     this.resize();
   }
   render() {return (
@@ -132,4 +144,3 @@ export default class RenderCanvas extends React.Component {
     </div>
   );}
 }
-
