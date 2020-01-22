@@ -86,25 +86,13 @@ const binArr3ToBinArr8 = (inBinArr) => {
 
 export const strToNumStr = (inStr) => {
   var output = binStrToBinArr(inStr);
-  console.log('binStrToBinArr');
-  console.log(output);
   output = binArr8ToBinArr3(output);
-  console.log('binArr8ToBinArr3');
-  console.log(output);
   output = binArr3ToNumString(output);
-  console.log('binArr3ToNumString');
-  console.log(output);
   return output;
 }
 export const numStrToStr = (inNumStr) => {
   var output = numStringToBinArr3(inNumStr);
-  console.log('numStringToBinArr3');
-  console.log(output);
   output = binArr3ToBinArr8(output);
-  console.log('binArr3ToBinArr8');
-  console.log(output);
   output = binArrToBinStr(output);
-  console.log('binArr8ToBinStr');
-  console.log(output);
   return output;
 }

@@ -24,12 +24,13 @@
     "react-dom": "^16.9.0",
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
+    "react-scripts": "3.3.0",
     "rxdb": "^8.4.0",
     "rxjs": "^6.5.3",
     "store": "^2.0.12",
     "tocca": "^2.0.6",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "workerize-loader": "^1.1.0"
   },
   "homepage": ".",
   "scripts": {
@@ -56,5 +57,6 @@
   },
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
-  }
+  },
+  "devDependencies": {}
 }
