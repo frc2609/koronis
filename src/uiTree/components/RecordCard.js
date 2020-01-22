@@ -23,14 +23,14 @@ export default class RecordCard extends React.Component {
     };
   }
   matchTypeFormat(mT) {
-    if(mT == 't') {return 'Test';}
-    else if(mT == 'pf') {return 'Practice Field';}
-    else if(mT == 'pm') {return 'Practice Match';}
-    else if(mT == 'qm') {return 'Qualifications';}
-    else if(mT == 'ef') {return 'Eighth-finals';}
-    else if(mT == 'qf') {return 'Quarterfinals';}
-    else if(mT == 'sf') {return 'Semifinals';}
-    else if(mT == 'f') {return 'Finals';}
+    if(mT === 't') {return 'Test';}
+    else if(mT === 'pf') {return 'Practice Field';}
+    else if(mT === 'pm') {return 'Practice Match';}
+    else if(mT === 'qm') {return 'Qualifications';}
+    else if(mT === 'ef') {return 'Eighth-finals';}
+    else if(mT === 'qf') {return 'Quarterfinals';}
+    else if(mT === 'sf') {return 'Semifinals';}
+    else if(mT === 'f') {return 'Finals';}
     return 'Match';
   }
   remove() {
@@ -38,7 +38,7 @@ export default class RecordCard extends React.Component {
     Interface.removeRecord({
       id: {$eq: this.props.record.id}
     }).then(() => {
-      if(typeof this.props.onRemove == 'function') {this.props.onRemove()}
+      if(typeof this.props.onRemove === 'function') {this.props.onRemove()}
     });
   }
   openMenu(event) {

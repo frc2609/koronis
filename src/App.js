@@ -13,9 +13,6 @@ import 'App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {return (
     <div className='App' style={{
       flexGrow: 1

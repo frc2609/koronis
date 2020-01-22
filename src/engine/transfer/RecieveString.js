@@ -1,11 +1,9 @@
 import React from 'react';
 
-import * as Interface from 'db/Interface';
 import * as Layout from 'config/Layout';
 import * as StringConversion from 'engine/transfer/StringConversion';
 
 import Container from '@material-ui/core/Container';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
@@ -16,7 +14,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import QrReader from 'react-qr-reader';
-var deepcopy = require('deep-copy');
 
 export default class RecieveString extends React.Component {
   constructor(props) {
@@ -50,19 +47,18 @@ export default class RecieveString extends React.Component {
   onFinish() {
     var data = StringConversion.numStrToStr(this.finishedStr);
     this.setState({scanning: false});
-    if(typeof this.props.onFinish == 'function') {this.props.onFinish(data);}
+    if(typeof this.props.onFinish === 'function') {this.props.onFinish(data);}
   }
   onScan(inStr) {
-    if(inStr != null && inStr.length >= 7) {
+    if(inStr !== null && inStr.length >= 7) {
       var index = Number.parseInt(inStr.substring(1,4));
       var length = Number.parseInt(inStr.substring(4,7));
       var rawStr = inStr.substring(7);
       this.rawStrArr[index] = rawStr;
-      var finishedStr = '';
       var hasUndef = false;
       var totalScanned = 0;
       for(var i = 0;i < length;i++) {
-        var currUndef = (typeof this.rawStrArr[i] == 'undefined');
+        var currUndef = (typeof this.rawStrArr[i] === 'undefined');
         if(!hasUndef) {
           hasUndef = currUndef;
         }
@@ -71,7 +67,7 @@ export default class RecieveString extends React.Component {
         }
       }
       //Calculate rate
-      if(this.startScan == 0) {
+      if(this.startScan === 0) {
         this.startScan = new Date();
       }
       else {
@@ -79,7 +75,7 @@ export default class RecieveString extends React.Component {
       }
       if(!hasUndef) {
         this.finishedStr = '';
-        for(var i = 0;i < length;i++) {
+        for(var i = 0;i < length;i++) { // eslint-disable-line no-redeclare
           this.finishedStr += this.rawStrArr[i];
         }
         this.onFinish();
@@ -100,7 +96,7 @@ export default class RecieveString extends React.Component {
         {this.state.scanning ? <QrReader
          onScan={this.onScan.bind(this)}
          onError={()=>{this.setState({scanning: false})}}
-         delay={this.state.delay == (1000/31) ? false : this.state.delay}
+         delay={this.state.delay === (1000/31) ? false : this.state.delay}
          resolution={this.state.resolution}
          facingMode={this.state.facingMode}
 

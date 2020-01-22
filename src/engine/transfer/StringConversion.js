@@ -1,5 +1,3 @@
-var deepcopy = require('deep-copy');
-
 const binStrToBinArr = (inBinStr) => {
   //Will include null padding
   var binArr = [];

@@ -1,12 +1,9 @@
 import React from 'react';
 
-import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
-import * as Layout from 'config/Layout';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -47,7 +44,7 @@ export default class Record extends React.Component {
   }
   render() {
     return (
-      this.state.recording ? <RecordEngine onClose={this.recordingEngineHandler.bind(this)}/> : 
+      this.state.recording ? <RecordEngine onClose={this.recordingEngineHandler.bind(this)}/> :
       <>
       <Container>
       <RecordQueryBar ref='recordQueryBar' name='record' button onSubmit={this.refresh.bind(this)}/>

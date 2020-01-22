@@ -27,19 +27,19 @@ export function processPositionLog(positionLogIn) {
   var currPosX = 0;
   var currPosY = 0;
   for(var i = 0;i < positionLog.length;i++) {
-    if(i == 0) {
+    if(i === 0) {
       newArr.push(positionLog[i]);
       currPosX = positionLog[i].x;
       currPosY = positionLog[i].y;
     }
     else {
       if(i + 1 < positionLog.length) {
-        if(positionLog[i].x != currPosX || positionLog[i].y != currPosY) {
+        if(positionLog[i].x !== currPosX || positionLog[i].y !== currPosY) {
           newArr.push(positionLog[i]);
           currPosX = positionLog[i].x;
           currPosY = positionLog[i].y;
         }
-        if(positionLog[i+1].x != currPosX || positionLog[i+1].y != currPosY) {
+        if(positionLog[i+1].x !== currPosX || positionLog[i+1].y !== currPosY) {
           newArr.push(positionLog[i]);
         }
       }

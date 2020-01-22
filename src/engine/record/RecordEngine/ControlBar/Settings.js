@@ -30,13 +30,13 @@ export default class Settings extends React.Component {
       buttonStackWidth: 30,
       updateInterval: (1000/15)
     };
-    if(typeof store.get('record/settings/currentYear') != 'undefined') {
+    if(typeof store.get('record/settings/currentYear') !== 'undefined') {
       this.state.currentYear = store.get('record/settings/currentYear');
     }
-    if(typeof store.get('record/settings/buttonStackWidth') != 'undefined') {
+    if(typeof store.get('record/settings/buttonStackWidth') !== 'undefined') {
       this.state.buttonStackWidth = store.get('record/settings/buttonStackWidth');
     }
-    if(typeof store.get('record/settings/updateInterval') != 'undefined') {
+    if(typeof store.get('record/settings/updateInterval') !== 'undefined') {
       this.state.updateInterval = store.get('record/settings/updateInterval');
     }
   }
@@ -62,7 +62,7 @@ export default class Settings extends React.Component {
     store.set('record/settings/currentYear', this.state.currentYear);
     store.set('record/settings/buttonStackWidth', this.state.buttonStackWidth);
     store.set('record/settings/updateInterval', this.state.updateInterval);
-    if(typeof this.props.submit != 'undefined') {
+    if(typeof this.props.submit !== 'undefined') {
       this.props.submit({
         currentYear: this.state.currentYear,
         buttonStackWidth: this.state.buttonStackWidth,
@@ -111,7 +111,7 @@ export default class Settings extends React.Component {
       value={this.state.currentYear}
       fullWidth
               >
-                {(typeof this.state.gameStates == 'undefined') ? '' :
+                {(typeof this.state.gameStates === 'undefined') ? '' :
                   this.state.gameStates.map((e, i) => {
                     return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
                   })

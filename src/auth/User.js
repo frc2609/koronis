@@ -6,7 +6,7 @@ var uuid = require('uuid/v5');
 export const getFingerprint = () => {
   var prevFingerprint = store.get('auth/user/fingerprint');
   var client = new ClientJS(); // eslint-disable-line no-undef
-  if(typeof prevFingerprint == 'undefined') {
+  if(typeof prevFingerprint === 'undefined') {
     prevFingerprint = client.getFingerprint();
     store.set('auth/user/fingerprint', prevFingerprint);
   }
@@ -26,7 +26,8 @@ export const genUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMa
     inMatchType +
     inTeamNumber +
     getFingerprint() +
-    getUserId()
+    getUserId() +
+    tmpDate
   ), namespace);
 }
 

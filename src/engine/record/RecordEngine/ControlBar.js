@@ -77,12 +77,12 @@ export default class ControlBar extends React.Component {
         <MatchState ref='matchState' submit={this.matchStateHandler.bind(this)}/>
         <Settings ref='settings' submit={this.props.settingsUpdate.bind(this)}/>
         <ButtonGroup style={{height:'93%'}} variant='outlined'>
-          {(typeof this.state.status == 'undefined') ? '' :
+          {(typeof this.state.status === 'undefined') ? '' :
             this.state.status.map((e, i) => {
               var colorPaletteArr = this.props.colorPalette[e.style.palette]
-              var fill = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name == e.style.fill;})].hex;
-              var outline = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name == e.style.outline;})].hex;
-              var text = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name == e.style.text;})].hex;
+              var fill = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.fill;})].hex;
+              var outline = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.outline;})].hex;
+              var text = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.text;})].hex;
               return (<Button key={i} style={{
                 height:'100%',
                 backgroundColor: fill,

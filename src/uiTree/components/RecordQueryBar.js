@@ -6,7 +6,6 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -48,9 +47,9 @@ export default class RecordQueryBar extends React.Component {
       minLastModified: 0,
       maxLastModified: 0
     };
-    if(typeof this.props.name == 'string') {
+    if(typeof this.props.name === 'string') {
       var obj = store.get('query/' + this.props.name);
-      if(typeof obj != 'undefined') {
+      if(typeof obj !== 'undefined') {
         Object.assign(this.state, obj);
       }
     }
@@ -62,7 +61,7 @@ export default class RecordQueryBar extends React.Component {
   getQueryObj() {
     this.queryObj = {};
     var obj = this.state;
-    if(obj.isBlue != obj.isRed) {
+    if(obj.isBlue !== obj.isRed) {
       this.queryObj.isRedAlliance = obj.isRed;
     }
     var orArr = [];
@@ -99,7 +98,7 @@ export default class RecordQueryBar extends React.Component {
     return this.queryObj;
   }
   setStore(obj) {
-    if(typeof this.props.name == 'string') {
+    if(typeof this.props.name === 'string') {
       var newobj = {
         year: obj.year,
         minStartDate: obj.minStartDate,
@@ -124,9 +123,9 @@ export default class RecordQueryBar extends React.Component {
     }
   }
   getStore() {
-    if(typeof this.props.name == 'string') {
+    if(typeof this.props.name === 'string') {
       var obj = store.get('query/' + this.props.name);
-      if(typeof obj != 'undefined') {
+      if(typeof obj !== 'undefined') {
         this.setState(obj);
       }
     }
@@ -152,12 +151,12 @@ export default class RecordQueryBar extends React.Component {
       minLastModified: 0,
       maxLastModified: 0
     }
-    if(typeof this.props.defaults != 'undefined') {Object.assign(obj, this.props.defaults);}
+    if(typeof this.props.defaults !== 'undefined') {Object.assign(obj, this.props.defaults);}
     this.setStore(obj);
     this.refresh();
   }
   submit() {
-    if(typeof this.props.onSubmit == 'function') {this.props.onSubmit(this.getQueryObj());}
+    if(typeof this.props.onSubmit === 'function') {this.props.onSubmit(this.getQueryObj());}
   }
   minStartDateChangeHandler(date) {this.setState({minStartDate: date.unix()});}
   minStartDateOpenHandler() {this.setState({minStartDate: 0});}
@@ -200,7 +199,7 @@ export default class RecordQueryBar extends React.Component {
       fullWidth
             >
             <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
-            {(typeof this.state.gameStates == 'undefined') ? '' :
+            {(typeof this.state.gameStates === 'undefined') ? '' :
               this.state.gameStates.map((e, i) => {
                 return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
               })
@@ -215,7 +214,7 @@ export default class RecordQueryBar extends React.Component {
       type='number'
       variant='outlined'
       fullWidth
-      value={this.state.teamNumber == 0 ? '' : this.state.teamNumber}
+      value={this.state.teamNumber === 0 ? '' : this.state.teamNumber}
       onChange={this.teamNumberHandler.bind(this)}
           />
         </Grid>
@@ -227,7 +226,7 @@ export default class RecordQueryBar extends React.Component {
       label='Earliest Match Date'
       fullWidth
       value={this.state.minStartDate*1000}
-      labelFunc={(date) => {return (this.state.minStartDate == 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+      labelFunc={(date) => {return (this.state.minStartDate === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
       onChange={this.minStartDateChangeHandler.bind(this)}
       onOpen={this.minStartDateOpenHandler.bind(this)}
           />
@@ -240,7 +239,7 @@ export default class RecordQueryBar extends React.Component {
       label='Latest Match Date'
       fullWidth
       value={this.state.maxStartDate*1000}
-      labelFunc={(date) => {return (this.state.maxStartDate == 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+      labelFunc={(date) => {return (this.state.maxStartDate === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
       onChange={this.maxStartDateChangeHandler.bind(this)}
       onOpen={this.maxStartDateOpenHandler.bind(this)}
           />
@@ -289,7 +288,7 @@ export default class RecordQueryBar extends React.Component {
       type='number'
       variant='outlined'
       fullWidth
-      value={this.state.minMatchNumber == 0 ? '' : this.state.minMatchNumber}
+      value={this.state.minMatchNumber === 0 ? '' : this.state.minMatchNumber}
       onChange={this.minMatchNumberHandler.bind(this)}
           />
         </Grid>
@@ -300,7 +299,7 @@ export default class RecordQueryBar extends React.Component {
       type='number'
       variant='outlined'
       fullWidth
-      value={this.state.maxMatchNumber == 0 ? '' : this.state.maxMatchNumber}
+      value={this.state.maxMatchNumber === 0 ? '' : this.state.maxMatchNumber}
       onChange={this.maxMatchNumberHandler.bind(this)}
           />
         </Grid>
@@ -325,7 +324,7 @@ export default class RecordQueryBar extends React.Component {
       label='Earliest Modification Date'
       fullWidth
       value={this.state.minLastModified*1000}
-      labelFunc={(date) => {return (this.state.minLastModified == 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+      labelFunc={(date) => {return (this.state.minLastModified === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
       onChange={this.minLastModifiedChangeHandler.bind(this)}
       onOpen={this.minLastModifiedOpenHandler.bind(this)}
           />
@@ -338,7 +337,7 @@ export default class RecordQueryBar extends React.Component {
       label='Latest Modification Date'
       fullWidth
       value={this.state.maxLastModified*1000}
-      labelFunc={(date) => {return (this.state.maxLastModified == 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+      labelFunc={(date) => {return (this.state.maxLastModified === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
       onChange={this.maxLastModifiedChangeHandler.bind(this)}
       onOpen={this.maxLastModifiedOpenHandler.bind(this)}
           />

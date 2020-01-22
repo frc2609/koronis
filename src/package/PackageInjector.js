@@ -129,7 +129,7 @@ export const inject = (inYear) => {
         group: 'score_mock_game_element',
         horizontalWeight: 1,
         verticalWeight: 1,
-        watcher: 'return (bS.mockGameElement > 0 && bS.currentZones.findIndex((e) => {return (e.name == \'mock_scoring_zone\' && e.isAllied);}) != -1);',
+        watcher: 'return (bS.mockGameElement > 0 && bS.currentZones.findIndex((e) => {return (e.name === \'mock_scoring_zone\' && e.isAllied);}) !== -1);',
         style: {
           released: {palette: 'button', fill: 'Light Blue', outline: 'Dark Blue', text: 'Dark Blue'},
           depressed: {palette: 'button', fill: 'Blue', outline: 'Dark Blue', text: 'Dark Blue'}
@@ -284,7 +284,7 @@ export const inject = (inYear) => {
         '  currDrawnElement.position.x = dE.x - (dE[i].size.x + dE[i].position.x);' +
         '  currDrawnElement.id = i + dE.length;' +
         '  currDrawnElement.isAllied = !currDrawnElement.isAllied;' +
-        '  if(currDrawnElement.style.palette == \'red\') {currDrawn.style.palette = \'blue\';}' +
+        '  if(currDrawnElement.style.palette === \'red\') {currDrawn.style.palette = \'blue\';}' +
         '  newDrawnElements.push(currDrawnElement);' +
         '}' +
         'for(var i = 0;i < newDrawnElements.length;i++) { dE.push(newDrawnElements[i]) }'
@@ -321,7 +321,7 @@ export const inject = (inYear) => {
       '];'
     };
     var availableYears = store.get('package/availableYears');
-    if(typeof availableYears != 'null' || typeof availableYears != 'undefined') {
+    if(typeof availableYears !== 'null' || typeof availableYears !== 'undefined') {
       if(!availableYears.includes(inYear)) {
         availableYears.push(inYear);
         store.set('package/availableYears', availableYears);

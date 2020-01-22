@@ -51,13 +51,13 @@ export default class RecordEngine extends React.Component {
       buttonStackWidth: 30,
       updateInterval: (1000/15)
     };
-    if(typeof store.get('record/settings/currentYear') != 'undefined') {
+    if(typeof store.get('record/settings/currentYear') !== 'undefined') {
       this.settings.currentYear = store.get('record/settings/currentYear');
     }
-    if(typeof store.get('record/settings/buttonStackWidth') != 'undefined') {
+    if(typeof store.get('record/settings/buttonStackWidth') !== 'undefined') {
       this.settings.buttonStackWidth = store.get('record/settings/buttonStackWidth');
     }
-    if(typeof store.get('record/settings/updateInterval') != 'undefined') {
+    if(typeof store.get('record/settings/updateInterval') !== 'undefined') {
       this.settings.updateInterval = store.get('record/settings/updateInterval');
     }
 
@@ -112,9 +112,9 @@ export default class RecordEngine extends React.Component {
       //New gameStateDefinition instance
       this.gameStateDefinition = deepcopy(results.gameStateDefinition);
       //Initialize init function from init string
-      this.gameStateDefinition.initFunct = new Function('gS', 'fS', 'bS', 'dE', this.gameStateDefinition.init);
+      this.gameStateDefinition.initFunct = new Function('gS', 'fS', 'bS', 'dE', this.gameStateDefinition.init); // eslint-disable-line no-new-func
       //Initialize update function from update string
-      this.gameStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.gameStateDefinition.update);
+      this.gameStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.gameStateDefinition.update); // eslint-disable-line no-new-func
       //Assign default values to required fields
       Object.assign(this.gameStateDefinition.gameState, {
         startDatetime: 0
@@ -123,9 +123,9 @@ export default class RecordEngine extends React.Component {
       //New fieldStateDefinition instance
       this.fieldStateDefinition = deepcopy(results.fieldStateDefinition);
       //Initialize init function from init string
-      this.fieldStateDefinition.initFunct = new Function('gS', 'fS', 'bS', 'dE', this.fieldStateDefinition.init);
+      this.fieldStateDefinition.initFunct = new Function('gS', 'fS', 'bS', 'dE', this.fieldStateDefinition.init); // eslint-disable-line no-new-func
       //Initialize update function from update string
-      this.fieldStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.fieldStateDefinition.update);
+      this.fieldStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.fieldStateDefinition.update); // eslint-disable-line no-new-func
       Object.assign(this.fieldStateDefinition.fieldState, {
         inverted: {x: false, y: false}
       });
@@ -133,9 +133,9 @@ export default class RecordEngine extends React.Component {
       //New botStateDefinition instance
       this.botStateDefinition = deepcopy(results.botStateDefinition);
       //Initialize init function from init string
-      this.botStateDefinition.initFunct = new Function('gS', 'fS', 'bS', 'dE', this.botStateDefinition.init);
+      this.botStateDefinition.initFunct = new Function('gS', 'fS', 'bS', 'dE', this.botStateDefinition.init); // eslint-disable-line no-new-func
       //Initialize update function from update string
-      this.botStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.botStateDefinition.update);
+      this.botStateDefinition.updateFunct = new Function('gS', 'fS', 'bS', 'dE', this.botStateDefinition.update); // eslint-disable-line no-new-func
       //Assign default values to required fields
       Object.assign(this.botStateDefinition.botState, {
         currentZones: [],
@@ -146,18 +146,18 @@ export default class RecordEngine extends React.Component {
       this.eventDefinitions = deepcopy(results.eventDefinitions);
       for(var i = 0;i < this.eventDefinitions.length;i++) {
         //Initialize watcher function from watcher string
-        this.eventDefinitions[i].watcherFunct = new Function('gS', 'fS', 'bS', 'btnS', this.eventDefinitions[i].watcher);
+        this.eventDefinitions[i].watcherFunct = new Function('gS', 'fS', 'bS', 'btnS', this.eventDefinitions[i].watcher); // eslint-disable-line no-new-func
         //Initialize emitter function from emitter string
-        this.eventDefinitions[i].emitterFunct = new Function('gS', 'fS', 'bS', 'btnS', this.eventDefinitions[i].emitter);
+        this.eventDefinitions[i].emitterFunct = new Function('gS', 'fS', 'bS', 'btnS', this.eventDefinitions[i].emitter); // eslint-disable-line no-new-func
         //Set previous watcher state variable to track changes in watcher state
         this.eventDefinitions[i].prevWatcherState = false;
       }
 
       //New buttonDefinitions instance
       this.buttonDefinitions = deepcopy(results.buttonDefinitions);
-      for(var i = 0;i < this.buttonDefinitions.length;i++) {
+      for(var i = 0;i < this.buttonDefinitions.length;i++) { // eslint-disable-line no-redeclare
         //Initialize watcher function from watcher string
-        this.buttonDefinitions[i].watcherFunct = new Function('gS', 'fS', 'bS', this.buttonDefinitions[i].watcher);
+        this.buttonDefinitions[i].watcherFunct = new Function('gS', 'fS', 'bS', this.buttonDefinitions[i].watcher); // eslint-disable-line no-new-func
         //Create default properties
         Object.assign(this.buttonDefinitions[i], {
           visible: false,
@@ -169,7 +169,7 @@ export default class RecordEngine extends React.Component {
 
       //New statusUpdateDefinition instance
       this.statusUpdateDefinition = deepcopy(results.statusUpdateDefinition);
-      this.statusUpdateDefinition.updateFunct = new Function('gS', 'fS', 'bS', this.statusUpdateDefinition.update);
+      this.statusUpdateDefinition.updateFunct = new Function('gS', 'fS', 'bS', this.statusUpdateDefinition.update); // eslint-disable-line no-new-func
 
       //Run initialization functions found in state definitions instances
       this.gameStateDefinition.initFunct(
@@ -213,7 +213,7 @@ export default class RecordEngine extends React.Component {
     this.update();
   }
   settingsHandler(s) {
-    if(s.currentYear != this.settings.currentYear) {
+    if(s.currentYear !== this.settings.currentYear) {
       this.init();
     }
     else {
@@ -242,13 +242,13 @@ export default class RecordEngine extends React.Component {
       this.botStateDefinition.botState.previousZones = deepcopy(this.botStateDefinition.botState.currentZones);
       this.botStateDefinition.botState.currentZones = [];
       for(var i = 0;i < this.fieldStateDefinition.fieldState.zones.length;i++) {
-        if(typeof this.fieldStateDefinition.fieldState.zones[i].points == 'undefined') {
+        if(typeof this.fieldStateDefinition.fieldState.zones[i].points === 'undefined') {
           if(this.botStateDefinition.botState.position.x >= this.fieldStateDefinition.fieldState.zones[i].position.x) {
             if(this.botStateDefinition.botState.position.y >= this.fieldStateDefinition.fieldState.zones[i].position.y) {
               if(this.botStateDefinition.botState.position.x <= this.fieldStateDefinition.fieldState.zones[i].position.x + this.fieldStateDefinition.fieldState.zones[i].size.x) {
                 if(this.botStateDefinition.botState.position.y <= this.fieldStateDefinition.fieldState.zones[i].position.y + this.fieldStateDefinition.fieldState.zones[i].size.y) {
                   var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]);
-                  tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied == this.matchState.isRed;
+                  tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied === this.matchState.isRed;
                   this.botStateDefinition.botState.currentZones.push(tmp);
                 }
               }
@@ -263,7 +263,7 @@ export default class RecordEngine extends React.Component {
           var c = 0;
           while(j < points.length) {
             if(
-              ((points[j].y > bot.y) != (points[k].y > bot.y)) &&
+              ((points[j].y > bot.y) !== (points[k].y > bot.y)) &&
               (bot.x < (points[k].x-points[j].x) * (bot.y-points[j].y) / (points[k].y-points[j].y) + points[j].x)
             ) {
               c = c > 0 ? 0 : 1;
@@ -272,8 +272,8 @@ export default class RecordEngine extends React.Component {
             j++;
           }
           if(c > 0) {
-            var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]);
-            tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied == this.matchState.isRed;
+            var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]); // eslint-disable-line no-redeclare
+            tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied === this.matchState.isRed;
             this.botStateDefinition.botState.currentZones.push(tmp);
           }
         }
@@ -300,7 +300,7 @@ export default class RecordEngine extends React.Component {
       );
 
       //Check and trigger events
-      for(var i = 0;i < this.eventDefinitions.length;i++) {
+      for(var i = 0;i < this.eventDefinitions.length;i++) { // eslint-disable-line no-redeclare
         var currWatcherState = this.eventDefinitions[i].watcherFunct(
           this.gameStateDefinition.gameState,
           this.fieldStateDefinition.fieldState,
@@ -357,13 +357,13 @@ export default class RecordEngine extends React.Component {
   resize() {
     var containerRect = this.refs.mainContainer.getBoundingClientRect();
     this.refs.mainContainer.style = 'height: ' + (window.innerHeight - containerRect.top - 1) + 'px';
-    if(this.settings.buttonStackWidth != this.state.buttonStackWidth) {
+    if(this.settings.buttonStackWidth !== this.state.buttonStackWidth) {
       this.setState({buttonStackWidth: this.settings.buttonStackWidth});
     }
-    if(typeof this.refs.buttonStack != 'undefined') {
+    if(typeof this.refs.buttonStack !== 'undefined') {
       this.refs.buttonStack.resize();
     }
-    if(typeof this.refs.renderCanvas != 'undefined') {
+    if(typeof this.refs.renderCanvas !== 'undefined') {
       this.refs.renderCanvas.resize();
     }
   }
@@ -410,7 +410,7 @@ export default class RecordEngine extends React.Component {
   close() {
     this.pause();
     console.log('[Record Engine] Exiting recording engine');
-    if(typeof this.props.onClose == 'function') { setTimeout(this.props.onClose.bind(this), 500); }
+    if(typeof this.props.onClose === 'function') { setTimeout(this.props.onClose.bind(this), 500); }
   }
   save() {
     console.log('[Record Engine] Saving recording engine');

@@ -7,7 +7,6 @@ import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -35,7 +34,7 @@ export default class TransferHandler extends React.Component {
     }
   }
   onClose() {
-    if(typeof this.props.onClose == 'function') {this.props.onClose();}
+    if(typeof this.props.onClose === 'function') {this.props.onClose();}
   }
   onScanned(data) {
     recordSerializerInstance.serializeRecords(data, false, true).then((decoded) => {
@@ -60,7 +59,7 @@ export default class TransferHandler extends React.Component {
           <Tab label='Send' value='sending' />
           <Tab label='Recieve' value='recieving' />
         </Tabs>
-        {this.state.tab == 'sending' ?
+        {this.state.tab === 'sending' ?
          <SendRecords ref='sendRecords' targetString={this.state.selectedRecordsStr} /> :
          <RecieveRecords ref='recieveRecords' onFinish={this.onScanned.bind(this)} />
         }

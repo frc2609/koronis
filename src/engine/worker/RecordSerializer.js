@@ -2,7 +2,7 @@ var boolToBin = (inBool) => {
   return inBool ? [1] : [0];
 }
 var binToBool = (inBin) => {
-  return inBin.length > 0 && inBin[0] == 1;
+  return inBin.length > 0 && inBin[0] === 1;
 }
 var binStreamToBool = (inBinStream) => {
   var output = binToBool(inBinStream);
