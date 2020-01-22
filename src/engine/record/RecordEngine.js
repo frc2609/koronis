@@ -223,6 +223,10 @@ export default class RecordEngine extends React.Component {
       this.setState({buttonStackWidth: this.settings.buttonStackWidth});
     }
   }
+  flipHandler(f) {
+    this.engineState.flip = f;
+    this.update();
+  }
   update() {
     if(this.engineState.initialized) {
       //Update time if engine is playing
@@ -442,12 +446,14 @@ export default class RecordEngine extends React.Component {
     save={this.save.bind(this)}
     matchStateUpdate={this.matchStateHandler.bind(this)}
     settingsUpdate={this.settingsHandler.bind(this)}
+    flipUpdate={this.flipHandler.bind(this)}
 
     time={this.state.timestamp}
     progress={((this.state.timestamp/this.gameStateDefinition.gameState.gameLength)*100)}
 
     colorPalette={this.colorPalette}
     status={this.statusUpdateDefinition}
+    engineState={this.engineState}
     settings={this.settings}
       />
       <Grid container style={{height:'87%'}}>
