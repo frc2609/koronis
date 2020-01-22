@@ -3,8 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
-import * as Worker from 'engine/worker/EngineDriver';
-import * as Database from 'db/Db';
 import Config from 'Config';
 
 import FullscreenModal from 'uiTree/FullscreenModal';

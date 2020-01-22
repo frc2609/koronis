@@ -1,6 +1,7 @@
 import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
-import { request as workerRequest } from 'engine/worker/EngineDriver';
+import positionLogCompressorWorker from 'workerize-loader!engine/worker/PositionLogCompressor'; // eslint-disable-line import/no-webpack-loader-syntax
+var positionLogCompressorInstance = positionLogCompressorWorker();
 
 export const saveRecord = (gameStateDefinition, matchState, engineState, eventLog, positionLog, callback) => {
   var obj = {};
@@ -40,13 +41,8 @@ export const saveRecord = (gameStateDefinition, matchState, engineState, eventLo
   }];
   obj.eventLog = eventLog;
   obj.positionLog = positionLog;
-  console.log(positionLog);
-  workerRequest({
-    engineComponentType: 'POSITION_LOG_COMPRESSOR',
-    requestData: obj.positionLog
-  }, (reply) => {
-    console.log(reply.requestData);
-    obj.positionLog = reply.requestData.slice();
+  positionLogCompressorInstance.processPositionLog(obj.positionLog).then((reply) => {
+    obj.positionLog = reply.slice();
     Interface.insertRecord(obj).then(() => {
       if(typeof callback == 'function') { callback(); }
     });

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as Interface from 'db/Interface';
-import { request as workerRequest } from 'engine/worker/EngineDriver';
 import * as Layout from 'config/Layout';
 import * as StringConversion from 'engine/transfer/StringConversion';
 
@@ -61,18 +60,16 @@ export default class SendString extends React.Component {
       targetStringArr.push(lastString);
     }
     //Unknown why, but last two digits break the scanner
-    console.log(targetStringArr);
     for(var i = 0;i < targetStringArr.length;i++) {
       var indexStr = (i % 1000).toString();
       while(indexStr.length < 3) {indexStr = '0' + indexStr;}
       var lengthStr = (targetStringArr.length % 1000).toString();
       while(lengthStr.length < 3) {lengthStr = '0' + lengthStr;}
       targetStringArr[i] = '0' + indexStr + lengthStr + targetStringArr[i];
-      
+
       this.qrObjs.push(qrcode(this.state.qrCodeType, 'L'));
       //this.qrObjs[i].stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
       this.qrObjs[i].addData(targetStringArr[i], 'Numeric');
-      console.log(targetStringArr);
       this.qrObjs[i].make();
     }
     this.setState({loading: false, qrCodeArrLength: this.qrObjs.length});

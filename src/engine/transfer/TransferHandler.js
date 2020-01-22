@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Interface from 'db/Interface';
-import { request as workerRequest } from 'engine/worker/EngineDriver';
+import recordSerializerWorker from 'workerize-loader!engine/worker/RecordSerializer'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
@@ -13,6 +13,8 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import SendRecords from 'engine/transfer/SendString';
 import RecieveRecords from 'engine/transfer/RecieveString';
+
+var recordSerializerInstance = recordSerializerWorker();
 
 export default class TransferHandler extends React.Component {
   constructor(props) {
@@ -26,11 +28,9 @@ export default class TransferHandler extends React.Component {
     this.setState({tab: value});
   }
   componentDidMount() {
-    console.log(this.props.selectedRecords);
     if(this.props.selectedRecords.length > 0) {
-      workerRequest({engineComponentType: 'RECORD_SERIALIZER', requestData: this.props.selectedRecords, isEncoding: true, isArray: true, isString: true}, (encoded) => {
-        console.log(encoded.requestData);
-        this.setState({selectedRecordsStr: encoded.requestData});
+      recordSerializerInstance.serializeRecords(this.props.selectedRecords, true, true).then((encoded) => {
+        this.setState({selectedRecordsStr: encoded});
       });
     }
   }
@@ -38,11 +38,9 @@ export default class TransferHandler extends React.Component {
     if(typeof this.props.onClose == 'function') {this.props.onClose();}
   }
   onScanned(data) {
-    console.log(data);
-    workerRequest({engineComponentType: 'RECORD_SERIALIZER', requestData: data, isEncoding: false, isArray: true, isString: true}, (decoded) => {
-      console.log(decoded.requestData);
-      for(var i = 0;i < decoded.requestData.length;i++) {
-        Interface.insertRecord(decoded.requestData[i]);
+    recordSerializerInstance.serializeRecords(data, false, true).then((decoded) => {
+      for(var i = 0;i < decoded.length;i++) {
+        Interface.insertRecord(decoded[i]);
       }
     });
   }

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as Interface from 'db/Interface';
-import { request as workerRequest } from 'engine/worker/EngineDriver';
 import * as Layout from 'config/Layout';
 import * as StringConversion from 'engine/transfer/StringConversion';
 
@@ -49,14 +48,11 @@ export default class RecieveString extends React.Component {
     this.setState({delay: (1000/value)});
   }
   onFinish() {
-    console.log(this.finishedStr);
     var data = StringConversion.numStrToStr(this.finishedStr);
-    console.log(data);
     this.setState({scanning: false});
     if(typeof this.props.onFinish == 'function') {this.props.onFinish(data);}
   }
   onScan(inStr) {
-    console.log(inStr);
     if(inStr != null && inStr.length >= 7) {
       var index = Number.parseInt(inStr.substring(1,4));
       var length = Number.parseInt(inStr.substring(4,7));
@@ -107,7 +103,7 @@ export default class RecieveString extends React.Component {
          delay={this.state.delay == (1000/31) ? false : this.state.delay}
          resolution={this.state.resolution}
          facingMode={this.state.facingMode}
-         
+
         /> : ''}
         <Grid container spacing={4}>
         <Grid item xs={12} style={{marginTop: '4vh'}}>

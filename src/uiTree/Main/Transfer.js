@@ -3,7 +3,6 @@ import React from 'react';
 import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
 import * as Layout from 'config/Layout';
-import { request as workerRequest } from 'engine/worker/EngineDriver';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
@@ -49,7 +48,7 @@ export default class Transfer extends React.Component {
   }
   render() {
     return (
-      this.state.transfering ? <TransferHandler onClose={this.stopTransfering.bind(this)} selectedRecords={this.state.selectedRecords} /> : 
+      this.state.transfering ? <TransferHandler onClose={this.stopTransfering.bind(this)} selectedRecords={this.state.selectedRecords} /> :
       <>
       <Container>
       <RecordQueryBar ref='recordQueryBar' name='transfer' button onSubmit={this.refresh.bind(this)}/>
