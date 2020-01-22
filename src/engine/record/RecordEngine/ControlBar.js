@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { Pause, PlayArrow, Replay, Close, Save, Create } from '@material-ui/icons';
+import { Pause, PlayArrow, Replay, Close, Save, Create, Flip } from '@material-ui/icons';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import MatchState from 'engine/record/RecordEngine/ControlBar/MatchState';
@@ -58,6 +58,9 @@ export default class ControlBar extends React.Component {
       this.matchStateOpen();
     }
   }
+  flipUpdate() {
+    this.props.flipUpdate(!this.props.engineState.flip);
+  }
   matchStateOpen() {
     this.refs.matchState.open();
   }
@@ -77,6 +80,9 @@ export default class ControlBar extends React.Component {
         <MatchState ref='matchState' submit={this.matchStateHandler.bind(this)}/>
         <Settings ref='settings' submit={this.props.settingsUpdate.bind(this)}/>
         <ButtonGroup style={{height:'93%'}} variant='outlined'>
+          <Button style={{height:'100%'}} onClick={this.flipUpdate.bind(this)} color='primary'>
+            <Flip />
+          </Button>
           {(typeof this.state.status === 'undefined') ? '' :
             this.state.status.map((e, i) => {
               var colorPaletteArr = this.props.colorPalette[e.style.palette]
@@ -86,7 +92,7 @@ export default class ControlBar extends React.Component {
               return (<Button key={i} style={{
                 height:'100%',
                 backgroundColor: fill,
-                outlineColor: outline,
+                borderColor: outline,
                 color: text
               }} disableRipple={true} disableFocusRipple={true}>
                 {e.title}
@@ -94,7 +100,7 @@ export default class ControlBar extends React.Component {
             })
           }
           <Button style={{height:'100%'}} color='default' disableRipple={true} disableFocusRipple={true}>
-            {'Time: ' + this.props.time.toFixed(2) + ' sec'}
+            {'Time: ' + this.props.time.toFixed(2)}
           </Button>
           <Button style={{height:'100%'}} onClick={this.start.bind(this)} color='primary'>
             {this.state.playing ? <Pause /> : <PlayArrow />}

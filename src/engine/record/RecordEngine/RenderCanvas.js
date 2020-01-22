@@ -35,6 +35,10 @@ export default class RenderCanvas extends React.Component {
     }
     var botX = (x/this.canvasState.xMulti) - this.canvasState.xOffset;
     var botY = (y/this.canvasState.yMulti) - this.canvasState.yOffset;
+    if(this.props.engineState.flip) {
+      botX = this.props.fieldStateDefinition.fieldState.dimensions.x - botX;
+      botY = this.props.fieldStateDefinition.fieldState.dimensions.y - botY;
+    }
     this.props.renderCanvasUpdate({x: botX, y: botY});
     this.update.bind(this)();
   }
@@ -48,6 +52,9 @@ export default class RenderCanvas extends React.Component {
     this.canvasState.xMulti = (this.canvasState.xSize/this.props.fieldStateDefinition.fieldState.dimensions.x) * this.canvasState.mag;
     this.canvasState.yMulti = (this.canvasState.ySize/this.props.fieldStateDefinition.fieldState.dimensions.y) * this.canvasState.mag;
     this.canvasState.xOffset = -(this.props.botStateDefinition.botState.position.x*0.2-this.canvasState.xMulti*0.2);
+    if(this.props.engineState.flip) {
+      this.canvasState.xOffset = -this.canvasState.xOffset;
+    }
     this.canvasState.yOffset = this.canvasState.yMulti*0.035;
     //Draw field elements
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
@@ -57,8 +64,14 @@ export default class RenderCanvas extends React.Component {
     this.drawElements(this.props.botStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
 
     //Draw the robot as a circle with crossing lines
-    var botX = (this.props.botStateDefinition.botState.position.x + this.canvasState.xOffset) * this.canvasState.xMulti;
-    var botY = (this.props.botStateDefinition.botState.position.y + this.canvasState.yOffset) * this.canvasState.yMulti;
+    var botX = this.props.botStateDefinition.botState.position.x;
+    var botY = this.props.botStateDefinition.botState.position.y;
+    if(this.props.engineState.flip) {
+      botX = this.props.fieldStateDefinition.fieldState.dimensions.x - this.props.botStateDefinition.botState.position.x;
+      botY = this.props.fieldStateDefinition.fieldState.dimensions.y - this.props.botStateDefinition.botState.position.y;
+    }
+    botX = (botX + this.canvasState.xOffset) * this.canvasState.xMulti;
+    botY = (botY + this.canvasState.yOffset) * this.canvasState.yMulti;
 
     //Draw crossing lines
     this.renderCanvasCtx.strokeStyle = 'rgb(0,0,0,0.5)'
@@ -88,18 +101,40 @@ export default class RenderCanvas extends React.Component {
       if(typeof arr[i].points === 'undefined') {
         var elemWidth = arr[i].size.x * xMulti;
         var elemHeight = arr[i].size.y * yMulti;
-        var elemX = (arr[i].position.x + xOffset) * xMulti;
-        var elemY = (arr[i].position.y + yOffset) * yMulti;
+        var elemX = arr[i].position.x;
+        var elemY = arr[i].position.y;
+        if(this.props.engineState.flip) {
+          elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - (arr[i].position.x + arr[i].size.x);
+          elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - (arr[i].position.y + arr[i].size.y);
+        }
+        elemX = (elemX + xOffset) * xMulti;
+        elemY = (elemY + yOffset) * yMulti;
         this.renderCanvasCtx.fillRect(elemX, elemY, elemWidth, elemHeight);
         this.renderCanvasCtx.strokeRect(elemX, elemY, elemWidth, elemHeight);
       }
       else {
         this.renderCanvasCtx.beginPath();
         for(var j = 0;j < arr[i].points.length;j++) {
-          if(j === 0) { this.renderCanvasCtx.moveTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
-          else { this.renderCanvasCtx.lineTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
+          var elemX = arr[i].points[j].x; // eslint-disable-line no-redeclare
+          var elemY = arr[i].points[j].y; // eslint-disable-line no-redeclare
+          if(this.props.engineState.flip) {
+            elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - arr[i].points[j].x;
+            elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - arr[i].points[j].y;
+          }
+          elemX = (elemX + xOffset) * xMulti;
+          elemY = (elemY + yOffset) * yMulti;
+          if(j === 0) { this.renderCanvasCtx.moveTo(elemX, elemY); }
+          else { this.renderCanvasCtx.lineTo(elemX, elemY); }
         }
-        if(arr[i].points.length > 0) { this.renderCanvasCtx.lineTo((arr[i].points[0].x + xOffset) * xMulti, (arr[i].points[0].y + yOffset) * yMulti); }
+        var elemX = arr[i].points[0].x; // eslint-disable-line no-redeclare
+        var elemY = arr[i].points[0].y; // eslint-disable-line no-redeclare
+        if(this.props.engineState.flip) {
+          elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - arr[i].points[0].x;
+          elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - arr[i].points[0].y;
+        }
+        elemX = (elemX + xOffset) * xMulti;
+        elemY = (elemY + yOffset) * yMulti;
+        if(arr[i].points.length > 0) { this.renderCanvasCtx.lineTo(elemX, elemY); }
         this.renderCanvasCtx.fill();
         this.renderCanvasCtx.stroke();
       }
