@@ -1,6 +1,5 @@
 import React from 'react';
 
-import * as Interface from 'db/Interface';
 import * as Layout from 'config/Layout';
 import * as StringConversion from 'engine/transfer/StringConversion';
 
@@ -11,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 
 var qrcode = require('qrcode-generator');
-var deepcopy = require('deep-copy');
 var raf = require('raf');
 
 export default class SendString extends React.Component {
@@ -115,7 +113,7 @@ export default class SendString extends React.Component {
   componentDidMount() {
     this.qrcodeCanvasWrapperElement = this.refs.qrcodeCanvasWrapper;
     this.qrcodeCanvasElement = this.refs.qrcodeCanvas;
-    this.qrcodeCanvasCtx = (typeof this.qrcodeCanvasElement != 'undefined' ? this.qrcodeCanvasElement.getContext('2d') : {});
+    this.qrcodeCanvasCtx = (typeof this.qrcodeCanvasElement !== 'undefined' ? this.qrcodeCanvasElement.getContext('2d') : {});
     this.resize();
     this.resizeListener = () => {
       this.resize();
@@ -126,8 +124,8 @@ export default class SendString extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     this.qrcodeCanvasWrapperElement = this.refs.qrcodeCanvasWrapper;
     this.qrcodeCanvasElement = this.refs.qrcodeCanvas;
-    this.qrcodeCanvasCtx = (typeof this.qrcodeCanvasElement != 'undefined' ? this.qrcodeCanvasElement.getContext('2d') : {});
-    if(this.props.targetString != prevProps.targetString || this.state.qrCodeType != prevState.qrCodeType) {
+    this.qrcodeCanvasCtx = (typeof this.qrcodeCanvasElement !== 'undefined' ? this.qrcodeCanvasElement.getContext('2d') : {});
+    if(this.props.targetString !== prevProps.targetString || this.state.qrCodeType !== prevState.qrCodeType) {
       this.update();
     }
   }

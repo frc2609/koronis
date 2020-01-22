@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import { Close, Save } from '@material-ui/icons';
+import { Close } from '@material-ui/icons';
 
 import { DatePicker } from '@material-ui/pickers';
 
@@ -23,7 +23,7 @@ var moment = require('moment');
 
 export default class MatchState extends React.Component {
   constructor(props) {
-    super(props);    
+    super(props);
     this.state = {
       open: false,
       matchStartDate: 0, //Could be different from engineState.startDate if scouting via video
@@ -66,7 +66,7 @@ export default class MatchState extends React.Component {
   submit() {
     if(this.state.matchNumber > 0 && Number.isInteger(this.state.matchNumber)) {
       if(this.state.targetTeamNumber > 0 && Number.isInteger(this.state.targetTeamNumber)) {
-        if(typeof this.props.submit != 'undefined') {
+        if(typeof this.props.submit !== 'undefined') {
           this.props.submit({
             matchStartDate: this.state.matchStartDate,
             targetTeamNumber: this.state.targetTeamNumber,
@@ -79,10 +79,10 @@ export default class MatchState extends React.Component {
         }
       }
     }
-    if(this.state.matchNumber == -1 || !Number.isInteger(this.state.matchNumber)) {
+    if(this.state.matchNumber === -1 || !Number.isInteger(this.state.matchNumber)) {
       this.setState({matchNumber: 0});
     }
-    if(this.state.targetTeamNumber == -1 || !Number.isInteger(this.state.targetTeamNumber)) {
+    if(this.state.targetTeamNumber === -1 || !Number.isInteger(this.state.targetTeamNumber)) {
       this.setState({targetTeamNumber: 0});
     }
   }
@@ -121,14 +121,14 @@ export default class MatchState extends React.Component {
       onChange={this.matchStartDateHandler.bind(this)}
           />
           </Grid>
-          <Grid item xs={6} style={{minWidth: '200px'}}>        
+          <Grid item xs={6} style={{minWidth: '200px'}}>
           <TextField
       ref='targetTeamNumber'
       label='Robot Team Number'
       type='number'
       variant='outlined'
       fullWidth
-      error={this.state.targetTeamNumber == 0 || this.state.targetTeamNumber < -1}
+      error={this.state.targetTeamNumber === 0 || this.state.targetTeamNumber < -1}
       value={this.state.targetTeamNumber <= 0 ? '' : this.state.targetTeamNumber}
       helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
       onChange={this.targetTeamNumberHandler.bind(this)}
@@ -141,7 +141,7 @@ export default class MatchState extends React.Component {
       type='number'
       variant='outlined'
       fullWidth
-      error={this.state.matchNumber == 0 || this.state.matchNumber < -1}
+      error={this.state.matchNumber === 0 || this.state.matchNumber < -1}
       value={this.state.matchNumber <= 0 ? '' : this.state.matchNumber}
       helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
       onChange={this.matchNumberHandler.bind(this)}
@@ -156,7 +156,7 @@ export default class MatchState extends React.Component {
       value={this.state.matchType}
       fullWidth
               >
-                <MenuItem value='t'>Test</MenuItem>//t, pf, pm, qm, ef, qf, sf, f
+                <MenuItem value='t'>Test</MenuItem>
                 <MenuItem value='pf'>Practice Field</MenuItem>
                 <MenuItem value='pm'>Practice Match</MenuItem>
                 <MenuItem value='qm'>Qualification</MenuItem>

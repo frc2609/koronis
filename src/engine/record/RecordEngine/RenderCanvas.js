@@ -1,6 +1,5 @@
 import React from 'react';
 
-var deepcopy = require('deep-copy');
 var raf = require('raf');
 
 export default class RenderCanvas extends React.Component {
@@ -84,9 +83,9 @@ export default class RenderCanvas extends React.Component {
   }
   drawElements(arr, xMulti, yMulti, xOffset, yOffset) {
     for(var i = 0;i < arr.length;i++) {
-      this.renderCanvasCtx.fillStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name == arr[i].style.fill;}).hex;
-      this.renderCanvasCtx.strokeStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name == arr[i].style.outline;}).hex;
-      if(typeof arr[i].points == 'undefined') {
+      this.renderCanvasCtx.fillStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name === arr[i].style.fill;}).hex; // eslint-disable-line no-loop-func
+      this.renderCanvasCtx.strokeStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name === arr[i].style.outline;}).hex; // eslint-disable-line no-loop-func
+      if(typeof arr[i].points === 'undefined') {
         var elemWidth = arr[i].size.x * xMulti;
         var elemHeight = arr[i].size.y * yMulti;
         var elemX = (arr[i].position.x + xOffset) * xMulti;
@@ -97,7 +96,7 @@ export default class RenderCanvas extends React.Component {
       else {
         this.renderCanvasCtx.beginPath();
         for(var j = 0;j < arr[i].points.length;j++) {
-          if(j == 0) { this.renderCanvasCtx.moveTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
+          if(j === 0) { this.renderCanvasCtx.moveTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
           else { this.renderCanvasCtx.lineTo((arr[i].points[j].x + xOffset) * xMulti, (arr[i].points[j].y + yOffset) * yMulti); }
         }
         if(arr[i].points.length > 0) { this.renderCanvasCtx.lineTo((arr[i].points[0].x + xOffset) * xMulti, (arr[i].points[0].y + yOffset) * yMulti); }
@@ -112,14 +111,14 @@ export default class RenderCanvas extends React.Component {
   }
   resize() {
     //Resize canvas if needed
-    if(this.renderCanvasWrapperElement.offsetWidth != this.state.canvasSize.x + this.wrapperOffset || this.renderCanvasWrapperElement.offsetHeight != this.state.canvasSize.y + this.wrapperOffset) {
+    if(this.renderCanvasWrapperElement.offsetWidth !== this.state.canvasSize.x + this.wrapperOffset || this.renderCanvasWrapperElement.offsetHeight !== this.state.canvasSize.y + this.wrapperOffset) {
       this.setState({canvasSize: {x: this.renderCanvasWrapperElement.offsetWidth - this.wrapperOffset, y: this.renderCanvasWrapperElement.offsetHeight - this.wrapperOffset}});
     }
   }
   throttle(fn) {
     let lastCall = 0;
     return function(...args) {
-      const now = (new Date).getTime();
+      const now = (new Date()).getTime();
       if(now - lastCall < this.props.settings.updateInterval) {
         return;
       }

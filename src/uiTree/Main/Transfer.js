@@ -1,12 +1,9 @@
 import React from 'react';
 
-import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
-import * as Layout from 'config/Layout';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
 

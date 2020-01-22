@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Config from 'Config';
 
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -9,9 +8,6 @@ import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import SectionLink from 'uiTree/MainAppBar/SectionLink';
 
 export default class SideNav extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {return (
     <div>
       <Drawer open={this.props.menuState} onClose={this.props.closeMenuCallback}>

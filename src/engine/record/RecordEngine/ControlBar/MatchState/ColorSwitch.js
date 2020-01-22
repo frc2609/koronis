@@ -28,7 +28,7 @@ export default class ColorSwitch extends React.Component {
   }
   onChange(event) {
     this.setState({isRed: event.target.checked});
-    if(typeof this.props.onChange != 'undefined') {
+    if(typeof this.props.onChange !== 'undefined') {
       this.props.onChange(event);
     }
   }
