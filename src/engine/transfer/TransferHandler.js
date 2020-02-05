@@ -10,8 +10,9 @@ import Tab from '@material-ui/core/Tab';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 
-import SendRecords from 'engine/transfer/SendString';
-import RecieveRecords from 'engine/transfer/RecieveString';
+import SendString from 'engine/transfer/SendString';
+import RecieveString from 'engine/transfer/RecieveString';
+import ShareString from 'engine/transfer/ShareString';
 
 var recordSerializerInstance = recordSerializerWorker();
 
@@ -43,6 +44,16 @@ export default class TransferHandler extends React.Component {
       }
     });
   }
+  onImport(data) {
+    if(typeof data === 'array') {
+      for(var i = 0;i < data.length;i++) {
+        Interface.insertRecord(data[i]);
+      }
+    }
+    else {
+      Interface.insertRecord(data);
+    }
+  }
   render() {
     return (
       <>
@@ -58,10 +69,16 @@ export default class TransferHandler extends React.Component {
         >
           <Tab label='Send' value='sending' />
           <Tab label='Recieve' value='recieving' />
+          <Tab label='Share' value='sharing' />
         </Tabs>
-        {this.state.tab === 'sending' ?
-         <SendRecords ref='sendRecords' targetString={this.state.selectedRecordsStr} /> :
-         <RecieveRecords ref='recieveRecords' onFinish={this.onScanned.bind(this)} />
+        {
+          this.state.tab === 'sending' ?
+            <SendString targetString={this.state.selectedRecordsStr} /> :
+            (
+              this.state.tab === 'recieving' ?
+                <RecieveString onFinish={this.onScanned.bind(this)} /> :
+                <ShareString targetString={this.state.selectedRecordsStr} onFinish={this.onImport.bind(this)} />
+            )
         }
         </Card>
       </Container>
