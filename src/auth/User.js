@@ -17,8 +17,15 @@ export const getUserId = () => {
   return '';
 }
 
-export const genUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber) => {
-  const namespace = '1b671a64-40d5-491e-99b0-da01ff1f3341';
+const genNamespace = (inYear, uuidType) => {
+  return uuid((
+    inYear.toString() +
+    uuidType
+  ), '3a9acfa0-4935-11ea-827d-25a7c6302437');
+}
+
+export const genRecordUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber) => {
+  var namespace = genNamespace(inYear, 'record');
   var tmpDate = (new Date());
   return uuid((
     inMatchStartDate.toString() +
