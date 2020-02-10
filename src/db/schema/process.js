@@ -42,6 +42,18 @@ export const processSchema = {
     },
     dataType: {
       type: 'string' //metric, chart
+    },
+    name: {
+      type: 'string'
+    },
+    title: {
+      type: 'string'
+    },
+    description: {
+      type: 'string'
+    },
+    function: {
+      type: 'string'
     }
   },
   required: []

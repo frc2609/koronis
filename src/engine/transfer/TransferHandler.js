@@ -20,7 +20,7 @@ export default class TransferHandler extends React.Component {
     super(props);
     this.state = {
       tab: 'sending',
-      selectedRecordsStr: ''
+      targetStr: ''
     }
   }
   tabHandler(event, value) {
@@ -29,7 +29,7 @@ export default class TransferHandler extends React.Component {
   componentDidMount() {
     if(this.props.selectedRecords.length > 0) {
       recordSerializerInstance.serializeRecords(this.props.selectedRecords, true, true).then((encoded) => {
-        this.setState({selectedRecordsStr: encoded});
+        this.setState({targetStr: encoded});
       });
     }
   }
@@ -60,7 +60,7 @@ export default class TransferHandler extends React.Component {
           <Tab label='Recieve' value='recieving' />
         </Tabs>
         {this.state.tab === 'sending' ?
-         <SendRecords ref='sendRecords' targetString={this.state.selectedRecordsStr} /> :
+         <SendRecords ref='sendRecords' targetString={this.state.targetStr} /> :
          <RecieveRecords ref='recieveRecords' onFinish={this.onScanned.bind(this)} />
         }
         </Card>
@@ -70,7 +70,7 @@ export default class TransferHandler extends React.Component {
         bottom: '20px',
         right: '20px'}}
       >
-      <CloseIcon />
+        <CloseIcon />
       </Fab>
       </>
     );

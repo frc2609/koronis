@@ -11,7 +11,6 @@ var recordCollection = null;
 var processCollection = null;
 
 const createDb = async () => {
-  console.log('[Db] creating database');
   const db = await RxDB.create({name: 'local', adapter: 'idb'});
   console.log('[Db] created database');
   return db;
@@ -29,18 +28,6 @@ const createTeamCollection = async () => {
   return teamCollection;
 }
 
-const createProcessCollection = async () => {
-  if(!dbCreated) {
-    dbCreated = await createDb();
-  }
-  processCollection = await dbCreated.collection({
-    name: 'processes',
-    schema: processSchema
-  });
-  console.log('[Db] created collection processes');
-  return recordCollection;
-}
-
 const createRecordCollection = async () => {
   if(!dbCreated) {
     dbCreated = await createDb();
@@ -53,6 +40,18 @@ const createRecordCollection = async () => {
   return recordCollection;
 }
 
+const createProcessCollection = async () => {
+  if(!dbCreated) {
+    dbCreated = await createDb();
+  }
+  processCollection = await dbCreated.collection({
+    name: 'processes',
+    schema: processSchema
+  });
+  console.log('[Db] created collection processes');
+  return processCollection;
+}
+
 export const getTeams = async () => {
   if(!teamCollection) {
     teamCollection = await createTeamCollection();
@@ -60,16 +59,16 @@ export const getTeams = async () => {
   return teamCollection;
 }
 
-export const getProcesses = async () => {
-  if(!processCollection) {
-    processCollection = await createProcessCollection();
-  }
-  return processCollection;
-}
-
 export const getRecords = async () => {
   if(!recordCollection) {
     recordCollection = await createRecordCollection();
   }
   return recordCollection;
+}
+
+export const getProcesses = async () => {
+  if(!processCollection) {
+    processCollection = await createProcessCollection();
+  }
+  return processCollection;
 }

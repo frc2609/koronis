@@ -6,7 +6,7 @@ var positionLogCompressorInstance = positionLogCompressorWorker();
 export const saveRecord = (gameStateDefinition, matchState, engineState, eventLog, positionLog, callback) => {
   var obj = {};
   obj.startDate = (matchState.matchStartDate === 0 ? (engineState.startDate === 0 ? Math.round((new Date())/1000) : Math.round(engineState.startDate/1000)) : Math.round(matchState.matchStartDate/1000));
-  obj.id = User.genUuid(
+  obj.id = User.genRecordUuid(
     gameStateDefinition.gameState.year,
     gameStateDefinition.gameState.versionNumber,
     obj.startDate,

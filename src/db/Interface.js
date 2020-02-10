@@ -37,3 +37,20 @@ export const getRecords = async (query, sort = []) => {
   }
   return newDocs;
 }
+
+export const insertProcess = async (inProcess) => {
+  var processCollection = (await Db.getProcesses());
+  return (await processCollection.insert(inProcess));
+}
+
+export const removeProcess = async (query) => {
+  var processCollection = (await Db.getProcesses());
+  var doc = (await processCollection.findOne(query).exec());
+  return (await doc.remove());
+}
+
+export const getProcesses = async (query, sort = []) => {
+  var processCollection = (await Db.getProcesses());
+  var docs = (await processCollection.find(query).sort(sort).exec());
+  return docs;
+}
