@@ -21,37 +21,49 @@ export default class TransferHandler extends React.Component {
     super(props);
     this.state = {
       tab: 'sending',
-      selectedRecordsStr: ''
+      dataStr: ''
     }
   }
   tabHandler(event, value) {
     this.setState({tab: value});
   }
   componentDidMount() {
-    if(this.props.selectedRecords.length > 0) {
-      recordSerializerInstance.serializeRecords(this.props.selectedRecords, true, true).then((encoded) => {
-        this.setState({selectedRecordsStr: encoded});
-      });
+    if(typeof this.props.data !== 'undefined') {
+      if(this.props.dataType === 'records') {
+        if(Array.isArray(this.props.data) && this.props.data.length > 0) {
+          recordSerializerInstance.serializeRecords(this.props.data, true, true).then((encoded) => {
+            this.setState({dataStr: encoded});
+          });
+        }
+      }
     }
   }
   onClose() {
-    if(typeof this.props.onClose === 'function') {this.props.onClose();}
+    if(typeof this.props.onClose === 'function') {
+      this.props.onClose();
+    }
   }
-  onScanned(data) {
-    recordSerializerInstance.serializeRecords(data, false, true).then((decoded) => {
-      for(var i = 0;i < decoded.length;i++) {
-        Interface.insertRecord(decoded[i]);
-      }
-    });
-  }
-  onImport(data) {
-    if(typeof data === 'array') {
-      for(var i = 0;i < data.length;i++) {
-        Interface.insertRecord(data[i]);
+  onScanned(inStr) {
+    if(typeof this.props.data !== 'undefined') {
+      if(this.props.dataType === 'records') {
+        recordSerializerInstance.serializeRecords(this.props.data, false, true).then((decoded) => {
+          for(var i = 0;i < decoded.length;i++) {
+            Interface.insertRecord(decoded[i]);
+          }
+        });
       }
     }
-    else {
-      Interface.insertRecord(data);
+  }
+  onImport(data) {
+    if(this.props.dataType === 'record' || this.props.dataType === 'records') {
+      if(Array.isArray(data)) {
+        for(var i = 0;i < data.length;i++) {
+          Interface.insertRecord(data[i]);
+        }
+      }
+      else {
+        Interface.insertRecord(data);
+      }
     }
   }
   render() {
@@ -73,12 +85,11 @@ export default class TransferHandler extends React.Component {
         </Tabs>
         {
           this.state.tab === 'sending' ?
-            <SendString targetString={this.state.selectedRecordsStr} /> :
-            (
-              this.state.tab === 'recieving' ?
-                <RecieveString onFinish={this.onScanned.bind(this)} /> :
-                <ShareString targetString={this.state.selectedRecordsStr} onFinish={this.onImport.bind(this)} />
-            )
+            <SendString targetString={this.state.dataStr} />
+          : this.state.tab === 'recieving' ?
+            <RecieveString onFinish={this.onScanned.bind(this)} />
+          :
+            <ShareString dataType={this.props.dataType} data={this.props.data} onUpload={this.onImport.bind(this)} />
         }
         </Card>
       </Container>

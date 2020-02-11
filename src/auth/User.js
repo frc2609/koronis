@@ -19,7 +19,7 @@ export const getUserId = () => {
 
 export const genUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber) => {
   const namespace = '1b671a64-40d5-491e-99b0-da01ff1f3341';
-  var tmpDate = (new Date());
+  var tmpDate = Date.now();
   return uuid((
     inMatchStartDate.toString() +
     inMatchNumber.toString() +

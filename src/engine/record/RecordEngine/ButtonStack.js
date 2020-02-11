@@ -348,7 +348,7 @@ export default class ButtonStack extends React.Component {
   throttle(fn) {
     let lastCall = 0;
     return function(...args) {
-      const now = (new Date()).getTime();
+      const now = (Date.now()).getTime();
       if(now - lastCall < this.props.settings.updateInterval) {
         return;
       }
