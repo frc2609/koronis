@@ -75,21 +75,27 @@ export default class RecordQueryBar extends React.Component {
     if(obj.matchTypesF) {orArr.push({matchType: {'$eq': 'f'}});}
     if(orArr.length > 0) {this.queryObj['$or'] = orArr;}
     if(obj.maxLastModified > 0) {
+      this.queryObj.lastModified = {};
       Object.assign(this.queryObj.lastModified,{'$lte': obj.maxLastModified});
     }
     if(obj.minLastModified > 0) {
+      this.queryObj.lastModified = {};
       Object.assign(this.queryObj.lastModified,{'$gte': obj.minLastModified});
     }
     if(obj.maxStartDate > 0) {
+      this.queryObj.startDate = {};
       Object.assign(this.queryObj.startDate, {'$lte': obj.maxStartDate});
     }
     if(obj.minStartDate > 0) {
+      this.queryObj.startDate = {};
       Object.assign(this.queryObj.startDate, {'$gte': obj.minStartDate});
     }
     if(obj.maxMatchNumber > 0) {
+      this.queryObj.matchNumber = {};
       Object.assign(this.queryObj.matchNumber, {'$lte': obj.maxMatchNumber});
     }
     if(obj.minMatchNumber > 0) {
+      this.queryObj.matchNumber = {};
       Object.assign(this.queryObj.matchNumber, {'$gte': obj.minMatchNumber});
     }
     if(obj.teamNumber > 0) {this.queryObj.teamNumber = obj.teamNumber;}
@@ -184,7 +190,7 @@ export default class RecordQueryBar extends React.Component {
         <ExpansionPanelSummary
       expandIcon={<ExpandMoreIcon />}
         >
-        <Typography>Filter/Query</Typography>
+        <Typography>Filter</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
         <Grid container>

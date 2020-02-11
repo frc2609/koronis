@@ -232,7 +232,7 @@ export default class RecordEngine extends React.Component {
       //Update time if engine is playing
       if(this.engineState.playing) {
         //Calculate timestamp from current date
-        var tmpCurrDate = new Date();
+        var tmpCurrDate = Date.now();
         this.engineState.currTime += (tmpCurrDate - this.engineState.currDate)/1000;
         this.engineState.currDate = tmpCurrDate;
 
@@ -374,8 +374,8 @@ export default class RecordEngine extends React.Component {
   start() {
     //Call this function to start the update loop, will reset eventLog and posLog
     if(this.engineState.initialized) {
-      this.engineState.startDate = new Date();
-      this.engineState.currDate = new Date();
+      this.engineState.startDate = Date.now();
+      this.engineState.currDate = Date.now();
       this.engineState.currTime = 0;
       this.eventLog = [];
       this.posLog = [];
@@ -397,7 +397,7 @@ export default class RecordEngine extends React.Component {
   resume() {
     //Call this function to resume from a paused recording engine state
     if(this.engineState.initialized) {
-      this.engineState.currDate = new Date();
+      this.engineState.currDate = Date.now();
       this.engineState.playing = true;
       console.log('[Record Engine] Resuming recording engine');
       this.updateLoop.bind(this)();

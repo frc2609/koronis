@@ -14,12 +14,26 @@ export const insertRecord = async (inRecord) => {
   var oldPositionLog = deepcopy(currObj.positionLog);
   currObj.eventLog = oldEventLog.map((e) => {return JSON.stringify(e)});
   currObj.positionLog = oldPositionLog.map((e) => {return JSON.stringify(e)});
-  return (await recordCollection.insert(currObj));
+  var prevDoc = (await recordCollection.findOne({id: currObj.id}).exec());
+
+  if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
+    console.log('[Interface] Inserting record');
+    return (await recordCollection.insert(currObj));
+  }
+  else if (prevDoc.lastModified < currObj.lastModified) {
+    console.log('[Interface] Updating record');
+    return (await prevDoc.update({$set: currObj}));
+  }
+  else {
+    console.log('[Interface] Aborting record');
+    return null;
+  }
 }
 
 export const removeRecord = async (query) => {
   var recordCollection = (await Db.getRecords());
   var doc = (await recordCollection.findOne(query).exec());
+  console.log('[Interface] Removing record');
   return (await doc.remove());
 }
 
@@ -35,5 +49,6 @@ export const getRecords = async (query, sort = []) => {
     currObj.positionLog = oldPositionLog.map((e) => {return JSON.parse(e)});
     newDocs.push(currObj);
   }
+  console.log('[Interface] Returning records query');
   return newDocs;
 }

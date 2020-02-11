@@ -117,7 +117,7 @@ export default class MatchState extends React.Component {
       inputVariant='outlined'
       label='Match Date'
       fullWidth
-      value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (new Date())}
+      value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (Date.now())}
       onChange={this.matchStartDateHandler.bind(this)}
           />
           </Grid>
