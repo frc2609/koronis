@@ -49,21 +49,11 @@ export default class RecordSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRecords: this.props.selectedRecords
+      selectedRecords: this.props.selectedRecords ? this.props.selectedRecords : []
     };
-    this.resizeListener = () => {};
   }
   getSelectedRecords() {
     return this.state.selectedRecords;
-  }
-  componentDidMount() {
-    this.resizeListener = () => {
-      this.forceUpdate();
-    };
-    window.addEventListener('resize', this.resizeListener);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeListener);
   }
   render() {
     return (

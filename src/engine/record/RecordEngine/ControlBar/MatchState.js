@@ -107,7 +107,7 @@ export default class MatchState extends React.Component {
           </Toolbar>
         </AppBar>
         <Toolbar style={{marginBottom: '4vh'}} />
-        <Container>
+        <Container maxWidth='xl'>
         <Grid container spacing={3}>
           <Grid item xs style={{minWidth: '200px'}}>
           <DatePicker

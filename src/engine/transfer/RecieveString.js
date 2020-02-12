@@ -92,7 +92,7 @@ export default class RecieveString extends React.Component {
   }
   render() {
     return (
-        <Container>
+        <Container maxWidth='xl'>
         {this.state.scanning ? <QrReader
          onScan={this.onScan.bind(this)}
          onError={()=>{this.setState({scanning: false})}}

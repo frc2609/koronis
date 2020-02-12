@@ -17,7 +17,6 @@ export const getUserId = () => {
   return '';
 }
 
-<<<<<<< HEAD
 const genNamespace = (inYear, uuidType) => {
   return uuid((
     inYear.toString() +
@@ -28,11 +27,6 @@ const genNamespace = (inYear, uuidType) => {
 export const genRecordUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber) => {
   var namespace = genNamespace(inYear, 'record');
   var tmpDate = (new Date());
-=======
-export const genUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber) => {
-  const namespace = '1b671a64-40d5-491e-99b0-da01ff1f3341';
-  var tmpDate = Date.now();
->>>>>>> origin/dev
   return uuid((
     inMatchStartDate.toString() +
     inMatchNumber.toString() +
@@ -44,6 +38,26 @@ export const genUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMa
   ), namespace);
 }
 
-export const genDS = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber, inEventLog, inPositionLog) => {
+export const genProcessUuid = (inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction) => {
+  var namespace = genNamespace(inYear, 'process');
+  var tmpDate = (new Date());
+  return uuid((
+    inQueryType +
+    inDataType +
+    inName +
+    inTitle +
+    inDescription +
+    inFunction +
+    getFingerprint() +
+    getUserId() +
+    tmpDate
+  ), namespace);
+}
+
+export const genRecordDS = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber, inEventLog, inPositionLog) => {
+  return '';
+}
+
+export const genProcessDS = (inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction) => {
   return '';
 }

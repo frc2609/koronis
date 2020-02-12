@@ -130,7 +130,7 @@ export const getYears = async () => {
   var availableYears = store.get('package/availableYears');
   for(var i = 0;i < availableYears.length;i++) {
     var currYear = availableYears[i];
-    result.push(store.get('package/' + currYear + '/gameStateDefinition').year);
+    result.push(store.get('package/' + currYear + '/gameStateDefinition').gameState.year);
   }
   return result;
 }

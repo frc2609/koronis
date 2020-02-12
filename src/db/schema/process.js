@@ -37,6 +37,10 @@ export const processSchema = {
         }
       }
     },
+    year: {
+      type: 'integer',
+      index: true
+    },
     queryType: {
       type: 'string' //record, match, team, event
     },

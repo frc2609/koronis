@@ -24,7 +24,7 @@ export const saveRecord = (gameStateDefinition, matchState, engineState, eventLo
   obj.user = User.getUserId();
   obj.device = User.getFingerprint();
   obj.lastModified = Math.round((Date.now())/1000);
-  obj.digitalSignature = User.genDS(
+  obj.digitalSignature = User.genRecordDS(
     gameStateDefinition.gameState.year,
     gameStateDefinition.gameState.versionNumber,
     matchState.matchStartDate,

@@ -136,7 +136,7 @@ export default class SendString extends React.Component {
   }
   render() {
     return (
-      <Container>
+      <Container maxWidth='xl'>
       <div ref='qrcodeCanvasWrapper' style={{width: '100%', marginBottom: '4vh'}}>
         {this.state.loading ? <CircularProgress/> :
           <canvas ref='qrcodeCanvas' width={this.state.canvasSize} height={this.state.canvasSize}></canvas>

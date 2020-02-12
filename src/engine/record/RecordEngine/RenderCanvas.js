@@ -153,7 +153,7 @@ export default class RenderCanvas extends React.Component {
   throttle(fn) {
     let lastCall = 0;
     return function(...args) {
-      const now = (Date.now()).getTime();
+      const now = (new Date()).getTime();
       if(now - lastCall < this.props.settings.updateInterval) {
         return;
       }

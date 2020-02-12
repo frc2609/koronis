@@ -46,7 +46,7 @@ export default class Record extends React.Component {
     return (
       this.state.recording ? <RecordEngine onClose={this.recordingEngineHandler.bind(this)}/> :
       <>
-      <Container>
+      <Container maxWidth='xl'>
       <RecordQueryBar ref='recordQueryBar' name='record' button onSubmit={this.refresh.bind(this)}/>
       {this.state.loading ? <CircularProgress /> : <RecordView records={this.state.records} onRemove={this.refresh.bind(this)} />}
       </Container>

@@ -1,58 +1,68 @@
 import React from 'react';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
 import * as Interface from 'db/Interface';
 
+import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import EditIcon from '@material-ui/icons/Edit';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
-import CodeEditor from 'uiTree/components/CodeEditor';
-import ProcessCreationBar from 'uiTree/Main/Process/ProcessCreationBar';
+import Edit from 'uiTree/Main/Process/Edit';
 
-export default class Process extends React.Component {
+class Process extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: 'editing'
+      tab: 'edit',
+      redirect: false
+    };
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/process/')) {
+      this.state.tab = this.props.location.pathname.substring(this.props.location.pathname.lastIndexOf('/') + 1);
     }
   }
   tabHandler(event, value) {
-    this.setState({tab: value});
+    this.setState({tab: value, redirect: true});
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.redirect) {
+      this.setState({redirect: false});
+    }
   }
   render() {
     return (
-      <Container>
-        <Card>
-          <Tabs
-        value={this.state.tab}
-        onChange={this.tabHandler.bind(this)}
-        indicatorColor='primary'
-        textColor='primary'
-        variant='fullWidth'
-        style={{marginBottom: '4vh'}}
+      <div>
+        {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
+        <Route exact path='/process' component={Edit} />
+        <Route exact path='/process/edit' component={Edit} />
+        <Route exact path='/process/execute' component={Edit} />
+        <Paper
+          variant='outlined'
+          square
+          elevation={3}
+          style={{
+            position: 'fixed',
+            bottom: '0px',
+            width: '100%',
+            zIndex: 100
+          }}
+        >
+          <BottomNavigation
+            value={this.state.tab}
+            onChange={this.tabHandler.bind(this)}
           >
-            <Tab label='Edit' value='editing' />
-            <Tab label='Test' value='testing' />
-          </Tabs>
-          {
-            this.state.tab === 'editing' ?
-            <>
-              <ProcessCreationBar/>
-              <Container>
-                <CodeEditor />
-              </Container>
-            </>
-            : this.state.tab === 'testing' ?
-            <>
-            </>
-            :
-            <>
-            </>
-          }
-        </Card>
-      </Container>
+            <BottomNavigationAction label='Edit' value='edit' icon={<EditIcon />} />
+            <BottomNavigationAction label='Execute' value='execute' icon={<PlayArrowIcon />} />
+          </BottomNavigation>
+        </Paper>
+      </div>
     );
   }
 }
+
+const ProcessWithRouter = withRouter(Process);
+export default ProcessWithRouter;
