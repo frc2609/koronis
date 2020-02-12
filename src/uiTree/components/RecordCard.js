@@ -6,12 +6,15 @@ import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
 var moment = require('moment');
 
@@ -51,39 +54,48 @@ export default class RecordCard extends React.Component {
     return(
       <Card>
         <CardHeader style={{textAlign: 'left'}}
-        avatar={
-          <Avatar style={{backgroundColor: (this.props.record.isRedAlliance ? '#f73c3c' : '#008ae6')}}>
-            {this.props.record.matchType.toUpperCase()}
-          </Avatar>
-        }
-        title={
-          'Team ' +
-          this.props.record.teamNumber +
-          ' - ' +
-          this.matchTypeFormat(this.props.record.matchType) +
-          ' ' +
-          this.props.record.matchNumber
-        }
-        action={
-          <>
-          <IconButton onClick={this.openMenu.bind(this)}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            anchorEl={this.state.menuAnchor}
-            open={Boolean(this.state.menuAnchor)}
-            onClose={this.closeMenu.bind(this)}
-          >
-            <MenuItem onClick={this.remove.bind(this)}>
-              <DeleteIcon />
-              Remove
-            </MenuItem>
-          </Menu>
-          </>
-        }
-        subheader={
-          moment.unix(this.props.record.startDate).format('ddd, MMM Do YYYY')
-        }
+          avatar={
+            this.props.selectable ? (
+              <Checkbox
+                checked={this.props.selected}
+                color='default'
+                checkedIcon={<CheckCircleIcon color='primary' style={{fontSize: 40}} />}
+                icon={<RadioButtonUncheckedIcon style={{fontSize: 40}} />}
+              />
+            ) : (
+              <Avatar style={{backgroundColor: (this.props.record.isRedAlliance ? '#f73c3c' : '#008ae6')}}>
+                {this.props.record.matchType.toUpperCase()}
+              </Avatar>
+            )
+          }
+          title={
+            'Team ' +
+            this.props.record.teamNumber +
+            ' - ' +
+            this.matchTypeFormat(this.props.record.matchType) +
+            ' ' +
+            this.props.record.matchNumber
+          }
+          action={
+            <>
+            <IconButton onClick={this.openMenu.bind(this)}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              anchorEl={this.state.menuAnchor}
+              open={Boolean(this.state.menuAnchor)}
+              onClose={this.closeMenu.bind(this)}
+            >
+              <MenuItem onClick={this.remove.bind(this)}>
+                <DeleteIcon />
+                Remove
+              </MenuItem>
+            </Menu>
+            </>
+          }
+          subheader={
+            moment.unix(this.props.record.startDate).format('ddd, MMM Do YYYY')
+          }
         />
         <CardContent style={{textAlign: 'left'}}>
           <Typography variant='body2' paragraph>

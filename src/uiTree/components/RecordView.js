@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 
 import RecordCard from 'uiTree/components/RecordCard';
 
-export default class Transfer extends React.Component {
+export default class RecordView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};

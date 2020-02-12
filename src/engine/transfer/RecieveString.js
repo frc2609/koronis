@@ -68,10 +68,10 @@ export default class RecieveString extends React.Component {
       }
       //Calculate rate
       if(this.startScan === 0) {
-        this.startScan = new Date();
+        this.startScan = Date.now();
       }
       else {
-        this.setState({size: (rawStr.length * totalScanned * 3), rate: (rawStr.length * totalScanned * 3)/(((new Date()) - this.startScan)/1000)});
+        this.setState({size: (rawStr.length * totalScanned * 3), rate: (rawStr.length * totalScanned * 3)/(((Date.now()) - this.startScan)/1000)});
       }
       if(!hasUndef) {
         this.finishedStr = '';

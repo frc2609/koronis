@@ -23,7 +23,7 @@ export const saveRecord = (gameStateDefinition, matchState, engineState, eventLo
   obj.comments = matchState.comments;
   obj.user = User.getUserId();
   obj.device = User.getFingerprint();
-  obj.lastModified = Math.round((new Date())/1000);
+  obj.lastModified = Math.round((Date.now())/1000);
   obj.digitalSignature = User.genDS(
     gameStateDefinition.gameState.year,
     gameStateDefinition.gameState.versionNumber,
