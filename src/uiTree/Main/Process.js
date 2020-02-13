@@ -40,10 +40,10 @@ class Process extends React.Component {
         <Route exact path='/process' component={Edit} />
         <Route exact path='/process/edit' component={Edit} />
         <Route exact path='/process/execute' component={Edit} />
+        <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
-          variant='outlined'
           square
-          elevation={3}
+          elevation={4}
           style={{
             position: 'fixed',
             bottom: '0px',

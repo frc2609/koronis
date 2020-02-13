@@ -17,12 +17,13 @@ export default class ProcessSelectModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      processes: []
+      processes: [],
+      disable: true
     }
   }
   select() {
     if(typeof this.props.onSelect === 'function') {
-      this.props.onSelect(this.refs.processSelect.getSelectedRecords());
+      this.props.onSelect(this.refs.processSelect.getSelectedProcesses());
     }
   }
   close() {
@@ -30,10 +31,19 @@ export default class ProcessSelectModal extends React.Component {
       this.props.onClose();
     }
   }
-  componentDidMount() {
+  refresh() {
+    this.setState({processes: []});
     Interface.getProcesses({}, {lastModified: 'desc'}).then((docs) => {
       this.setState({processes: docs});
     });
+  }
+  componentDidMount() {
+    this.refresh();
+  }
+  componentDidUpdate(prevProps) {
+    if(!prevProps.open && this.props.open) {
+      this.refresh();
+    }
   }
   render() {
     return (
@@ -51,19 +61,24 @@ export default class ProcessSelectModal extends React.Component {
               Open Process
             </Typography>
             <Button color='inherit'
-              disabled={
-                typeof this.refs.processSelect === 'undefined' ||
-                typeof this.refs.processSelect.getSelectedRecords() === 'undefined' ||
-                this.refs.processSelect.getSelectedRecords().length === 0
-              }
+              disabled={this.state.disable}
               onClick={this.select.bind(this)}
             >
               Select
             </Button>
           </Toolbar>
         </AppBar>
+        <Toolbar style={{marginBottom: '4vh'}} />
         <Container maxWidth='xl'>
-          <ProcessSelect ref='processSelect' processes={this.state.processes} />
+          <ProcessSelect ref='processSelect' processes={this.state.processes}
+            onSelect={(selectedProcesses) => {
+              this.setState({disable: (
+                typeof selectedProcesses === 'undefined' ||
+                selectedProcesses.length === 0
+              )});
+            }}
+            onRemove={this.refresh.bind(this)}
+          />
         </Container>
       </Dialog>
     );

@@ -54,7 +54,7 @@ export default class TransferProcess extends React.Component {
         <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              {this.state.loading ? <CircularProgress /> : <ProcessSelect ref='processSelect' table={this.state.tableMode} processes={this.state.processes} selectedProcesses={this.state.selectedProcesses} onRemove={this.refresh.bind(this)} />}
+              {this.state.loading ? <CircularProgress /> : <ProcessSelect ref='processSelect' processes={this.state.processes} selectedProcesses={this.state.selectedProcesses} onRemove={this.refresh.bind(this)} />}
             </Grid>
           </Grid>
         </Container>

@@ -20,9 +20,9 @@ export default class Edit extends React.Component {
       process: process
     });
   }
-  newHandler() {
+  newHandler(emptyObj) {
     this.setState({
-      process: this.refs.processCreationBar.getCreationObj()
+      process: emptyObj
     });
   }
   saveHandler() {
@@ -38,6 +38,19 @@ export default class Edit extends React.Component {
       this.state.process
     );
   }
+  saveNewHandler() {
+    var process = this.refs.processCreationBar.getCreationObj();
+    Save.saveProcess(
+      process.year,
+      process.queryType,
+      process.dataType,
+      process.name,
+      process.title,
+      process.description,
+      this.refs.codeEditor.getValue(),
+      {}
+    );
+  }
   render() {
     return (
       <>
@@ -46,6 +59,7 @@ export default class Edit extends React.Component {
           onOpen={this.openHandler.bind(this)}
           onNew={this.newHandler.bind(this)}
           onSave={this.saveHandler.bind(this)}
+          onSaveNew={this.saveNewHandler.bind(this)}
         />
         <Container maxWidth='xl'>
           <CodeEditor

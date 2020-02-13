@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 import * as Layout from 'config/Layout';
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -60,23 +61,29 @@ export default class RecordSelect extends React.Component {
       <>
         {!this.props.table ?
           <Grid container spacing={2}>
-            {(typeof this.props.records === 'undefined') ? '' :
+            {(typeof this.props.records === 'undefined' || this.props.records.length === 0) ?
+              <Grid item xs={12}>
+                <Typography variant='body1' align='center'>
+                  No records to display
+                </Typography>
+              </Grid>
+            :
               this.props.records.map((e, i) => {
                 return (
                   <Grid key={i} item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '300px'}}>
                     <div
                       onClick={() => {
-                        var index = this.state.selectedRecords.findIndex((e2) => {return e2.id === e.id;});
+                        var index = this.state.selectedRecords.findIndex((e2) => {return e2.id === e.id});
+                        var sR = this.state.selectedRecords.slice();
                         if(index === -1) {
-                          var sR = this.state.selectedRecords.slice();
                           sR.push(e);
                           this.setState({selectedRecords: sR});
                         }
                         else {
-                          var sR = this.state.selectedRecords.slice(); // eslint-disable-line no-redeclare
                           sR.splice(index, 1);
-                          this.setState({selectedRecords: sR});
                         }
+                        this.setState({selectedRecords: sR});
+                        if(typeof this.props.onSelect === 'function') {this.props.onSelect(sR)}
                       }}
                     >
                       <RecordCard
@@ -134,6 +141,7 @@ export default class RecordSelect extends React.Component {
             }}
             onSelectionChange={(rows) => {
               this.setState({selectedRecords: rows});
+              if(typeof this.props.onSelect === 'function') {this.props.onSelect(this.state.selectedRecords)}
             }}
           />
         }

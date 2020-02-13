@@ -12,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
+import CreateIcon from '@material-ui/icons/Create';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SaveIcon from '@material-ui/icons/Save';
@@ -20,7 +21,7 @@ import { DatePicker } from '@material-ui/pickers';
 
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 
-var store = require('store');
+var deepcopy = require('deep-copy');
 
 export default class ProcessCreationBar extends React.Component {
   constructor(props) {
@@ -41,10 +42,22 @@ export default class ProcessCreationBar extends React.Component {
     this.setState({openModal: true});
   }
   newDoc() {
-    if(typeof this.props.onNew === 'function') {this.props.onNew();}
+    var emptyObj = {
+      year: -1,
+      name: '',
+      title: '',
+      description: '',
+      queryType: '',
+      dataType: ''
+    };
+    this.setState(emptyObj);
+    if(typeof this.props.onNew === 'function') {this.props.onNew(emptyObj);}
   }
   save() {
     if(typeof this.props.onSave === 'function') {this.props.onSave();}
+  }
+  saveNew() {
+    if(typeof this.props.onSaveNew === 'function') {this.props.onSaveNew();}
   }
   yearHandler(event) {this.setState({year: event.target.value});}
   nameHandler(event) {this.setState({name: event.target.value.replace(' ', '-').toLowerCase()});}
@@ -62,6 +75,9 @@ export default class ProcessCreationBar extends React.Component {
       dataType: this.state.dataType
     };
   }
+  getProcessObj() {
+    return this.state.process;
+  }
   componentDidMount() {
     Package.getYears().then((val) => {
       this.setState({years: val});
@@ -77,9 +93,11 @@ export default class ProcessCreationBar extends React.Component {
           }}
           onSelect={(processes) => {
             if(processes.length > 0) {
-              var selectedProcess = processes[0];
+              var selectedProcess = deepcopy(processes[0].toJSON());
+              delete selectedProcess._rev;
               this.setState({
-                open: false,
+                openModal: false,
+                process: selectedProcess,
                 name: selectedProcess.name,
                 title: selectedProcess.title,
                 description: selectedProcess.description,
@@ -105,6 +123,10 @@ export default class ProcessCreationBar extends React.Component {
                 <Button onClick={this.save.bind(this)}>
                   <SaveIcon />
                   Save
+                </Button>
+                <Button onClick={this.saveNew.bind(this)}>
+                  <CreateIcon />
+                  Save as New
                 </Button>
               </ButtonGroup>
             </Grid>

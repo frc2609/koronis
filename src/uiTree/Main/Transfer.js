@@ -35,10 +35,10 @@ class Transfer extends React.Component {
         <Route exact path='/transfer' component={TransferRecord} />
         <Route exact path='/transfer/record' component={TransferRecord} />
         <Route exact path='/transfer/process' component={TransferProcess} />
+        <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
-          variant='outlined'
           square
-          elevation={3}
+          elevation={4}
           style={{
             position: 'fixed',
             bottom: '0px',

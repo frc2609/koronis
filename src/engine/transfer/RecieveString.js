@@ -155,8 +155,8 @@ export default class RecieveString extends React.Component {
           </Grid>
         <Grid item xs={12}>
         {!this.state.scanning ?
-          <Button onClick={this.startScanning.bind(this)}>Start</Button>:
-          <Button onClick={this.stopScanning.bind(this)}>Stop</Button>
+          <Button fullWidth onClick={this.startScanning.bind(this)}>Start</Button>:
+          <Button fullWidth onClick={this.stopScanning.bind(this)}>Stop</Button>
         }
         </Grid>
         </Grid>
