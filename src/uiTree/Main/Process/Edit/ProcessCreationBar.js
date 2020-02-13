@@ -17,8 +17,6 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
-import { DatePicker } from '@material-ui/pickers';
-
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 
 var deepcopy = require('deep-copy');

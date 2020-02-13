@@ -12,7 +12,9 @@
     "@material-ui/styles": "^4.3.3",
     "@material-ui/system": "^4.9.1",
     "axios": "^0.19.0",
+    "chart.js": "^2.9.3",
     "clientjs": "^0.1.11",
+    "d3": "^5.15.0",
     "deep-copy": "^1.4.2",
     "file-loader": "^5.0.2",
     "file-saver": "^2.0.2",
@@ -37,6 +39,7 @@
     "rxdb": "^8.4.0",
     "rxjs": "^6.5.3",
     "store": "^2.0.12",
+    "tabulator-tables": "^4.5.3",
     "tocca": "^2.0.6",
     "typeface-roboto": "0.0.75",
     "workerize-loader": "^1.1.0"

@@ -4,17 +4,12 @@ import * as Interface from 'db/Interface';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
-import TocIcon from '@material-ui/icons/Toc';
-import AppsIcon from '@material-ui/icons/Apps';
 
 import TransferHandler from 'engine/transfer/TransferHandler';
 import ProcessSelect from 'uiTree/components/ProcessSelect';
-
-var store = require('store');
 
 export default class TransferProcess extends React.Component {
   constructor(props) {
