@@ -162,7 +162,7 @@ var binToStr = (inBin, stream = false) => {
 var binStreamToStr = (inBinStream) => {
   return binToStr(inBinStream, true);
 }
-var encode = (record) => {
+var encodeRecord = (record) => {
   var resBinArr = [];
   resBinArr.push(strToBin(record.id));
   resBinArr.push(intToBin(record.year));
@@ -196,7 +196,7 @@ var encode = (record) => {
   }
   return resBinArr.flat();
 }
-var decode = (inBin, stream = false) => {
+var decodeRecord = (inBin, stream = false) => {
   var bin = !stream ? inBin.slice() : inBin;
   var resObj = {};
   resObj.id = binStreamToStr(bin);
@@ -240,42 +240,125 @@ var decode = (inBin, stream = false) => {
   }
   return resObj;
 }
-var encodeArr = (records) => {
+var encodeArrRecord = (records) => {
   var resBinArr = [];
   resBinArr.push(intToBin(records.length));
   for(var i = 0;i < records.length;i++) {
-    resBinArr.push(encode(records[i]));
+    resBinArr.push(encodeRecord(records[i]));
   }
   return resBinArr.flat();
 }
-var decodeArr = (inBin) => {
+var decodeArrRecord = (inBin) => {
   var bin = inBin;
   var resArr = [];
   var arrLength = binStreamToInt(bin);
   for(var i = 0;i < arrLength;i++) {
-    resArr.push(decode(bin, true));
+    resArr.push(decodeRecord(bin, true));
   }
   return resArr;
 }
-
+var encodeProcess = (process) => {
+  var resBinArr = [];
+  resBinArr.push(strToBin(process.id));
+  resBinArr.push(intToBin(process.year));
+  resBinArr.push(strToBin(process.queryType));
+  resBinArr.push(strToBin(process.dataType));
+  resBinArr.push(strToBin(process.name));
+  resBinArr.push(strToBin(process.title));
+  resBinArr.push(strToBin(process.description));
+  resBinArr.push(strToBin(process.function));
+  resBinArr.push(strToBin(process.user));
+  resBinArr.push(dateToBin(process.device));
+  resBinArr.push(dateToBin(process.lastModified));
+  resBinArr.push(strToBin(process.digitalSignature));
+  resBinArr.push(intToBin(process.changeLog.length));
+  for(var i = 0;i < process.changeLog.length;i++) {
+    resBinArr.push(strToBin(process.changeLog[i].user));
+    resBinArr.push(dateToBin(process.changeLog[i].modificationTime));
+    resBinArr.push(strToBin(process.changeLog[i].id));
+  }
+  return resBinArr.flat();
+}
+var decodeProcess = (inBin, stream = false) => {
+  var bin = !stream ? inBin.slice() : inBin;
+  var resObj = {};
+  resObj.id = binStreamToStr(bin);
+  resObj.year = binStreamToInt(bin);
+  resObj.queryType = binStreamToStr(bin);
+  resObj.dataType = binStreamToStr(bin);
+  resObj.name = binStreamToStr(bin);
+  resObj.title = binStreamToStr(bin);
+  resObj.description = binStreamToStr(bin);
+  resObj.function = binStreamToStr(bin);
+  resObj.user = binStreamToStr(bin);
+  resObj.device = binStreamToDate(bin);
+  resObj.lastModified = binStreamToDate(bin);
+  resObj.digitalSignature = binStreamToStr(bin);
+  var changeLogLength = binStreamToInt(bin);
+  resObj.changeLog = [];
+  for(var i = 0;i < changeLogLength;i++) {
+    var currChangeLogObj = {};
+    currChangeLogObj.user = binStreamToStr(bin);
+    currChangeLogObj.modificationTime = binStreamToDate(bin);
+    currChangeLogObj.id = binStreamToStr(bin);
+    resObj.changeLog.push(currChangeLogObj);
+  }
+  return resObj;
+}
+var encodeArrProcess = (processes) => {
+  var resBinArr = [];
+  resBinArr.push(intToBin(processes.length));
+  for(var i = 0;i < processes.length;i++) {
+    resBinArr.push(encodeProcess(processes[i]));
+  }
+  return resBinArr.flat();
+}
+var decodeArrProcess = (inBin) => {
+  var bin = inBin;
+  var resArr = [];
+  var arrLength = binStreamToInt(bin);
+  for(var i = 0;i < arrLength;i++) {
+    resArr.push(decodeProcess(bin, true));
+  }
+  return resArr;
+}
 export function serializeRecord(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {
-    output = isString ? binArrToBinStr(encode(input)) : encode(input); // eslint-disable-line no-undef
+    output = isString ? binArrToBinStr(encodeRecord(input)) : encodeRecord(input); // eslint-disable-line no-undef
   }
   else {
-    output = isString ? decode(binStrToBinArr(input)) : decode(input); // eslint-disable-line no-undef
+    output = isString ? decodeRecord(binStrToBinArr(input)) : decodeRecord(input); // eslint-disable-line no-undef
   }
   return output;
 }
-
 export function serializeRecords(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {
-    output = isString ? binArrToBinStr(encodeArr(input)) : encodeArr(input); // eslint-disable-line no-undef
+    output = isString ? binArrToBinStr(encodeArrRecord(input)) : encodeArrRecord(input); // eslint-disable-line no-undef
   }
   else {
-    output = isString ? decodeArr(binStrToBinArr(input)) : decodeArr(input); // eslint-disable-line no-undef
+    output = isString ? decodeArrRecord(binStrToBinArr(input)) : decodeArrRecord(input); // eslint-disable-line no-undef
+  }
+  return output;
+}
+export function serializeProcess(input, isEncoding = true, isString = true) {
+  var output;
+  if(isEncoding) {
+    output = isString ? binArrToBinStr(encodeProcess(input)) : encodeProcess(input); // eslint-disable-line no-undef
+  }
+  else {
+    output = isString ? decodeProcess(binStrToBinArr(input)) : decodeProcess(input); // eslint-disable-line no-undef
+  }
+  return output;
+}
+export function serializeProcesses(input, isEncoding = true, isString = true) {
+  var output;
+  if(isEncoding) {
+    output = isString ? binArrToBinStr(encodeArrProcess(input)) : encodeArrProcess(input); // eslint-disable-line no-undef
+  }
+  else {
+    output = isString ? decodeArrProcess(binStrToBinArr(input)) : decodeArrProcess(input); // eslint-disable-line no-undef
   }
   return output;
 }

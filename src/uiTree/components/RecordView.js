@@ -3,6 +3,7 @@ import React from 'react';
 import * as Layout from 'config/Layout';
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 import RecordCard from 'uiTree/components/RecordCard';
 
@@ -24,7 +25,13 @@ export default class RecordView extends React.Component {
   render() {
     return (
       <Grid container spacing={2}>
-        {(typeof this.props.records === 'undefined') ? '' :
+        {(typeof this.props.records === 'undefined' || this.props.records.length === 0) ?
+          <Grid item xs={12}>
+            <Typography variant='body1' align='center'>
+              No records to display
+            </Typography>
+          </Grid>
+        :
           this.props.records.map((e, i) => {
             return (
               <Grid key={i} item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '300px'}}>

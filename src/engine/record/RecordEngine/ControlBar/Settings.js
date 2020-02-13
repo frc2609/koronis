@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
@@ -22,7 +21,7 @@ var store = require('store');
 
 export default class Settings extends React.Component {
   constructor(props) {
-    super(props);    
+    super(props);
     this.state = {
       open: false,
       currentYear: 0,
@@ -100,7 +99,7 @@ export default class Settings extends React.Component {
           </Toolbar>
         </AppBar>
         <Toolbar style={{marginBottom: '4vh'}} />
-        <Container>
+        <Container maxWidth='xl'>
         <Grid container spacing={4}>
           <Grid item xs={6} style={{minWidth: '200px'}}>
             <FormControl variant='outlined' fullWidth>

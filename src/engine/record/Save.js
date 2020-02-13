@@ -5,8 +5,8 @@ var positionLogCompressorInstance = positionLogCompressorWorker();
 
 export const saveRecord = (gameStateDefinition, matchState, engineState, eventLog, positionLog, callback) => {
   var obj = {};
-  obj.startDate = (matchState.matchStartDate === 0 ? (engineState.startDate === 0 ? Math.round((Date.now())/1000) : Math.round(engineState.startDate/1000)) : Math.round(matchState.matchStartDate/1000));
-  obj.id = User.genUuid(
+  obj.startDate = (matchState.matchStartDate === 0 ? (engineState.startDate === 0 ? Math.round((new Date())/1000) : Math.round(engineState.startDate/1000)) : Math.round(matchState.matchStartDate/1000));
+  obj.id = User.genRecordUuid(
     gameStateDefinition.gameState.year,
     gameStateDefinition.gameState.versionNumber,
     obj.startDate,
@@ -24,7 +24,7 @@ export const saveRecord = (gameStateDefinition, matchState, engineState, eventLo
   obj.user = User.getUserId();
   obj.device = User.getFingerprint();
   obj.lastModified = Math.round((Date.now())/1000);
-  obj.digitalSignature = User.genDS(
+  obj.digitalSignature = User.genRecordDS(
     gameStateDefinition.gameState.year,
     gameStateDefinition.gameState.versionNumber,
     matchState.matchStartDate,

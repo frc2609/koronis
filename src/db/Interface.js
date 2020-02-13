@@ -22,10 +22,11 @@ export const insertRecord = async (inRecord) => {
   }
   else if (prevDoc.lastModified < currObj.lastModified) {
     console.log('[Interface] Updating record');
+    delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
   else {
-    console.log('[Interface] Aborting record');
+    console.log('[Interface] Aborting record insertion');
     return null;
   }
 }
@@ -50,5 +51,44 @@ export const getRecords = async (query, sort = []) => {
     newDocs.push(currObj);
   }
   console.log('[Interface] Returning records query');
+  return newDocs;
+}
+
+export const insertProcess = async (inProcess) => {
+  var processCollection = (await Db.getProcesses());
+  var currObj = deepcopy(inProcess);
+  var prevDoc = (await processCollection.findOne({id: currObj.id}).exec());
+
+  if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
+    console.log('[Interface] Inserting process');
+    return (await processCollection.insert(currObj));
+  }
+  else if (prevDoc.lastModified < currObj.lastModified) {
+    console.log('[Interface] Updating process');
+    delete currObj._rev;
+    return (await prevDoc.update({$set: currObj}));
+  }
+  else {
+    console.log('[Interface] Aborting process insertion');
+    return null;
+  }
+}
+
+export const removeProcess = async (query) => {
+  var processCollection = (await Db.getProcesses());
+  var doc = (await processCollection.findOne(query).exec());
+  console.log('[Interface] Removing process');
+  return (await doc.remove());
+}
+
+export const getProcesses = async (query, sort = []) => {
+  var processCollection = (await Db.getProcesses());
+  var docs = (await processCollection.find(query).sort(sort).exec());
+  var newDocs = [];
+  for(var i = 0;i < docs.length;i++) {
+    var currObj = deepcopy(docs[i].toJSON());
+    newDocs.push(currObj);
+  }
+  console.log('[Interface] Returning processes query');
   return newDocs;
 }
