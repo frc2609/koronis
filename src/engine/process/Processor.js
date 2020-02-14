@@ -29,6 +29,22 @@ export function runProcess(inElem, inRecords, inProcess) {
       inputRecord = inRecords[0];
     }
   }
+  if(inProcess.year !== -1) {
+    if(Array.isArray(inputRecord)) {
+      var tmp = [];
+      for(var i = 0;i < inputRecord.length;i++) {
+        if(inputRecord[i].year === inProcess.year) {
+          tmp.push(inputRecord[i]);
+        }
+      }
+      inputRecord = tmp;
+    }
+    else {
+      if(inputRecord.year !== inProcess.year) {
+        inputRecord = {};
+      }
+    }
+  }
   try {
     /* eslint-disable */
     func = new Function(
