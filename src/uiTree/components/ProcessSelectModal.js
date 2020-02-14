@@ -58,7 +58,7 @@ export default class ProcessSelectModal extends React.Component {
             <Typography variant='h6' style={{
               flexGrow: 1
             }}>
-              Open Process
+              Select Processes
             </Typography>
             <Button color='inherit'
               disabled={this.state.disable}

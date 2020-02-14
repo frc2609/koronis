@@ -17,16 +17,16 @@ export const insertRecord = async (inRecord) => {
   var prevDoc = (await recordCollection.findOne({id: currObj.id}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
-    console.log('[Interface] Inserting record');
+    console.info('[Interface] Inserting record');
     return (await recordCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified) {
-    console.log('[Interface] Updating record');
+    console.info('[Interface] Updating record');
     delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
   else {
-    console.log('[Interface] Aborting record insertion');
+    console.info('[Interface] Aborting record insertion');
     return null;
   }
 }
@@ -34,7 +34,7 @@ export const insertRecord = async (inRecord) => {
 export const removeRecord = async (query) => {
   var recordCollection = (await Db.getRecords());
   var doc = (await recordCollection.findOne(query).exec());
-  console.log('[Interface] Removing record');
+  console.info('[Interface] Removing record');
   return (await doc.remove());
 }
 
@@ -44,13 +44,14 @@ export const getRecords = async (query, sort = []) => {
   var newDocs = [];
   for(var i = 0;i < docs.length;i++) {
     var currObj = deepcopy(docs[i].toJSON());
+    delete currObj._rev;
     var oldEventLog = deepcopy(currObj.eventLog);
     var oldPositionLog = deepcopy(currObj.positionLog);
     currObj.eventLog = oldEventLog.map((e) => {return JSON.parse(e)});
     currObj.positionLog = oldPositionLog.map((e) => {return JSON.parse(e)});
     newDocs.push(currObj);
   }
-  console.log('[Interface] Returning records query');
+  console.info('[Interface] Returning records query');
   return newDocs;
 }
 
@@ -60,16 +61,16 @@ export const insertProcess = async (inProcess) => {
   var prevDoc = (await processCollection.findOne({id: currObj.id}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
-    console.log('[Interface] Inserting process');
+    console.info('[Interface] Inserting process');
     return (await processCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified) {
-    console.log('[Interface] Updating process');
+    console.info('[Interface] Updating process');
     delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
   else {
-    console.log('[Interface] Aborting process insertion');
+    console.info('[Interface] Aborting process insertion');
     return null;
   }
 }
@@ -77,7 +78,7 @@ export const insertProcess = async (inProcess) => {
 export const removeProcess = async (query) => {
   var processCollection = (await Db.getProcesses());
   var doc = (await processCollection.findOne(query).exec());
-  console.log('[Interface] Removing process');
+  console.info('[Interface] Removing process');
   return (await doc.remove());
 }
 
@@ -87,8 +88,9 @@ export const getProcesses = async (query, sort = []) => {
   var newDocs = [];
   for(var i = 0;i < docs.length;i++) {
     var currObj = deepcopy(docs[i].toJSON());
+    delete currObj._rev;
     newDocs.push(currObj);
   }
-  console.log('[Interface] Returning processes query');
+  console.info('[Interface] Returning processes query');
   return newDocs;
 }

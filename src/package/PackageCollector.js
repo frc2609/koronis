@@ -41,7 +41,7 @@ async function perYearInit(year) {
   store.set('package/' + year + '/colorPalette', colorPalette);
 
   //Done loading
-  console.log('[Package] Packages for ' + year + ' loaded');
+  console.info('[Package] Packages for ' + year + ' loaded');
 }
 
 export const init = async () => {
@@ -69,15 +69,15 @@ export const init = async () => {
       //Store new versionNumber to local store
       Package.initialized = true;
       store.set('package/versionNumber', versionNumberRepo);
-      console.log('[Package] Packages updated');
+      console.info('[Package] Packages updated');
     }
     else {
-      console.log('[Package] No new packages to update');
+      console.info('[Package] No new packages to update');
     }
   }
   catch(err) {
-    console.log('[Package] Cannot get latest packages');
-    console.log(err);
+    console.info('[Package] Cannot get latest packages');
+    console.error(err);
   }
 }
 

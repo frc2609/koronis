@@ -19,8 +19,6 @@ import SaveIcon from '@material-ui/icons/Save';
 
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 
-var deepcopy = require('deep-copy');
-
 export default class ProcessCreationBar extends React.Component {
   constructor(props) {
     super(props);
@@ -91,8 +89,7 @@ export default class ProcessCreationBar extends React.Component {
           }}
           onSelect={(processes) => {
             if(processes.length > 0) {
-              var selectedProcess = deepcopy(processes[0].toJSON());
-              delete selectedProcess._rev;
+              var selectedProcess = processes[0];
               this.setState({
                 openModal: false,
                 process: selectedProcess,

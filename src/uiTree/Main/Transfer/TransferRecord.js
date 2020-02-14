@@ -41,7 +41,9 @@ export default class TransferRecord extends React.Component {
   }
   refresh() {
     this.setState({loading: true, records: []});
-    this.queryObj = this.refs.recordQueryBar.getQueryObj();
+    if(typeof this.refs.recordQueryBar !== 'undefined') {
+      this.queryObj = this.refs.recordQueryBar.getQueryObj();
+    }
     Interface.getRecords(this.queryObj, {lastModified: 'desc'}).then((docs) => {
       this.setState({records: docs, loading: false});
     });

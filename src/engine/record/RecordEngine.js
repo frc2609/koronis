@@ -192,7 +192,7 @@ export default class RecordEngine extends React.Component {
       );
 
       this.engineState.initialized = true;
-      console.log('[Record Engine] Initialized required variables, states, and definitions');
+      console.info('[Record Engine] Initialized required variables, states, and definitions');
       this.setState({timestamp: 0});
       this.update();
     });
@@ -239,7 +239,7 @@ export default class RecordEngine extends React.Component {
         //Assign current timestamp to various other objects needing time information
         this.botStateDefinition.botState.position.t = this.engineState.currTime;
         this.setState({timestamp: this.engineState.currTime});
-        console.log('[Record Engine] Update at ' + this.engineState.currTime.toFixed(2) + ' sec');
+        console.info('[Record Engine] Update at ' + this.engineState.currTime.toFixed(2) + ' sec');
       }
 
       //Assigning zones
@@ -312,7 +312,7 @@ export default class RecordEngine extends React.Component {
           this.buttonState
         );
         if(currWatcherState && !this.eventDefinitions[i].prevWatcherState) {
-          console.log('[Record Engine] Event Triggered: ' + this.eventDefinitions[i].name);
+          console.info('[Record Engine] Event Triggered: ' + this.eventDefinitions[i].name);
           var emit = this.eventDefinitions[i].emitterFunct(
             this.gameStateDefinition.gameState,
             this.fieldStateDefinition.fieldState,
@@ -382,14 +382,14 @@ export default class RecordEngine extends React.Component {
       this.engineState.playing = true;
       this.engineState.played = true;
       this.setState({timestamp: 0});
-      console.log('[Record Engine] Starting recording engine');
+      console.info('[Record Engine] Starting recording engine');
       this.updateLoop.bind(this)();
     }
   }
   stop() {
     //Call this function to stop the recording engine. Intended for restarting a recording session and this will erase information
     if(this.engineState.initialized) {
-      console.log('[Record Engine] Stopping recording engine');
+      console.info('[Record Engine] Stopping recording engine');
       this.init();
       this.refs.controlBar.reset();
     }
@@ -399,7 +399,7 @@ export default class RecordEngine extends React.Component {
     if(this.engineState.initialized) {
       this.engineState.currDate = Date.now();
       this.engineState.playing = true;
-      console.log('[Record Engine] Resuming recording engine');
+      console.info('[Record Engine] Resuming recording engine');
       this.updateLoop.bind(this)();
     }
   }
@@ -408,16 +408,16 @@ export default class RecordEngine extends React.Component {
     if(this.engineState.initialized) {
       this.engineState.playing = false;
       this.setState({timestamp: this.engineState.currTime});
-      console.log('[Record Engine] Pausing recording engine');
+      console.info('[Record Engine] Pausing recording engine');
     }
   }
   close() {
     this.pause();
-    console.log('[Record Engine] Exiting recording engine');
+    console.info('[Record Engine] Exiting recording engine');
     if(typeof this.props.onClose === 'function') { setTimeout(this.props.onClose.bind(this), 500); }
   }
   save() {
-    console.log('[Record Engine] Saving recording engine');
+    console.info('[Record Engine] Saving recording engine');
     Save.saveRecord(this.gameStateDefinition, this.matchState, this.engineState, this.eventLog, this.positionLog, this.close.bind(this));
   }
   componentDidMount() {

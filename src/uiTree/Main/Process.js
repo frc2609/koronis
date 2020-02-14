@@ -8,6 +8,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import Edit from 'uiTree/Main/Process/Edit';
+import Execute from 'uiTree/Main/Process/Execute';
 
 class Process extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class Process extends React.Component {
         {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
         <Route exact path='/process' component={Edit} />
         <Route exact path='/process/edit' component={Edit} />
-        <Route exact path='/process/execute' component={Edit} />
+        <Route exact path='/process/execute' component={Execute} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square
