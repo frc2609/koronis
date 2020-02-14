@@ -7,8 +7,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import EditIcon from '@material-ui/icons/Edit';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
-import Edit from 'uiTree/Main/Process/Edit';
-import Execute from 'uiTree/Main/Process/Execute';
+import AnalyzeRecordMetric from 'uiTree/Main/Analyze/AnalyzeRecordMetric';
 
 class Analyze extends React.Component {
   constructor(props) {
@@ -33,9 +32,9 @@ class Analyze extends React.Component {
     return (
       <div>
         {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
-        <Route exact path='/analyze' component={AnalyzeRecord} />
-        <Route exact path='/analyze/record' component={AnalyzeRecord} />
-        <Route exact path='/analyze/team' component={AnalyzeRecord} />
+        <Route exact path='/analyze' component={AnalyzeRecordMetric} />
+        <Route exact path='/analyze/record' component={AnalyzeRecordMetric} />
+        <Route exact path='/analyze/team' component={AnalyzeRecordMetric} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square

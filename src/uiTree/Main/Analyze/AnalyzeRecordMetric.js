@@ -18,7 +18,7 @@ import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
 var isMobile = require('is-mobile');
 
-export default class AnalyzeRecord extends React.Component {
+export default class AnalyzeRecordMetric extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
