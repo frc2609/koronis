@@ -11,8 +11,8 @@ var recordCollection = null;
 var processCollection = null;
 
 const createDb = async () => {
-  const db = await RxDB.create({name: 'local', adapter: 'idb'});
-  console.log('[Db] created database');
+  const db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
+  console.info('[Db] created database');
   return db;
 };
 
@@ -24,7 +24,7 @@ const createTeamCollection = async () => {
     name: 'teams',
     schema: teamSchema
   });
-  console.log('[Db] created collection teams');
+  console.info('[Db] created collection teams');
   return teamCollection;
 }
 
@@ -36,7 +36,7 @@ const createRecordCollection = async () => {
     name: 'records',
     schema: recordSchema
   });
-  console.log('[Db] created collection records');
+  console.info('[Db] created collection records');
   return recordCollection;
 }
 
@@ -48,7 +48,7 @@ const createProcessCollection = async () => {
     name: 'processes',
     schema: processSchema
   });
-  console.log('[Db] created collection processes');
+  console.info('[Db] created collection processes');
   return processCollection;
 }
 

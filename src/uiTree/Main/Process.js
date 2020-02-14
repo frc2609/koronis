@@ -1,18 +1,14 @@
 import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
-import * as Interface from 'db/Interface';
-
 import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Container from '@material-ui/core/Container';
-import Card from '@material-ui/core/Card';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import EditIcon from '@material-ui/icons/Edit';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import Edit from 'uiTree/Main/Process/Edit';
+import Execute from 'uiTree/Main/Process/Execute';
 
 class Process extends React.Component {
   constructor(props) {
@@ -39,7 +35,7 @@ class Process extends React.Component {
         {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
         <Route exact path='/process' component={Edit} />
         <Route exact path='/process/edit' component={Edit} />
-        <Route exact path='/process/execute' component={Edit} />
+        <Route exact path='/process/execute' component={Execute} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square
