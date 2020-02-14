@@ -16,6 +16,8 @@ import eruda from 'eruda';
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
+var isMobile = require('is-mobile');
+
 export default class Execute extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +54,7 @@ export default class Execute extends React.Component {
     }
   }
   componentDidMount() {
-    eruda.init();
+    if(isMobile()) {eruda.init();}
   }
   componentWillUnmount() {
     try {eruda.destroy();}
@@ -89,7 +91,7 @@ export default class Execute extends React.Component {
             }
           }}
         />
-        <Container maxWidth='xl'>
+        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <ButtonGroup fullWidth>

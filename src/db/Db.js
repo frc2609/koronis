@@ -11,7 +11,7 @@ var recordCollection = null;
 var processCollection = null;
 
 const createDb = async () => {
-  const db = await RxDB.create({name: 'local', adapter: 'idb'});
+  const db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
   console.info('[Db] created database');
   return db;
 };

@@ -30,7 +30,20 @@ export function runProcess(inElem, inRecords, inProcess) {
     }
   }
   try {
-    func = new Function('moment', 'd3', 'chart', 'plotly', 'tabulator', 'console', 'ret', 'data', 'targetElement', '\"use strict\";' + inProcess.function); // eslint-disable-line
+    /* eslint-disable */
+    func = new Function(
+      'moment',
+      'd3',
+      'chart',
+      'plotly',
+      'tabulator',
+      'console',
+      'returnData',
+      'data',
+      'targetElement',
+      '\"use strict\";' + inProcess.function
+    );
+    /* eslint-enable */
     ret.value = func(moment, d3, chart, plotly, tabulator, consoleTmp, ret, inputRecord, inElem);
   }
   catch(err) {
@@ -40,4 +53,11 @@ export function runProcess(inElem, inRecords, inProcess) {
   }
 
   return ret;
+}
+
+export async function runProcessAsync(inElem, inRecords, inProcess) {
+  var promise = new Promise((resolve, reject) => {
+    resolve(runProcess(inElem, inRecords, inProcess));
+  });
+  return (await promise);
 }
