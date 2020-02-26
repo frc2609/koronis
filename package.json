@@ -17,6 +17,7 @@
     "clientjs": "^0.1.11",
     "codemirror": "^5.51.0",
     "d3": "^5.15.0",
+    "deep-compare": "0.0.5",
     "deep-copy": "^1.4.2",
     "eruda": "^2.2.0",
     "file-loader": "^5.0.2",
