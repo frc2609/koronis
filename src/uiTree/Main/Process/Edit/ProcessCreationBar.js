@@ -95,6 +95,7 @@ export default class ProcessCreationBar extends React.Component {
                 process: selectedProcess,
                 name: selectedProcess.name,
                 title: selectedProcess.title,
+                year: selectedProcess.year,
                 description: selectedProcess.description,
                 queryType: selectedProcess.queryType,
                 dataType: selectedProcess.dataType

@@ -91,18 +91,24 @@ export default class AnalyzeRecordMetric extends React.Component {
       },
       {field: 'matchNumber', title: 'Match Number', sortable: true},
       {field: 'isRedAlliance', title: 'Is Red Alliance', sortable: true},
-      {field: 'year', title: 'Game Year', sortable: true}
+      {field: 'year', title: 'Game Year', sortable: true},
+      {field: 'comments', title: 'Comments', sortable: true}
     ];
     for(var i = 0;i < this.state.selectedProcesses.length;i++) {
-      tmpColumns.push({
-        title: this.state.selectedProcesses[i].title,
-        field: 'process_' + this.state.selectedProcesses[i].id
-      });
+      if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedRecords[i].dataType === 'metric') {
+        tmpColumns.push({
+          title: this.state.selectedProcesses[i].title,
+          field: 'process_' + this.state.selectedProcesses[i].id,
+          sortable: true
+        });
+      }
     }
     for(var i = 0;i < this.state.selectedRecords.length;i++) { // eslint-disable-line no-redeclare
       var tmpData = this.state.selectedRecords[i];
       for(var j = 0;j < this.state.selectedProcesses.length;j++) {
-        tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, this.state.selectedRecords[i], this.state.selectedProcesses[j]).value;
+        if(this.state.selectedProcesses[j].queryType === 'record' && this.state.selectedRecords[j].dataType === 'metric') {
+          tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, [this.state.selectedRecords[i]], this.state.selectedProcesses[j]).value;
+        }
       }
       tmpDataArr.push(tmpData);
     }
@@ -175,7 +181,7 @@ export default class AnalyzeRecordMetric extends React.Component {
               </ButtonGroup>
             </Grid>
             <Grid item xs={12}>
-              <Button 
+              <Button
                 fullWidth
                 variant='contained'
                 color='primary'
@@ -186,7 +192,7 @@ export default class AnalyzeRecordMetric extends React.Component {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <MaterialTable 
+              <MaterialTable
                 title='Metrics'
                 icons={tableIcons}
                 style={{marginBottom: '4vh'}}
