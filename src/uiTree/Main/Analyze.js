@@ -4,8 +4,8 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import EditIcon from '@material-ui/icons/Edit';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import GroupIcon from '@material-ui/icons/Group';
 
 import AnalyzeRecordMetric from 'uiTree/Main/Analyze/AnalyzeRecordMetric';
 
@@ -16,7 +16,7 @@ class Analyze extends React.Component {
       tab: 'record',
       redirect: false
     };
-    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/process/')) {
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/')) {
       this.state.tab = this.props.location.pathname.substring(this.props.location.pathname.lastIndexOf('/') + 1);
     }
   }
@@ -31,7 +31,7 @@ class Analyze extends React.Component {
   render() {
     return (
       <div>
-        {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
+        {this.state.redirect ? <Redirect push to={'/analyze/' + this.state.tab} /> : ''}
         <Route exact path='/analyze' component={AnalyzeRecordMetric} />
         <Route exact path='/analyze/record' component={AnalyzeRecordMetric} />
         <Route exact path='/analyze/team' component={AnalyzeRecordMetric} />
@@ -50,8 +50,8 @@ class Analyze extends React.Component {
             value={this.state.tab}
             onChange={this.tabHandler.bind(this)}
           >
-            <BottomNavigationAction label='Edit' value='edit' icon={<EditIcon />} />
-            <BottomNavigationAction label='Execute' value='execute' icon={<PlayArrowIcon />} />
+            <BottomNavigationAction label='Record' value='record' icon={<FiberManualRecordIcon />} />
+            <BottomNavigationAction label='Team' disabled value='team' icon={<GroupIcon />} />
           </BottomNavigation>
         </Paper>
       </div>

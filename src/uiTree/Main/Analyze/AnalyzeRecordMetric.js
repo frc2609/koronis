@@ -1,22 +1,58 @@
 import React from 'react';
+import { forwardRef } from 'react';
 
+import * as Interface from 'db/Interface';
 import * as Processor from 'engine/process/Processor';
 
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import SelectAllIcon from '@material-ui/icons/SelectAll';
 import { FiberManualRecord, Code } from '@material-ui/icons';
 
-import eruda from 'eruda';
+import AddBox from '@material-ui/icons/AddBox';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/Edit';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+import MaterialTable from "material-table";
 
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
-var isMobile = require('is-mobile');
+var moment = require('moment');
+var deepCompare = require('deep-compare');
+
+const tableIcons = {
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
 
 export default class AnalyzeRecordMetric extends React.Component {
   constructor(props) {
@@ -25,40 +61,73 @@ export default class AnalyzeRecordMetric extends React.Component {
       openRecordModal: false,
       openProcessModal: false,
       selectedRecords: [],
-      selectedProcess: {},
-      returnValue: {
-        value: NaN,
-        log: [],
-        info: [],
-        table: [],
-        debug: [],
-        warn: [],
-        error: []
-      }
+      selectedProcesses: [],
+      data: [],
+      columns: []
     }
   }
   runProcess() {
-    if(typeof this.refs.targetElement !== 'undefined') {
-      var ret = Object.assign({
-          value: NaN,
-          log: [],
-          info: [],
-          table: [],
-          debug: [],
-          warn: [],
-          error: []
-        },
-          Processor.runProcess(this.refs.targetElement, this.state.selectedRecords, this.state.selectedProcess)
-      );
-      this.setState({returnValue: ret});
+    var tmpDataArr = [];
+    var tmpColumns = [
+      {field: 'startDate', title: 'Date', sortable: true,
+        render: (rowData) => {
+          return moment.unix(rowData.startDate).format('MMM Do YYYY')
+        }
+      },
+      {field: 'teamNumber', title: 'Team Number', sortable: true},
+      {field: 'matchType', title: 'Match Type', sortable: true,
+        render: (rowData) => {
+          var ret = 'Test';
+          if(rowData.matchType === 't') {ret = 'Test';}
+          if(rowData.matchType === 'pf') {ret = 'Practice Field';}
+          if(rowData.matchType === 'pm') {ret = 'Practice Match';}
+          if(rowData.matchType === 'qm') {ret = 'Qualification';}
+          if(rowData.matchType === 'ef') {ret = 'Eighth-finals';}
+          if(rowData.matchType === 'qf') {ret = 'Quarterfinals';}
+          if(rowData.matchType === 'sf') {ret = 'Semifinals';}
+          if(rowData.matchType === 'f') {ret = 'Final';}
+          return ret;
+        }
+      },
+      {field: 'matchNumber', title: 'Match Number', sortable: true},
+      {field: 'isRedAlliance', title: 'Is Red Alliance', sortable: true},
+      {field: 'year', title: 'Game Year', sortable: true}
+    ];
+    for(var i = 0;i < this.state.selectedProcesses.length;i++) {
+      tmpColumns.push({
+        title: this.state.selectedProcesses[i].title,
+        field: 'process_' + this.state.selectedProcesses[i].id
+      });
     }
+    for(var i = 0;i < this.state.selectedRecords.length;i++) { // eslint-disable-line no-redeclare
+      var tmpData = this.state.selectedRecords[i];
+      for(var j = 0;j < this.state.selectedProcesses.length;j++) {
+        tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, this.state.selectedRecords[i], this.state.selectedProcesses[j]).value;
+      }
+      tmpDataArr.push(tmpData);
+    }
+    this.setState({
+      data: tmpDataArr,
+      columns: tmpColumns
+    })
+  }
+  showAll() {
+    Interface.getRecords({}, {}).then((recs) => {
+      Interface.getProcesses({}, {}).then((procs) => {
+        this.setState({
+          selectedRecords: recs,
+          selectedProcesses: procs
+        });
+      });
+    });
   }
   componentDidMount() {
-    if(isMobile()) {eruda.init();}
+    this.showAll();
   }
-  componentWillUnmount() {
-    try {eruda.destroy();}
-    catch(err) {}
+  componentDidUpdate(prevProps, prevState) {
+    if(!deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
+      this.runProcess();
+    }
   }
   render() {
     return (
@@ -72,7 +141,7 @@ export default class AnalyzeRecordMetric extends React.Component {
             if(processes.length > 0) {
               this.setState({
                 openProcessModal: false,
-                selectedProcess: processes[0]
+                selectedProcesses: processes
               });
             }
           }}
@@ -101,31 +170,36 @@ export default class AnalyzeRecordMetric extends React.Component {
                 </Button>
                 <Button onClick={() => {this.setState({openProcessModal: true})}}>
                   <Code />
-                  Process
+                  Processes
                 </Button>
               </ButtonGroup>
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth
+              <Button 
+                fullWidth
                 variant='contained'
                 color='primary'
-                onClick={this.runProcess.bind(this)}
-                disabled={
-                  this.state.selectedRecords.length === 0 ||
-                  Object.keys(this.state.selectedProcess).length === 0
-                }
+                onClick={this.showAll.bind(this)}
               >
-                <PlayArrowIcon />
-                Run
+                <SelectAllIcon />
+                Show All
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Card>
-                <Typography variant='h5' align='center'>
-                  Results: {this.state.returnValue.value}
-                </Typography>
-                <div ref='targetElement'></div>
-              </Card>
+              <MaterialTable 
+                title='Metrics'
+                icons={tableIcons}
+                style={{marginBottom: '4vh'}}
+                padding='dense'
+                color='primary'
+                columns={this.state.columns}
+                data={this.state.data}
+                options={{
+                  exportButton: true,
+                  filtering: true,
+                  doubleHorizontalScroll: true
+                }}
+              />
             </Grid>
           </Grid>
         </Container>

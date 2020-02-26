@@ -4,7 +4,8 @@ import { forwardRef } from 'react';
 import * as Layout from 'config/Layout';
 
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
+
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -141,7 +142,7 @@ export default class RecordSelect extends React.Component {
             }}
             onSelectionChange={(rows) => {
               this.setState({selectedRecords: rows});
-              if(typeof this.props.onSelect === 'function') {this.props.onSelect(this.state.selectedRecords)}
+              if(typeof this.props.onSelect === 'function') {this.props.onSelect(rows)}
             }}
           />
         }

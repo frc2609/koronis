@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import Home from 'uiTree/Main/Home';
 import Record from 'uiTree/Main/Record';
 import ProcessWithRouter from 'uiTree/Main/Process';
-import AnalyzeWithRouter from 'uiTree/Main/Process';
+import AnalyzeWithRouter from 'uiTree/Main/Analyze';
 import TransferWithRouter from 'uiTree/Main/Transfer';
 
 export default class Main extends React.Component {
