@@ -95,7 +95,7 @@ export default class AnalyzeRecordMetric extends React.Component {
       {field: 'comments', title: 'Comments', sortable: true}
     ];
     for(var i = 0;i < this.state.selectedProcesses.length;i++) {
-      if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedRecords[i].dataType === 'metric') {
+      if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedProcesses[i].dataType === 'metric') {
         tmpColumns.push({
           title: this.state.selectedProcesses[i].title,
           field: 'process_' + this.state.selectedProcesses[i].id,
