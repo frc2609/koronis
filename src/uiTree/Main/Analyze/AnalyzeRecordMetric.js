@@ -107,7 +107,7 @@ export default class AnalyzeRecordMetric extends React.Component {
       var tmpData = this.state.selectedRecords[i];
       for(var j = 0;j < this.state.selectedProcesses.length;j++) {
         if(this.state.selectedProcesses[j].queryType === 'record' && this.state.selectedRecords[j].dataType === 'metric') {
-          tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, this.state.selectedRecords[i], this.state.selectedProcesses[j]).value;
+          tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, [this.state.selectedRecords[i]], this.state.selectedProcesses[j]).value;
         }
       }
       tmpDataArr.push(tmpData);
