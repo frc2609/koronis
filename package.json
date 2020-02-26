@@ -41,7 +41,7 @@
     "react-filepond": "^7.0.1",
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.0",
     "rxdb": "^8.4.0",
     "rxjs": "^6.5.3",
     "store": "^2.0.12",
