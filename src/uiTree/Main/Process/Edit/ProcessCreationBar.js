@@ -44,7 +44,8 @@ export default class ProcessCreationBar extends React.Component {
       title: '',
       description: '',
       queryType: '',
-      dataType: ''
+      dataType: '',
+      function: ''
     };
     this.setState(emptyObj);
     if(typeof this.props.onNew === 'function') {this.props.onNew(emptyObj);}
