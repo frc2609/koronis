@@ -3,6 +3,8 @@ import React from 'react';
 import * as Save from 'engine/process/Save';
 
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 import CodeEditor from 'uiTree/components/CodeEditor';
 import ProcessCreationBar from 'uiTree/Main/Process/Edit/ProcessCreationBar';
@@ -11,6 +13,7 @@ export default class Edit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      saveAlert: false,
       process: {}
     }
   }
@@ -34,7 +37,8 @@ export default class Edit extends React.Component {
       process.title,
       process.description,
       this.state.process.function,
-      this.state.process
+      this.state.process,
+      () => {this.setState({saveAlert: true})}
     );
   }
   saveNewHandler() {
@@ -47,7 +51,8 @@ export default class Edit extends React.Component {
       process.title,
       process.description,
       this.state.process.function,
-      {}
+      {},
+      () => {this.setState({saveAlert: true})}
     );
   }
   render() {
@@ -76,6 +81,19 @@ export default class Edit extends React.Component {
             }}
           />
         </Container>
+        <Snackbar
+          open={this.state.saveAlert}
+          autoHideDuration={2000}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+          onClose={() => {this.setState({saveAlert: false})}}
+        >
+          <Alert onClose={() => {this.setState({saveAlert: false})}} severity='success'>
+            Save Successful
+          </Alert>
+        </Snackbar>
       </>
     );
   }

@@ -3,7 +3,7 @@ import * as Interface from 'db/Interface';
 import positionLogCompressorWorker from 'workerize-loader!engine/worker/PositionLogCompressor'; // eslint-disable-line import/no-webpack-loader-syntax
 var positionLogCompressorInstance = positionLogCompressorWorker();
 
-export const saveRecord = (gameStateDefinition, matchState, engineState, eventLog, positionLog, callback) => {
+export const saveRecord = (gameStateDefinition, matchState, engineState, eventLog, positionLog, callback = () => {}) => {
   var obj = {};
   obj.startDate = (matchState.matchStartDate === 0 ? (engineState.startDate === 0 ? Math.round((new Date())/1000) : Math.round(engineState.startDate/1000)) : Math.round(matchState.matchStartDate/1000));
   obj.id = User.genRecordUuid(
