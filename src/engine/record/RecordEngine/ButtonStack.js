@@ -45,12 +45,12 @@ export default class ButtonStack extends React.Component {
               this.buttonStates[i].selected = true;
               if(y + offset < this.buttonStates[i].size.y - this.buttonStates[i].position.y) {
                 if(y + offset > this.buttonStates[i].size.y/2 + this.buttonStates[i].position.y) {
-                  this.buttonStates[i].size.y = (y + offset) - this.buttonStates[i].position.y;
+                  //this.buttonStates[i].size.y = (y + offset) - this.buttonStates[i].position.y;
                 }
               }
               if(x + offset < this.buttonStates[i].size.x - this.buttonStates[i].position.x) {
                 if(x + offset > this.buttonStates[i].size.x/2 + this.buttonStates[i].position.x) {
-                  this.buttonStates[i].size.x = (x + offset) - this.buttonStates[i].position.x;
+                  //this.buttonStates[i].size.x = (x + offset) - this.buttonStates[i].position.x;
                 }
               }
             }
