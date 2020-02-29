@@ -161,15 +161,15 @@ export default class SendString extends React.Component {
           </Grid>
           <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
             <Typography gutterBottom>
-              QR Codes Frequency
+              QR Code Period
             </Typography>
             <Slider
       value={(this.state.drawInterval/1000)}
       onChange={this.drawIntervalHandler.bind(this)}
       valueLabelDisplay='auto'
       valueLabelFormat={(val) => {return val.toFixed(0)}}
-      step={0.5}
-      min={1}
+      step={0.25}
+      min={0.25}
       max={15}
             />
           </Grid>

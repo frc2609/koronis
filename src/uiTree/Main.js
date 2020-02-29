@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-
 import Home from 'uiTree/Main/Home';
 import Record from 'uiTree/Main/Record';
 import ProcessWithRouter from 'uiTree/Main/Process';
@@ -20,11 +18,9 @@ export default class Main extends React.Component {
       this.forceUpdate();
     };
     window.addEventListener('resize', this.resizeListener);
-    disableBodyScroll(this.refs.bodyElem);
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeListener);
-    clearAllBodyScrollLocks();
   }
   render() {
     return (

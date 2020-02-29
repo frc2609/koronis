@@ -100,7 +100,7 @@ export default class ControlBar extends React.Component {
             })
           }
           <Button style={{height:'100%'}} color='default' disableRipple={true} disableFocusRipple={true}>
-            {'Time: ' + this.props.time.toFixed(2)}
+            {this.props.time.toFixed(2)}
           </Button>
           <Button style={{height:'100%'}} onClick={this.start.bind(this)} color='primary'>
             {this.state.playing ? <Pause /> : <PlayArrow />}

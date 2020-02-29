@@ -41,8 +41,11 @@ export default class RenderCanvas extends React.Component {
     }
     this.props.renderCanvasUpdate({x: botX, y: botY});
     this.update.bind(this)();
+    event.preventDefault();
   }
-  touchEnd(event) {}
+  touchEnd(event) {
+    event.preventDefault();
+  }
   draw() {
     //Clear the canvas
     this.renderCanvasCtx.clearRect(0, 0, this.state.canvasSize.x, this.state.canvasSize.y);
