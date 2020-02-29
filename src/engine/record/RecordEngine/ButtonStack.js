@@ -59,6 +59,7 @@ export default class ButtonStack extends React.Component {
       }
     }
     this.update.bind(this)();
+    event.preventDefault();
   }
   touchMove(event) {
     var rect = this.buttonStackElement.getBoundingClientRect();
@@ -73,6 +74,7 @@ export default class ButtonStack extends React.Component {
     this.touchState.x = x;
     this.touchState.y = y;
     //this.update.bind(this)();
+    event.preventDefault();
   }
   touchEnd(event) {
     var btnS = [];
@@ -92,6 +94,7 @@ export default class ButtonStack extends React.Component {
     }
     this.props.buttonStackUpdate(btnS);
     this.update.bind(this)();
+    event.preventDefault();
   }
   draw() {
     this.buttonStackCtx.clearRect(0, 0, this.state.canvasSize.x, this.state.canvasSize.y);

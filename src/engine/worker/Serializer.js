@@ -85,7 +85,7 @@ var binToPos = (inBin) => {
   var obj = {};
   obj.x = ((firstByte & 252) >>> 2) >>> 0;
   obj.y = ((firstByte & 3) << 4) + ((secondByte & 240) >>> 4) >>> 0;
-  obj.timeStamp = ((((secondByte & 15) << 8) + thirdByte) / 10) >>> 0;
+  obj.timeStamp = ((((secondByte & 15) << 8) + thirdByte) / 10);
   return obj;
 }
 var binStreamToPos = (inBinStream) => {

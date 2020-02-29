@@ -92,7 +92,9 @@ export default class AnalyzeRecordMetric extends React.Component {
       {field: 'matchNumber', title: 'Match Number', sortable: true},
       {field: 'isRedAlliance', title: 'Is Red Alliance', sortable: true},
       {field: 'year', title: 'Game Year', sortable: true},
-      {field: 'comments', title: 'Comments', sortable: true}
+      {field: 'comments', title: 'Comments', sortable: true,
+        render: (r) => {return r.comments.length <= 25 ? r.comments : r.comments.substr(0,25) + '...'}
+      }
     ];
     for(var i = 0;i < this.state.selectedProcesses.length;i++) {
       if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedProcesses[i].dataType === 'metric') {
