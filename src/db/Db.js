@@ -14,7 +14,7 @@ const createDb = async () => {
   const db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
   console.info('[Db] created database');
   return db;
-};
+}
 
 const createTeamCollection = async () => {
   if(!dbCreated) {

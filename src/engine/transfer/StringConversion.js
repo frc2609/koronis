@@ -6,6 +6,7 @@ const binStrToBinArr = (inBinStr) => {
   }
   return binArr;
 }
+
 const binArrToBinStr = (inBinArr) => {
   //Will be null padded to nearest 2 bytes
   var output = '';
@@ -14,6 +15,7 @@ const binArrToBinStr = (inBinArr) => {
   }
   return output;
 }
+
 const binArr3ToNumString = (inBinArr) => {
   var output = '';
   for(var i = 0;i < inBinArr.length;i++) {
@@ -21,6 +23,7 @@ const binArr3ToNumString = (inBinArr) => {
   }
   return output;
 }
+
 const numStringToBinArr3 = (inStr) => {
   var output = [];
   for(var i = 0;i < inStr.length;i++) {
@@ -28,6 +31,7 @@ const numStringToBinArr3 = (inStr) => {
   }
   return output;
 }
+
 const binArr8ToBinArr3 = (inBinArr) => {
   var outBinArr3 = [];
   var inBinArr8 = inBinArr.slice();
@@ -52,6 +56,7 @@ const binArr8ToBinArr3 = (inBinArr) => {
   }
   return outBinArr3.flat();
 }
+
 const binArr3ToBinArr8 = (inBinArr) => {
   var outBinArr8 = [];
   var inBinArr3 = inBinArr.slice();
@@ -88,6 +93,7 @@ export const strToNumStr = (inStr) => {
   output = binArr3ToNumString(output);
   return output;
 }
+
 export const numStrToStr = (inNumStr) => {
   var output = numStringToBinArr3(inNumStr);
   output = binArr3ToBinArr8(output);

@@ -100,58 +100,60 @@ export default class Settings extends React.Component {
         </AppBar>
         <Toolbar style={{marginBottom: '4vh'}} />
         <Container maxWidth='xl'>
-        <Grid container spacing={4}>
-          <Grid item xs={6} style={{minWidth: '200px'}}>
-            <FormControl variant='outlined' fullWidth>
-              <InputLabel>Current Year</InputLabel>
-              <Select
-      ref='currentYear'
-      onChange={this.currentYearHandler.bind(this)}
-      value={this.state.currentYear}
-      fullWidth
-              >
-                {(typeof this.state.gameStates === 'undefined') ? '' :
-                  this.state.gameStates.map((e, i) => {
-                    return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
-                  })
-                }
-              </Select>
-            </FormControl>
+          <Grid container spacing={4}>
+            <Grid item xs={6} style={{minWidth: '200px'}}>
+              <FormControl variant='outlined' fullWidth>
+                <InputLabel>Current Year</InputLabel>
+                <Select
+                  ref='currentYear'
+                  onChange={this.currentYearHandler.bind(this)}
+                  value={this.state.currentYear}
+                  fullWidth
+                >
+                  {(typeof this.state.gameStates === 'undefined') ?
+                    ''
+                  :
+                    this.state.gameStates.map((e, i) => {
+                      return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
+                    })
+                  }
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '150px'}}>
+              <Typography gutterBottom>
+                Button Stack Width
+              </Typography>
+              <Slider
+                value={this.state.buttonStackWidth}
+                onChange={this.buttonStackWidthHandler.bind(this)}
+                valueLabelDisplay='auto'
+                valueLabelFormat={(val) => {return val + '%'}}
+                min={10}
+                max={90}
+              />
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '320px'}}>
+              <Typography gutterBottom>
+                Frames Per Second
+              </Typography>
+              <Slider
+                value={(1000/this.state.updateInterval)}
+                onChange={this.updateIntervalHandler.bind(this)}
+                valueLabelDisplay='auto'
+                valueLabelFormat={(val) => {return val.toFixed(0)}}
+                marks={[
+                  { value: 15, label: 'Power Saver' },
+                  { value: 50, label: 'Performance' }
+                ]}
+                step={5}
+                min={5}
+                max={60}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={6} style={{minWidth: '150px'}}>
-            <Typography gutterBottom>
-              Button Stack Width
-            </Typography>
-            <Slider
-      value={this.state.buttonStackWidth}
-      onChange={this.buttonStackWidthHandler.bind(this)}
-      valueLabelDisplay='auto'
-      valueLabelFormat={(val) => {return val + '%'}}
-      min={10}
-      max={90}
-            />
-          </Grid>
-          <Grid item xs={6} style={{minWidth: '320px'}}>
-            <Typography gutterBottom>
-              Frames Per Second
-            </Typography>
-            <Slider
-      value={(1000/this.state.updateInterval)}
-      onChange={this.updateIntervalHandler.bind(this)}
-      valueLabelDisplay='auto'
-      valueLabelFormat={(val) => {return val.toFixed(0)}}
-      marks={[
-        { value: 15, label: 'Power Saver' },
-        { value: 50, label: 'Performance' }
-      ]}
-      step={5}
-      min={5}
-      max={60}
-            />
-          </Grid>
-        </Grid>
         </Container>
       </Dialog>
-    )
+    );
   }
 }

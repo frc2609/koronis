@@ -137,26 +137,28 @@ export default class SendString extends React.Component {
   render() {
     return (
       <Container maxWidth='xl'>
-      <div ref='qrcodeCanvasWrapper' style={{width: '100%', marginBottom: '4vh'}}>
-        {this.state.loading ? <CircularProgress/> :
-          <canvas ref='qrcodeCanvas' width={this.state.canvasSize} height={this.state.canvasSize}></canvas>
-        }
-      </div>
-      <Typography gutterBottom>
-        Total QR Codes to scan: {this.state.qrCodeArrLength}
-      </Typography>
-      <Grid container spacing={4}>
-        <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
+        <div ref='qrcodeCanvasWrapper' style={{width: '100%', marginBottom: '4vh'}}>
+          {this.state.loading ?
+            <CircularProgress/>
+          :
+            <canvas ref='qrcodeCanvas' width={this.state.canvasSize} height={this.state.canvasSize}></canvas>
+          }
+        </div>
+        <Typography gutterBottom>
+          Total QR Codes to scan: {this.state.qrCodeArrLength}
+        </Typography>
+        <Grid container spacing={4}>
+          <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
             <Typography gutterBottom>
               QR Code Type
             </Typography>
             <Slider
-      value={this.state.qrCodeType}
-      onChange={this.qrCodeTypeHandler.bind(this)}
-      valueLabelDisplay='auto'
-      step={1}
-      min={1}
-      max={20}
+              value={this.state.qrCodeType}
+              onChange={this.qrCodeTypeHandler.bind(this)}
+              valueLabelDisplay='auto'
+              step={1}
+              min={1}
+              max={20}
             />
           </Grid>
           <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
@@ -164,17 +166,17 @@ export default class SendString extends React.Component {
               QR Codes Frequency
             </Typography>
             <Slider
-      value={(this.state.drawInterval/1000)}
-      onChange={this.drawIntervalHandler.bind(this)}
-      valueLabelDisplay='auto'
-      valueLabelFormat={(val) => {return val.toFixed(0)}}
-      step={0.5}
-      min={1}
-      max={15}
+              value={(this.state.drawInterval/1000)}
+              onChange={this.drawIntervalHandler.bind(this)}
+              valueLabelDisplay='auto'
+              valueLabelFormat={(val) => {return val.toFixed(0)}}
+              step={0.25}
+              min={0.25}
+              max={15}
             />
           </Grid>
         </Grid>
       </Container>
-    )
+    );
   }
 }

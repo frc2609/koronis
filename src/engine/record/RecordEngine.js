@@ -433,59 +433,61 @@ export default class RecordEngine extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeListener);
   }
-  render() {return (
-    <Box ref='mainContainer'>
-      <ControlBar
-    ref='controlBar'
-    play={this.start.bind(this)}
-    stop={this.stop.bind(this)}
-    resume={this.resume.bind(this)}
-    pause={this.pause.bind(this)}
+  render() {
+    return (
+      <Box ref='mainContainer'>
+        <ControlBar
+          ref='controlBar'
+          play={this.start.bind(this)}
+          stop={this.stop.bind(this)}
+          resume={this.resume.bind(this)}
+          pause={this.pause.bind(this)}
 
-    close={this.close.bind(this)}
-    save={this.save.bind(this)}
-    matchStateUpdate={this.matchStateHandler.bind(this)}
-    settingsUpdate={this.settingsHandler.bind(this)}
-    flipUpdate={this.flipHandler.bind(this)}
+          close={this.close.bind(this)}
+          save={this.save.bind(this)}
+          matchStateUpdate={this.matchStateHandler.bind(this)}
+          settingsUpdate={this.settingsHandler.bind(this)}
+          flipUpdate={this.flipHandler.bind(this)}
 
-    time={this.state.timestamp}
-    progress={((this.state.timestamp/this.gameStateDefinition.gameState.gameLength)*100)}
+          time={this.state.timestamp}
+          progress={((this.state.timestamp/this.gameStateDefinition.gameState.gameLength)*100)}
 
-    colorPalette={this.colorPalette}
-    status={this.statusUpdateDefinition}
-    engineState={this.engineState}
-    settings={this.settings}
-      />
-      <Grid container style={{height:'87%'}}>
-        <Grid item style={{width: this.state.buttonStackWidth + '%', height:'100%'}} zeroMinWidth>
-          <ButtonStack
-    ref='buttonStack'
-    colorPalette={this.colorPalette}
-    gameStateDefinition={this.gameStateDefinition}
-    fieldStateDefinition={this.fieldStateDefinition}
-    botStateDefinition={this.botStateDefinition}
-    eventDefinitions={this.eventDefinitions}
-    buttonDefinitions={this.buttonDefinitions}
-    buttonStackUpdate={this.buttonStackHandler.bind(this)}
-    settings={this.settings}
-          />
+          colorPalette={this.colorPalette}
+          status={this.statusUpdateDefinition}
+          engineState={this.engineState}
+          settings={this.settings}
+        />
+        <Grid container style={{height:'87%'}}>
+          <Grid item style={{width: this.state.buttonStackWidth + '%', height:'100%'}} zeroMinWidth>
+            <ButtonStack
+              ref='buttonStack'
+              colorPalette={this.colorPalette}
+              gameStateDefinition={this.gameStateDefinition}
+              fieldStateDefinition={this.fieldStateDefinition}
+              botStateDefinition={this.botStateDefinition}
+              eventDefinitions={this.eventDefinitions}
+              buttonDefinitions={this.buttonDefinitions}
+              buttonStackUpdate={this.buttonStackHandler.bind(this)}
+              settings={this.settings}
+            />
+          </Grid>
+          <Grid item style={{width: (100 - this.state.buttonStackWidth) + '%', height:'100%'}} zeroMinWidth>
+            <RenderCanvas
+              ref='renderCanvas'
+              colorPalette={this.colorPalette}
+              engineState={this.engineState}
+              matchState={this.matchState}
+              gameStateDefinition={this.gameStateDefinition}
+              fieldStateDefinition={this.fieldStateDefinition}
+              botStateDefinition={this.botStateDefinition}
+              eventDefinitions={this.eventDefinitions}
+              buttonDefinitions={this.buttonDefinitions}
+              renderCanvasUpdate={this.renderCanvasHandler.bind(this)}
+              settings={this.settings}
+            />
+          </Grid>
         </Grid>
-        <Grid item style={{width: (100 - this.state.buttonStackWidth) + '%', height:'100%'}} zeroMinWidth>
-          <RenderCanvas
-    ref='renderCanvas'
-    colorPalette={this.colorPalette}
-    engineState={this.engineState}
-    matchState={this.matchState}
-    gameStateDefinition={this.gameStateDefinition}
-    fieldStateDefinition={this.fieldStateDefinition}
-    botStateDefinition={this.botStateDefinition}
-    eventDefinitions={this.eventDefinitions}
-    buttonDefinitions={this.buttonDefinitions}
-    renderCanvasUpdate={this.renderCanvasHandler.bind(this)}
-    settings={this.settings}
-          />
-        </Grid>
-      </Grid>
-    </Box>
-  );}
+      </Box>
+    );
+  }
 }

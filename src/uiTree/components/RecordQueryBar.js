@@ -188,177 +188,180 @@ export default class RecordQueryBar extends React.Component {
     return (
       <ExpansionPanel style={{marginBottom: '4vh'}}>
         <ExpansionPanelSummary
-      expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon />}
         >
         <Typography>Filter</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-        <Grid container>
-        <Grid container item xs={12} spacing={2} style={{marginBottom: '4vh'}}>
-        <Grid item xs={3} style={{minWidth: '150px'}}>
-          <FormControl variant='outlined' fullWidth>
-            <InputLabel>Year</InputLabel>
-            <Select
-      ref='year'
-      onChange={this.yearHandler.bind(this)}
-      value={this.state.year}
-      fullWidth
-            >
-            <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
-            {(typeof this.state.gameStates === 'undefined') ? '' :
-              this.state.gameStates.map((e, i) => {
-                return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
-              })
+          <Grid container>
+            <Grid container item xs={12} spacing={2} style={{marginBottom: '4vh'}}>
+              <Grid item xs={3} style={{minWidth: '150px'}}>
+                <FormControl variant='outlined' fullWidth>
+                  <InputLabel>Year</InputLabel>
+                  <Select
+                    ref='year'
+                    onChange={this.yearHandler.bind(this)}
+                    value={this.state.year}
+                    fullWidth
+                  >
+                  <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
+                  {(typeof this.state.gameStates === 'undefined') ? '' :
+                    this.state.gameStates.map((e, i) => {
+                      return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
+                    })
+                  }
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '210px'}}>
+                <TextField
+                  ref='teamNumber'
+                  label='Team Number'
+                  type='number'
+                  variant='outlined'
+                  fullWidth
+                  value={this.state.teamNumber === 0 ? '' : this.state.teamNumber}
+                  onChange={this.teamNumberHandler.bind(this)}
+                />
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '200px'}}>
+                <DatePicker
+                  variant='inline'
+                  autoOk={true}
+                  inputVariant='outlined'
+                  label='Earliest Match Date'
+                  fullWidth
+                  value={this.state.minStartDate*1000}
+                  labelFunc={(date) => {return (this.state.minStartDate === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+                  onChange={this.minStartDateChangeHandler.bind(this)}
+                  onOpen={this.minStartDateOpenHandler.bind(this)}
+                />
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '200px'}}>
+                <DatePicker
+                  variant='inline'
+                  autoOk={true}
+                  inputVariant='outlined'
+                  label='Latest Match Date'
+                  fullWidth
+                  value={this.state.maxStartDate*1000}
+                  labelFunc={(date) => {return (this.state.maxStartDate === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+                  onChange={this.maxStartDateChangeHandler.bind(this)}
+                  onOpen={this.maxStartDateOpenHandler.bind(this)}
+                />
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '200px'}}>
+                <FormGroup>
+                  <FormLabel>Match Types</FormLabel>
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesT} onChange={(e) => {this.setState({matchTypesT: e.target.checked})}}/>}
+                    label='Test'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesPF} onChange={(e) => {this.setState({matchTypesPF: e.target.checked})}}/>}
+                    label='Practice Field'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesPM} onChange={(e) => {this.setState({matchTypesPM: e.target.checked})}}/>}
+                    label='Practice Match'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesQM} onChange={(e) => {this.setState({matchTypesQM: e.target.checked})}}/>}
+                    label='Qualifications'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesEF} onChange={(e) => {this.setState({matchTypesEF: e.target.checked})}}/>}
+                    label='Eighth-finals'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesQF} onChange={(e) => {this.setState({matchTypesQF: e.target.checked})}}/>}
+                    label='Quarterfinals'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesSF} onChange={(e) => {this.setState({matchTypesSF: e.target.checked})}}/>}
+                    label='Semifinals'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.matchTypesF} onChange={(e) => {this.setState({matchTypesF: e.target.checked})}}/>}
+                    label='Finals'
+                  />
+                </FormGroup>
+              </Grid>
+              <Grid item xs={4} style={{minWidth: '210px'}}>
+                <TextField
+                  ref='minMatchNumber'
+                  label='Lowest Match Number'
+                  type='number'
+                  variant='outlined'
+                  fullWidth
+                  value={this.state.minMatchNumber === 0 ? '' : this.state.minMatchNumber}
+                  onChange={this.minMatchNumberHandler.bind(this)}
+                />
+              </Grid>
+              <Grid item xs={4} style={{minWidth: '210px'}}>
+                <TextField
+                  ref='maxMatchNumber'
+                  label='Highest Match Number'
+                  type='number'
+                  variant='outlined'
+                  fullWidth
+                  value={this.state.maxMatchNumber === 0 ? '' : this.state.maxMatchNumber}
+                  onChange={this.maxMatchNumberHandler.bind(this)}
+                />
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '200px'}}>
+                <FormGroup>
+                  <FormLabel>Match Types</FormLabel>
+                  <FormControlLabel
+                    control={<Checkbox color='primary' checked={this.state.isBlue} onChange={(e) => {this.setState({isBlue: e.target.checked})}}/>}
+                    label='Blue Alliance'
+                  />
+                  <FormControlLabel
+                    control={<Checkbox color='secondary' checked={this.state.isRed} onChange={(e) => {this.setState({isRed: e.target.checked})}}/>}
+                    label='Red Alliance'
+                  />
+                </FormGroup>
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '220px'}}>
+                <DatePicker
+                  variant='inline'
+                  autoOk={true}
+                  inputVariant='outlined'
+                  label='Earliest Modification Date'
+                  fullWidth
+                  value={this.state.minLastModified*1000}
+                  labelFunc={(date) => {return (this.state.minLastModified === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+                  onChange={this.minLastModifiedChangeHandler.bind(this)}
+                  onOpen={this.minLastModifiedOpenHandler.bind(this)}
+                />
+              </Grid>
+              <Grid item xs={3} style={{minWidth: '200px'}}>
+                <DatePicker
+                  variant='inline'
+                  autoOk={true}
+                  inputVariant='outlined'
+                  label='Latest Modification Date'
+                  fullWidth
+                  value={this.state.maxLastModified*1000}
+                  labelFunc={(date) => {return (this.state.maxLastModified === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
+                  onChange={this.maxLastModifiedChangeHandler.bind(this)}
+                  onOpen={this.maxLastModifiedOpenHandler.bind(this)}
+                />
+              </Grid>
+            </Grid>
+            {this.props.button ?
+              <Grid container item xs={12} spacing={2}>
+                <Grid item xs={6}>
+                  <Button variant='outlined' onClick={this.setDefault.bind(this)}>Default</Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button color='primary' variant='outlined' onClick={this.submit.bind(this)}>Run</Button>
+                </Grid>
+              </Grid>
+            :
+              ''
             }
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '210px'}}>
-          <TextField
-      ref='teamNumber'
-      label='Team Number'
-      type='number'
-      variant='outlined'
-      fullWidth
-      value={this.state.teamNumber === 0 ? '' : this.state.teamNumber}
-      onChange={this.teamNumberHandler.bind(this)}
-          />
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '200px'}}>
-          <DatePicker
-      variant='inline'
-      autoOk={true}
-      inputVariant='outlined'
-      label='Earliest Match Date'
-      fullWidth
-      value={this.state.minStartDate*1000}
-      labelFunc={(date) => {return (this.state.minStartDate === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
-      onChange={this.minStartDateChangeHandler.bind(this)}
-      onOpen={this.minStartDateOpenHandler.bind(this)}
-          />
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '200px'}}>
-          <DatePicker
-      variant='inline'
-      autoOk={true}
-      inputVariant='outlined'
-      label='Latest Match Date'
-      fullWidth
-      value={this.state.maxStartDate*1000}
-      labelFunc={(date) => {return (this.state.maxStartDate === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
-      onChange={this.maxStartDateChangeHandler.bind(this)}
-      onOpen={this.maxStartDateOpenHandler.bind(this)}
-          />
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '200px'}}>
-          <FormGroup>
-            <FormLabel>Match Types</FormLabel>
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesT} onChange={(e) => {this.setState({matchTypesT: e.target.checked})}}/>}
-      label='Test'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesPF} onChange={(e) => {this.setState({matchTypesPF: e.target.checked})}}/>}
-      label='Practice Field'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesPM} onChange={(e) => {this.setState({matchTypesPM: e.target.checked})}}/>}
-      label='Practice Match'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesQM} onChange={(e) => {this.setState({matchTypesQM: e.target.checked})}}/>}
-      label='Qualifications'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesEF} onChange={(e) => {this.setState({matchTypesEF: e.target.checked})}}/>}
-      label='Eighth-finals'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesQF} onChange={(e) => {this.setState({matchTypesQF: e.target.checked})}}/>}
-      label='Quarterfinals'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesSF} onChange={(e) => {this.setState({matchTypesSF: e.target.checked})}}/>}
-      label='Semifinals'
-            />
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.matchTypesF} onChange={(e) => {this.setState({matchTypesF: e.target.checked})}}/>}
-      label='Finals'
-            />
-          </FormGroup>
-        </Grid>
-        <Grid item xs={4} style={{minWidth: '210px'}}>
-          <TextField
-      ref='minMatchNumber'
-      label='Lowest Match Number'
-      type='number'
-      variant='outlined'
-      fullWidth
-      value={this.state.minMatchNumber === 0 ? '' : this.state.minMatchNumber}
-      onChange={this.minMatchNumberHandler.bind(this)}
-          />
-        </Grid>
-        <Grid item xs={4} style={{minWidth: '210px'}}>
-          <TextField
-      ref='maxMatchNumber'
-      label='Highest Match Number'
-      type='number'
-      variant='outlined'
-      fullWidth
-      value={this.state.maxMatchNumber === 0 ? '' : this.state.maxMatchNumber}
-      onChange={this.maxMatchNumberHandler.bind(this)}
-          />
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '200px'}}>
-          <FormGroup>
-            <FormLabel>Match Types</FormLabel>
-            <FormControlLabel
-      control={<Checkbox color='primary' checked={this.state.isBlue} onChange={(e) => {this.setState({isBlue: e.target.checked})}}/>}
-      label='Blue Alliance'
-            />
-            <FormControlLabel
-      control={<Checkbox color='secondary' checked={this.state.isRed} onChange={(e) => {this.setState({isRed: e.target.checked})}}/>}
-      label='Red Alliance'
-            />
-          </FormGroup>
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '220px'}}>
-          <DatePicker
-      variant='inline'
-      autoOk={true}
-      inputVariant='outlined'
-      label='Earliest Modification Date'
-      fullWidth
-      value={this.state.minLastModified*1000}
-      labelFunc={(date) => {return (this.state.minLastModified === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
-      onChange={this.minLastModifiedChangeHandler.bind(this)}
-      onOpen={this.minLastModifiedOpenHandler.bind(this)}
-          />
-        </Grid>
-        <Grid item xs={3} style={{minWidth: '200px'}}>
-          <DatePicker
-      variant='inline'
-      autoOk={true}
-      inputVariant='outlined'
-      label='Latest Modification Date'
-      fullWidth
-      value={this.state.maxLastModified*1000}
-      labelFunc={(date) => {return (this.state.maxLastModified === 0 ? 'No date selected' : date.format('ddd, MMM Do YYYY'))}}
-      onChange={this.maxLastModifiedChangeHandler.bind(this)}
-      onOpen={this.maxLastModifiedOpenHandler.bind(this)}
-          />
-        </Grid>
-        </Grid>
-        {this.props.button ?
-        <Grid container item xs={12} spacing={2}>
-        <Grid item xs={6}>
-          <Button variant='outlined' onClick={this.setDefault.bind(this)}>Default</Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button color='primary' variant='outlined' onClick={this.submit.bind(this)}>Run</Button>
-        </Grid>
-         </Grid> : ''}
-        </Grid>
+          </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );

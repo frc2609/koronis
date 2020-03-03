@@ -1,7 +1,7 @@
 import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
 
-export const saveProcess = (inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction, inObj = {}, callback = () => {}) => {
+export const saveProcess = (inYear = -1, inQueryType = 'record', inDataType = 'metric', inName = 'default', inTitle = 'Default', inDescription = 'Default', inFunction = 'return NaN;', inObj = {}, callback = () => {}) => {
   var obj = inObj;
   if(typeof obj.id === 'undefined') {
     obj.id = User.genProcessUuid(inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction);

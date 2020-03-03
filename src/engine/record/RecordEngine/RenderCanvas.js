@@ -6,7 +6,7 @@ export default class RenderCanvas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canvasSize: {x:100,y:100}
+      canvasSize: {x: 100,y: 100}
     };
     this.wrapperOffset = 5;
     this.renderCanvasElement = {};
@@ -172,9 +172,11 @@ export default class RenderCanvas extends React.Component {
 
     this.resize();
   }
-  render() {return (
-    <div ref='renderCanvasWrapper' style={{width: '100%', height: '100%'}}>
-      <canvas ref='renderCanvas' width={this.state.canvasSize.x} height={this.state.canvasSize.y}></canvas>
-    </div>
-  );}
+  render() {
+    return (
+      <div ref='renderCanvasWrapper' style={{width: '100%', height: '100%'}}>
+        <canvas ref='renderCanvas' width={this.state.canvasSize.x} height={this.state.canvasSize.y}></canvas>
+      </div>
+    );
+  }
 }

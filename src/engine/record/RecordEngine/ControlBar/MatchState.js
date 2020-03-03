@@ -111,50 +111,50 @@ export default class MatchState extends React.Component {
         <Grid container spacing={3}>
           <Grid item xs style={{minWidth: '200px'}}>
           <DatePicker
-      variant='inline'
-      autoOk={true}
-      disableFuture={true}
-      inputVariant='outlined'
-      label='Match Date'
-      fullWidth
-      value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (Date.now())}
-      onChange={this.matchStartDateHandler.bind(this)}
+            variant='inline'
+            autoOk={true}
+            disableFuture={true}
+            inputVariant='outlined'
+            label='Match Date'
+            fullWidth
+            value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (Date.now())}
+            onChange={this.matchStartDateHandler.bind(this)}
           />
           </Grid>
           <Grid item xs={6} style={{minWidth: '200px'}}>
           <TextField
-      ref='targetTeamNumber'
-      label='Robot Team Number'
-      type='number'
-      variant='outlined'
-      fullWidth
-      error={this.state.targetTeamNumber === 0 || this.state.targetTeamNumber < -1}
-      value={this.state.targetTeamNumber <= 0 ? '' : this.state.targetTeamNumber}
-      helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
-      onChange={this.targetTeamNumberHandler.bind(this)}
+            ref='targetTeamNumber'
+            label='Robot Team Number'
+            type='number'
+            variant='outlined'
+            fullWidth
+            error={this.state.targetTeamNumber === 0 || this.state.targetTeamNumber < -1}
+            value={this.state.targetTeamNumber <= 0 ? '' : this.state.targetTeamNumber}
+            helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
+            onChange={this.targetTeamNumberHandler.bind(this)}
           />
           </Grid>
           <Grid item xs={6} style={{minWidth: '150px'}}>
           <TextField
-      ref='matchNumber'
-      label='Match Number'
-      type='number'
-      variant='outlined'
-      fullWidth
-      error={this.state.matchNumber === 0 || this.state.matchNumber < -1}
-      value={this.state.matchNumber <= 0 ? '' : this.state.matchNumber}
-      helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
-      onChange={this.matchNumberHandler.bind(this)}
+            ref='matchNumber'
+            label='Match Number'
+            type='number'
+            variant='outlined'
+            fullWidth
+            error={this.state.matchNumber === 0 || this.state.matchNumber < -1}
+            value={this.state.matchNumber <= 0 ? '' : this.state.matchNumber}
+            helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
+            onChange={this.matchNumberHandler.bind(this)}
           />
           </Grid>
           <Grid item xs={6} style={{minWidth: '200px'}}>
             <FormControl variant='outlined' fullWidth>
               <InputLabel>Match Type</InputLabel>
               <Select
-      ref='matchType'
-      onChange={this.matchTypeHandler.bind(this)}
-      value={this.state.matchType}
-      fullWidth
+                ref='matchType'
+                onChange={this.matchTypeHandler.bind(this)}
+                value={this.state.matchType}
+                fullWidth
               >
                 <MenuItem value='t'>Test</MenuItem>
                 <MenuItem value='pf'>Practice Field</MenuItem>
@@ -175,19 +175,19 @@ export default class MatchState extends React.Component {
           </Grid>
           <Grid item xs={6} style={{minWidth: '250px'}}>
             <TextField
-      ref='comments'
-      variant='outlined'
-      multiline
-      fullWidth
-      rowsMax='5'
-      label='Comments'
-      placeholder='Enter Comments Here'
-      onChange={this.commentsHandler.bind(this)}
+              ref='comments'
+              variant='outlined'
+              multiline
+              fullWidth
+              rowsMax='5'
+              label='Comments'
+              placeholder='Enter Comments Here'
+              onChange={this.commentsHandler.bind(this)}
             />
           </Grid>
         </Grid>
         </Container>
       </Dialog>
-    )
+    );
   }
 }
