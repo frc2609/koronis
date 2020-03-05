@@ -21,29 +21,33 @@ export default class MainAppBar extends React.Component {
   }
   openMenu() {this.setState({menuState: true});}
   closeMenu() {this.setState({menuState: false});}
-  render() {return (
-    <div>
-      <AppBar position='fixed'>
-        <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu}/>
-        <Toolbar>
-          <IconButton onClick={this.openMenu} edge='start' style={{
-            marginRight: '4vw'
-          }} color='inherit' aria-label='menu'>
-            <MenuIcon />
-          </IconButton>
-
-          <Typography variant='h6' style={{
-            flexGrow: 1
-          }}>
-            {this.props.title}
-          </Typography>
-
-          <Button color='inherit'>
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Toolbar style={{marginBottom: '4vh'}} />
-    </div>
-  );}
+  render() {
+    return (
+      <>
+        <AppBar position='fixed'>
+          <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu}/>
+          <Toolbar>
+            <IconButton onClick={this.openMenu} edge='start' color='inherit' aria-label='menu'
+              style={{
+                marginRight: '4vw'
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant='h6'
+              style={{
+                flexGrow: 1
+              }}
+            >
+              {this.props.title}
+            </Typography>
+            <Button color='inherit'>
+              Login
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Toolbar style={{marginBottom: '4vh'}} />
+      </>
+    );
+  }
 }

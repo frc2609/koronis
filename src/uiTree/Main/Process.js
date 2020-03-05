@@ -31,7 +31,7 @@ class Process extends React.Component {
   }
   render() {
     return (
-      <div>
+      <>
         {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
         <Route exact path='/process' component={Edit} />
         <Route exact path='/process/edit' component={Edit} />
@@ -55,7 +55,7 @@ class Process extends React.Component {
             <BottomNavigationAction label='Execute' value='execute' icon={<PlayArrowIcon />} />
           </BottomNavigation>
         </Paper>
-      </div>
+      </>
     );
   }
 }

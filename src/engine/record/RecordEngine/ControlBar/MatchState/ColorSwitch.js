@@ -9,7 +9,7 @@ export default class ColorSwitch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRed: true
+      isRed: props.value
     };
 
     this.styles = {

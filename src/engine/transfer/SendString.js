@@ -163,7 +163,7 @@ export default class SendString extends React.Component {
           </Grid>
           <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
             <Typography gutterBottom>
-              QR Codes Frequency
+              QR Code Period
             </Typography>
             <Slider
               value={(this.state.drawInterval/1000)}

@@ -16,12 +16,18 @@ export default class SectionLink extends React.Component {
   }
   render() {
     return (
-      <ListItem button onClick={this.handleOnClick} style={{
-        width: '45vw'
-      }}>
+      <ListItem button onClick={this.handleOnClick}
+        style={{
+          width: '45vw'
+        }}
+      >
         <ListItemIcon>{this.props.icon}</ListItemIcon>
         <ListItemText primary={this.props.title} />
-        {this.state.redirect ? <Redirect push to={this.props.to} /> : null}
+        {this.state.redirect ?
+          <Redirect push to={this.props.to} />
+        :
+          null
+        }
       </ListItem>
     );
   }

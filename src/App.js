@@ -16,9 +16,11 @@ import 'App.css';
 export default class App extends React.Component {
   render() {
     return (
-      <div className='App' style={{
-        flexGrow: 1
-      }}>
+      <div className='App'
+        style={{
+          flexGrow: 1
+        }}
+      >
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <CssBaseline />
           <BrowserRouter basename={Config.baseUrl} >

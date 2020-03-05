@@ -61,14 +61,18 @@ export default class RecordSelectModal extends React.Component {
       <Dialog fullScreen open={this.props.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
-              marginRight: '4vw'
-            }}>
+            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}
+              style={{
+                marginRight: '4vw'
+              }}
+            >
               <Close />
             </IconButton>
-            <Typography variant='h6' style={{
-              flexGrow: 1
-            }}>
+            <Typography variant='h6'
+              style={{
+                flexGrow: 1
+              }}
+            >
               Select Records
             </Typography>
             <Button color='inherit'
@@ -83,32 +87,36 @@ export default class RecordSelectModal extends React.Component {
         <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={10}>
-              <RecordQueryBar ref='recordQueryBar' name='transfer' button onSubmit={this.refresh.bind(this)}/>
+              <RecordQueryBar ref='recordQueryBar' button onSubmit={this.refresh.bind(this)}/>
             </Grid>
             <Grid item xs={2}>
-              <IconButton variant='contained' onClick={() => {
-                this.setState({tableMode: !this.state.tableMode});
-              }}>
-                {!this.state.tableMode ? <TocIcon fontSize='large' /> : <AppsIcon fontSize='large' />}
+              <IconButton variant='contained'
+                onClick={() => {
+                  this.setState({tableMode: !this.state.tableMode});
+                }}
+              >
+                {!this.state.tableMode ?
+                  <TocIcon fontSize='large' />
+                :
+                  <AppsIcon fontSize='large' />
+                }
               </IconButton>
             </Grid>
             <Grid item xs={12}>
               {this.state.loading ?
                 <CircularProgress />
               :
-                <RecordSelect ref='recordSelect' records={this.state.records} table={this.state.tableMode}
+                <RecordSelect ref='recordSelect' records={this.state.records} table={this.state.tableMode} onRemove={this.refresh.bind(this)}
                   onSelect={(selectedRecords) => {
                     this.setState({disable: (
                       typeof selectedRecords === 'undefined' ||
                       selectedRecords.length === 0
                     )});
                   }}
-                  onRemove={this.refresh.bind(this)}
                 />
               }
             </Grid>
           </Grid>
-
         </Container>
       </Dialog>
     );

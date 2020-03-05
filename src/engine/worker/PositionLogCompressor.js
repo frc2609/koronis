@@ -10,7 +10,7 @@ export function processPositionLog(positionLogIn) {
   //Delete prematch movement
   var newArr = [];
   for(var i = 0;i < positionLog.length;i++) {
-    if(positionLog[i].timeStamp <= 409.6 && positionLog[i].timeStamp >= 0) {
+    if(positionLog[i].timeStamp <= 4096 && positionLog[i].timeStamp >= 0) {
       if(i + 1 < positionLog.length) {
         if(positionLog[i].timeStamp > 0 || positionLog[i+1].timeStamp > 0) {
           newArr.push(positionLog[i]);

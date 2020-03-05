@@ -171,7 +171,7 @@ export default class MatchState extends React.Component {
             <FormControl variant='outlined' fullWidth>
               <InputLabel shrink>Alliance</InputLabel>
             </FormControl>
-            <ColorSwitch onChange={this.isRedHandler.bind(this)}/>
+            <ColorSwitch value={this.state.isRed} onChange={this.isRedHandler.bind(this)}/>
           </Grid>
           <Grid item xs={6} style={{minWidth: '250px'}}>
             <TextField

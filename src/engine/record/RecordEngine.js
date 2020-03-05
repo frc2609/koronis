@@ -435,7 +435,10 @@ export default class RecordEngine extends React.Component {
   }
   render() {
     return (
-      <Box ref='mainContainer'>
+      <Box ref='mainContainer' style={{
+        overflow: 'hidden',
+        position: 'fixed'
+      }}>
         <ControlBar
           ref='controlBar'
           play={this.start.bind(this)}
