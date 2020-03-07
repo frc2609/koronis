@@ -7,7 +7,7 @@ import 'typeface-roboto';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import * as Sync from 'package/Sync';
+import * as Sync from 'sync/Sync';
 
 Sync.init();
 

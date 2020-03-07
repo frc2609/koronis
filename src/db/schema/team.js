@@ -16,6 +16,9 @@ export const teamSchema = {
     name: {
       type: 'string'
     },
+    schoolName: {
+      type: 'string'
+    },
     city: {
       type: 'string'
     },

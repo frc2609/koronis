@@ -4,7 +4,61 @@ var deepcopy = require('deep-copy');
 
 export const insertTeam = async (inTeam) => {
   var teamCollection = (await Db.getTeams());
-  return (await teamCollection.insert(deepcopy(inTeam)));
+  var currObj = deepcopy(inTeam);
+  var prevDoc = (await teamCollection.findOne({key: currObj.key}).exec());
+  if(prevDoc === null) {
+    console.info('[Interface] Inserting team');
+    return (await teamCollection.insert(currObj));
+  }
+  else {
+    console.info('[Interface] Updating team');
+    return (await prevDoc.update({$set: currObj}));
+  }
+}
+
+export const insertTbaTeam = async (inTeam) => {
+  var teamCollection = (await Db.getTeams());
+  var currObj = deepcopy(inTeam);
+  currObj.teamNumber = currObj['team_number'];
+  delete currObj['team_number'];
+  currObj.schoolName = currObj['school_name'];
+  delete currObj['school_name'];
+  currObj.stateProv = currObj['state_prov'];
+  delete currObj['state_prov'];
+  delete currObj.address;
+  delete currObj['postal_code'];
+  delete currObj['gmaps_place_id'];
+  delete currObj['gmaps_url'];
+  delete currObj.lat;
+  delete currObj.lng;
+  delete currObj['location_name'];
+  currObj.rookieYear = currObj['rookie_year'];
+  delete currObj['rookie_year'];
+  delete currObj['home_championship'];
+  //Clear out null values
+  Object.keys(currObj).forEach((item, i) => {
+    if(currObj[item] === null) {
+      if(
+        item !== 'teamNumber' &&
+        item !== 'rookieYear'
+      ) {
+        currObj[item] = '';
+      }
+      else {
+        currObj[item] = -1;
+      }
+    }
+  });
+
+  var prevDoc = (await teamCollection.findOne({key: currObj.key}).exec());
+  if(prevDoc === null) {
+    console.info('[Interface] Inserting team');
+    return (await teamCollection.insert(currObj));
+  }
+  else {
+    console.info('[Interface] Updating team');
+    return (await prevDoc.update({$set: currObj}));
+  }
 }
 
 export const insertRecord = async (inRecord) => {
