@@ -10,6 +10,10 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import SelectAllIcon from '@material-ui/icons/SelectAll';
 import { FiberManualRecord, Code } from '@material-ui/icons';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -28,6 +32,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import MaterialTable from "material-table";
 
+import ChartCard from 'engine/process/ChartCard';
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
@@ -54,10 +59,11 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-export default class AnalyzeRecordMetric extends React.Component {
+export default class AnalyzeRecord extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      tab: 'metric',
       openRecordModal: false,
       openProcessModal: false,
       selectedRecords: [],
@@ -120,8 +126,22 @@ export default class AnalyzeRecordMetric extends React.Component {
     })
   }
   showAll() {
+    var processQueryObj = {};
+    if(this.state.tab === 'metric') {
+      processQueryObj = {
+        queryType: 'record',
+        dataType: 'metric'
+      };
+    }
+    else {
+      processQueryObj = {
+        queryType: 'record',
+        dataType: 'chart'
+      };
+    }
+    console.debug(processQueryObj);
     Interface.getRecords({}, {}).then((recs) => {
-      Interface.getProcesses({}, {}).then((procs) => {
+      Interface.getProcesses(processQueryObj, {}).then((procs) => {
         this.setState({
           selectedRecords: recs,
           selectedProcesses: procs
@@ -194,20 +214,51 @@ export default class AnalyzeRecordMetric extends React.Component {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <MaterialTable
-                title='Metrics'
-                icons={tableIcons}
-                style={{marginBottom: '4vh'}}
-                padding='dense'
-                color='primary'
-                columns={this.state.columns}
-                data={this.state.data}
-                options={{
-                  exportButton: true,
-                  filtering: true,
-                  doubleHorizontalScroll: true
-                }}
-              />
+              <Card style={{marginBottom: '4vh'}}>
+                <Tabs
+                  value={this.state.tab}
+                  onChange={(e, v) => {this.setState({tab: v})}}
+                  indicatorColor='primary'
+                  textColor='primary'
+                  variant='fullWidth'
+                >
+                  <Tab label='Metric' value='metric' />
+                  <Tab label='Chart' value='chart' />
+                </Tabs>
+                {this.state.tab === 'metric' ?
+                  <MaterialTable
+                    title='Metrics'
+                    icons={tableIcons}
+                    padding='dense'
+                    color='primary'
+                    columns={this.state.columns}
+                    data={this.state.data}
+                    options={{
+                      exportButton: true,
+                      filtering: true,
+                      doubleHorizontalScroll: true
+                    }}
+                  />
+                :
+                  <Grid container spacing={2}>
+                    {(typeof this.state.selectedRecords === 'undefined' || this.state.selectedRecords.length === 0) ?
+                      <Grid item xs={12}>
+                        <Typography variant='body1' align='center'>
+                          No records to display
+                        </Typography>
+                      </Grid>
+                    :
+                      this.state.selectedRecords.map((e, i) => {
+                        return (
+                          <Grid key={i} item xs={12}>
+                            <ChartCard records={e} process={this.state.selectedProcesses[0]} />
+                          </Grid>
+                        );
+                      })
+                    }
+                  </Grid>
+                }
+              </Card>
             </Grid>
           </Grid>
         </Container>

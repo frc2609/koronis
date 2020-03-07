@@ -94,12 +94,12 @@ export default class TransferHandler extends React.Component {
         <Container maxWidth='xl'>
           <Card style={{marginBottom: '4vh'}}>
             <Tabs
-          value={this.state.tab}
-          onChange={this.tabHandler.bind(this)}
-          indicatorColor='primary'
-          textColor='primary'
-          variant='fullWidth'
-          style={{marginBottom: '4vh'}}
+              value={this.state.tab}
+              onChange={this.tabHandler.bind(this)}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='fullWidth'
+              style={{marginBottom: '4vh'}}
             >
               <Tab label='Send' value='sending' />
               <Tab label='Recieve' value='recieving' />
