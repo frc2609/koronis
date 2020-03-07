@@ -7,6 +7,10 @@ import 'typeface-roboto';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import * as Sync from 'package/Sync';
+
+Sync.init();
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 serviceWorker.register();
