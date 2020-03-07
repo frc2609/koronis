@@ -8,8 +8,8 @@ import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import SectionLink from 'uiTree/MainAppBar/SectionLink';
 
 export default class SideNav extends React.Component {
-  render() {return (
-    <div>
+  render() {
+    return (
       <Drawer open={this.props.menuState} onClose={this.props.closeMenuCallback}>
         <List>
           <SectionLink to='/' title='Home' icon={<Home />} closeMenuCallback={this.props.closeMenuCallback} />
@@ -19,6 +19,6 @@ export default class SideNav extends React.Component {
           <SectionLink to='/transfer' title='Transfer' icon={<SyncAltIcon />} closeMenuCallback={this.props.closeMenuCallback} />
         </List>
       </Drawer>
-    </div>
-  );}
+    );
+  }
 }

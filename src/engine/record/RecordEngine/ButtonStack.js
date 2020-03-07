@@ -7,7 +7,7 @@ export default class ButtonStack extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canvasSize: {x:100,y:100}
+      canvasSize: {x: 100,y: 100}
     };
     this.wrapperOffset = 5;
     this.buttonStackElement = {};
@@ -375,9 +375,11 @@ export default class ButtonStack extends React.Component {
 
     this.resize();
   }
-  render() {return (
-    <div ref='buttonStackWrapper' style={{width: '100%', height: '100%'}}>
-      <canvas ref='buttonStack' width={this.state.canvasSize.x} height={this.state.canvasSize.y}></canvas>
-    </div>
-  );}
+  render() {
+    return (
+      <div ref='buttonStackWrapper' style={{width: '100%', height: '100%'}}>
+        <canvas ref='buttonStack' width={this.state.canvasSize.x} height={this.state.canvasSize.y}></canvas>
+      </div>
+    );
+  }
 }

@@ -27,23 +27,25 @@ export default class CodeEditor extends React.Component {
       this.setState({currStr: this.props.value});
     }
   }
-  render() {return (
-    <div style={{marginBottom: '4vh', textAlign: 'left', border: '1px grey solid', height: '100%'}}>
-      <CodeMirror
-        ref='codeMirror'
-        value={this.state.currStr}
-        onBeforeChange={(editor, data, value) => {this.setState({currStr: value})}}
-        onChange={(editor, data, value) => {if(typeof this.props.onChange === 'function') {this.props.onChange(value)}}}
-        options={{
-          mode: 'javascript',
-          matchBrackets: true,
-          autoCloseBrackets: true,
-          foldGutter: true,
-          gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-          tabSize: 2,
-          lineNumbers: true
-        }}
-      />
-    </div>
-  );}
+  render() {
+    return (
+      <div style={{marginBottom: '4vh', textAlign: 'left', border: '1px grey solid', height: '100%'}}>
+        <CodeMirror
+          ref='codeMirror'
+          value={this.state.currStr}
+          onBeforeChange={(editor, data, value) => {this.setState({currStr: value})}}
+          onChange={(editor, data, value) => {if(typeof this.props.onChange === 'function') {this.props.onChange(value)}}}
+          options={{
+            mode: 'javascript',
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            foldGutter: true,
+            gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+            tabSize: 2,
+            lineNumbers: true
+          }}
+        />
+      </div>
+    );
+  }
 }

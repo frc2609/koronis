@@ -42,9 +42,9 @@ export default class ColorSwitch extends React.Component {
         </Grid>
         <Grid item xs={4}>
           <this.customSwitch
-      checked={this.state.isRed}
-      onChange={this.onChange.bind(this)}
-      color='default'
+            checked={this.state.isRed}
+            onChange={this.onChange.bind(this)}
+            color='default'
           />
         </Grid>
         <Grid item xs={4} style={{textAlign: 'left'}}>

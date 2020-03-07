@@ -30,7 +30,7 @@ class Analyze extends React.Component {
   }
   render() {
     return (
-      <div>
+      <>
         {this.state.redirect ? <Redirect push to={'/analyze/' + this.state.tab} /> : ''}
         <Route exact path='/analyze' component={AnalyzeRecord} />
         <Route exact path='/analyze/record' component={AnalyzeRecord} />
@@ -54,7 +54,7 @@ class Analyze extends React.Component {
             <BottomNavigationAction label='Team' disabled value='team' icon={<GroupIcon />} />
           </BottomNavigation>
         </Paper>
-      </div>
+      </>
     );
   }
 }
