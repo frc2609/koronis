@@ -83,20 +83,29 @@ export default class ControlBar extends React.Component {
           <Button style={{height:'100%'}} onClick={this.flipUpdate.bind(this)} color='primary'>
             <Flip />
           </Button>
-          {(typeof this.state.status === 'undefined') ? '' :
+          {(typeof this.state.status === 'undefined') ?
+            ''
+          :
             this.state.status.map((e, i) => {
               var colorPaletteArr = this.props.colorPalette[e.style.palette]
               var fill = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.fill;})].hex;
               var outline = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.outline;})].hex;
               var text = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.text;})].hex;
-              return (<Button key={i} style={{
-                height:'100%',
-                backgroundColor: fill,
-                borderColor: outline,
-                color: text
-              }} disableRipple={true} disableFocusRipple={true}>
-                {e.title}
-              </Button>);
+              return (
+                <Button
+                  key={i}
+                  style={{
+                    height:'100%',
+                    backgroundColor: fill,
+                    borderColor: outline,
+                    color: text
+                  }}
+                  disableRipple={true}
+                  disableFocusRipple={true}
+                >
+                  {e.title}
+                </Button>
+              );
             })
           }
           <Button style={{height:'100%'}} color='default' disableRipple={true} disableFocusRipple={true}>
@@ -108,21 +117,40 @@ export default class ControlBar extends React.Component {
           <Button style={{height:'100%'}} onClick={this.matchStateOpen.bind(this)} color='default'>
             <Create />
           </Button>
-          {this.state.completeInfo ? <Button style={{height:'100%'}} onClick={this.save.bind(this)} color='default'>
-             <Save />
-          </Button> : '' }
+          {this.state.completeInfo ?
+            <Button style={{height:'100%'}} onClick={this.save.bind(this)} color='default'>
+              <Save />
+            </Button>
+          :
+            ''
+          }
           <Button style={{height:'100%'}} onClick={this.settings.bind(this)} color='default'>
             <SettingsIcon />
           </Button>
-          {this.state.playing ? '' : <Button style={{height:'100%'}} onClick={this.stop.bind(this)} color='secondary'>
-            {this.state.played ? <Replay /> : <Close />}
-           </Button>}
+          {this.state.playing ?
+            ''
+          :
+            <Button style={{height:'100%'}} onClick={this.stop.bind(this)} color='secondary'>
+              {this.state.played ?
+                <Replay />
+              :
+                <Close />
+              }
+            </Button>
+          }
         </ButtonGroup>
-        <LinearProgress variant='determinate' value={
-          (this.props.progress > 100) ? 100 : this.props.progress
-        } color={
-          (this.props.progress > 100) ? 'secondary' : 'primary'
-        } />
+        <LinearProgress variant='determinate'
+          value={(this.props.progress > 100) ?
+            100
+          :
+            this.props.progress
+          }
+          color={(this.props.progress > 100) ?
+            'secondary'
+          :
+            'primary'
+          }
+        />
       </Box>
     );
   }

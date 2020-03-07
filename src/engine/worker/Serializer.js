@@ -1,14 +1,17 @@
 var boolToBin = (inBool) => {
   return inBool ? [1] : [0];
 }
+
 var binToBool = (inBin) => {
   return inBin.length > 0 && inBin[0] === 1;
 }
+
 var binStreamToBool = (inBinStream) => {
   var output = binToBool(inBinStream);
   inBinStream.splice(0, 1);
   return output;
 }
+
 var intToBin = (inInteger) => {
   var actualInteger = Math.abs(inInteger % 65536);
   var binArr = [];
@@ -16,16 +19,19 @@ var intToBin = (inInteger) => {
   binArr.push((actualInteger & 255) >>> 0);
   return binArr;
 }
+
 var binToInt = (inBin) => {
   var firstByte = (inBin.length > 0 ? inBin[0] << 8 : 0);
   var secondByte = (inBin.length > 1 ? inBin[1] : 0);
   return (firstByte + secondByte) >>> 0;
 }
+
 var binStreamToInt = (inBinStream) => {
   var output = binToInt(inBinStream);
   inBinStream.splice(0, 2);
   return output;
 }
+
 var dateToBin = (inInteger) => {
   var actualInteger = Math.abs(inInteger % 4294967296);
   var binArr = [];
@@ -35,6 +41,7 @@ var dateToBin = (inInteger) => {
   binArr.push((actualInteger & 255) >>> 0);
   return binArr;
 }
+
 var binToDate = (inBin) => {
   var firstByte = (inBin.length > 0 ? inBin[0] << 24 : 0);
   var secondByte = (inBin.length > 1 ? inBin[1] << 16 : 0);
@@ -42,11 +49,13 @@ var binToDate = (inBin) => {
   var fourthByte = (inBin.length > 3 ? inBin[3] : 0);
   return (firstByte + secondByte + thirdByte + fourthByte) >>> 0;
 }
+
 var binStreamToDate = (inBinStream) => {
   var output = binToDate(inBinStream);
   inBinStream.splice(0, 4);
   return output;
 }
+
 var numToBin = (inNum) => {
   var actualInteger = (Math.trunc(inNum*100000) % 4294967296);
   var binArr = [];
@@ -56,6 +65,7 @@ var numToBin = (inNum) => {
   binArr.push((actualInteger & 255) >>> 0);
   return binArr;
 }
+
 var binToNum = (inBin) => {
   var firstByte = (inBin.length > 0 ? inBin[0] << 24 : 0);
   var secondByte = (inBin.length > 1 ? inBin[1] << 16 : 0);
@@ -63,11 +73,13 @@ var binToNum = (inBin) => {
   var fourthByte = (inBin.length > 3 ? inBin[3] : 0);
   return ((firstByte + secondByte + thirdByte + fourthByte) >>> 0)/100000;
 }
+
 var binStreamToNum = (inBinStream) => {
   var output = binToNum(inBinStream);
   inBinStream.splice(0, 4);
   return output;
 }
+
 var posToBin = (inPos) => {
   var actualX = Math.abs(inPos.x) % 64;
   var actualY = Math.abs(inPos.y) % 64;
@@ -78,6 +90,7 @@ var posToBin = (inPos) => {
   binArr[2] = (actualT & 255) >>> 0;
   return binArr;
 }
+
 var binToPos = (inBin) => {
   var firstByte = (inBin.length > 0 ? inBin[0] : 0);
   var secondByte = (inBin.length > 1 ? inBin[1] : 0);
@@ -88,11 +101,13 @@ var binToPos = (inBin) => {
   obj.timeStamp = ((((secondByte & 15) << 8) + thirdByte) / 10);
   return obj;
 }
+
 var binStreamToPos = (inBinStream) => {
   var output = binToPos(inBinStream);
   inBinStream.splice(0, 3);
   return output;
 }
+
 var binStrToBinArr = (inBinStr) => {
   //Will include null padding
   var binArr = [];
@@ -101,6 +116,7 @@ var binStrToBinArr = (inBinStr) => {
   }
   return binArr;
 }
+
 var binArrToBinStr = (inBinArr) => {
   //Will be null padded to nearest 2 bytes
   var output = '';
@@ -109,6 +125,7 @@ var binArrToBinStr = (inBinArr) => {
   }
   return output;
 }
+
 var checkIsAscii = (inString) => {
   var max = 0;
   for(var i = 0;i < inString.length;i++) {
@@ -116,6 +133,7 @@ var checkIsAscii = (inString) => {
   }
   return max <= 255;
 }
+
 var strToBin = (inString) => {
   var isAscii = checkIsAscii(inString);
   var actualString = inString.substring(0, 32768);
@@ -133,6 +151,7 @@ var strToBin = (inString) => {
   }
   return binArr;
 }
+
 var binToStr = (inBin, stream = false) => {
   if(inBin.length >= 2) {
     var isAscii = (inBin[0] >>> 7) > 0;
@@ -159,9 +178,11 @@ var binToStr = (inBin, stream = false) => {
   }
   return '';
 }
+
 var binStreamToStr = (inBinStream) => {
   return binToStr(inBinStream, true);
 }
+
 var encodeRecord = (record) => {
   var resBinArr = [];
   resBinArr.push(strToBin(record.id));
@@ -196,6 +217,7 @@ var encodeRecord = (record) => {
   }
   return resBinArr.flat();
 }
+
 var decodeRecord = (inBin, stream = false) => {
   var bin = !stream ? inBin.slice() : inBin;
   var resObj = {};
@@ -240,6 +262,7 @@ var decodeRecord = (inBin, stream = false) => {
   }
   return resObj;
 }
+
 var encodeArrRecord = (records) => {
   var resBinArr = [];
   resBinArr.push(intToBin(records.length));
@@ -248,6 +271,7 @@ var encodeArrRecord = (records) => {
   }
   return resBinArr.flat();
 }
+
 var decodeArrRecord = (inBin) => {
   var bin = inBin;
   var resArr = [];
@@ -257,6 +281,7 @@ var decodeArrRecord = (inBin) => {
   }
   return resArr;
 }
+
 var encodeProcess = (process) => {
   var resBinArr = [];
   resBinArr.push(strToBin(process.id));
@@ -279,6 +304,7 @@ var encodeProcess = (process) => {
   }
   return resBinArr.flat();
 }
+
 var decodeProcess = (inBin, stream = false) => {
   var bin = !stream ? inBin.slice() : inBin;
   var resObj = {};
@@ -305,6 +331,7 @@ var decodeProcess = (inBin, stream = false) => {
   }
   return resObj;
 }
+
 var encodeArrProcess = (processes) => {
   var resBinArr = [];
   resBinArr.push(intToBin(processes.length));
@@ -313,6 +340,7 @@ var encodeArrProcess = (processes) => {
   }
   return resBinArr.flat();
 }
+
 var decodeArrProcess = (inBin) => {
   var bin = inBin;
   var resArr = [];
@@ -322,6 +350,7 @@ var decodeArrProcess = (inBin) => {
   }
   return resArr;
 }
+
 export function serializeRecord(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {
@@ -332,6 +361,7 @@ export function serializeRecord(input, isEncoding = true, isString = true) {
   }
   return output;
 }
+
 export function serializeRecords(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {
@@ -342,6 +372,7 @@ export function serializeRecords(input, isEncoding = true, isString = true) {
   }
   return output;
 }
+
 export function serializeProcess(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {
@@ -352,6 +383,7 @@ export function serializeProcess(input, isEncoding = true, isString = true) {
   }
   return output;
 }
+
 export function serializeProcesses(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {

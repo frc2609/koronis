@@ -46,20 +46,28 @@ export default class Record extends React.Component {
   }
   render() {
     return (
-      this.state.recording ? <RecordEngine onClose={this.recordingEngineHandler.bind(this)}/> :
-      <>
-      <Container maxWidth='xl'>
-      <RecordQueryBar ref='recordQueryBar' name='record' button onSubmit={this.refresh.bind(this)}/>
-      {this.state.loading ? <CircularProgress /> : <RecordView records={this.state.records} onRemove={this.refresh.bind(this)} />}
-      </Container>
-      <Fab color='primary' onClick={this.startRecording.bind(this)} style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px'}}
-      >
-        <AddIcon />
-      </Fab>
-      </>
+      this.state.recording ?
+        <RecordEngine onClose={this.recordingEngineHandler.bind(this)}/>
+      :
+        <>
+          <Container maxWidth='xl'>
+            <RecordQueryBar ref='recordQueryBar' name='record' button onSubmit={this.refresh.bind(this)}/>
+            {this.state.loading ?
+              <CircularProgress />
+            :
+              <RecordView records={this.state.records} onRemove={this.refresh.bind(this)} />
+            }
+          </Container>
+          <Fab color='primary' onClick={this.startRecording.bind(this)}
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px'
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </>
     );
   }
 }

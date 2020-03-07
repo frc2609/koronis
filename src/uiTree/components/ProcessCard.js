@@ -42,17 +42,15 @@ export default class ProcessCard extends React.Component {
     return (
       <Card>
         <CardHeader style={{textAlign: 'left'}}
-          avatar={
-            this.props.selectable ? (
-              <Checkbox
-                checked={this.props.selected}
-                color='default'
-                checkedIcon={<CheckCircleIcon color='primary' style={{fontSize: 40}} />}
-                icon={<DescriptionIcon style={{fontSize: 40}} />}
-              />
-            ) : (
-              <DescriptionIcon fontSize='large' />
-            )
+          avatar={this.props.selectable ?
+            <Checkbox
+              checked={this.props.selected}
+              color='default'
+              checkedIcon={<CheckCircleIcon color='primary' style={{fontSize: 40}} />}
+              icon={<DescriptionIcon style={{fontSize: 40}} />}
+            />
+          :
+            <DescriptionIcon fontSize='large' />
           }
           title={this.props.process.title}
           action={

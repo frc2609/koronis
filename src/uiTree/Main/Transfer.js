@@ -30,8 +30,12 @@ class Transfer extends React.Component {
   }
   render() {
     return (
-      <div>
-        {this.state.redirect ? <Redirect push to={'/transfer/' + this.state.tab} /> : ''}
+      <>
+        {this.state.redirect ?
+          <Redirect push to={'/transfer/' + this.state.tab} />
+        : 
+          ''
+        }
         <Route exact path='/transfer' component={TransferRecord} />
         <Route exact path='/transfer/record' component={TransferRecord} />
         <Route exact path='/transfer/process' component={TransferProcess} />
@@ -54,7 +58,7 @@ class Transfer extends React.Component {
             <BottomNavigationAction  label='Processes' value='process' icon={<Code />} />
           </BottomNavigation>
         </Paper>
-      </div>
+      </>
     );
   }
 }

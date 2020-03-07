@@ -1,7 +1,8 @@
 var store = require('store');
 
+//Currently not being used
 export const inject = (inYear) => {
-  if(process.env.NODE_ENV === 'development') {
+  if(process.env.REACT_APP_ENV === 'development') {
     var botStateDefinition = {
       botState: {
         pos: {
