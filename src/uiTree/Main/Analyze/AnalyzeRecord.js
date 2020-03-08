@@ -38,6 +38,7 @@ import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
 var moment = require('moment');
 var deepCompare = require('deep-compare');
+var store = require('store');
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -126,22 +127,19 @@ export default class AnalyzeRecord extends React.Component {
     })
   }
   showAll() {
-    var processQueryObj = {};
+    var processQueryObj = {
+      queryType: 'record',
+      dataType: 'chart',
+      $or: [
+        {year: store.get('settings/currentYear')},
+        {year: -1}
+      ]
+    };
     if(this.state.tab === 'metric') {
-      processQueryObj = {
-        queryType: 'record',
-        dataType: 'metric'
-      };
+      processQueryObj.dataType = 'metric';
     }
-    else {
-      processQueryObj = {
-        queryType: 'record',
-        dataType: 'chart'
-      };
-    }
-    console.debug(processQueryObj);
-    Interface.getRecords({}, {}).then((recs) => {
-      Interface.getProcesses(processQueryObj, {}).then((procs) => {
+    Interface.getRecords({year: store.get('settings/currentYear')}).then((recs) => {
+      Interface.getProcesses(processQueryObj).then((procs) => {
         this.setState({
           selectedRecords: recs,
           selectedProcesses: procs
@@ -194,11 +192,11 @@ export default class AnalyzeRecord extends React.Component {
               <ButtonGroup fullWidth>
                 <Button onClick={() => {this.setState({openRecordModal: true})}}>
                   <FiberManualRecord />
-                  Records
+                  Select Records
                 </Button>
                 <Button onClick={() => {this.setState({openProcessModal: true})}}>
                   <Code />
-                  Processes
+                  Select Processes
                 </Button>
               </ButtonGroup>
             </Grid>

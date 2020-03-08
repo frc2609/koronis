@@ -4,15 +4,17 @@ import * as TbaTeam from 'sync/tba/TbaTeam';
 
 export const update = () => {
   try {
-    Package.get();
-    Process.update();
-    TbaTeam.update();
+    if(window.navigator.onLine) {
+      Package.get();
+      Process.update();
+      TbaTeam.update();
+    }
   }
   catch(err) {}
 }
 
 export const init = () => {
   window.addEventListener('online', update);
-  window.setInterval(update, 5*60*1000); //Update every 5 miniutes
+  window.setInterval(update, 10*60*1000); //Update every 10 miniutes
   update();
 }

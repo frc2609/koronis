@@ -62,8 +62,8 @@ export const init = async () => {
       //Set default year
       if(availableYears.length > 0) {
         var gS = store.get('package/' + availableYears[0] + '/gameStateDefinition');
-        if(typeof store.get('record/settings/currentYear') === 'undefined') {
-          store.set('record/settings/currentYear', gS.gameState.year);
+        if(typeof store.get('settings/currentYear') === 'undefined') {
+          store.set('settings/currentYear', gS.gameState.year);
         }
       }
       //Store new versionNumber to local store

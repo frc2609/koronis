@@ -14,6 +14,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -33,11 +34,12 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import MaterialTable from "material-table";
 
 import ChartCard from 'engine/process/ChartCard';
+import TeamCard from 'uiTree/components/TeamCard';
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
 var moment = require('moment');
 var deepCompare = require('deep-compare');
+var store = require('store');
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -64,12 +66,15 @@ export default class AnalyzeTeam extends React.Component {
     super(props);
     this.state = {
       tab: 'metric',
-      openRecordModal: false,
+      targetTeam: 0,
       openProcessModal: false,
       selectedRecords: [],
       selectedProcesses: [],
       data: [],
       columns: []
+    };
+    if(typeof store.get('analyze/team/targetTeam') !== 'undefined') {
+      this.state.targetTeam = store.get('analyze/team/targetTeam');
     }
   }
   runProcess() {
@@ -126,22 +131,19 @@ export default class AnalyzeTeam extends React.Component {
     })
   }
   showAll() {
-    var processQueryObj = {};
+    var processQueryObj = {
+      queryType: 'record',
+      dataType: 'chart',
+      $or: [
+        {year: store.get('settings/currentYear')},
+        {year: -1}
+      ]
+    };
     if(this.state.tab === 'metric') {
-      processQueryObj = {
-        queryType: 'record',
-        dataType: 'metric'
-      };
+      processQueryObj.dataType = 'metric';
     }
-    else {
-      processQueryObj = {
-        queryType: 'record',
-        dataType: 'chart'
-      };
-    }
-    console.debug(processQueryObj);
-    Interface.getRecords({}, {}).then((recs) => {
-      Interface.getProcesses(processQueryObj, {}).then((procs) => {
+    Interface.getRecords({year: store.get('settings/currentYear')}).then((recs) => {
+      Interface.getProcesses(processQueryObj).then((procs) => {
         this.setState({
           selectedRecords: recs,
           selectedProcesses: procs
@@ -151,11 +153,6 @@ export default class AnalyzeTeam extends React.Component {
   }
   componentDidMount() {
     this.showAll();
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if(!deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
-      this.runProcess();
-    }
   }
   render() {
     return (
@@ -174,44 +171,40 @@ export default class AnalyzeTeam extends React.Component {
             }
           }}
         />
-        <RecordSelectModal
-          open={this.state.openRecordModal}
-          onClose={() => {
-            this.setState({openRecordModal: false});
-          }}
-          onSelect={(records) => {
-            if(records.length > 0) {
-              this.setState({
-                openRecordModal: false,
-                selectedRecords: records
-              });
-            }
-          }}
-        />
         <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <ButtonGroup fullWidth>
-                <Button onClick={() => {this.setState({openRecordModal: true})}}>
-                  <FiberManualRecord />
-                  Records
-                </Button>
                 <Button onClick={() => {this.setState({openProcessModal: true})}}>
                   <Code />
-                  Processes
+                  Select Processes
+                </Button>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={this.showAll.bind(this)}
+                >
+                  <SelectAllIcon />
+                  Show All
                 </Button>
               </ButtonGroup>
             </Grid>
             <Grid item xs={12}>
-              <Button
+              <TextField
+                label='Team Number'
+                variant='outlined'
+                margin='normal'
+                type='number'
+                value={this.state.targetTeam}
+                onChange={(e) => {
+                  store.set('analyze/team/targetTeam', e.target.value);
+                  this.setState({targetTeam: e.target.value});
+                }}
                 fullWidth
-                variant='contained'
-                color='primary'
-                onClick={this.showAll.bind(this)}
-              >
-                <SelectAllIcon />
-                Show All
-              </Button>
+              />
+            </Grid>
+            <Grid item xs={12}>
+               <TeamCard teamNumber={this.state.targetTeam} />
             </Grid>
             <Grid item xs={12}>
               <Card style={{marginBottom: '4vh'}}>

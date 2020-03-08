@@ -8,7 +8,8 @@ export const teamSchema = {
       primary: true
     },
     teamNumber: {
-      type: 'integer'
+      type: 'integer',
+      index: true
     },
     nickname: {
       type: 'string'
@@ -33,9 +34,6 @@ export const teamSchema = {
     },
     rookieYear: {
       type: 'integer'
-    },
-    motto: {
-      type: 'string'
     }
   },
   required: []

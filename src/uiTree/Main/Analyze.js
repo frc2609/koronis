@@ -8,6 +8,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import GroupIcon from '@material-ui/icons/Group';
 
 import AnalyzeRecord from 'uiTree/Main/Analyze/AnalyzeRecord';
+import AnalyzeTeam from 'uiTree/Main/Analyze/AnalyzeTeam';
 
 class Analyze extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class Analyze extends React.Component {
         {this.state.redirect ? <Redirect push to={'/analyze/' + this.state.tab} /> : ''}
         <Route exact path='/analyze' component={AnalyzeRecord} />
         <Route exact path='/analyze/record' component={AnalyzeRecord} />
-        <Route exact path='/analyze/team' component={AnalyzeRecord} />
+        <Route exact path='/analyze/team' component={AnalyzeTeam} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square
@@ -51,7 +52,7 @@ class Analyze extends React.Component {
             onChange={this.tabHandler.bind(this)}
           >
             <BottomNavigationAction label='Record' value='record' icon={<FiberManualRecordIcon />} />
-            <BottomNavigationAction label='Team' disabled value='team' icon={<GroupIcon />} />
+            <BottomNavigationAction label='Team' value='team' icon={<GroupIcon />} />
           </BottomNavigation>
         </Paper>
       </>

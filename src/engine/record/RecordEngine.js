@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Package from 'package/PackageCollector';
+import * as Package from 'sync/package/PackageCollector';
 import * as Save from 'engine/record/Save';
 
 import Grid from '@material-ui/core/Grid';

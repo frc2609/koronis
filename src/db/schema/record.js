@@ -62,7 +62,7 @@ export const recordSchema = {
       index: true
     },
     matchType: {
-      type: 'string',
+      type: 'string', //t, pf, pm, qm, ef, qf, sf, f
       index: true
     },
     isRedAlliance: {

@@ -1,6 +1,9 @@
 import * as Db from 'db/Db';
+import * as TbaKey from 'sync/tba/TbaKey';
 
 var deepcopy = require('deep-copy');
+var moment = require('moment');
+var axios = require('axios');
 
 export const insertTeam = async (inTeam) => {
   var teamCollection = (await Db.getTeams());
@@ -34,6 +37,7 @@ export const insertTbaTeam = async (inTeam) => {
   delete currObj['location_name'];
   currObj.rookieYear = currObj['rookie_year'];
   delete currObj['rookie_year'];
+  delete currObj.motto;
   delete currObj['home_championship'];
   //Clear out null values
   Object.keys(currObj).forEach((item, i) => {
@@ -57,8 +61,28 @@ export const insertTbaTeam = async (inTeam) => {
   }
   else {
     console.info('[Interface] Updating team');
+    delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
+}
+
+export const getTeams = async (query, sort = {}) => {
+  var teamCollection = (await Db.getTeams());
+  var docs = (await teamCollection.find(query).sort(sort).exec());
+  var newDocs = [];
+  for(var i = 0;i < docs.length;i++) {
+    var currObj = deepcopy(docs[i].toJSON());
+    delete currObj._rev;
+    newDocs.push(currObj);
+  }
+  console.info('[Interface] Returning team query');
+  return newDocs;
+}
+
+export const queryTeams = async (query, sort = {}) => {
+  var teamCollection = (await Db.getTeams());
+  console.info('[Interface] Returning team query object');
+  return teamCollection.find(query).sort(sort);
 }
 
 export const insertRecord = async (inRecord) => {
@@ -92,7 +116,7 @@ export const removeRecord = async (query) => {
   return (await doc.remove());
 }
 
-export const getRecords = async (query, sort = []) => {
+export const getRecords = async (query, sort = {}) => {
   var recordCollection = (await Db.getRecords());
   var docs = (await recordCollection.find(query).sort(sort).exec());
   var newDocs = [];
@@ -136,7 +160,7 @@ export const removeProcess = async (query) => {
   return (await doc.remove());
 }
 
-export const getProcesses = async (query, sort = []) => {
+export const getProcesses = async (query, sort = {}) => {
   var processCollection = (await Db.getProcesses());
   var docs = (await processCollection.find(query).sort(sort).exec());
   var newDocs = [];
@@ -147,4 +171,54 @@ export const getProcesses = async (query, sort = []) => {
   }
   console.info('[Interface] Returning processes query');
   return newDocs;
+}
+
+export const getTbaRecords = async (query, sort = {}) => {
+  var newDocs = deepcopy(await getRecords(query, sort));
+  for(var i = 0;i < newDocs.length;i++) {
+    newDocs[i].tbaData = (await getTbaMatch(newDocs[i]));
+  }
+  console.info('[Interface] Returning TBA enhanced records query');
+  return newDocs;
+}
+
+export const getTbaMatch = async (inRecord) => { //Get corresponding tbaMatch for given record
+  var currObj = deepcopy(inRecord);
+  if(
+    currObj.matchType === 'qm' ||
+    currObj.matchType === 'ef' ||
+    currObj.matchType === 'qf' ||
+    currObj.matchType === 'sf' ||
+    currObj.matchType === 'f'
+  ) {
+    //WIP
+  }
+}
+
+export const syncTbaMatch = async (key) => { //return tba data
+  var tbaMatchCollection = (await Db.getTbaMatches());
+  var tbaKey = TbaKey.getKey();
+  var requestConfig = {
+    url: key,
+    baseURL: 'https://www.thebluealliance.com/api/v3/match/',
+    headers: {
+      'X-TBA-Auth-Key': tbaKey
+    }
+  };
+  var prevDoc = (await tbaMatchCollection.findOne({key: key}).exec());
+  if(prevDoc !== null) {
+    requestConfig.headers['If-Modified-Since'] = moment.unix(prevDoc.lastModified).toDate().toGMTString();
+  }
+  try {
+    var response = (await axios.request(requestConfig));
+    if(response.status === 200) {
+      var lastModified = moment(response.headers['last-modified']).unix();
+      var currObj = deepcopy(response.data);
+      //WIP
+    }
+  }
+  catch(err) {
+    return {};
+  }
+
 }

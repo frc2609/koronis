@@ -2,6 +2,7 @@ import RxDB from 'rxdb';
 import { teamSchema } from 'db/schema/team';
 import { recordSchema } from 'db/schema/record';
 import { processSchema } from 'db/schema/process';
+import { tbaMatchSchema } from 'db/schema/tbaMatch';
 
 RxDB.plugin(require('pouchdb-adapter-idb'));
 
@@ -9,6 +10,7 @@ var dbCreated = null;
 var teamCollection = null;
 var recordCollection = null;
 var processCollection = null;
+var tbaMatchCollection = null;
 
 const createDb = async () => {
   const db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
@@ -52,6 +54,18 @@ const createProcessCollection = async () => {
   return processCollection;
 }
 
+const createTbaMatchCollection = async () => {
+  if(!dbCreated) {
+    dbCreated = await createDb();
+  }
+  tbaMatchCollection = await dbCreated.collection({
+    name: 'tbaMatches',
+    schema: tbaMatchSchema
+  });
+  console.info('[Db] created collection tbaMatches');
+  return tbaMatchCollection;
+}
+
 export const getTeams = async () => {
   if(!teamCollection) {
     teamCollection = await createTeamCollection();
@@ -71,4 +85,11 @@ export const getProcesses = async () => {
     processCollection = await createProcessCollection();
   }
   return processCollection;
+}
+
+export const getTbaMatches = async () => {
+  if(!tbaMatchCollection) {
+    tbaMatchCollection = await createTbaMatchCollection();
+  }
+  return tbaMatchCollection;
 }

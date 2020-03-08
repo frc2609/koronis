@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Package from 'package/PackageCollector';
+import * as Package from 'sync/package/PackageCollector';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
