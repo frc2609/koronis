@@ -44,11 +44,17 @@ export default class RecordSelectModal extends React.Component {
     if(typeof this.refs.recordQueryBar !== 'undefined') {
       this.queryObj = this.refs.recordQueryBar.getQueryObj();
     }
+    else {
+      this.queryObj = typeof this.props.queryObj !== 'undefined' ? this.props.queryObj : {};
+    }
     Interface.getRecords(this.queryObj, {lastModified: 'desc'}).then((docs) => {
       this.setState({records: docs, loading: false});
     });
   }
   componentDidMount() {
+    if(typeof this.props.records !== 'undefined') {
+      this.setState({records: this.props.records});
+    }
     this.refresh();
   }
   componentDidUpdate(prevProps) {
@@ -113,6 +119,7 @@ export default class RecordSelectModal extends React.Component {
                       selectedRecords.length === 0
                     )});
                   }}
+                  selectedRecords={this.props.selectedRecords}
                 />
               }
             </Grid>

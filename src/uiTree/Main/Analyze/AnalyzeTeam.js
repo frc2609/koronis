@@ -33,13 +33,13 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import MaterialTable from "material-table";
 
-import ChartCard from 'engine/process/ChartCard';
 import TeamCard from 'uiTree/components/TeamCard';
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 
 var moment = require('moment');
 var deepCompare = require('deep-compare');
 var store = require('store');
+var ss = require('simple-statistics');
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -66,93 +66,108 @@ export default class AnalyzeTeam extends React.Component {
     super(props);
     this.state = {
       tab: 'metric',
-      targetTeam: 0,
+      targetTeamNumber: 0,
       openProcessModal: false,
       selectedRecords: [],
       selectedProcesses: [],
-      data: [],
-      columns: []
+      recordsData: [],
+      recordsColumns: [],
+      metricsData: [],
+      metricsColumns: []
     };
-    if(typeof store.get('analyze/team/targetTeam') !== 'undefined') {
-      this.state.targetTeam = store.get('analyze/team/targetTeam');
+    if(typeof store.get('analyze/team/targetTeamNumber') !== 'undefined') {
+      this.state.targetTeamNumber = Number(store.get('analyze/team/targetTeamNumber'));
     }
   }
-  runProcess() {
-    var tmpDataArr = [];
-    var tmpColumns = [
-      {field: 'startDate', title: 'Date', sortable: true,
-        render: (rowData) => {
-          return moment.unix(rowData.startDate).format('MMM Do YYYY')
+  runMetricProcess() {
+    //Records section
+    var tmpRecordsData = [];
+    var tmpRecordsColumn = [
+      {field: 'title', title: 'Title', sortable: true,
+        cellStyle: {
+          minWidth: '200px'
         }
       },
-      {field: 'teamNumber', title: 'Team Number', sortable: true},
-      {field: 'matchType', title: 'Match Type', sortable: true,
-        render: (rowData) => {
-          var ret = 'Test';
-          if(rowData.matchType === 't') {ret = 'Test';}
-          if(rowData.matchType === 'pf') {ret = 'Practice Field';}
-          if(rowData.matchType === 'pm') {ret = 'Practice Match';}
-          if(rowData.matchType === 'qm') {ret = 'Qualification';}
-          if(rowData.matchType === 'ef') {ret = 'Eighth-finals';}
-          if(rowData.matchType === 'qf') {ret = 'Quarterfinals';}
-          if(rowData.matchType === 'sf') {ret = 'Semifinals';}
-          if(rowData.matchType === 'f') {ret = 'Final';}
-          return ret;
-        }
-      },
-      {field: 'matchNumber', title: 'Match Number', sortable: true},
-      {field: 'isRedAlliance', title: 'Is Red Alliance', sortable: true},
-      {field: 'year', title: 'Game Year', sortable: true},
-      {field: 'comments', title: 'Comments', sortable: true,
-        render: (r) => {return r.comments.length <= 25 ? r.comments : r.comments.substr(0,25) + '...'}
-      }
+      {field: 'mean', title: 'Mean', sortable: true},
+      {field: 'mode', title: 'Mode', sortable: true},
+      {field: 'median', title: 'Median', sortable: true},
+      {field: 'sum', title: 'Title', sortable: true},
+      {field: 'min', title: 'Min', sortable: true},
+      {field: 'quartile1', title: '1st Quartile', sortable: true},
+      {field: 'quartile3', title: '3rd Quartile', sortable: true},
+      {field: 'max', title: 'Max', sortable: true},
+      {field: 'standardDeviation', title: 'Standard Deviation', sortable: true},
+      {field: 'interquartileRange', title: 'Interquartile Range', sortable: true},
+      {field: 'range', title: 'Range', sortable: true}
     ];
     for(var i = 0;i < this.state.selectedProcesses.length;i++) {
       if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedProcesses[i].dataType === 'metric') {
-        tmpColumns.push({
-          title: this.state.selectedProcesses[i].title,
-          field: 'process_' + this.state.selectedProcesses[i].id,
-          sortable: true
-        });
-      }
-    }
-    for(var i = 0;i < this.state.selectedRecords.length;i++) { // eslint-disable-line no-redeclare
-      var tmpData = this.state.selectedRecords[i];
-      for(var j = 0;j < this.state.selectedProcesses.length;j++) {
-        if(this.state.selectedProcesses[j].queryType === 'record' && this.state.selectedProcesses[j].dataType === 'metric') {
-          tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, [this.state.selectedRecords[i]], this.state.selectedProcesses[j]).value;
+        var perProcessData = [];
+        for(var j = 0;j < this.state.selectedRecords.length;j++) {
+          var val = Processor.runProcess(null, [this.state.selectedRecords[j]], this.state.selectedProcesses[i]).value;
+          if(val !== NaN) {
+            perProcessData.push(val);
+          }
+        }
+        if(perProcessData.length > 0) {
+          var recordData = {
+            title: this.state.selectedProcesses[i].title,
+            mean: ss.mean(perProcessData),
+            mode: ss.modeFast(perProcessData),
+            median: ss.median(perProcessData),
+            min: ss.min(perProcessData),
+            max: ss.max(perProcessData),
+            sum: ss.sum(perProcessData),
+            quartile1: ss.quantile(perProcessData, 0.25),
+            quartile3: ss.quantile(perProcessData, 0.75),
+            standardDeviation: ss.standardDeviation(perProcessData),
+            interquartileRange: ss.interquartileRange(perProcessData)
+          };
+          recordData.range = recordData.max - recordData.min;
+          tmpRecordsData.push(recordData);
         }
       }
-      tmpDataArr.push(tmpData);
     }
     this.setState({
-      data: tmpDataArr,
-      columns: tmpColumns
+      recordsData: tmpRecordsData,
+      recordsColumns: tmpRecordsColumn
     })
   }
-  showAll() {
+  getAllProcesses() {
     var processQueryObj = {
-      queryType: 'record',
       dataType: 'chart',
       $or: [
-        {year: store.get('settings/currentYear')},
+        {year: Number(store.get('settings/currentYear'))},
         {year: -1}
       ]
     };
     if(this.state.tab === 'metric') {
       processQueryObj.dataType = 'metric';
     }
-    Interface.getRecords({year: store.get('settings/currentYear')}).then((recs) => {
-      Interface.getProcesses(processQueryObj).then((procs) => {
-        this.setState({
-          selectedRecords: recs,
-          selectedProcesses: procs
-        });
+    Interface.getProcesses(processQueryObj).then((procs) => {
+      this.setState({
+        selectedProcesses: procs
+      });
+    });
+  }
+  showAll() {
+    this.getAllProcesses();
+    Interface.getRecords({year: Number(store.get('settings/currentYear')), teamNumber: Number(this.state.targetTeamNumber)}).then((recs) => {
+      this.setState({
+        selectedRecords: recs
       });
     });
   }
   componentDidMount() {
     this.showAll();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.targetTeamNumber !== this.state.targetTeamNumber || !deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
+      this.runMetricProcess();
+    }
+    if(prevState.tab !== this.state.tab) {
+      this.getAllProcesses();
+    }
   }
   render() {
     return (
@@ -170,6 +185,7 @@ export default class AnalyzeTeam extends React.Component {
               });
             }
           }}
+          selectedProcesses={this.state.selectedProcesses}
         />
         <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
@@ -195,16 +211,16 @@ export default class AnalyzeTeam extends React.Component {
                 variant='outlined'
                 margin='normal'
                 type='number'
-                value={this.state.targetTeam}
+                value={this.state.targetTeamNumber}
                 onChange={(e) => {
-                  store.set('analyze/team/targetTeam', e.target.value);
-                  this.setState({targetTeam: e.target.value});
+                  store.set('analyze/team/targetTeamNumber', e.target.value);
+                  this.setState({targetTeamNumber: Number(e.target.value)});
                 }}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12}>
-               <TeamCard teamNumber={this.state.targetTeam} />
+               <TeamCard teamNumber={this.state.targetTeamNumber} />
             </Grid>
             <Grid item xs={12}>
               <Card style={{marginBottom: '4vh'}}>
@@ -215,23 +231,38 @@ export default class AnalyzeTeam extends React.Component {
                   textColor='primary'
                   variant='fullWidth'
                 >
-                  <Tab label='Metric' value='metric' />
-                  <Tab label='Chart' value='chart' />
+                  <Tab label='Metrics' value='metric' />
+                  <Tab label='Charts' disabled value='chart' />
                 </Tabs>
                 {this.state.tab === 'metric' ?
-                  <MaterialTable
-                    title='Metrics'
-                    icons={tableIcons}
-                    padding='dense'
-                    color='primary'
-                    columns={this.state.columns}
-                    data={this.state.data}
-                    options={{
-                      exportButton: true,
-                      filtering: true,
-                      doubleHorizontalScroll: true
-                    }}
-                  />
+                  <>
+                    <MaterialTable
+                      title='Team Records'
+                      icons={tableIcons}
+                      padding='dense'
+                      color='primary'
+                      columns={this.state.recordsColumns}
+                      data={this.state.recordsData}
+                      options={{
+                        exportButton: true,
+                        filtering: true,
+                        doubleHorizontalScroll: true
+                      }}
+                    />
+                    <MaterialTable
+                      title='Team Metrics'
+                      icons={tableIcons}
+                      padding='dense'
+                      color='primary'
+                      columns={this.state.metricsColumns}
+                      data={this.state.metricsData}
+                      options={{
+                        exportButton: true,
+                        filtering: true,
+                        doubleHorizontalScroll: true
+                      }}
+                    />
+                  </>
                 :
                   <Grid container spacing={2}>
                     {(typeof this.state.selectedRecords === 'undefined' || this.state.selectedRecords.length === 0) ?
@@ -244,7 +275,6 @@ export default class AnalyzeTeam extends React.Component {
                       this.state.selectedRecords.map((e, i) => {
                         return (
                           <Grid key={i} item xs={12}>
-                            <ChartCard records={e} process={this.state.selectedProcesses[0]} />
                           </Grid>
                         );
                       })

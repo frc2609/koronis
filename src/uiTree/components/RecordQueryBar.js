@@ -47,6 +47,9 @@ export default class RecordQueryBar extends React.Component {
       minLastModified: 0,
       maxLastModified: 0
     };
+    if(typeof store.get('settings/currentYear') !== 'undefined') {
+      this.state.year = Number(store.get('settings/currentYear'));
+    }
     if(typeof this.props.name === 'string') {
       var obj = store.get('query/' + this.props.name);
       if(typeof obj !== 'undefined') {
@@ -156,6 +159,9 @@ export default class RecordQueryBar extends React.Component {
       isBlue: true,
       minLastModified: 0,
       maxLastModified: 0
+    }
+    if(typeof store.get('settings/currentYear') !== 'undefined') {
+      obj.year = Number(store.get('settings/currentYear'));
     }
     if(typeof this.props.defaults !== 'undefined') {Object.assign(obj, this.props.defaults);}
     this.setStore(obj);

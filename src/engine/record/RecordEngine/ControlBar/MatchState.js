@@ -17,6 +17,7 @@ import { Close } from '@material-ui/icons';
 
 import { DatePicker } from '@material-ui/pickers';
 
+import TeamCard from 'uiTree/components/TeamCard';
 import ColorSwitch from 'engine/record/RecordEngine/ControlBar/MatchState/ColorSwitch';
 
 var moment = require('moment');
@@ -130,7 +131,7 @@ export default class MatchState extends React.Component {
             fullWidth
             error={this.state.targetTeamNumber === 0 || this.state.targetTeamNumber < -1}
             value={this.state.targetTeamNumber <= 0 ? '' : this.state.targetTeamNumber}
-            helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
+            helperText={this.state.targetTeamNumber <= 0 ? 'Required' : ''}
             onChange={this.targetTeamNumberHandler.bind(this)}
           />
           </Grid>
@@ -143,7 +144,7 @@ export default class MatchState extends React.Component {
             fullWidth
             error={this.state.matchNumber === 0 || this.state.matchNumber < -1}
             value={this.state.matchNumber <= 0 ? '' : this.state.matchNumber}
-            helperText={this.state.targetTeam <= 0 ? 'Required' : ''}
+            helperText={this.state.targetTeamNumber <= 0 ? 'Required' : ''}
             onChange={this.matchNumberHandler.bind(this)}
           />
           </Grid>
@@ -182,8 +183,12 @@ export default class MatchState extends React.Component {
               rowsMax='5'
               label='Comments'
               placeholder='Enter Comments Here'
+              value={this.state.comments}
               onChange={this.commentsHandler.bind(this)}
             />
+          </Grid>
+          <Grid item xs={12}>
+             <TeamCard teamNumber={this.state.targetTeamNumber} />
           </Grid>
         </Grid>
         </Container>

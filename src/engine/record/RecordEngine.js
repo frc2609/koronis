@@ -51,8 +51,8 @@ export default class RecordEngine extends React.Component {
       buttonStackWidth: 30,
       updateInterval: (1000/15)
     };
-    if(typeof store.get('record/settings/currentYear') !== 'undefined') {
-      this.settings.currentYear = store.get('record/settings/currentYear');
+    if(typeof store.get('settings/currentYear') !== 'undefined') {
+      this.settings.currentYear = store.get('settings/currentYear');
     }
     if(typeof store.get('record/settings/buttonStackWidth') !== 'undefined') {
       this.settings.buttonStackWidth = store.get('record/settings/buttonStackWidth');

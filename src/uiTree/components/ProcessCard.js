@@ -74,8 +74,8 @@ export default class ProcessCard extends React.Component {
             moment.unix(this.props.process.lastModified).format('ddd, MMM Do YYYY')
           }
         />
-        <CardContent style={{textAlign: 'left'}}>
-          <Typography variant='body2' paragraph>
+        <CardContent>
+          <Typography variant='body2' align='left'>
             {this.props.process.description}
           </Typography>
         </CardContent>

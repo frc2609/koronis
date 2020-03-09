@@ -9,6 +9,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Grid from '@material-ui/core/Grid';
+import TocIcon from '@material-ui/icons/Toc';
+import AppsIcon from '@material-ui/icons/Apps';
 import { Close } from '@material-ui/icons';
 
 import ProcessSelect from 'uiTree/components/ProcessSelect';
@@ -18,6 +21,7 @@ export default class ProcessSelectModal extends React.Component {
     super(props);
     this.state = {
       processes: [],
+      tableMode: false,
       disable: true
     }
   }
@@ -33,7 +37,7 @@ export default class ProcessSelectModal extends React.Component {
   }
   refresh() {
     this.setState({processes: []});
-    Interface.getProcesses({}, {lastModified: 'desc'}).then((docs) => {
+    Interface.getProcesses(typeof this.props.queryObj !== 'undefined'? this.props.queryObj : {}, {lastModified: 'desc'}).then((docs) => {
       this.setState({processes: docs});
     });
   }
@@ -70,7 +74,23 @@ export default class ProcessSelectModal extends React.Component {
         </AppBar>
         <Toolbar style={{marginBottom: '4vh'}} />
         <Container maxWidth='xl'>
-          <ProcessSelect ref='processSelect' processes={this.state.processes}
+          <Grid container spacing={2}>
+            <Grid item xs={10}></Grid>
+            <Grid item xs={2}>
+              <IconButton variant='contained'
+                onClick={() => {
+                  this.setState({tableMode: !this.state.tableMode});
+                }}
+              >
+                {!this.state.tableMode ?
+                  <TocIcon fontSize='large' />
+                :
+                  <AppsIcon fontSize='large' />
+                }
+              </IconButton>
+            </Grid>
+          </Grid>
+          <ProcessSelect ref='processSelect' processes={this.state.processes} table={this.state.tableMode}
             onSelect={(selectedProcesses) => {
               this.setState({disable: (
                 typeof selectedProcesses === 'undefined' ||
@@ -78,6 +98,7 @@ export default class ProcessSelectModal extends React.Component {
               )});
             }}
             onRemove={this.refresh.bind(this)}
+            selectedProcesses={this.props.selectedProcesses}
           />
         </Container>
       </Dialog>
