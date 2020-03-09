@@ -127,7 +127,7 @@ export default class ProcessCreationBar extends React.Component {
                 </Button>
               </ButtonGroup>
             </Grid>
-            <Grid item xs={Layout.isLandscape() ? 6 : 12}>
+            <Grid item xs={Layout.getDefaultGrid()}>
               <TextField
                 label='Name'
                 variant='outlined'
@@ -137,7 +137,7 @@ export default class ProcessCreationBar extends React.Component {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={Layout.isLandscape() ? 6 : 12}>
+            <Grid item xs={Layout.getDefaultGrid()}>
               <TextField
                 label='Title'
                 variant='outlined'

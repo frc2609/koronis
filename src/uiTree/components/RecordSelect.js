@@ -71,7 +71,7 @@ export default class RecordSelect extends React.Component {
             :
               this.props.records.map((e, i) => {
                 return (
-                  <Grid key={i} item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '300px'}}>
+                  <Grid key={i} item xs={Layout.getDefaultGrid()} style={{minWidth: '300px'}}>
                     <div
                       onClick={() => {
                         var index = this.state.selectedRecords.findIndex((e2) => {return e2.id === e.id});

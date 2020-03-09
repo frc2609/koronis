@@ -70,7 +70,7 @@ export default class ProcessSelect extends React.Component {
           :
             this.props.processes.map((e, i) => {
               return (
-                <Grid key={i} item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '300px'}}>
+                <Grid key={i} item xs={Layout.getDefaultGrid()} style={{minWidth: '300px'}}>
                   <div
                     onClick={() => {
                       var index = this.state.selectedProcesses.findIndex((e2) => {return e2.id === e.id});
