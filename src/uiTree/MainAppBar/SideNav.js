@@ -4,6 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import { Home, FiberManualRecord, Code, Assessment } from '@material-ui/icons';
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import SectionLink from 'uiTree/MainAppBar/SectionLink';
 
@@ -17,6 +18,7 @@ export default class SideNav extends React.Component {
           <SectionLink to='/process' title='Process' icon={<Code />} closeMenuCallback={this.props.closeMenuCallback} />
           <SectionLink to='/analyze' title='Analyze' icon={<Assessment />} closeMenuCallback={this.props.closeMenuCallback} />
           <SectionLink to='/transfer' title='Transfer' icon={<SyncAltIcon />} closeMenuCallback={this.props.closeMenuCallback} />
+          <SectionLink to='/settings' title='Settings' icon={<SettingsIcon />} closeMenuCallback={this.props.closeMenuCallback} />
         </List>
       </Drawer>
     );

@@ -129,7 +129,13 @@ export default class RecordSelect extends React.Component {
               },
               {field: 'matchNumber', title: 'Match Number', sortable: true},
               {field: 'isRedAlliance', title: 'Is Red Alliance', sortable: true},
-              {field: 'year', title: 'Game Year', sortable: true}
+              {field: 'year', title: 'Game Year', sortable: true},
+              {field: 'comments', title: 'Comments', sortable: true,
+                cellStyle: {
+                  minWidth: '200px'
+                },
+                render: (r) => {return r.comments.length <= 50 ? r.comments : r.comments.substr(0,50) + '...'}
+              }
             ]}
             data={this.props.records}
             options={{

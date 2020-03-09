@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Layout from 'config/Layout';
-import * as Package from 'package/PackageCollector';
+import * as Package from 'sync/package/PackageCollector';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';

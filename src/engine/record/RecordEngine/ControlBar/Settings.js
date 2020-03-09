@@ -9,13 +9,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
 import { Close } from '@material-ui/icons';
 
-import * as Package from 'package/PackageCollector';
+import * as Package from 'sync/package/PackageCollector';
 
 var store = require('store');
 
@@ -29,8 +25,8 @@ export default class Settings extends React.Component {
       buttonStackWidth: 30,
       updateInterval: (1000/15)
     };
-    if(typeof store.get('record/settings/currentYear') !== 'undefined') {
-      this.state.currentYear = store.get('record/settings/currentYear');
+    if(typeof store.get('settings/currentYear') !== 'undefined') {
+      this.state.currentYear = store.get('settings/currentYear');
     }
     if(typeof store.get('record/settings/buttonStackWidth') !== 'undefined') {
       this.state.buttonStackWidth = store.get('record/settings/buttonStackWidth');
@@ -48,9 +44,6 @@ export default class Settings extends React.Component {
   close() {
     this.setState({open: false});
   }
-  currentYearHandler(event) {
-    this.setState({currentYear: event.target.value});
-  }
   buttonStackWidthHandler(event, value) {
     this.setState({buttonStackWidth: value});
   }
@@ -58,7 +51,6 @@ export default class Settings extends React.Component {
     this.setState({updateInterval: (1000/value)});
   }
   submit() {
-    store.set('record/settings/currentYear', this.state.currentYear);
     store.set('record/settings/buttonStackWidth', this.state.buttonStackWidth);
     store.set('record/settings/updateInterval', this.state.updateInterval);
     if(typeof this.props.submit !== 'undefined') {
@@ -101,25 +93,6 @@ export default class Settings extends React.Component {
         <Toolbar style={{marginBottom: '4vh'}} />
         <Container maxWidth='xl'>
           <Grid container spacing={4}>
-            <Grid item xs={6} style={{minWidth: '200px'}}>
-              <FormControl variant='outlined' fullWidth>
-                <InputLabel>Current Year</InputLabel>
-                <Select
-                  ref='currentYear'
-                  onChange={this.currentYearHandler.bind(this)}
-                  value={this.state.currentYear}
-                  fullWidth
-                >
-                  {(typeof this.state.gameStates === 'undefined') ?
-                    ''
-                  :
-                    this.state.gameStates.map((e, i) => {
-                      return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>
-                    })
-                  }
-                </Select>
-              </FormControl>
-            </Grid>
             <Grid item xs={6} style={{minWidth: '150px'}}>
               <Typography gutterBottom>
                 Button Stack Width

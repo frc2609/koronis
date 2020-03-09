@@ -3,7 +3,7 @@ var axios = require('axios');
 var store = require('store');
 var deepcopy = require('deep-copy');
 
-var Package = {initialized: false};
+var initialized = false;
 
 async function perYearInit(year) {
   //Get bot definition
@@ -62,12 +62,12 @@ export const init = async () => {
       //Set default year
       if(availableYears.length > 0) {
         var gS = store.get('package/' + availableYears[0] + '/gameStateDefinition');
-        if(typeof store.get('record/settings/currentYear') === 'undefined') {
-          store.set('record/settings/currentYear', gS.gameState.year);
+        if(typeof store.get('settings/currentYear') === 'undefined') {
+          store.set('settings/currentYear', gS.gameState.year);
         }
       }
       //Store new versionNumber to local store
-      Package.initialized = true;
+      initialized = true;
       store.set('package/versionNumber', versionNumberRepo);
       console.info('[Package] Packages updated');
     }
@@ -82,7 +82,7 @@ export const init = async () => {
 }
 
 export const get = async () => {
-  if(!Package.initialized) {
+  if(!initialized) {
     await init();
   }
   var result = {};
@@ -102,7 +102,7 @@ export const get = async () => {
 }
 
 export const getByYear = async (inYear) => {
-  if(!Package.initialized) {
+  if(!initialized) {
     await init();
   }
   var result = {};
@@ -123,7 +123,7 @@ export const getByYear = async (inYear) => {
 }
 
 export const getYears = async () => {
-  if(!Package.initialized) {
+  if(!initialized) {
     await init();
   }
   var result = [];
@@ -136,7 +136,7 @@ export const getYears = async () => {
 }
 
 export const getGameStates = async () => {
-  if(!Package.initialized) {
+  if(!initialized) {
     await init();
   }
   var result = [];
