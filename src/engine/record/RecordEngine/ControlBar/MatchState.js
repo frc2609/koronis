@@ -39,6 +39,9 @@ export default class MatchState extends React.Component {
     this.setState({open: true});
   }
   close() {
+    if(typeof this.props.onClose === 'function') {
+      this.props.onClose();
+    }
     this.setState({open: false});
   }
   matchStartDateHandler(date) {
@@ -76,7 +79,7 @@ export default class MatchState extends React.Component {
             isRed: this.state.isRed,
             comments: this.state.comments
           });
-          this.setState({open: false});
+          this.close();
         }
       }
     }

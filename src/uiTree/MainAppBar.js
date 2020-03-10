@@ -46,7 +46,7 @@ export default class MainAppBar extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '4vh'}} />
+        <Toolbar style={{marginBottom: '2vh'}} />
       </>
     );
   }

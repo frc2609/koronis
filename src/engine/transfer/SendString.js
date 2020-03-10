@@ -8,6 +8,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 
 var qrcode = require('qrcode-generator');
 var raf = require('raf');
@@ -20,7 +22,9 @@ export default class SendString extends React.Component {
       canvasSize: 0,
       qrCodeType: 10,
       drawInterval: 2000,
-      qrCodeArrLength: 0
+      qrCodeArrIndex: 0,
+      qrCodeArrLength: 0,
+      drawing: false
     };
     this.resizeListener = () => {};
 
@@ -37,8 +41,9 @@ export default class SendString extends React.Component {
     };
   }
   update() {
-    this.setState({loading: true, qrCodeArrLength: 0});
+    this.setState({loading: true, qrCodeArrIndex: 0, qrCodeArrLength: 0});
     this.drawing = false;
+    this.drawIndex = 0;
     this.qrObjs = [];
     var qrcodeProperties = this.qrCodeTypeDict[this.state.qrCodeType];
     var qrcodeStringLength = qrcodeProperties[0];
@@ -70,9 +75,7 @@ export default class SendString extends React.Component {
       this.qrObjs[i].addData(targetStringArr[i], 'Numeric');
       this.qrObjs[i].make();
     }
-    this.setState({loading: false, qrCodeArrLength: this.qrObjs.length});
-    this.drawing = true;
-    if(!this.drawn) {this.drawLoop();}
+    this.setState({loading: false, qrCodeArrLength: this.qrObjs.length, qrCodeArrIndex: this.drawIndex, drawing: true});
   }
   draw() {
     if(this.drawIndex < this.qrObjs.length) {
@@ -87,6 +90,14 @@ export default class SendString extends React.Component {
     if(this.drawIndex >= this.qrObjs.length) {
       this.drawIndex = 0;
     }
+    this.setState({qrCodeArrIndex: this.drawIndex});
+  }
+  drawPrev() {
+    this.drawIndex -= 2;
+    if(this.drawIndex < 0) {
+      this.drawIndex = this.qrObjs.length + this.drawIndex;
+    }
+    this.draw();
   }
   drawLoop() {
     raf(this.draw.bind(this));
@@ -138,8 +149,8 @@ export default class SendString extends React.Component {
     return (
       <Container maxWidth='xl'>
         <Grid container spacing={2}>
-          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
-            <div ref='qrcodeCanvasWrapper' style={{width: '100%', marginBottom: '4vh'}}>
+          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
+            <div ref='qrcodeCanvasWrapper' style={{width: '100%', marginBottom: '2vh'}}>
               {this.state.loading ?
                 <CircularProgress/>
               :
@@ -147,12 +158,40 @@ export default class SendString extends React.Component {
               }
             </div>
             <Typography gutterBottom>
+              Current QR Code Number: #{this.state.qrCodeArrIndex + 1}
+            </Typography>
+            <Typography gutterBottom>
               Total QR Codes to scan: {this.state.qrCodeArrLength}
             </Typography>
           </Grid>
-          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
+          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
             <Grid container spacing={4}>
-              <Grid item xs={12} style={{minWidth: '150px'}}>
+              <Grid item xs={12}>
+                <ButtonGroup fullWidth>
+                  <Button disabled={this.state.drawing} onClick={this.drawPrev.bind(this)}>
+                    Prev
+                  </Button>
+                  <Button color='primary'
+                    onClick={() => {
+                      this.drawing = !this.drawing;
+                      this.setState({drawing: this.drawing});
+                      if(this.drawing) {
+                        this.drawLoop();
+                      }
+                    }}
+                  >
+                    {this.state.drawing ?
+                      'Pause'
+                    :
+                      'Resume'
+                    }
+                  </Button>
+                  <Button disabled={this.state.drawing} onClick={this.draw.bind(this)}>
+                    Next
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+              <Grid item xs={12}>
                 <Typography gutterBottom>
                   QR Code Type
                 </Typography>
@@ -165,7 +204,7 @@ export default class SendString extends React.Component {
                   max={20}
                 />
               </Grid>
-              <Grid item xs={12} style={{minWidth: '150px'}}>
+              <Grid item xs={12}>
                 <Typography gutterBottom>
                   QR Code Period
                 </Typography>
