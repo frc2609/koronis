@@ -1,4 +1,4 @@
-import Config from 'Config';
+import Config from 'config/Config';
 import * as Interface from 'db/Interface';
 
 var store = require('store');

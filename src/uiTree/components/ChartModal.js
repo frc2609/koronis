@@ -57,7 +57,7 @@ export default class ChartModal extends React.Component {
             {typeof this.props.records !== 'undefined' && typeof this.props.process !== 'undefined' ?
               this.props.records.map((e, i) => {
                 return (
-                  <Grid key={i} item xs={Layout.isLandscape() ? 6 : 12}>
+                  <Grid key={i} item xs={Layout.getDefaultGrid()}>
                     <Card>
                       <Chart records={e} process={this.props.process} />
                     </Card>

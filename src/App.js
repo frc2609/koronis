@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
-import Config from 'Config';
+import Config from 'config/Config';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 

@@ -93,75 +93,81 @@ export default class RecieveString extends React.Component {
   render() {
     return (
       <Container maxWidth='xl'>
-        {this.state.scanning ?
-          <QrReader
-           onScan={this.onScan.bind(this)}
-           onError={()=>{this.setState({scanning: false})}}
-           delay={this.state.delay === (1000/31) ? false : this.state.delay}
-           resolution={this.state.resolution}
-           facingMode={this.state.facingMode}
-          />
-        :
-          ''
-        }
-        <Grid container spacing={4}>
-          <Grid item xs={12} style={{marginTop: '4vh'}}>
-            <Typography gutterBottom>
-              Total QR Codes scanned: {this.state.totalScanned}
-            </Typography>
-            <Typography gutterBottom>
-               Total Data (B): {(this.state.size/8).toFixed(2)}
-            </Typography>
-            <Typography gutterBottom>
-               Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} style={{minWidth: '200px'}}>
-            <FormControl variant='outlined' fullWidth>
-              <InputLabel>Camera</InputLabel>
-              <Select
-                ref='rearCamera'
-                onChange={this.facingModeHandler.bind(this)}
-                value={this.state.facingMode}
-                fullWidth
-              >
-                <MenuItem value='environment'>Rear Camera</MenuItem>
-                <MenuItem value='user'>Front Camera</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
-            <Typography gutterBottom>
-              Resolution
-            </Typography>
-            <Slider
-              value={this.state.resolution}
-              onChange={this.resolutionHandler.bind(this)}
-              valueLabelDisplay='auto'
-              step={10}
-              min={160}
-              max={1080}
-            />
-          </Grid>
-          <Grid item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '150px'}}>
-            <Typography gutterBottom>
-              Scans Per Second
-            </Typography>
-            <Slider
-              value={(1000/this.state.delay)}
-              onChange={this.delayHandler.bind(this)}
-              valueLabelDisplay='auto'
-              step={1}
-              min={1}
-              max={30}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            {!this.state.scanning ?
-              <Button fullWidth onClick={this.startScanning.bind(this)}>Start</Button>
+        <Grid container spacing={2}>
+          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
+            {this.state.scanning ?
+              <QrReader
+               onScan={this.onScan.bind(this)}
+               onError={()=>{this.setState({scanning: false})}}
+               delay={this.state.delay === (1000/31) ? false : this.state.delay}
+               resolution={this.state.resolution}
+               facingMode={this.state.facingMode}
+              />
             :
-              <Button fullWidth onClick={this.stopScanning.bind(this)}>Stop</Button>
+              ''
             }
+          </Grid>
+          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
+            <Grid container spacing={4}>
+              <Grid item xs={12} style={{marginTop: '4vh'}}>
+                <Typography gutterBottom>
+                  Total QR Codes scanned: {this.state.totalScanned}
+                </Typography>
+                <Typography gutterBottom>
+                   Total Data (B): {(this.state.size/8).toFixed(2)}
+                </Typography>
+                <Typography gutterBottom>
+                   Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} style={{minWidth: '200px'}}>
+                <FormControl variant='outlined' fullWidth>
+                  <InputLabel>Camera</InputLabel>
+                  <Select
+                    ref='rearCamera'
+                    onChange={this.facingModeHandler.bind(this)}
+                    value={this.state.facingMode}
+                    fullWidth
+                  >
+                    <MenuItem value='environment'>Rear Camera</MenuItem>
+                    <MenuItem value='user'>Front Camera</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={Layout.getDefaultGrid()} style={{minWidth: '150px'}}>
+                <Typography gutterBottom>
+                  Resolution
+                </Typography>
+                <Slider
+                  value={this.state.resolution}
+                  onChange={this.resolutionHandler.bind(this)}
+                  valueLabelDisplay='auto'
+                  step={10}
+                  min={160}
+                  max={1080}
+                />
+              </Grid>
+              <Grid item xs={Layout.getDefaultGrid()} style={{minWidth: '150px'}}>
+                <Typography gutterBottom>
+                  Scans Per Second
+                </Typography>
+                <Slider
+                  value={(1000/this.state.delay)}
+                  onChange={this.delayHandler.bind(this)}
+                  valueLabelDisplay='auto'
+                  step={1}
+                  min={1}
+                  max={30}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                {!this.state.scanning ?
+                  <Button fullWidth onClick={this.startScanning.bind(this)}>Start</Button>
+                :
+                  <Button fullWidth onClick={this.stopScanning.bind(this)}>Stop</Button>
+                }
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>

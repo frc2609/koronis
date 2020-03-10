@@ -34,7 +34,7 @@ export default class RecordView extends React.Component {
         :
           this.props.records.map((e, i) => {
             return (
-              <Grid key={i} item xs={Layout.isLandscape() ? 6 : 12} style={{minWidth: '300px'}}>
+              <Grid key={i} item xs={Layout.getDefaultGrid()} style={{minWidth: '300px'}}>
                 <RecordCard record={e} onRemove={this.props.onRemove.bind(this)} />
               </Grid>
             );

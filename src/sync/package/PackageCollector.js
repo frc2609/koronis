@@ -1,4 +1,4 @@
-import Config from 'Config';
+import Config from 'config/Config';
 var axios = require('axios');
 var store = require('store');
 var deepcopy = require('deep-copy');

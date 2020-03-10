@@ -1,9 +1,10 @@
 var baseUrl = '';
 var packageUrl = '';
 var processUrl = '';
+var environmentConfig = process.env.REACT_APP_ENV;
 var version = process.env.REACT_APP_VERSION;
 
-if(process.env.REACT_APP_ENV === 'production') {
+if(environmentConfig === 'production') {
   console.info('[Config] App is configured for production. Version is ' + version);
   baseUrl = '/kss-client/latest';
   packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/latest/';
@@ -19,6 +20,7 @@ else {
 const Config = {
   version: version,
   baseUrl: baseUrl,
+  environmentConfig: environmentConfig,
   packageUrl: packageUrl,
   processUrl: processUrl
 };
