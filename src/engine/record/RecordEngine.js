@@ -314,12 +314,18 @@ export default class RecordEngine extends React.Component {
         );
         if(currWatcherState && !this.eventDefinitions[i].prevWatcherState) {
           console.info('[Record Engine] Event Triggered: ' + this.eventDefinitions[i].name);
-          var emit = this.eventDefinitions[i].emitterFunct(
+          var emit = {
+            position: {
+              x: Math.round(this.botStateDefinition.botState.position.x),
+              y: Math.round(this.botStateDefinition.botState.position.y)
+            }
+          };
+          Object.assign(emit, this.eventDefinitions[i].emitterFunct(
             this.gameStateDefinition.gameState,
             this.fieldStateDefinition.fieldState,
             this.botStateDefinition.botState,
             this.buttonState
-          );
+          ));
 
           //Push triggered event to eventLog
           var newObj = deepcopy(this.eventDefinitions[i]);
