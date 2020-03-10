@@ -62,6 +62,9 @@ export default class ControlBar extends React.Component {
     this.props.flipUpdate(!this.props.engineState.flip);
   }
   matchStateOpen() {
+    if(typeof this.props.onMatchStateOpen === 'function') {
+      this.props.onMatchStateOpen();
+    }
     this.refs.matchState.open();
   }
   settings() {
@@ -77,7 +80,14 @@ export default class ControlBar extends React.Component {
   render() {
     return (
       <Box style={{height:'12.5%'}}>
-        <MatchState ref='matchState' submit={this.matchStateHandler.bind(this)}/>
+        <MatchState ref='matchState'
+          submit={this.matchStateHandler.bind(this)}
+          onClose={() => {
+            if(typeof this.props.onMatchStateClose === 'function') {
+              this.props.onMatchStateClose();
+            }
+          }}
+        />
         <Settings ref='settings' submit={this.props.settingsUpdate.bind(this)}/>
         <ButtonGroup style={{height:'93%'}} variant='outlined'>
           <Button style={{height:'100%'}} onClick={this.flipUpdate.bind(this)} color='primary'>

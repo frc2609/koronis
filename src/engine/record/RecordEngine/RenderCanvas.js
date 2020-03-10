@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as Layout from 'config/Layout';
+
 var raf = require('raf');
 
 export default class RenderCanvas extends React.Component {
@@ -12,6 +14,7 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasElement = {};
     this.renderCanvasWrapperElement = {};
     this.renderCanvasCtx = {};
+    this.mouseIsDown = false;
 
     this.canvasState = {
       mag: 0.975,
@@ -23,6 +26,21 @@ export default class RenderCanvas extends React.Component {
       yOffset: 0
     };
   }
+  mouseStart(event) {
+    this.mouseIsDown = true;
+    this.mouseMove(event);
+  }
+  mouseMove(event) {
+    if(this.mouseIsDown && !Layout.isTouchScreen()) {
+      var rect = this.renderCanvasElement.getBoundingClientRect();
+      var x = event.clientX - rect.left;
+      var y = event.clientY - rect.top;
+      this.coordInput(x, y);
+    }
+  }
+  mouseEnd() {
+    this.mouseIsDown = false;
+  }
   touchStart(event) {
     var rect = this.renderCanvasElement.getBoundingClientRect();
     var index = 0;
@@ -33,6 +51,13 @@ export default class RenderCanvas extends React.Component {
       x = event.touches[index].clientX - rect.left;
       y = event.touches[index].clientY - rect.top;
     }
+    this.coordInput(x, y);
+    event.preventDefault();
+  }
+  touchEnd(event) {
+    event.preventDefault();
+  }
+  coordInput(x, y) {
     var botX = (x/this.canvasState.xMulti) - this.canvasState.xOffset;
     var botY = (y/this.canvasState.yMulti) - this.canvasState.yOffset;
     if(this.props.engineState.flip) {
@@ -41,10 +66,6 @@ export default class RenderCanvas extends React.Component {
     }
     this.props.renderCanvasUpdate({x: botX, y: botY});
     this.update.bind(this)();
-    event.preventDefault();
-  }
-  touchEnd(event) {
-    event.preventDefault();
   }
   draw() {
     //Clear the canvas
@@ -54,11 +75,14 @@ export default class RenderCanvas extends React.Component {
     this.canvasState.ySize = this.state.canvasSize.y;
     this.canvasState.xMulti = (this.canvasState.xSize/this.props.fieldStateDefinition.fieldState.dimensions.x) * this.canvasState.mag;
     this.canvasState.yMulti = (this.canvasState.ySize/this.props.fieldStateDefinition.fieldState.dimensions.y) * this.canvasState.mag;
-    this.canvasState.xOffset = -(this.props.botStateDefinition.botState.position.x*0.2-this.canvasState.xMulti*0.2);
+    //Offset to show field
+    this.canvasState.xOffset = -(this.props.botStateDefinition.botState.position.x*0.25) + this.props.fieldStateDefinition.fieldState.dimensions.x*0.0625;
+    this.canvasState.yOffset = this.canvasState.yMulti*0.0125;
+    //Flip offset
     if(this.props.engineState.flip) {
       this.canvasState.xOffset = -this.canvasState.xOffset;
+      this.canvasState.yOffset = -this.canvasState.yOffset;
     }
-    this.canvasState.yOffset = this.canvasState.yMulti*0.035;
     //Draw field elements
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
     this.renderCanvasCtx.setLineDash([]);
@@ -172,6 +196,10 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasElement.ontouchstart = this.touchStart.bind(this);
     this.renderCanvasElement.ontouchmove = this.throttle(this.touchStart.bind(this)).bind(this);
     this.renderCanvasElement.ontouchend = this.touchEnd.bind(this);
+    //Bind mouse events
+    this.renderCanvasElement.onmousedown = this.mouseStart.bind(this);
+    this.renderCanvasElement.onmousemove = this.throttle(this.mouseMove.bind(this)).bind(this);
+    this.renderCanvasElement.onmouseup = this.mouseEnd.bind(this);
 
     this.resize();
   }

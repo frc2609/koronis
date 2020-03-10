@@ -17,3 +17,11 @@ export const getDefaultGrid = () => {
     return isLandscape() ? 6 : 12;
   }
 }
+
+export const isTouchScreen = () => {
+  return (
+    ('ontouchstart' in window) ||
+    (navigator.MaxTouchPoints > 0) ||
+    (navigator.msMaxTouchPoints > 0)
+  );
+}

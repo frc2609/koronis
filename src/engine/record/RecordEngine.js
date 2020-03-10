@@ -18,7 +18,8 @@ export default class RecordEngine extends React.Component {
     super(props);
     this.state = {
       timestamp: 0,
-      buttonStackWidth: 30
+      buttonStackWidth: 30,
+      buttonStackFocus: true
     };
 
     this.settings = {};
@@ -449,6 +450,8 @@ export default class RecordEngine extends React.Component {
           close={this.close.bind(this)}
           save={this.save.bind(this)}
           matchStateUpdate={this.matchStateHandler.bind(this)}
+          onMatchStateOpen={() => {this.setState({buttonStackFocus: false})}}
+          onMatchStateClose={() => {this.setState({buttonStackFocus: true})}}
           settingsUpdate={this.settingsHandler.bind(this)}
           flipUpdate={this.flipHandler.bind(this)}
 
@@ -472,6 +475,7 @@ export default class RecordEngine extends React.Component {
               buttonDefinitions={this.buttonDefinitions}
               buttonStackUpdate={this.buttonStackHandler.bind(this)}
               settings={this.settings}
+              focused={this.state.buttonStackFocus}
             />
           </Grid>
           <Grid item style={{width: (100 - this.state.buttonStackWidth) + '%', height:'100%'}} zeroMinWidth>

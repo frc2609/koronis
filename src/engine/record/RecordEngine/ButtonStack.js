@@ -17,12 +17,101 @@ export default class ButtonStack extends React.Component {
     this.buttonInitialized = false;
     this.buttonStates = [];
     this.touchState = {x: 0, y: 0};
+
+    this.buttonKeys = [];
+    this.keyUpListener = null;
+    this.keyDownListener = null;
   }
   init() {
     this.buttonInitialized = false;
     this.buttonStates = [];
     this.touchState = {x: 0, y: 0};
+
+    this.buttonKeys = [];
+    var tmpButtonDefs = deepcopy(this.props.buttonDefinitions);
+    console.info('[Record Engine > Button Stack] Creating button to keyboard mapping. Initial button stack length: ' + tmpButtonDefs.length);
+    tmpButtonDefs.sort((e1, e2) => {
+      return e1.title.length - e2.title.length;
+    });
+    for(var i = 0;i < tmpButtonDefs.length;i++) {
+      var compStr = ' .,!@#$%^&*-=_+()[]{}\\/\'\"';
+      for(var j = 0;j < this.buttonKeys.length;j++) {
+        compStr += this.buttonKeys[j].key;
+      }
+      var str = tmpButtonDefs[i].title.toLowerCase();
+      for(var j = 0;j < str.length;j++) { // eslint-disable-line no-redeclare
+        if(!compStr.includes(str.charAt(j))) {
+          this.buttonKeys.push({
+            id: tmpButtonDefs[i].id,
+            key: str.charAt(j)
+          });
+          break;
+        }
+      }
+    }
+    console.info('[Record Engine > Button Stack] Done creating button to keyboard mapping. Keyboard mapping length: ' + this.buttonKeys.length);
+
     this.update();
+  }
+  getButtonStr(id, str) {
+    var newStr = '';
+    var containsChar = false;
+    for(var i = 0;i < str.length;i++) {
+      for(var j = 0;j < this.buttonKeys.length;j++) {
+        if(id === this.buttonKeys[j].id) {
+          if(!containsChar) {
+            if(str.charAt(i).toLowerCase() === this.buttonKeys[j].key) {
+              containsChar = true;
+              newStr += '(' + str.charAt(i) + ')';
+            }
+            else {
+              newStr += str.charAt(i);
+            }
+          }
+          else {
+            newStr += str.charAt(i);
+          }
+        }
+      }
+    }
+    return newStr;
+  }
+  keyDown(event) {
+    if(this.props.focused) {
+      var id = -1;
+      for(var i = 0;i < this.buttonKeys.length;i++) {
+        if(this.buttonKeys[i].key === event.key) {
+          id = this.buttonKeys[i].id;
+        }
+      }
+      for(var i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
+        if(this.buttonStates[i].id === id) {
+          this.buttonStates[i].selected = true;
+        }
+      }
+      event.preventDefault();
+      this.update();
+    }
+  }
+  keyUp(event) {
+    if(this.props.focused) {
+      var btnS = [];
+      var id = -1;
+      for(var i = 0;i < this.buttonKeys.length;i++) {
+        if(this.buttonKeys[i].key === event.key) {
+          id = this.buttonKeys[i].id;
+        }
+      }
+      for(var i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
+        if(this.buttonStates[i].id === id) {
+          this.buttonStates[i].selected = false;
+          btnS.push(deepcopy(this.buttonStates[i]));
+        }
+      }
+      event.preventDefault();
+      this.props.buttonStackUpdate(btnS);
+      this.update();
+    }
   }
   touchStart(event) {
     var rect = this.buttonStackElement.getBoundingClientRect();
@@ -58,7 +147,7 @@ export default class ButtonStack extends React.Component {
         }
       }
     }
-    this.update.bind(this)();
+    this.update();
     event.preventDefault();
   }
   touchMove(event) {
@@ -73,7 +162,7 @@ export default class ButtonStack extends React.Component {
     }
     this.touchState.x = x;
     this.touchState.y = y;
-    //this.update.bind(this)();
+    //this.update();
     event.preventDefault();
   }
   touchEnd(event) {
@@ -93,7 +182,7 @@ export default class ButtonStack extends React.Component {
       this.buttonStates[i].selected = false;
     }
     this.props.buttonStackUpdate(btnS);
-    this.update.bind(this)();
+    this.update();
     event.preventDefault();
   }
   draw() {
@@ -129,10 +218,10 @@ export default class ButtonStack extends React.Component {
         this.buttonStackCtx.textBaseline = 'middle';
         this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name === buttonStyleObj.text})].hex; // eslint-disable-line no-loop-func
         this.buttonStackCtx.fillText(
-          this.buttonStates[i].title,
+          this.getButtonStr(this.buttonStates[i].id, this.buttonStates[i].title),
           this.buttonStates[i].position.x + this.buttonStates[i].size.x/2,
           this.buttonStates[i].position.y + this.buttonStates[i].size.y/2,
-          this.buttonStates[i].size.x * 0.9
+          this.buttonStates[i].size.x * 0.8
         );
       }
     }
@@ -372,8 +461,17 @@ export default class ButtonStack extends React.Component {
     this.buttonStackElement.ontouchstart = this.touchStart.bind(this);
     this.buttonStackElement.ontouchmove = this.throttle(this.touchMove.bind(this)).bind(this);
     this.buttonStackElement.ontouchend = this.touchEnd.bind(this);
+    //Bind keyboard events
+    this.keyUpListener = this.keyUp.bind(this);
+    this.keyDownListener = this.keyDown.bind(this);
+    window.addEventListener('keydown', this.keyDownListener);
+    window.addEventListener('keyup', this.keyUpListener);
 
     this.resize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.keyDownListener);
+    window.removeEventListener('keyup', this.keyboardListener);
   }
   render() {
     return (

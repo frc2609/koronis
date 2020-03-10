@@ -25,7 +25,8 @@ export default class RecieveString extends React.Component {
       resolution: 300,
       totalScanned: 0,
       rate: 0,
-      size: 0
+      size: 0,
+      missingIndex: -1
     };
     this.scanner = null;
     this.init();
@@ -61,6 +62,9 @@ export default class RecieveString extends React.Component {
         var currUndef = (typeof this.rawStrArr[i] === 'undefined');
         if(!hasUndef) {
           hasUndef = currUndef;
+          if(hasUndef) {
+            this.setState({missingIndex: i});
+          }
         }
         if(!currUndef) {
           totalScanned++;
@@ -94,7 +98,7 @@ export default class RecieveString extends React.Component {
     return (
       <Container maxWidth='xl'>
         <Grid container spacing={2}>
-          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
+          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
             {this.state.scanning ?
               <QrReader
                onScan={this.onScan.bind(this)}
@@ -107,9 +111,14 @@ export default class RecieveString extends React.Component {
               ''
             }
           </Grid>
-          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
+          <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
             <Grid container spacing={4}>
               <Grid item xs={12} style={{marginTop: '4vh'}}>
+                /*
+                <Typography gutterBottom>
+                  Missing QR Code Number: #{this.state.missingIndex + 1}
+                </Typography>
+                */
                 <Typography gutterBottom>
                   Total QR Codes scanned: {this.state.totalScanned}
                 </Typography>
