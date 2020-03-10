@@ -1,9 +1,12 @@
+import * as Color from 'config/Color';
+
 export function runProcess(inElem, inRecords, inProcess) {
   var moment = require('moment');
   var d3 = require('d3');
   var chart = require('chart.js');
   var plotly = require('plotly.js');
   var tabulator = require("tabulator-tables");
+  var color = Color;
   var consoleTmp = {
     log: (v) => {console.log(v);ret.log.push(v)},
     info: (v) => {console.info(v);ret.info.push(v)},
@@ -53,6 +56,7 @@ export function runProcess(inElem, inRecords, inProcess) {
       'chart',
       'plotly',
       'tabulator',
+      'color',
       'console',
       'returnData',
       'data',
@@ -60,7 +64,7 @@ export function runProcess(inElem, inRecords, inProcess) {
       '\"use strict\";' + inProcess.function
     );
     /* eslint-enable */
-    ret.value = func(moment, d3, chart, plotly, tabulator, consoleTmp, ret, inputRecord, inElem);
+    ret.value = func(moment, d3, chart, plotly, tabulator, color, consoleTmp, ret, inputRecord, inElem);
   }
   catch(err) {
     console.info('[Processor] Error in running process');

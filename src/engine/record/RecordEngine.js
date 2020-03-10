@@ -315,10 +315,7 @@ export default class RecordEngine extends React.Component {
         if(currWatcherState && !this.eventDefinitions[i].prevWatcherState) {
           console.info('[Record Engine] Event Triggered: ' + this.eventDefinitions[i].name);
           var emit = {
-            position: {
-              x: Math.round(this.botStateDefinition.botState.position.x),
-              y: Math.round(this.botStateDefinition.botState.position.y)
-            }
+            position: this.getPositionObj()
           };
           Object.assign(emit, this.eventDefinitions[i].emitterFunct(
             this.gameStateDefinition.gameState,
@@ -340,11 +337,9 @@ export default class RecordEngine extends React.Component {
       }
 
       //Push latest robot position to posLog
-      this.positionLog.push({
-        x: Math.round(this.botStateDefinition.botState.position.x),
-        y: Math.round(this.botStateDefinition.botState.position.y),
-        timeStamp: this.botStateDefinition.botState.position.t
-      });
+      var tmpPos = this.getPositionObj();
+      tmpPos.timeStamp = this.botStateDefinition.botState.position.t;
+      this.positionLog.push(tmpPos);
 
       //Update status
       this.statusUpdateDefinition.statusState = this.statusUpdateDefinition.updateFunct(
@@ -358,6 +353,18 @@ export default class RecordEngine extends React.Component {
       this.refs.renderCanvas.update();
       this.refs.controlBar.update();
     }
+  }
+  getPositionObj() {
+    var x = Math.round(this.botStateDefinition.botState.position.x);
+    x = x < 0 ? 0 : x;
+    x = x > this.fieldStateDefinition.fieldState.dimensions.x ? this.props.fieldStateDefinition.fieldState.dimensions.x : x;
+    var y = Math.round(this.botStateDefinition.botState.position.y);
+    y = y < 0 ? 0 : y;
+    y = y > this.fieldStateDefinition.fieldState.dimensions.x ? this.props.fieldStateDefinition.fieldState.dimensions.x : y;
+    return {
+      x: x,
+      y: y
+    };
   }
   updateLoop() {
     this.update();
