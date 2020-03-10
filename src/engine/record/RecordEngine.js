@@ -314,9 +314,7 @@ export default class RecordEngine extends React.Component {
         );
         if(currWatcherState && !this.eventDefinitions[i].prevWatcherState) {
           console.info('[Record Engine] Event Triggered: ' + this.eventDefinitions[i].name);
-          var emit = {
-            position: this.getPositionObj()
-          };
+          var emit = {};
           Object.assign(emit, this.eventDefinitions[i].emitterFunct(
             this.gameStateDefinition.gameState,
             this.fieldStateDefinition.fieldState,
@@ -330,6 +328,7 @@ export default class RecordEngine extends React.Component {
             id: newObj.id,
             name: newObj.name,
             variables: emit,
+            position: this.getPositionObj(),
             timeStamp: this.botStateDefinition.botState.position.t
           });
         }

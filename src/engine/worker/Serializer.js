@@ -209,6 +209,7 @@ var encodeRecord = (record) => {
     resBinArr.push(intToBin(record.eventLog[i].id));
     resBinArr.push(strToBin(record.eventLog[i].name));
     resBinArr.push(strToBin(JSON.stringify(record.eventLog[i].variables)));
+    resBinArr.push(strToBin(JSON.stringify(record.eventLog[i].position)));
     resBinArr.push(numToBin(record.eventLog[i].timeStamp));
   }
   resBinArr.push(intToBin(record.positionLog.length));
@@ -250,6 +251,7 @@ var decodeRecord = (inBin, stream = false) => {
     currEventLogObj.id = binStreamToInt(bin);
     currEventLogObj.name = binStreamToStr(bin);
     currEventLogObj.variables = JSON.parse(binStreamToStr(bin));
+    currEventLogObj.position = JSON.parse(binStreamToStr(bin));
     currEventLogObj.timeStamp = binStreamToNum(bin);
     resObj.eventLog.push(currEventLogObj);
   }
