@@ -85,7 +85,7 @@ export default class ButtonStack extends React.Component {
         }
       }
       for(var i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
-        if(this.buttonStates[i].id === id) {
+        if(this.buttonStates[i].id === id && this.buttonStates[i].visible) {
           this.buttonStates[i].selected = true;
         }
       }
@@ -103,7 +103,7 @@ export default class ButtonStack extends React.Component {
         }
       }
       for(var i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
-        if(this.buttonStates[i].id === id) {
+        if(this.buttonStates[i].id === id && this.buttonStates[i].selected) {
           this.buttonStates[i].selected = false;
           btnS.push(deepcopy(this.buttonStates[i]));
         }
