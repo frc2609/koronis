@@ -318,7 +318,7 @@ export default class AnalyzeRecord extends React.Component {
                   variant='fullWidth'
                 >
                   <Tab label='Metrics' value='metric' />
-                  <Tab label='Charts' value='chart' />
+                  <Tab label='Charts' disabled value='chart' />
                 </Tabs>
                 {this.state.tab === 'metric' ?
                   <MaterialTable
