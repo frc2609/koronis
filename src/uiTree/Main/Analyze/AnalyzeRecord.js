@@ -289,11 +289,19 @@ export default class AnalyzeRecord extends React.Component {
               <ButtonGroup fullWidth>
                 <Button onClick={() => {this.setState({openRecordModal: true})}}>
                   <FiberManualRecord />
-                  Select Records
+                  {this.state.selectedRecords.length > 0 ?
+                    this.state.selectedRecords.length + ' Record(s) Selected'
+                  :
+                    'Select Records'
+                  }
                 </Button>
                 <Button onClick={() => {this.setState({openProcessModal: true})}}>
                   <Code />
-                  Select Processes
+                  {this.state.selectedProcesses.length > 0 ?
+                    this.state.selectedProcesses.length + ' Process(es) Selected'
+                  :
+                    'Select Processes'
+                  }
                 </Button>
               </ButtonGroup>
             </Grid>

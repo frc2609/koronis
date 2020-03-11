@@ -35,6 +35,7 @@ import MaterialTable from "material-table";
 
 import TeamCard from 'uiTree/components/TeamCard';
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
+import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
 var moment = require('moment');
@@ -68,6 +69,7 @@ export default class AnalyzeTeam extends React.Component {
     this.state = {
       tab: 'metric',
       targetTeamNumber: 0,
+      openRecordModal: false,
       openProcessModal: false,
       selectedRecords: [],
       selectedProcesses: [],
@@ -188,23 +190,59 @@ export default class AnalyzeTeam extends React.Component {
           }}
           selectedProcesses={this.state.selectedProcesses}
         />
+        <RecordSelectModal
+          open={this.state.openRecordModal}
+          onClose={() => {
+            this.setState({openRecordModal: false});
+          }}
+          onSelect={(records) => {
+            var tmpRecords = [];
+            for(var i = 0;i < records.length;i++) {
+              if(records[i].teamNumber === this.state.targetTeamNumber) {
+                tmpRecords.push(records[i]);
+              }
+            }
+            if(tmpRecords.length > 0) {
+              this.setState({
+                openRecordModal: false,
+                selectedRecords: tmpRecords
+              });
+            }
+          }}
+          selectedRecords={this.state.selectedRecords}
+        />
         <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <ButtonGroup fullWidth>
+                <Button onClick={() => {this.setState({openRecordModal: true})}}>
+                  <FiberManualRecord />
+                  {this.state.selectedRecords.length > 0 ?
+                    this.state.selectedRecords.length + ' Record(s) Selected'
+                  :
+                    'Select Records'
+                  }
+                </Button>
                 <Button onClick={() => {this.setState({openProcessModal: true})}}>
                   <Code />
-                  Select Processes
-                </Button>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={this.showAll.bind(this)}
-                >
-                  <SelectAllIcon />
-                  Show All
+                  {this.state.selectedProcesses.length > 0 ?
+                    this.state.selectedProcesses.length + ' Process(es) Selected'
+                  :
+                    'Select Processes'
+                  }
                 </Button>
               </ButtonGroup>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant='contained'
+                color='primary'
+                onClick={this.showAll.bind(this)}
+              >
+                <SelectAllIcon />
+                Show All
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <TextField
