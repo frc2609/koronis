@@ -92,7 +92,7 @@ export default class AnalyzeTeam extends React.Component {
       {field: 'mean', title: 'Mean', sortable: true},
       {field: 'mode', title: 'Mode', sortable: true},
       {field: 'median', title: 'Median', sortable: true},
-      {field: 'sum', title: 'Title', sortable: true},
+      {field: 'sum', title: 'Sum', sortable: true},
       {field: 'min', title: 'Min', sortable: true},
       {field: 'quartile1', title: '1st Quartile', sortable: true},
       {field: 'quartile3', title: '3rd Quartile', sortable: true},
