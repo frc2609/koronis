@@ -41,11 +41,11 @@ export default class TeamCard extends React.Component {
       country: '',
       website: '',
       rookieYear: '',
-      subObj: null,
       avatarObj: null,
       showMedia: false,
       mediaUrls: []
     };
+    this.subObj = null;
     this.onlineListener = null;
   }
   blank() {
@@ -64,12 +64,12 @@ export default class TeamCard extends React.Component {
   }
   refresh() {
     this.blank();
-    if(this.state.subObj !== null) {
-      this.state.subObj.unsubscribe();
+    if(this.subObj !== null) {
+      this.subObj.unsubscribe();
     }
     if(typeof this.props.teamNumber !== 'undefined') {
       Interface.queryTeams({teamNumber: Number(this.props.teamNumber)}, {}).then((query) => {
-        var sub = query.$.subscribe((teams) => {
+        this.subObj = query.$.subscribe((teams) => {
           if(teams.length > 0) {
             var targetTeam = teams[0].toJSON();
             this.getMedia(targetTeam.key);
@@ -85,7 +85,6 @@ export default class TeamCard extends React.Component {
             });
           }
         });
-        this.setState({subObj: sub});
       });
     }
   }
@@ -108,8 +107,8 @@ export default class TeamCard extends React.Component {
     }
   }
   componentWillUnmount() {
-    if(this.state.subObj !== null) {
-      this.state.subObj.unsubscribe();
+    if(this.subObj !== null) {
+      this.subObj.unsubscribe();
     }
     if(this.onlineListener !== null) {
       window.removeEventListener('online', this.onlineListener);

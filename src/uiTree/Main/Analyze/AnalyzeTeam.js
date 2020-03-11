@@ -35,6 +35,7 @@ import MaterialTable from "material-table";
 
 import TeamCard from 'uiTree/components/TeamCard';
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
+import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
 var moment = require('moment');
 var deepCompare = require('deep-compare');
@@ -141,7 +142,7 @@ export default class AnalyzeTeam extends React.Component {
         {year: -1}
       ]
     };
-    if(this.state.tab === 'metric') {
+    if(this.state.tab === 'metric' || this.state.tab === 'mchart') {
       processQueryObj.dataType = 'metric';
     }
     Interface.getProcesses(processQueryObj).then((procs) => {
@@ -232,7 +233,8 @@ export default class AnalyzeTeam extends React.Component {
                   variant='fullWidth'
                 >
                   <Tab label='Metrics' value='metric' />
-                  <Tab label='Charts' disabled value='chart' />
+                  <Tab label='Charts' value='mchart' />
+                  <Tab label='Custom Charts' disabled value='chart' />
                 </Tabs>
                 {this.state.tab === 'metric' ?
                   <>
@@ -263,6 +265,13 @@ export default class AnalyzeTeam extends React.Component {
                       }}
                     />
                   </>
+                : this.state.tab === 'mchart' ?
+                  <Container>
+                    <TeamCharts
+                      processes={this.state.selectedProcesses}
+                      records={this.state.selectedRecords}
+                    />
+                  </Container>
                 :
                   <Grid container spacing={2}>
                     {(typeof this.state.selectedRecords === 'undefined' || this.state.selectedRecords.length === 0) ?
