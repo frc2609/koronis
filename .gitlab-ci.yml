@@ -1,6 +1,23 @@
-image: node:8.11.1
+firebase:
+  image: rambabusaravanan/firebase
+  stage: deploy
+  cache:
+    paths:
+      - node_modules/
+    key: "$CI_BUILD_REPO"
+  script:
+    - npm install
+    - CI=false npm run build
+    - firebase use koronis-scoutingsystem --token $FIREBASE_TOKEN
+    - firebase deploy --only hosting -m "Pipe $CI_PIPELINE_ID Build $CI_BUILD_ID" --token $FIREBASE_TOKEN
+  artifacts:
+    paths:
+      - build
+  only:
+    - master
 
 pages:
+  image: node:8.11.1
   stage: deploy
   script:
     - rm -rf *
