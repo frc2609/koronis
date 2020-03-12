@@ -1,5 +1,7 @@
 import * as Color from 'config/Color';
 
+var deepcopy = require('deep-copy');
+
 export function runProcess(inElem, inRecords, inProcess) {
   var moment = require('moment');
   var d3 = require('d3');
@@ -25,11 +27,11 @@ export function runProcess(inElem, inRecords, inProcess) {
     warn: [],
     error: []
   };
-  var inputRecord = inRecords;
+  var inputRecord = deepcopy(inRecords);
   if(inProcess.queryType === 'record') {
     inputRecord = {};
     if(inRecords.length > 0) {
-      inputRecord = inRecords[0];
+      inputRecord = deepcopy(inRecords[0]);
     }
   }
   if(inProcess.year !== -1) {

@@ -18,6 +18,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { Close } from '@material-ui/icons';
 
 import Chart from 'engine/process/Chart';
+import RecordCard from 'uiTree/components/RecordCard';
 
 export default class ChartModal extends React.Component {
   close() {
@@ -56,11 +57,12 @@ export default class ChartModal extends React.Component {
           <Grid container spacing={2}>
             {typeof this.props.records !== 'undefined' && typeof this.props.process !== 'undefined' ?
               this.props.records.map((e, i) => {
+                if(!this.props.open) {return (<></>);}
                 return (
-                  <Grid key={i} item xs={Layout.getDefaultGrid()}>
-                    <Card>
-                      <Chart records={e} process={this.props.process} />
-                    </Card>
+                  <Grid key={i} item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
+                    <RecordCard record={e} onRemove={this.forceUpdate.bind(this)}>
+                      <Chart records={[e]} process={this.props.process} />
+                    </RecordCard>
                   </Grid>
                 );
               })

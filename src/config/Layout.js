@@ -1,11 +1,11 @@
 export const isLandscape = () => {
-  return window.screen.width > window.screen.height;
+  return window.innerWidth > window.innerHeight;
 }
 
 export const isLarge = () => {
   return (
-    (isLandscape() && (window.screen.width >= 1024 && window.screen.height >= 768)) ||
-    (!isLandscape() && (window.screen.height >= 1024 && window.screen.width >= 768))
+    (isLandscape() && (window.innerWidth >= 1024 && window.innerHeight >= 768)) ||
+    (!isLandscape() && (window.innerHeight >= 1024 && window.innerWidth >= 768))
   );
 }
 
