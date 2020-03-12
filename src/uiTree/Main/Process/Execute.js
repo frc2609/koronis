@@ -17,6 +17,7 @@ import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/RecordSelectModal';
 
 var isMobile = require('is-mobile');
+var store = require('store');
 
 export default class Execute extends React.Component {
   constructor(props) {
@@ -54,10 +55,12 @@ export default class Execute extends React.Component {
     }
   }
   componentDidMount() {
-    if(isMobile()) {eruda.init();}
+    if(isMobile() && !store.get('settings/eruda/enable')) {eruda.init();}
   }
   componentWillUnmount() {
-    try {eruda.destroy();}
+    try {
+      if(!store.get('settings/eruda/enable')) {eruda.destroy();}
+    }
     catch(err) {}
   }
   render() {

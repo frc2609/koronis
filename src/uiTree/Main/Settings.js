@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import SettingsItem from 'uiTree/Main/Settings/SettingsItem';
 
+import eruda from 'eruda';
+
 export default class Settings extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +33,6 @@ export default class Settings extends React.Component {
             title='Current Year'
             path='/currentYear'
             type='dropdown'
-            defaultValue={0}
           >
             {(typeof this.state.gameStates === 'undefined') ?
               ''
@@ -45,7 +46,15 @@ export default class Settings extends React.Component {
             title='TBA Api Key'
             path='/tba/key'
             type='text'
-            defaultValue={0}
+          />
+          <SettingsItem
+            title='Enable Eruda Debug'
+            path='/eruda/enable'
+            type='switch'
+            onChange={(val) => {
+              if(val === 'true') {eruda.init();}
+              else {eruda.destroy();}
+            }}
           />
         </Grid>
       </Container>
