@@ -1,6 +1,11 @@
 import React from 'react';
 
+import * as Layout from 'config/Layout';
+
 import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -15,30 +20,37 @@ export default class SettingsItem extends React.Component {
       value: ''
     }
   }
-  defaultValue() {
-    store.set('settings' + this.props.path, this.props.defaultValue);
-  }
   valueHandler(val) {
     store.set('settings' + this.props.path, val);
     this.setState({value: val});
+    if(typeof this.props.onChange === 'function') {
+      this.props.onChange(val);
+    }
   }
   refresh() {
-    var val = store.get('settings' + this.props.path);
-    if(typeof val === 'undefined') {
-      this.defaultValue();
-      val = this.props.defaultValue;
-    }
-    console.debug(val)
-    this.setState({value: val});
+    this.setState({value: store.get('settings' + this.props.path)});
   }
   componentDidMount() {
     this.refresh();
   }
   render() {
     return (
-      <Grid item xs={6}>
+      <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
         {this.props.type === 'switch' ?
-          ''
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={String(this.state.value) === 'true'}
+                  onChange={(e) => {
+                    this.valueHandler(String(e.target.checked));
+                  }}
+                  color='primary'
+                />
+              }
+              label={this.props.title}
+            />
+          </FormGroup>
         : this.props.type === 'text' ?
           <TextField
             label={this.props.title}

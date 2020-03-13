@@ -7,8 +7,12 @@ import 'typeface-roboto';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import * as DefaultSettings from 'config/DefaultSettings';
+import * as Debug from 'config/Debug';
 import * as Sync from 'sync/Sync';
 
+DefaultSettings.setDefaults();
+Debug.init();
 Sync.init();
 
 ReactDOM.render(<App />, document.getElementById('root'));
