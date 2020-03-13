@@ -114,11 +114,9 @@ export default class RecieveString extends React.Component {
           <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
             <Grid container spacing={4}>
               <Grid item xs={12} style={{marginTop: '4vh'}}>
-                /*
                 <Typography gutterBottom>
                   Missing QR Code Number: #{this.state.missingIndex + 1}
                 </Typography>
-                */
                 <Typography gutterBottom>
                   Total QR Codes scanned: {this.state.totalScanned}
                 </Typography>
