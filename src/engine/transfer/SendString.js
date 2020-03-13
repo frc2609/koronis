@@ -75,7 +75,8 @@ export default class SendString extends React.Component {
       this.qrObjs[i].addData(targetStringArr[i], 'Numeric');
       this.qrObjs[i].make();
     }
-    this.setState({loading: false, qrCodeArrLength: this.qrObjs.length, qrCodeArrIndex: this.drawIndex, drawing: true});
+    this.setState({loading: false, qrCodeArrLength: this.qrObjs.length, qrCodeArrIndex: this.drawIndex, drawing: false});
+    raf(this.draw.bind(this));
   }
   draw() {
     if(this.drawIndex < this.qrObjs.length) {
@@ -158,7 +159,7 @@ export default class SendString extends React.Component {
               }
             </div>
             <Typography gutterBottom>
-              Current QR Code Number: #{this.state.qrCodeArrIndex + 1}
+              Current QR Code Number: #{this.state.qrCodeArrIndex === 0 ? this.state.qrCodeArrLength : this.state.qrCodeArrIndex}
             </Typography>
             <Typography gutterBottom>
               Total QR Codes to scan: {this.state.qrCodeArrLength}
