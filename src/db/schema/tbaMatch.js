@@ -79,12 +79,6 @@ export const tbaMatchSchema = {
     winningAlliance: {
       type: 'string'
     },
-    positionLog: {
-      type: 'array',
-      items: {
-        type: 'string'
-      }
-    },
     time: {
       type: 'integer'
     },

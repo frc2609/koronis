@@ -42,6 +42,7 @@ async function perYearInit(year) {
 
   //Done loading
   console.info('[Package] Packages for ' + year + ' loaded');
+  return null;
 }
 
 export const init = async () => {
@@ -60,12 +61,19 @@ export const init = async () => {
       }
 
       //Set default year
-      if(availableYears.length > 0) {
-        var gS = store.get('package/' + availableYears[0] + '/gameStateDefinition');
-        if(typeof store.get('settings/currentYear') === 'undefined') {
-          store.set('settings/currentYear', gS.gameState.year);
-        }
+      var biggestYear = 0;
+      for(var i = 0;i < availableYears.length;i++) {
+        var currYear = store.get('package/' + availableYears[i] + '/gameStateDefinition').gameState.year;
+        if(currYear > biggestYear) {biggestYear = currYear;}
       }
+      if(typeof store.get('settings/checkedYear') === 'undefined' || store.get('settings/checkedYear') < biggestYear) {
+        store.set('settings/checkedYear', biggestYear);
+        store.set('settings/currentYear', biggestYear);
+      }
+      if(typeof store.get('settings/currentYear') === 'undefined') {
+        store.set('settings/currentYear', biggestYear);
+      }
+
       //Store new versionNumber to local store
       initialized = true;
       store.set('package/versionNumber', versionNumberRepo);
@@ -79,6 +87,7 @@ export const init = async () => {
     console.info('[Package] Cannot get latest packages');
     console.error(err);
   }
+  return null;
 }
 
 export const get = async () => {

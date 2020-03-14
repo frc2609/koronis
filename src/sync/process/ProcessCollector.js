@@ -39,4 +39,5 @@ export const update = async () => {
     console.info('[Processes] Cannot get latest processes');
     console.error(err);
   }
+  return null;
 }
