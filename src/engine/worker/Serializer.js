@@ -353,6 +353,50 @@ var decodeArrProcess = (inBin) => {
   return resArr;
 }
 
+var encodeArr = (data) => {
+  var resBinArr = [];
+  resBinArr.push(intToBin(data.length));
+  for(var i = 0;i < data.length;i++) {
+    if(typeof data[i].eventLog !== 'undefined') {
+      resBinArr.push(intToBin(0));
+      resBinArr.push(encodeRecord(data[i]));
+    }
+    else if(typeof data[i].function !== 'undefined') {
+      resBinArr.push(intToBin(1));
+      resBinArr.push(encodeProcess(data[i]));
+    }
+  }
+  return resBinArr.flat();
+}
+
+var decodeArr = (inBin) => {
+  var bin = inBin;
+  var resArr = [];
+  var arrLength = binStreamToInt(bin);
+  for(var i = 0;i < arrLength;i++) {
+    var type = binStreamToInt(bin);
+    if(type === 0) {
+      resArr.push(decodeRecord(bin, true));
+    }
+    else if(type === 1) {
+      resArr.push(decodeProcess(bin, true));
+    }
+  }
+  return resArr;
+}
+
+
+export function serializeData(input, isEncoding = true, isString = true) {
+  var output;
+  if(isEncoding) {
+    output = isString ? binArrToBinStr(encodeArr(input)) : encodeArr(input); // eslint-disable-line no-undef
+  }
+  else {
+    output = isString ? decodeArr(binStrToBinArr(input)) : decodeArr(input); // eslint-disable-line no-undef
+  }
+  return output;
+}
+
 export function serializeRecord(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {

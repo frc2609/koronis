@@ -217,18 +217,22 @@ export default class AnalyzeTeam extends React.Component {
               <ButtonGroup fullWidth>
                 <Button onClick={() => {this.setState({openRecordModal: true})}}>
                   <FiberManualRecord />
-                  {this.state.selectedRecords.length > 0 ?
-                    this.state.selectedRecords.length + ' Record(s) Selected'
-                  :
+                  {this.state.selectedRecords.length <= 0 ?
                     'Select Records'
+                  : this.state.selectedRecords.length > 1 ?
+                    this.state.selectedRecords.length + ' Records Selected'
+                  :
+                    this.state.selectedRecords.length + ' Record Selected'
                   }
                 </Button>
                 <Button onClick={() => {this.setState({openProcessModal: true})}}>
                   <Code />
-                  {this.state.selectedProcesses.length > 0 ?
-                    this.state.selectedProcesses.length + ' Process(es) Selected'
-                  :
+                  {this.state.selectedProcesses.length <= 0 ?
                     'Select Processes'
+                  : this.state.selectedProcesses.length > 1 ?
+                    this.state.selectedProcesses.length + ' Processes Selected'
+                  :
+                    this.state.selectedProcesses.length + ' Process Selected'
                   }
                 </Button>
               </ButtonGroup>

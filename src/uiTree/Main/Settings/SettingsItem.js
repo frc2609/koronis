@@ -37,7 +37,9 @@ export default class SettingsItem extends React.Component {
     return (
       <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12}>
         {this.props.type === 'switch' ?
-          <FormGroup row>
+          <FormGroup row
+            variant='outlined'
+          >
             <FormControlLabel
               control={
                 <Switch
