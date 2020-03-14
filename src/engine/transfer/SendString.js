@@ -37,7 +37,9 @@ export default class SendString extends React.Component {
       1: [41, 21], 2: [77, 25], 3: [127, 29], 4: [187, 33], 5: [255, 37],
       6: [322, 41], 7: [370, 45], 8: [461, 49], 9: [552, 53], 10: [652, 57],
       11: [772, 61], 12: [883, 65], 13: [1022, 69], 14: [1101, 73], 15: [1250, 77],
-      16: [1408, 81], 17: [1548, 85], 18: [1725, 89], 19: [1903, 93], 20: [2061, 97]
+      16: [1408, 81], 17: [1548, 85], 18: [1725, 89], 19: [1903, 93], 20: [2061, 97],
+      21: [2232, 101], 22: [2409, 105], 23: [2620, 109], 24: [2812, 113], 25: [3057, 25],
+      26: [3283, 121], 27: [3517, 125], 28: [3669, 129], 29: [3909, 133], 30: [4158, 137]
     };
   }
   update() {
@@ -114,7 +116,7 @@ export default class SendString extends React.Component {
     this.setState({qrCodeType: value});
   }
   drawIntervalHandler(event, value) {
-    this.setState({drawInterval: (1000*value)});
+    this.setState({drawInterval: 1000/((value)/60)});
   }
   resize() {
     //Resize canvas if needed
@@ -207,16 +209,16 @@ export default class SendString extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <Typography gutterBottom>
-                  QR Code Period
+                  QR Codes Per Minute
                 </Typography>
                 <Slider
-                  value={(this.state.drawInterval/1000)}
+                  value={(60/(this.state.drawInterval/1000))}
                   onChange={this.drawIntervalHandler.bind(this)}
                   valueLabelDisplay='auto'
                   valueLabelFormat={(val) => {return val.toFixed(0)}}
-                  step={0.25}
-                  min={0.25}
-                  max={15}
+                  step={10}
+                  min={10}
+                  max={1800}
                 />
               </Grid>
             </Grid>

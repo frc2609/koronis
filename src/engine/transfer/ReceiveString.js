@@ -15,7 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import QrReader from 'react-qr-reader';
 
-export default class RecieveString extends React.Component {
+export default class ReceiveString extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -141,7 +141,7 @@ export default class RecieveString extends React.Component {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={Layout.getDefaultGrid()} style={{minWidth: '150px'}}>
+              <Grid item xs={12} style={{minWidth: '150px'}}>
                 <Typography gutterBottom>
                   Resolution
                 </Typography>
@@ -154,7 +154,7 @@ export default class RecieveString extends React.Component {
                   max={1080}
                 />
               </Grid>
-              <Grid item xs={Layout.getDefaultGrid()} style={{minWidth: '150px'}}>
+              <Grid item xs={12} style={{minWidth: '150px'}}>
                 <Typography gutterBottom>
                   Scans Per Second
                 </Typography>

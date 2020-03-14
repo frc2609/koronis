@@ -82,7 +82,6 @@ export default class RecordSelectModal extends React.Component {
               Select Records
             </Typography>
             <Button color='inherit'
-              disabled={this.state.disable}
               onClick={this.select.bind(this)}
             >
               Select

@@ -65,7 +65,6 @@ export default class ProcessSelectModal extends React.Component {
               Select Processes
             </Typography>
             <Button color='inherit'
-              disabled={this.state.disable}
               onClick={this.select.bind(this)}
             >
               Select
