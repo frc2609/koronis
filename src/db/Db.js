@@ -3,6 +3,7 @@ import { teamSchema } from 'db/schema/team';
 import { recordSchema } from 'db/schema/record';
 import { processSchema } from 'db/schema/process';
 import { tbaMatchSchema } from 'db/schema/tbaMatch';
+import { eventSchema } from 'db/schema/event';
 
 RxDB.plugin(require('pouchdb-adapter-idb'));
 
@@ -11,6 +12,7 @@ var teamCollection = null;
 var recordCollection = null;
 var processCollection = null;
 var tbaMatchCollection = null;
+var eventCollection = null;
 
 const createDb = async () => {
   const db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
@@ -59,11 +61,23 @@ const createTbaMatchCollection = async () => {
     dbCreated = await createDb();
   }
   tbaMatchCollection = await dbCreated.collection({
-    name: 'tbaMatches',
+    name: 'tbamatches',
     schema: tbaMatchSchema
   });
   console.info('[Db] created collection tbaMatches');
   return tbaMatchCollection;
+}
+
+const createEventCollection = async () => {
+  if(!dbCreated) {
+    dbCreated = await createDb();
+  }
+  eventCollection = await dbCreated.collection({
+    name: 'events',
+    schema: eventSchema
+  });
+  console.info('[Db] created collection events');
+  return eventCollection;
 }
 
 export const getTeams = async () => {
@@ -92,4 +106,19 @@ export const getTbaMatches = async () => {
     tbaMatchCollection = await createTbaMatchCollection();
   }
   return tbaMatchCollection;
+}
+
+export const getEvents = async () => {
+  if(!eventCollection) {
+    eventCollection = await createEventCollection();
+  }
+  return eventCollection;
+}
+
+export const init = async () => {
+  await getTeams();
+  await getRecords();
+  await getProcesses();
+  await getTbaMatches();
+  await getEvents();
 }

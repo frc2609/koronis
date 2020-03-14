@@ -1,4 +1,5 @@
 export const teamSchema = {
+  keyCompression: true,
   title: 'team',
   version: 0,
   type: 'object',

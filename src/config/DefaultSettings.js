@@ -11,8 +11,7 @@ export const setDefaults = () => {
   for(var i = 0;i < data.length;i++) {
     var val = store.get(data[i].path);
     if(typeof val === 'undefined') {
-      store.set(data[i].path, data[i].value)
+      store.set(data[i].path, data[i].value);
     }
-
   }
 }

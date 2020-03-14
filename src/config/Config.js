@@ -1,6 +1,7 @@
 var baseUrl = '';
 var packageUrl = '';
 var processUrl = '';
+var tbaUrl = 'https://www.thebluealliance.com/api/v3/';
 var environmentConfig = process.env.REACT_APP_ENV;
 var version = process.env.REACT_APP_VERSION;
 
@@ -22,6 +23,7 @@ const Config = {
   baseUrl: baseUrl,
   environmentConfig: environmentConfig,
   packageUrl: packageUrl,
-  processUrl: processUrl
+  processUrl: processUrl,
+  tbaUrl: tbaUrl
 };
 export default Config;

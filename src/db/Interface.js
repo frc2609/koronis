@@ -1,10 +1,12 @@
 import * as Db from 'db/Db';
+import Config from 'config/Config';
 import * as TbaKey from 'sync/tba/TbaKey';
 
 var deepcopy = require('deep-copy');
 var moment = require('moment');
 var axios = require('axios');
 
+//==================================Team==================================\\
 export const insertTeam = async (inTeam) => {
   var teamCollection = (await Db.getTeams());
   var currObj = deepcopy(inTeam);
@@ -21,24 +23,17 @@ export const insertTeam = async (inTeam) => {
 
 export const insertTbaTeam = async (inTeam) => {
   var teamCollection = (await Db.getTeams());
-  var currObj = deepcopy(inTeam);
-  currObj.teamNumber = currObj['team_number'];
-  delete currObj['team_number'];
-  currObj.schoolName = currObj['school_name'];
-  delete currObj['school_name'];
-  currObj.stateProv = currObj['state_prov'];
-  delete currObj['state_prov'];
-  delete currObj.address;
-  delete currObj['postal_code'];
-  delete currObj['gmaps_place_id'];
-  delete currObj['gmaps_url'];
-  delete currObj.lat;
-  delete currObj.lng;
-  delete currObj['location_name'];
-  currObj.rookieYear = currObj['rookie_year'];
-  delete currObj['rookie_year'];
-  delete currObj.motto;
-  delete currObj['home_championship'];
+  var currObj = {};
+  currObj.key = inTeam.key;
+  currObj.teamNumber = inTeam.team_number;
+  currObj.nickname = inTeam.nickname;
+  currObj.name = inTeam.name;
+  currObj.schoolName = inTeam.school_name;
+  currObj.city = inTeam.city;
+  currObj.stateProv = inTeam.state_prov;
+  currObj.country = inTeam.country;
+  currObj.website = inTeam.website;
+  currObj.rookieYear = inTeam.rookie_year;
   //Clear out null values
   Object.keys(currObj).forEach((item, i) => {
     if(currObj[item] === null) {
@@ -66,7 +61,7 @@ export const insertTbaTeam = async (inTeam) => {
   }
 }
 
-export const getTeams = async (query, sort = {}) => {
+export const getTeams = async (query, sort = []) => {
   var teamCollection = (await Db.getTeams());
   var docs = (await teamCollection.find(query).sort(sort).exec());
   var newDocs = [];
@@ -79,12 +74,13 @@ export const getTeams = async (query, sort = {}) => {
   return newDocs;
 }
 
-export const queryTeams = async (query, sort = {}) => {
+export const queryTeams = async (query, sort = []) => {
   var teamCollection = (await Db.getTeams());
   console.info('[Interface] Returning team query object');
   return teamCollection.find(query).sort(sort);
 }
 
+//==================================Record==================================\\
 export const insertRecord = async (inRecord) => {
   var recordCollection = (await Db.getRecords());
   var currObj = deepcopy(inRecord);
@@ -116,7 +112,7 @@ export const removeRecord = async (query) => {
   return (await doc.remove());
 }
 
-export const getRecords = async (query, sort = {}) => {
+export const getRecords = async (query, sort = []) => {
   var recordCollection = (await Db.getRecords());
   var docs = (await recordCollection.find(query).sort(sort).exec());
   var newDocs = [];
@@ -133,6 +129,13 @@ export const getRecords = async (query, sort = {}) => {
   return newDocs;
 }
 
+export const queryRecords = async (query, sort = []) => {
+  var recordCollection = (await Db.getRecords());
+  console.info('[Interface] Returning record query object');
+  return recordCollection.find(query).sort(sort);
+}
+
+//==================================Process==================================\\
 export const insertProcess = async (inProcess) => {
   var processCollection = (await Db.getProcesses());
   var currObj = deepcopy(inProcess);
@@ -160,7 +163,7 @@ export const removeProcess = async (query) => {
   return (await doc.remove());
 }
 
-export const getProcesses = async (query, sort = {}) => {
+export const getProcesses = async (query, sort = []) => {
   var processCollection = (await Db.getProcesses());
   var docs = (await processCollection.find(query).sort(sort).exec());
   var newDocs = [];
@@ -173,7 +176,92 @@ export const getProcesses = async (query, sort = {}) => {
   return newDocs;
 }
 
-export const getTbaRecords = async (query, sort = {}) => {
+export const queryProcesses = async (query, sort = []) => {
+  var processCollection = (await Db.getProcesses());
+  console.info('[Interface] Returning process query object');
+  return processCollection.find(query).sort(sort);
+}
+
+//==================================Event==================================\\
+export const insertEvent = async (inEvent) => {
+  var eventCollection = (await Db.getEvents());
+  var currObj = deepcopy(inEvent);
+  var prevDoc = (await eventCollection.findOne({key: currObj.key}).exec());
+  if(prevDoc === null) {
+    console.info('[Interface] Inserting event');
+    return (await eventCollection.insert(currObj));
+  }
+  else {
+    console.info('[Interface] Updating event');
+    return (await eventCollection.update({$set: currObj}));
+  }
+}
+
+export const insertTbaEvent = async (inEvent) => {
+  var eventCollection = (await Db.getEvents());
+  var currObj = {};
+  currObj.key = inEvent.key;
+  currObj.name = inEvent.name;
+  currObj.nickname = inEvent.short_name;
+  currObj.year = inEvent.year;
+  currObj.week = inEvent.week;
+  currObj.startDate = moment(inEvent.start_date).unix();
+  currObj.endDate = moment(inEvent.end_date).unix();
+  currObj.lat = inEvent.lat;
+  currObj.lng = inEvent.lng;
+  currObj.teams = [];
+  //Clear out null values
+  Object.keys(currObj).forEach((item, i) => {
+    if(currObj[item] === null) {
+      if(
+        item !== 'week' &&
+        item !== 'startDate' &&
+        item !== 'endDate' &&
+        item !== 'lat' &&
+        item !== 'lng'
+      ) {
+        currObj[item] = '';
+      }
+      else {
+        currObj[item] = -1;
+      }
+    }
+  });
+
+  var prevDoc = (await eventCollection.findOne({key: currObj.key}).exec());
+  if(prevDoc === null) {
+    console.info('[Interface] Inserting event');
+    return (await eventCollection.insert(currObj));
+  }
+  else {
+    console.info('[Interface] Updating event');
+    delete currObj._rev;
+    if(typeof prevDoc.teams !== 'undefined') {currObj.teams = prevDoc.teams;}
+    return (await prevDoc.update({$set: currObj}));
+  }
+}
+
+export const getEvents = async (query, sort = []) => {
+  var eventCollection = (await Db.getEvents());
+  var docs = (await eventCollection.find(query).sort(sort).exec());
+  var newDocs = [];
+  for(var i = 0;i < docs.length;i++) {
+    var currObj = deepcopy(docs[i].toJSON());
+    delete currObj._rev;
+    newDocs.push(currObj);
+  }
+  console.info('[Interface] Returning event query');
+  return newDocs;
+}
+
+export const queryEvents = async (query, sort = []) => {
+  var eventCollection = (await Db.getEvents());
+  console.info('[Interface] Returning event query object');
+  return eventCollection.find(query).sort(sort);
+}
+
+/* WIP
+export const getTbaRecords = async (query, sort = []) => {
   var newDocs = deepcopy(await getRecords(query, sort));
   for(var i = 0;i < newDocs.length;i++) {
     newDocs[i].tbaData = (await getTbaMatch(newDocs[i]));
@@ -199,8 +287,8 @@ export const syncTbaMatch = async (key) => { //return tba data
   var tbaMatchCollection = (await Db.getTbaMatches());
   var tbaKey = TbaKey.getKey();
   var requestConfig = {
-    url: key,
-    baseURL: 'https://www.thebluealliance.com/api/v3/match/',
+    url: '/match/' + key,
+    baseURL: Config.tbaUrl,
     headers: {
       'X-TBA-Auth-Key': tbaKey
     }
@@ -220,5 +308,5 @@ export const syncTbaMatch = async (key) => { //return tba data
   catch(err) {
     return {};
   }
-
 }
+*/
