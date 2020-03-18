@@ -4,19 +4,19 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import PublishIcon from '@material-ui/icons/Publish';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CropFreeIcon from '@material-ui/icons/CropFree';
+import GraphicEqIcon from '@material-ui/icons/GraphicEq';
 import ShareIcon from '@material-ui/icons/Share';
 
-import SendData from 'uiTree/Main/Transfer/SendData';
-import ReceiveData from 'uiTree/Main/Transfer/ReceiveData';
+import QRTransfer from 'uiTree/Main/Transfer/QRTransfer';
+import AudioTransfer from 'uiTree/Main/Transfer/AudioTransfer';
 import ShareData from 'uiTree/Main/Transfer/ShareData';
 
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: 'send',
+      tab: 'qrcode',
       redirect: false
     };
     if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/transfer/')) {
@@ -39,9 +39,9 @@ class Transfer extends React.Component {
         :
           ''
         }
-        <Route exact path='/transfer' component={SendData} />
-        <Route exact path='/transfer/send' component={SendData} />
-        <Route exact path='/transfer/receive' component={ReceiveData} />
+        <Route exact path='/transfer' component={QRTransfer} />
+        <Route exact path='/transfer/qrcode' component={QRTransfer} />
+        <Route exact path='/transfer/audio' component={AudioTransfer} />
         <Route exact path='/transfer/share' component={ShareData} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
@@ -58,8 +58,8 @@ class Transfer extends React.Component {
             value={this.state.tab}
             onChange={this.tabHandler.bind(this)}
           >
-            <BottomNavigationAction label='Send' value='send' icon={<PublishIcon />} />
-            <BottomNavigationAction label='Receive' value='receive' icon={<GetAppIcon />} />
+            <BottomNavigationAction label='QR Code' value='qrcode' icon={<CropFreeIcon />} />
+            <BottomNavigationAction label='Audio' value='audio' icon={<GraphicEqIcon />} />
             <BottomNavigationAction label='Share' value='share' icon={<ShareIcon />} />
           </BottomNavigation>
         </Paper>

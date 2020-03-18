@@ -10,12 +10,12 @@ import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/RecordSelectModal';
-import SendString from 'engine/transfer/SendString';
+import SendString from 'engine/transfer/audio/SendString';
 
 var serializerInstance = new serializerWorker();
 var deepCompare = require('deep-compare');
 
-export default class TransferHandler extends React.Component {
+export default class AudioSendData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
