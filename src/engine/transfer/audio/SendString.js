@@ -11,6 +11,8 @@ import Slider from '@material-ui/core/Slider';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 
+import ProfileSelector from 'engine/transfer/audio/ProfileSelector';
+
 var quiet = require('quietjs-bundle');
 var raf = require('raf');
 
@@ -20,54 +22,73 @@ export default class SendString extends React.Component {
     this.state = {
       running: false,
       done: false,
-      profile: 'hello-world'
+      profile: 'audible'
     };
+    this.transmitter = null;
   }
   transmit() {
     quiet.addReadyCallback(() => {
-     var transmit = quiet.transmitter(this.state.profile);
-     transmit(quiet.str2ab(this.props.targetString), () => {
-       this.setState({done: true, running: false});
+     this.transmitter = quiet.transmitter({
+       profile: this.state.profile,
+       onFinish: () => {
+         this.setState({done: true, running: false});
+       }
      });
+     this.transmitter.transmit(quiet.str2ab(this.props.targetString));
      this.setState({done: false, running: true});
     });
   }
+  stop() {
+    if(this.transmitter !== null) {
+      this.transmitter.destroy();
+    }
+  }
   componentDidUpdate(prevProps, prevState) {
     if(!prevState.running && this.state.running) {
-      this.transmit();
+      this.transmit.bind(this)();
+    }
+    if(prevState.running && !this.state.running) {
+      this.stop();
     }
   }
   render() {
     return (
       <Container maxWidth='xl'>
         <Grid container spacing={2}>
-          <Grid item xs={12} style={{marginBottom: '2vh'}}>
-            <div ref='qrcodeCanvasWrapper' style={{width: '100%', marginBottom: '2vh'}}>
-              {this.state.running ?
-                <LinearProgress variant='query' />
-              :
-                <Typography gutterBottom>
-                  {this.state.done ? 'Sent' : 'Ready'}
-                </Typography>
-              }
-            </div>
+          <Grid item xs={12}>
+            {this.state.running ?
+              <LinearProgress />
+            :
+              <Typography>
+                {this.state.done ? 'Sent' : 'Ready'}
+              </Typography>
+            }
           </Grid>
-          <Grid item xs={12} style={{marginBottom: '2vh'}}>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-              </Grid>
-              <Grid item xs={12}>
-                <Button color='primary'
-                  onClick={() => {
-                    this.setState({running: true});
-                  }}
-                  disabled={this.state.running}
-                  fullWidth
-                >
-                  Transmit Audio
-                </Button>
-              </Grid>
+          {typeof this.props.targetString !== 'undefined' ?
+            <Grid item xs={12}>
+              <Typography>
+                {this.props.targetString.length + ' bytes to transfer'}
+              </Typography>
             </Grid>
+          :
+            <></>
+          }
+          <Grid item xs={12}>
+            <ProfileSelector value={this.state.profile} onChange={(e) => {this.setState({profile: e.target.value})}} />
+          </Grid>
+          <Grid item xs={12}>
+            <Button color='primary'
+              onClick={() => {
+                this.setState({running: !this.state.running});
+              }}
+              fullWidth
+            >
+              {this.state.running ?
+                'Stop'
+              :
+                'Transmit Audio'
+              }
+            </Button>
           </Grid>
         </Grid>
       </Container>

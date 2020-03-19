@@ -16,7 +16,7 @@ export default class QRTransfer extends React.Component {
   }
   render() {
     return (
-      <Container>
+      <>
         <Tabs
           value={this.state.tab}
           onChange={(e, v) => {this.setState({tab: v})}}
@@ -35,7 +35,7 @@ export default class QRTransfer extends React.Component {
         :
           <QRReceiveData />
         }
-      </Container>
+      </>
     );
   }
 }
