@@ -1,3 +1,20 @@
+var ZstdCodec = require('zstd-codec').ZstdCodec;
+var zsimple = null;
+
+var initZstd = () => {
+  return new Promise((resolve) => {
+    if(zsimple === null) {
+      ZstdCodec.run((zstd) => {
+        zsimple = new zstd.Simple();
+        resolve(zsimple);
+      });
+    }
+    else {
+      resolve(zsimple);
+    }
+  });
+}
+
 var boolToBin = (inBool) => {
   return inBool ? [1] : [0];
 }
@@ -353,7 +370,7 @@ var decodeArrProcess = (inBin) => {
   return resArr;
 }
 
-var encodeArr = (data) => {
+var encodeArr = async (data) => {
   var resBinArr = [];
   resBinArr.push(intToBin(data.length));
   for(var i = 0;i < data.length;i++) {
@@ -366,11 +383,15 @@ var encodeArr = (data) => {
       resBinArr.push(encodeProcess(data[i]));
     }
   }
-  return resBinArr.flat();
+  var z = (await initZstd());
+  var compressed = z.compress(Uint8Array.from(resBinArr.flat()), 15);
+  return Array.from(compressed);
 }
 
-var decodeArr = (inBin) => {
-  var bin = inBin;
+var decodeArr = async (inBin) => {
+  var z = (await initZstd());
+  var decompressed = z.decompress(Uint8Array.from(inBin));
+  var bin = Array.from(decompressed);
   var resArr = [];
   var arrLength = binStreamToInt(bin);
   for(var i = 0;i < arrLength;i++) {
@@ -386,13 +407,13 @@ var decodeArr = (inBin) => {
 }
 
 
-export function serializeData(input, isEncoding = true, isString = true) {
+export async function serializeData(input, isEncoding = true, isString = true) {
   var output;
   if(isEncoding) {
-    output = isString ? binArrToBinStr(encodeArr(input)) : encodeArr(input); // eslint-disable-line no-undef
+    output = isString ? binArrToBinStr((await encodeArr(input))) : (await encodeArr(input)); // eslint-disable-line no-undef
   }
   else {
-    output = isString ? decodeArr(binStrToBinArr(input)) : decodeArr(input); // eslint-disable-line no-undef
+    output = isString ? (await decodeArr(binStrToBinArr(input))) : (await decodeArr(input)); // eslint-disable-line no-undef
   }
   return output;
 }
