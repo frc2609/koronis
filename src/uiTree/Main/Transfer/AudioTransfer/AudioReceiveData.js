@@ -6,12 +6,12 @@ import serializerWorker from 'workerize-loader!engine/worker/Serializer'; // esl
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import ReceiveString from 'engine/transfer/ReceiveString';
+import ReceiveString from 'engine/transfer/audio/ReceiveString';
 
 var serializerInstance = new serializerWorker();
 var deepCompare = require('deep-compare');
 
-export default class TransferHandler extends React.Component {
+export default class AudioReceiveData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

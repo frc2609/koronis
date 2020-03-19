@@ -121,4 +121,5 @@ export const init = async () => {
   await getProcesses();
   await getTbaMatches();
   await getEvents();
+  return null;
 }
