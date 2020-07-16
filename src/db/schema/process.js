@@ -42,10 +42,12 @@ export const processSchema = {
       index: true
     },
     queryType: {
-      type: 'string' //record, match, team, event
+      type: 'string',
+      enum: ['record', 'match', 'team', 'event']
     },
     dataType: {
-      type: 'string' //metric, chart
+      type: 'string',
+      enum: ['metric', 'array', 'chart']
     },
     name: {
       type: 'string'
