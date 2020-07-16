@@ -11,7 +11,8 @@ export const tbaMatchSchema = {
       type: 'integer'
     },
     compLevel: {
-      type: 'string' //qm, ef, qf, sf, f
+      type: 'string',
+      enum: ['qm', 'ef', 'qf', 'sf', 'f']
     },
     setNumber: {
       type: 'integer'

@@ -112,88 +112,88 @@ export default class MatchState extends React.Component {
         </AppBar>
         <Toolbar style={{marginBottom: '4vh'}} />
         <Container maxWidth='xl'>
-        <Grid container spacing={3}>
-          <Grid item xs style={{minWidth: '200px'}}>
-          <DatePicker
-            variant='inline'
-            autoOk={true}
-            disableFuture={true}
-            inputVariant='outlined'
-            label='Match Date'
-            fullWidth
-            value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (Date.now())}
-            onChange={this.matchStartDateHandler.bind(this)}
-          />
-          </Grid>
-          <Grid item xs={6} style={{minWidth: '200px'}}>
-          <TextField
-            ref='targetTeamNumber'
-            label='Robot Team Number'
-            type='number'
-            variant='outlined'
-            fullWidth
-            error={this.state.targetTeamNumber === 0 || this.state.targetTeamNumber < -1}
-            value={this.state.targetTeamNumber <= 0 ? '' : this.state.targetTeamNumber}
-            helperText={this.state.targetTeamNumber <= 0 ? 'Required' : ''}
-            onChange={this.targetTeamNumberHandler.bind(this)}
-          />
-          </Grid>
-          <Grid item xs={6} style={{minWidth: '150px'}}>
-          <TextField
-            ref='matchNumber'
-            label='Match Number'
-            type='number'
-            variant='outlined'
-            fullWidth
-            error={this.state.matchNumber === 0 || this.state.matchNumber < -1}
-            value={this.state.matchNumber <= 0 ? '' : this.state.matchNumber}
-            helperText={this.state.targetTeamNumber <= 0 ? 'Required' : ''}
-            onChange={this.matchNumberHandler.bind(this)}
-          />
-          </Grid>
-          <Grid item xs={6} style={{minWidth: '200px'}}>
-            <FormControl variant='outlined' fullWidth>
-              <InputLabel>Match Type</InputLabel>
-              <Select
-                ref='matchType'
-                onChange={this.matchTypeHandler.bind(this)}
-                value={this.state.matchType}
+          <Grid container spacing={3}>
+            <Grid item xs style={{minWidth: '200px'}}>
+              <DatePicker
+                variant='inline'
+                autoOk={true}
+                disableFuture={true}
+                inputVariant='outlined'
+                label='Match Date'
                 fullWidth
-              >
-                <MenuItem value='t'>Test</MenuItem>
-                <MenuItem value='pf'>Practice Field</MenuItem>
-                <MenuItem value='pm'>Practice Match</MenuItem>
-                <MenuItem value='qm'>Qualification</MenuItem>
-                <MenuItem value='ef'>Eighth-finals</MenuItem>
-                <MenuItem value='qf'>Quarterfinals</MenuItem>
-                <MenuItem value='sf'>Semifinals</MenuItem>
-                <MenuItem value='f'>Final</MenuItem>
-              </Select>
-            </FormControl>
+                value={this.state.matchStartDate > 0 ? this.state.matchStartDate : (Date.now())}
+                onChange={this.matchStartDateHandler.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '200px'}}>
+              <TextField
+                ref='targetTeamNumber'
+                label='Robot Team Number'
+                type='number'
+                variant='outlined'
+                fullWidth
+                error={this.state.targetTeamNumber === 0 || this.state.targetTeamNumber < -1}
+                value={this.state.targetTeamNumber <= 0 ? '' : this.state.targetTeamNumber}
+                helperText={this.state.targetTeamNumber <= 0 ? 'Required' : ''}
+                onChange={this.targetTeamNumberHandler.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '150px'}}>
+              <TextField
+                ref='matchNumber'
+                label='Match Number'
+                type='number'
+                variant='outlined'
+                fullWidth
+                error={this.state.matchNumber === 0 || this.state.matchNumber < -1}
+                value={this.state.matchNumber <= 0 ? '' : this.state.matchNumber}
+                helperText={this.state.targetTeamNumber <= 0 ? 'Required' : ''}
+                onChange={this.matchNumberHandler.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '200px'}}>
+              <FormControl variant='outlined' fullWidth>
+                <InputLabel>Match Type</InputLabel>
+                <Select
+                  ref='matchType'
+                  onChange={this.matchTypeHandler.bind(this)}
+                  value={this.state.matchType}
+                  fullWidth
+                >
+                  <MenuItem value='t'>Test</MenuItem>
+                  <MenuItem value='pf'>Practice Field</MenuItem>
+                  <MenuItem value='pm'>Practice Match</MenuItem>
+                  <MenuItem value='qm'>Qualification</MenuItem>
+                  <MenuItem value='ef'>Eighth-finals</MenuItem>
+                  <MenuItem value='qf'>Quarterfinals</MenuItem>
+                  <MenuItem value='sf'>Semifinals</MenuItem>
+                  <MenuItem value='f'>Final</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '150px'}}>
+              <FormControl variant='outlined' fullWidth>
+                <InputLabel shrink>Alliance</InputLabel>
+              </FormControl>
+              <ColorSwitch value={this.state.isRed} onChange={this.isRedHandler.bind(this)}/>
+            </Grid>
+            <Grid item xs={6} style={{minWidth: '250px'}}>
+              <TextField
+                ref='comments'
+                variant='outlined'
+                multiline
+                fullWidth
+                rowsMax='5'
+                label='Comments'
+                placeholder='Enter Comments Here'
+                value={this.state.comments}
+                onChange={this.commentsHandler.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+               <TeamCard teamNumber={this.state.targetTeamNumber} />
+            </Grid>
           </Grid>
-          <Grid item xs={6} style={{minWidth: '150px'}}>
-            <FormControl variant='outlined' fullWidth>
-              <InputLabel shrink>Alliance</InputLabel>
-            </FormControl>
-            <ColorSwitch value={this.state.isRed} onChange={this.isRedHandler.bind(this)}/>
-          </Grid>
-          <Grid item xs={6} style={{minWidth: '250px'}}>
-            <TextField
-              ref='comments'
-              variant='outlined'
-              multiline
-              fullWidth
-              rowsMax='5'
-              label='Comments'
-              placeholder='Enter Comments Here'
-              value={this.state.comments}
-              onChange={this.commentsHandler.bind(this)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-             <TeamCard teamNumber={this.state.targetTeamNumber} />
-          </Grid>
-        </Grid>
         </Container>
       </Dialog>
     );

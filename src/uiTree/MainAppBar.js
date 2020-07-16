@@ -14,6 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SyncIcon from '@material-ui/icons/Sync';
 
 import SideNav from 'uiTree/MainAppBar/SideNav';
+import Help from 'uiTree/MainAppBar/Help';
 
 import 'uiTree/MainAppBar.css';
 
@@ -53,8 +54,8 @@ export default class MainAppBar extends React.Component {
         <Snackbar
           open={this.state.syncIndicator}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center'
+            vertical: 'top',
+            horizontal: 'left'
           }}
           message={'Syncing ' + this.state.syncText}
           action={
@@ -78,6 +79,7 @@ export default class MainAppBar extends React.Component {
                 {this.props.title}
               </Typography>
             </Box>
+            <Help />
             <Button color='inherit'>
               Login
             </Button>

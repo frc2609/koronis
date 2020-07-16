@@ -1,8 +1,9 @@
 import * as Color from 'config/Color';
 
 var deepcopy = require('deep-copy');
+var safeEval = require('notevil');
 
-export function runProcess(inElem, inRecords, inProcess) {
+export function runProcess(inElem, inRecords, inProcess, secure = false) {
   var moment = require('moment');
   var d3 = require('d3');
   var chart = require('chart.js');
@@ -16,7 +17,7 @@ export function runProcess(inElem, inRecords, inProcess) {
     debug: (v) => {console.debug(v);ret.debug.push(v)},
     warn: (v) => {console.warn(v);ret.warn.push(v)},
     error: (v) => {console.error(v);ret.error.push(v)}
-  }
+  };
   var func = () => {};
   var ret = {
     value: NaN,
@@ -51,22 +52,81 @@ export function runProcess(inElem, inRecords, inProcess) {
     }
   }
   try {
-    /* eslint-disable */
-    func = new Function(
-      'moment',
-      'd3',
-      'chart',
-      'plotly',
-      'tabulator',
-      'color',
-      'console',
-      'returnData',
-      'data',
-      'targetElement',
-      '\"use strict\";' + inProcess.function
-    );
-    /* eslint-enable */
-    ret.value = func(moment, d3, chart, plotly, tabulator, color, consoleTmp, ret, inputRecord, inElem);
+    if(!secure) {
+      /* eslint-disable */
+      func = new Function(
+        'moment',
+        'd3',
+        'chart',
+        'plotly',
+        'tabulator',
+        'color',
+        'console',
+        'returnData',
+        'data',
+        'targetElement',
+        '\"use strict\";' + inProcess.function
+      );
+      if(inProcess.dataType !== 'chart') {
+        func = new Function(
+          'console',
+          'data',
+          '\"use strict\";' + inProcess.function
+        );
+      }
+      /* eslint-enable */
+      if(inProcess.dataType !== 'chart') {
+        ret.value = func(consoleTmp, inputRecord);
+      }
+      else {
+        ret.value = func(moment, d3, chart, plotly, tabulator, color, consoleTmp, ret, inputRecord, inElem);
+      }
+    }
+    else {
+      /* eslint-disable */
+      consoleTmp = {
+        log: (v) => {},
+        info: (v) => {},
+        table: (v) => {},
+        debug: (v) => {},
+        warn: (v) => {},
+        error: (v) => {}
+      };
+      func = safeEval.Function(
+        'moment',
+        'd3',
+        'chart',
+        'plotly',
+        'tabulator',
+        'color',
+        'console',
+        'returnData',
+        'data',
+        'targetElement',
+        '\"use strict\";' + inProcess.function
+      );
+      if(inProcess.dataType !== 'chart') {
+        func = safeEval.Function(
+          'console',
+          'data',
+          '\"use strict\";' + inProcess.function
+        );
+      }
+      /* eslint-enable */
+      if(inProcess.dataType !== 'chart') {
+        ret.value = func(consoleTmp, inputRecord);
+      }
+      else {
+        ret.value = func(moment, d3, chart, plotly, tabulator, color, consoleTmp, ret, inputRecord, inElem);
+      }
+    }
+    //Filter out non number results and standardize on NaN as a non number result
+    if(inProcess.dataType === 'metric') {
+      ret.value = Number(ret.value);
+      if(typeof ret.value !== 'number') {
+        ret.value = NaN;
+      }
+    }
   }
   catch(err) {
     console.info('[Processor] Error in running process');

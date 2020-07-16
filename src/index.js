@@ -15,8 +15,7 @@ import * as Db from 'db/Db';
 DefaultSettings.setDefaults();
 Debug.init();
 Sync.init();
-Db.init().then(() => {
-  ReactDOM.render(<App />, document.getElementById('root'));
-});
+Db.init();
+ReactDOM.render(<App />, document.getElementById('root'));
 
 serviceWorker.register();
