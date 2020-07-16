@@ -22,12 +22,13 @@ export const update = () => {
         window.dispatchEvent(syncStatusEvent);
         await Process.update();
 
-        window.syncStatus = 'TBA';
+        window.syncStatus = 'TBA Teams';
         window.dispatchEvent(syncStatusEvent);
-        await Promise.all([
-          TbaTeam.update(),
-          TbaEvent.update()
-        ]);
+        await TbaTeam.update();
+
+        window.syncStatus = 'TBA Events';
+        window.dispatchEvent(syncStatusEvent);
+        await TbaEvent.update();
 
         syncing = false;
         window.syncStatus = '';
@@ -41,7 +42,7 @@ export const update = () => {
 
 export const init = () => {
   window.addEventListener('online', update);
-  window.setInterval(update, 10*60*1000); //Update every 10 miniutes
+  window.setInterval(update, 5*60*1000); //Update every 5 miniutes
   update();
 }
 

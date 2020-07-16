@@ -43,7 +43,7 @@ export default class HelpModal extends React.Component {
           </DialogActions>
         </Dialog>
         <IconButton onClick={this.open.bind(this)}>
-          <HelpOutlineIcon />
+          <HelpOutlineIcon style={{color: '#ffffff'}} />
         </IconButton>
       </>
     );

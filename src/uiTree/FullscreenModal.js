@@ -39,7 +39,7 @@ export default class FullscreenModal extends React.Component {
   render() {
     return (
       <Dialog open={this.state.open}>
-        <DialogTitle>Go fullscreen?</DialogTitle>
+        <DialogTitle>Go Fullscreen?</DialogTitle>
         <DialogContent>
           <DialogContentText>
             It is recommended you go fullscreen for the best user experience. Do you want to go fullscreen?

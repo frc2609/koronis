@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 
 import Home from 'uiTree/Main/Home';
@@ -26,8 +27,11 @@ export default class Main extends React.Component {
   render() {
     return (
       <div ref='bodyElem'>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/record' component={Record} />
+        <Route exact path='/'>
+          <Redirect push to='/home' />
+        </Route>
+        <Route path='/home' component={Home} />
+        <Route path='/record' component={Record} />
         <Route path='/process' component={ProcessWithRouter} />
         <Route path='/analyze' component={AnalyzeWithRouter} />
         <Route path='/transfer' component={TransferWithRouter} />

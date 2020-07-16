@@ -25,7 +25,7 @@ export default class App extends React.Component {
           <CssBaseline />
           <BrowserRouter basename={Config.baseUrl} >
             <FullscreenModal />
-            <MainAppBar title='KSS'/>
+            <MainAppBar />
             <Main />
           </BrowserRouter>
         </MuiPickersUtilsProvider>

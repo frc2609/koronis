@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
+import Box from '@material-ui/core/Box';
 import { Close } from '@material-ui/icons';
 
 import { DatePicker } from '@material-ui/pickers';
@@ -95,22 +96,23 @@ export default class MatchState extends React.Component {
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
-              marginRight: '4vw'
-            }}>
-              <Close />
-            </IconButton>
-            <Typography variant='h6' style={{
-              flexGrow: 1
-            }}>
+            <Box mr={2}>
+              <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
+                <Close />
+              </IconButton>
+            </Box>
+            <Typography variant='h6'>
               Edit Match Information
             </Typography>
+            <Box flexGrow={1} />
             <Button color='inherit' onClick={this.submit.bind(this)}>
               Save
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '4vh'}} />
+        <Box mb={3}>
+          <Toolbar />
+        </Box>
         <Container maxWidth='xl'>
           <Grid container spacing={3}>
             <Grid item xs style={{minWidth: '200px'}}>

@@ -9,6 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import { Close } from '@material-ui/icons';
 
 import * as Package from 'sync/package/PackageCollector';
@@ -75,22 +76,23 @@ export default class Settings extends React.Component {
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
-              marginRight: '4vw'
-            }}>
-              <Close />
-            </IconButton>
-            <Typography variant='h6' style={{
-              flexGrow: 1
-            }}>
+            <Box mr={2}>
+              <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
+                <Close />
+              </IconButton>
+            </Box>
+            <Typography variant='h6'>
               Edit Settings
             </Typography>
+            <Box flexGrow={1} />
             <Button color='inherit' onClick={this.submit.bind(this)}>
               Save
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '4vh'}} />
+        <Box mb={3}>
+          <Toolbar />
+        </Box>
         <Container maxWidth='xl'>
           <Grid container spacing={4}>
             <Grid item xs={6} style={{minWidth: '150px'}}>

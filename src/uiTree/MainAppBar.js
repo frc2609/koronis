@@ -46,6 +46,7 @@ export default class MainAppBar extends React.Component {
   }
   componentWillUnmount() {;
     window.removeEventListener('syncstart', this.syncStartListener);
+    window.removeEventListener('syncstatus', this.syncStartListener);
     window.removeEventListener('syncend', this.syncEndListener);
   }
   render() {
@@ -54,38 +55,33 @@ export default class MainAppBar extends React.Component {
         <Snackbar
           open={this.state.syncIndicator}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left'
+            vertical: 'bottom',
+            horizontal: 'center'
           }}
           message={'Syncing ' + this.state.syncText}
-          action={
-            <>
-              <SyncIcon className='rotate' />
-            </>
-          }
+          action={<SyncIcon className='rotate' />}
         />
         <AppBar position='fixed'>
           <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu.bind(this)}/>
           <Toolbar>
-            <IconButton onClick={this.openMenu.bind(this)} edge='start' color='inherit' aria-label='menu'
-              style={{
-                marginRight: '4vw'
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Box style={{flexGrow: 1}}>
-              <Typography variant='h6' align='center'>
-                {this.props.title}
-              </Typography>
+            <Box mr={2}>
+              <IconButton onClick={this.openMenu.bind(this)} edge='start' color='inherit' aria-label='menu'>
+                <MenuIcon />
+              </IconButton>
             </Box>
+            <Typography variant='h6' align='center'>KSS</Typography>
+            <Box flexGrow={1} />
             <Help />
-            <Button color='inherit'>
-              Login
-            </Button>
+            <Box ml={2}>
+              <Button color='inherit'>
+                Login
+              </Button>
+            </Box>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '2vh'}} />
+        <Box mb={3}>
+          <Toolbar />
+        </Box>
       </>
     );
   }
