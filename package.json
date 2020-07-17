@@ -32,7 +32,7 @@
     "material-table": "^1.57.2",
     "moment": "^2.24.0",
     "nuka-carousel": "^4.6.5",
-    "plotly.js": "^1.52.2",
+    "plotly.js": "^1.54.2",
     "pouchdb-adapter-idb": "^7.1.1",
     "pouchdb-core": "^7.1.1",
     "qrcode-generator": "^1.4.4",

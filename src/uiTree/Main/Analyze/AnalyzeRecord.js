@@ -36,8 +36,8 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import MaterialTable from "material-table";
 
-import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/RecordSelectModal';
+import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
+import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
 import ChartModal from 'uiTree/components/ChartModal';
 
 var moment = require('moment');

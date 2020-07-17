@@ -17,7 +17,7 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
-import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
+import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
 
 export default class ProcessCreationBar extends React.Component {
   constructor(props) {

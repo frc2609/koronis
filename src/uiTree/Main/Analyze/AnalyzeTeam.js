@@ -34,8 +34,8 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import MaterialTable from "material-table";
 
 import TeamCard from 'uiTree/components/TeamCard';
-import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/RecordSelectModal';
+import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
+import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
 import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
 var moment = require('moment');

@@ -15,8 +15,8 @@ import TocIcon from '@material-ui/icons/Toc';
 import AppsIcon from '@material-ui/icons/Apps';
 import { Close } from '@material-ui/icons';
 
-import RecordSelect from 'uiTree/components/RecordSelect';
-import RecordQueryBar from 'uiTree/components/RecordQueryBar';
+import RecordSelect from 'uiTree/components/Record/RecordSelect';
+import RecordQueryBar from 'uiTree/components/Record/RecordQueryBar';
 
 export default class RecordSelectModal extends React.Component {
   constructor(props) {

@@ -14,7 +14,7 @@ import TocIcon from '@material-ui/icons/Toc';
 import AppsIcon from '@material-ui/icons/Apps';
 import { Close } from '@material-ui/icons';
 
-import ProcessSelect from 'uiTree/components/ProcessSelect';
+import ProcessSelect from 'uiTree/components/Process/ProcessSelect';
 
 export default class ProcessSelectModal extends React.Component {
   constructor(props) {

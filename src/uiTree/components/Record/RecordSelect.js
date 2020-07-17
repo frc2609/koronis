@@ -23,7 +23,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import MaterialTable from "material-table";
 
-import RecordCard from 'uiTree/components/RecordCard';
+import RecordCard from 'uiTree/components/Record/RecordCard';
 
 var moment = require('moment');
 

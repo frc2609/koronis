@@ -13,8 +13,8 @@ import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import eruda from 'eruda';
 
-import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/RecordSelectModal';
+import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
+import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
 
 var isMobile = require('is-mobile');
 var store = require('store');

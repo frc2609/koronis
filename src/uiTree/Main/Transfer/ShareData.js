@@ -8,8 +8,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import { FiberManualRecord, Code } from '@material-ui/icons';
 
-import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/RecordSelectModal';
+import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
+import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
 import ShareString from 'engine/transfer/ShareString';
 
 var deepCompare = require('deep-compare');

@@ -5,7 +5,7 @@ import * as Layout from 'config/Layout';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import RecordCard from 'uiTree/components/RecordCard';
+import RecordCard from 'uiTree/components/Record/RecordCard';
 
 export default class RecordView extends React.Component {
   constructor(props) {
