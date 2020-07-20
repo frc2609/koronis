@@ -8,20 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import RecordCard from 'uiTree/components/Record/RecordCard';
 
 export default class RecordView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.resizeListener = () => {};
-  }
-  componentDidMount() {
-    this.resizeListener = () => {
-      this.forceUpdate();
-    };
-    window.addEventListener('resize', this.resizeListener);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeListener);
-  }
   render() {
     return (
       <Grid container spacing={2}>

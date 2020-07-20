@@ -19,8 +19,29 @@ export default class Selector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedProcesses: [],
+      selectedRecords: [],
       openRecordModal: false,
       openProcessModal: false
+    };
+  }
+  refresh() {
+    if(this.props.selectedRecords) {
+      this.setState({selectedRecords: this.props.selectedRecords});
+    }
+    if(this.props.selectedProcesses) {
+      this.setState({selectedProcesses: this.props.selectedProcesses});
+    }
+  }
+  componentDidMount() {
+    this.refresh();
+  }
+  componentDidUpdate(prevProps) {
+    if(!deepCompare(prevProps.selectedRecords, this.props.selectedRecords) && this.props.selectedRecords) {
+      this.setState({selectedRecords: this.props.selectedRecords});
+    }
+    if(!deepCompare(prevProps.selectedProcesses, this.props.selectedProcesses) && this.props.selectedProcesses) {
+      this.setState({selectedProcesses: this.props.selectedProcesses});
     }
   }
   render() {
@@ -32,9 +53,11 @@ export default class Selector extends React.Component {
             this.setState({openRecordModal: false});
           }}
           onSelect={(records) => {
-            if(typeof this.props.onRecordsChange === 'function') {this.props.onProcessesChange(records)}
+            this.setState({openRecordModal: false, selectedRecords: records});
+            if(typeof this.props.onRecordsChange === 'function') {this.props.onRecordsChange(records)}
           }}
-          value={this.props.valueRecords}
+          selectedRecords={this.state.selectedRecords}
+          singular={this.props.singularRecord}
         />
         <ProcessSelectModal
           open={this.state.openProcessModal}
@@ -42,36 +65,47 @@ export default class Selector extends React.Component {
             this.setState({openProcessModal: false});
           }}
           onSelect={(processes) => {
+            this.setState({openProcessModal: false, selectedProcesses: processes});
             if(typeof this.props.onProcessesChange === 'function') {this.props.onProcessesChange(processes)}
           }}
-          value={this.props.valueProcesses}
+          selectedProcesses={this.state.selectedProcesses}
+          singular={this.props.singularProcess}
+          queryBarName={this.props.queryBarName}
         />
         <ButtonGroup fullWidth>
-          <Button onClick={() => {this.setState({openRecordModal: true})}} startIcon={<FiberManualRecord />}>
-            {this.props.valueRecords.length <= 0 ?
-              this.props.singularRecord ?
-                'Select Record'
+          {this.props.showRecords ?
+            <Button onClick={() => {this.setState({openRecordModal: true})}} startIcon={<FiberManualRecord />}>
+              {this.state.selectedRecords.length <= 0 ?
+                this.props.singularRecord ?
+                  'Select Record'
+                :
+                  'Select Records'
               :
-                'Select Records'
-            :
-              this.props.valueRecords.length > 1 ?
-                this.props.valueRecords.length + ' Records Selected'
+                this.state.selectedRecords.length > 1 ?
+                  this.state.selectedRecords.length + ' Records Selected'
+                :
+                  this.state.selectedRecords.length + ' Record Selected'
+              }
+            </Button>
+          :
+            <></>
+          }
+          {this.props.showProcesses ?
+            <Button onClick={() => {this.setState({openProcessModal: true})}} startIcon={<Code />}>
+              {this.state.selectedProcesses.length <= 0 ?
+                this.props.singularProcess ?
+                  'Select Process'
+                :
+                  'Select Processes'
+              : this.state.selectedProcesses.length > 1 ?
+                this.state.selectedProcesses.length + ' Processes Selected'
               :
-                this.props.valueRecords.length + ' Record Selected'
-            }
-          </Button>
-          <Button onClick={() => {this.setState({openProcessModal: true})}} startIcon={<Code />}>
-            {this.props.valueProcesses.length <= 0 ?
-              this.props.singularProcess ?
-                'Select Process'
-              :
-                'Select Processes'
-            : this.props.valueProcesses.length > 1 ?
-              this.props.valueProcesses.length + ' Processes Selected'
-            :
-              this.props.valueProcesses.length + ' Process Selected'
-            }
-          </Button>
+                this.state.selectedProcesses.length + ' Process Selected'
+              }
+            </Button>
+          :
+            <></>
+          }
         </ButtonGroup>
       </>
     );

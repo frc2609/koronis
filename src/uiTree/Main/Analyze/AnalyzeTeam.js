@@ -1,5 +1,5 @@
 import React from 'react';
-import { forwardRef } from 'react';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
 import * as Interface from 'db/Interface';
 import * as Processor from 'engine/process/Processor';
@@ -16,26 +16,11 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-import MaterialTable from "material-table";
+import MaterialTable from 'material-table';
+import tableIcons from 'config/Table';
 
 import TeamCard from 'uiTree/components/TeamCard';
-import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
+import Selector from 'uiTree/components/Selector';
 import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
 var moment = require('moment');
@@ -43,31 +28,12 @@ var deepCompare = require('deep-compare');
 var store = require('store');
 var ss = require('simple-statistics');
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
-
-export default class AnalyzeTeam extends React.Component {
+class AnalyzeTeam extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tab: 'metric',
+      redirect: false,
       targetTeamNumber: 0,
       openRecordModal: false,
       openProcessModal: false,
@@ -80,6 +46,14 @@ export default class AnalyzeTeam extends React.Component {
     };
     if(typeof store.get('analyze/team/targetTeamNumber') !== 'undefined') {
       this.state.targetTeamNumber = Number(store.get('analyze/team/targetTeamNumber'));
+    }
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/team')) {
+      if(this.props.location.pathname.includes('/analyze/team/mchart')) {
+        this.state.tab = 'mchart';
+      }
+      else if(this.props.location.pathname.includes('/analyze/team/chart')) {
+        this.state.tab = 'chart';
+      }
     }
   }
   runMetricProcess() {
@@ -161,6 +135,9 @@ export default class AnalyzeTeam extends React.Component {
       });
     });
   }
+  tabHandler(event, value) {
+    this.setState({tab: value, redirect: true});
+  }
   componentDidMount() {
     this.showAll();
   }
@@ -175,67 +152,26 @@ export default class AnalyzeTeam extends React.Component {
   render() {
     return (
       <>
-        <ProcessSelectModal
-          open={this.state.openProcessModal}
-          onClose={() => {
-            this.setState({openProcessModal: false});
-          }}
-          onSelect={(processes) => {
-            if(processes.length > 0) {
-              this.setState({
-                openProcessModal: false,
-                selectedProcesses: processes
-              });
-            }
-          }}
-          selectedProcesses={this.state.selectedProcesses}
-        />
-        <RecordSelectModal
-          open={this.state.openRecordModal}
-          onClose={() => {
-            this.setState({openRecordModal: false});
-          }}
-          onSelect={(records) => {
-            var tmpRecords = [];
-            for(var i = 0;i < records.length;i++) {
-              if(records[i].teamNumber === this.state.targetTeamNumber) {
-                tmpRecords.push(records[i]);
-              }
-            }
-            if(tmpRecords.length > 0) {
-              this.setState({
-                openRecordModal: false,
-                selectedRecords: tmpRecords
-              });
-            }
-          }}
-          selectedRecords={this.state.selectedRecords}
-        />
         <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <ButtonGroup fullWidth>
-                <Button onClick={() => {this.setState({openRecordModal: true})}}>
-                  <FiberManualRecord />
-                  {this.state.selectedRecords.length <= 0 ?
-                    'Select Records'
-                  : this.state.selectedRecords.length > 1 ?
-                    this.state.selectedRecords.length + ' Records Selected'
-                  :
-                    this.state.selectedRecords.length + ' Record Selected'
-                  }
-                </Button>
-                <Button onClick={() => {this.setState({openProcessModal: true})}}>
-                  <Code />
-                  {this.state.selectedProcesses.length <= 0 ?
-                    'Select Processes'
-                  : this.state.selectedProcesses.length > 1 ?
-                    this.state.selectedProcesses.length + ' Processes Selected'
-                  :
-                    this.state.selectedProcesses.length + ' Process Selected'
-                  }
-                </Button>
-              </ButtonGroup>
+              <Selector
+                queryBarName='analyzeteam'
+                onRecordsChange={(records) => {
+                  this.setState({
+                    selectedRecords: records
+                  });
+                }}
+                showRecords
+                selectedRecords={this.state.selectedRecords}
+                onProcessesChange={(processes) => {
+                  this.setState({
+                    selectedProcesses: processes
+                  });
+                }}
+                showProcesses
+                selectedProcesses={this.state.selectedProcesses}
+              />
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -269,7 +205,7 @@ export default class AnalyzeTeam extends React.Component {
               <Card style={{marginBottom: '4vh'}}>
                 <Tabs
                   value={this.state.tab}
-                  onChange={(e, v) => {this.setState({tab: v})}}
+                  onChange={this.tabHandler.bind(this)}
                   indicatorColor='primary'
                   textColor='primary'
                   variant='fullWidth'
@@ -278,7 +214,13 @@ export default class AnalyzeTeam extends React.Component {
                   <Tab label='Charts' value='mchart' />
                   <Tab label='Custom Charts' disabled value='chart' />
                 </Tabs>
-                {this.state.tab === 'metric' ?
+                {this.state.redirect ?
+                  <Redirect push to={'/analyze/team/' + this.state.tab} />
+                :
+                  <></>
+                }
+                <Route exact path='/analyze/team'><Redirect push to='/analyze/team/metric' /></Route>
+                <Route path='/analyze/team/metric'>
                   <>
                     <MaterialTable
                       title='Team Records'
@@ -307,14 +249,16 @@ export default class AnalyzeTeam extends React.Component {
                       }}
                     />
                   </>
-                : this.state.tab === 'mchart' ?
+                </Route>
+                <Route path='/analyze/team/mchart'>
                   <Container>
                     <TeamCharts
                       processes={this.state.selectedProcesses}
                       records={this.state.selectedRecords}
                     />
                   </Container>
-                :
+                </Route>
+                <Route path='/analyze/team/chart'>
                   <Grid container spacing={2}>
                     {(typeof this.state.selectedRecords === 'undefined' || this.state.selectedRecords.length === 0) ?
                       <Grid item xs={12}>
@@ -331,7 +275,7 @@ export default class AnalyzeTeam extends React.Component {
                       })
                     }
                   </Grid>
-                }
+                </Route>
               </Card>
             </Grid>
           </Grid>
@@ -340,3 +284,6 @@ export default class AnalyzeTeam extends React.Component {
     );
   }
 }
+
+const AnalyzeTeamWithRouter = withRouter(AnalyzeTeam);
+export default AnalyzeTeamWithRouter;

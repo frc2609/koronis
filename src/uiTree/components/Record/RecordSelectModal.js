@@ -28,6 +28,7 @@ export default class RecordSelectModal extends React.Component {
       disable: true
     }
     this.queryObj = {};
+    this.recordsSubscription = null;
   }
   select() {
     if(typeof this.props.onSelect === 'function') {
@@ -47,19 +48,26 @@ export default class RecordSelectModal extends React.Component {
     else {
       this.queryObj = typeof this.props.queryObj !== 'undefined' ? this.props.queryObj : {};
     }
-    Interface.getRecords(this.queryObj, {lastModified: 'desc'}).then((docs) => {
+    if(this.recordsSubscription !== null) {
+      this.recordsSubscription.unsubscribe();
+    }
+    Interface.subscribeRecords(this.queryObj, {lastModified: 'desc'}, (docs) => {
       this.setState({records: docs, loading: false});
+    }).then((subscription) => {
+      this.recordsSubscription = subscription;
     });
   }
   componentDidMount() {
-    if(typeof this.props.records !== 'undefined') {
-      this.setState({records: this.props.records});
-    }
     this.refresh();
   }
   componentDidUpdate(prevProps) {
-    if(!prevProps.open && this.props.open) {
+    if(prevProps.queryObj !== this.props.queryObj) {
       this.refresh();
+    }
+  }
+  componentWillUnmount() {
+    if(this.recordsSubscription !== null) {
+      this.recordsSubscription.unsubscribe();
     }
   }
   render() {
@@ -79,7 +87,11 @@ export default class RecordSelectModal extends React.Component {
                 flexGrow: 1
               }}
             >
-              Select Records
+              {this.props.singular ?
+                'Select Record'
+              :
+                'Select Records'
+              }
             </Typography>
             <Button color='inherit'
               onClick={this.select.bind(this)}
@@ -92,7 +104,7 @@ export default class RecordSelectModal extends React.Component {
         <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={10}>
-              <RecordQueryBar ref='recordQueryBar' button onSubmit={this.refresh.bind(this)}/>
+              <RecordQueryBar ref='recordQueryBar' name={this.props.queryBarName} button onSubmit={this.refresh.bind(this)}/>
             </Grid>
             <Grid item xs={2}>
               <IconButton variant='contained'

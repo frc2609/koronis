@@ -129,6 +129,24 @@ export const getRecords = async (query, sort = []) => {
   return newDocs;
 }
 
+export const subscribeRecords = async (query, sort = [], onChange = () => {}) => {
+  var recordCollection = (await Db.getRecords());
+  console.info('[Interface] Returning records query subscription');
+  return recordCollection.find(query).sort(sort).$.subscribe((docs) => {
+    var newDocs = [];
+    for(var i = 0;i < docs.length;i++) {
+      var currObj = deepcopy(docs[i].toJSON());
+      delete currObj._rev;
+      var oldEventLog = deepcopy(currObj.eventLog);
+      var oldPositionLog = deepcopy(currObj.positionLog);
+      currObj.eventLog = oldEventLog.map((e) => {return JSON.parse(e)});
+      currObj.positionLog = oldPositionLog.map((e) => {return JSON.parse(e)});
+      newDocs.push(currObj);
+    }
+    onChange(newDocs);
+  });
+}
+
 export const queryRecords = async (query, sort = []) => {
   var recordCollection = (await Db.getRecords());
   console.info('[Interface] Returning record query object');
@@ -174,6 +192,20 @@ export const getProcesses = async (query, sort = []) => {
   }
   console.info('[Interface] Returning processes query');
   return newDocs;
+}
+
+export const subscribeProcesses = async (query, sort = [], onChange = () => {}) => {
+  var processCollection = (await Db.getProcesses());
+  console.info('[Interface] Returning process query subscription');
+  return processCollection.find(query).sort(sort).$.subscribe((docs) => {
+    var newDocs = [];
+    for(var i = 0;i < docs.length;i++) {
+      var currObj = deepcopy(docs[i].toJSON());
+      delete currObj._rev;
+      newDocs.push(currObj);
+    }
+    onChange(newDocs);
+  });
 }
 
 export const queryProcesses = async (query, sort = []) => {

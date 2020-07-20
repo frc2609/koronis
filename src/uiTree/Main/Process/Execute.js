@@ -13,8 +13,7 @@ import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import eruda from 'eruda';
 
-import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
-import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
+import Selector from 'uiTree/components/Selector';
 
 var isMobile = require('is-mobile');
 var store = require('store');
@@ -23,8 +22,6 @@ export default class Execute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openRecordModal: false,
-      openProcessModal: false,
       selectedRecords: [],
       selectedProcess: {},
       returnValue: {
@@ -66,47 +63,27 @@ export default class Execute extends React.Component {
   render() {
     return (
       <>
-        <ProcessSelectModal
-          open={this.state.openProcessModal}
-          onClose={() => {
-            this.setState({openProcessModal: false});
-          }}
-          onSelect={(processes) => {
-            if(processes.length > 0) {
-              this.setState({
-                openProcessModal: false,
-                selectedProcess: processes[0]
-              });
-            }
-          }}
-        />
-        <RecordSelectModal
-          open={this.state.openRecordModal}
-          onClose={() => {
-            this.setState({openRecordModal: false});
-          }}
-          onSelect={(records) => {
-            if(records.length > 0) {
-              this.setState({
-                openRecordModal: false,
-                selectedRecords: records
-              });
-            }
-          }}
-        />
         <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <ButtonGroup fullWidth>
-                <Button onClick={() => {this.setState({openRecordModal: true})}}>
-                  <FiberManualRecord />
-                  Records
-                </Button>
-                <Button onClick={() => {this.setState({openProcessModal: true})}}>
-                  <Code />
-                  Process
-                </Button>
-              </ButtonGroup>
+              <Selector
+                queryBarName='executeprocess'
+                onRecordsChange={(records) => {
+                  this.setState({
+                    selectedRecords: records
+                  });
+                }}
+                showRecords
+                selectedRecords={this.state.selectedRecords}
+                onProcessesChange={(processes) => {
+                  this.setState({
+                    selectedProcess: processes[0]
+                  });
+                }}
+                showProcesses
+                singularProcess
+                selectedProcess={[this.state.selectedProcess]}
+              />
             </Grid>
             <Grid item xs={12}>
               <Button fullWidth

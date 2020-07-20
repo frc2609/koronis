@@ -141,7 +141,7 @@ export default class ShareString extends React.Component {
                 color='primary'
               />
             }
-            label='Download as JSON File'
+            label='Download as single JSON File'
           />
         </FormGroup>
         <Divider style={{marginBottom: '2vh'}} />

@@ -1,61 +1,48 @@
 import React from 'react';
-import { forwardRef } from 'react';
 
 import * as Layout from 'config/Layout';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
 
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-import MaterialTable from "material-table";
+import MaterialTable from 'material-table';
+import tableIcons from 'config/Table';
 
 import ProcessCard from 'uiTree/components/Process/ProcessCard';
 
 var moment = require('moment');
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
-
 export default class ProcessSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedProcesses: this.props.selectedProcesses ? this.props.selectedProcesses : []
+      selectedProcesses: this.props.selectedProcesses ? this.props.selectedProcesses : [],
+      tableProcesses: []
     };
   }
   getSelectedProcesses() {
     return this.state.selectedProcesses;
+  }
+  mapTableProcesses() {
+    this.setState({
+      tableProcesses: this.props.processes.map((rowData) => {
+        return Object.assign({
+          tableData: {
+            checked: this.state.selectedProcesses.findIndex((e) => {return e.id === rowData.id;}) > -1
+          }
+        }, rowData);
+      })
+    });
+  }
+  componentDidMount() {
+    this.mapTableProcesses();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.processes !== this.props.processes || (prevProps.table !== this.props.table && this.props.table)) {
+      this.mapTableProcesses();
+    }
   }
   render() {
     return (
@@ -63,9 +50,15 @@ export default class ProcessSelect extends React.Component {
         <Grid container spacing={2}>
           {(typeof this.props.processes === 'undefined' || this.props.processes.length === 0) ?
             <Grid item xs={12}>
-              <Typography variant='body1' align='center'>
-                No processes to display
-              </Typography>
+              {this.props.loading ?
+                <Box display='flex' justifyContent='center'>
+                  <CircularProgress />
+                </Box>
+              :
+                <Typography variant='body1' align='center'>
+                  No processes to display
+                </Typography>
+              }
             </Grid>
           :
             this.props.processes.map((e, i) => {
@@ -77,20 +70,20 @@ export default class ProcessSelect extends React.Component {
                       var sR = this.state.selectedProcesses.slice();
                       if(index === -1) {
                         sR.push(e);
-                        this.setState({selectedProcesses: sR});
                       }
                       else {
                         sR.splice(index, 1);
                       }
-                      this.setState({selectedProcesses: sR});
-                      if(typeof this.props.onSelect === 'function') {this.props.onSelect(sR)}
+                      if((this.props.singular && this.state.selectedProcesses.length <= 0) || !this.props.singular || index !== -1) {
+                        this.setState({selectedProcesses: sR});
+                        if(typeof this.props.onSelect === 'function') {this.props.onSelect(sR)}
+                      }
                     }}
                   >
                     <ProcessCard
                       selectable
                       selected={this.state.selectedProcesses.findIndex((e2) => {return e2.id === e.id;}) > -1}
                       process={e}
-                      onRemove={this.props.onRemove.bind(this)}
                     />
                   </div>
                 </Grid>
@@ -129,13 +122,14 @@ export default class ProcessSelect extends React.Component {
               }
             }
           ]}
-          data={this.props.processes}
+          data={this.state.tableProcesses}
           options={{
             selection: true,
-            selectionProps: (rowData) => {return {
-              checked: this.state.selectedProcesses.findIndex((e) => {return e.id === rowData.id;}) > -1,
-              color: 'default'
-            }},
+            selectionProps: (rowData) => {
+              return {
+                disabled: this.props.singular && this.state.selectedProcesses.length > 0 && this.state.selectedProcesses.findIndex((e) => {return e.id === rowData.id;}) === -1
+              }
+            },
             sorting: true
           }}
           onSelectionChange={(rows) => {
