@@ -100,8 +100,8 @@ export default class RecordCard extends React.Component {
           );
           this.ctx.fill();
         }
-        for(var i = 0;i < this.eventLog.length;i++) {
-          var alpha = this.eventLog[i].timeStamp > this.currTime ? 0 : 1 - ((this.currTime - this.eventLog[i].timeStamp) * 1.5);
+        for(var i = 0;i < this.eventLog.length;i++) { // eslint-disable-line no-redeclare
+          var alpha = this.eventLog[i].timeStamp > this.currTime ? 0 : 1 - ((this.currTime - this.eventLog[i].timeStamp) * 1.5); // eslint-disable-line no-redeclare
           alpha = alpha < 0 ? 0 : alpha;
           alpha = alpha > 1 ? 1 : alpha;
           currColor = Color.getColor(this.eventLog[i].name + ': ' + JSON.stringify(this.eventLog[i].variables));

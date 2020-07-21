@@ -1,13 +1,9 @@
 import React from 'react';
 
-import * as Layout from 'config/Layout';
-import * as StringConversion from 'engine/transfer/StringConversion';
-
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Slider from '@material-ui/core/Slider';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import { ReactMic } from 'react-mic';
@@ -15,7 +11,6 @@ import { ReactMic } from 'react-mic';
 import ProfileSelector from 'engine/transfer/audio/ProfileSelector';
 
 var quiet = require('quietjs-bundle');
-var raf = require('raf');
 
 export default class ReceiveString extends React.Component {
   constructor(props) {

@@ -8,8 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import MenuIcon from '@material-ui/icons/Menu';
 import SyncIcon from '@material-ui/icons/Sync';
 
@@ -52,31 +50,28 @@ export default class MainAppBar extends React.Component {
   render() {
     return (
       <>
-        <Snackbar
-          open={this.state.syncIndicator}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center'
-          }}
-          message={'Syncing ' + this.state.syncText}
-          action={<SyncIcon className='rotate' />}
-        />
         <AppBar position='fixed'>
           <SideNav menuState={this.state.menuState} closeMenuCallback={this.closeMenu.bind(this)}/>
           <Toolbar>
-            <Box mr={2}>
-              <IconButton onClick={this.openMenu.bind(this)} edge='start' color='inherit' aria-label='menu'>
-                <MenuIcon />
-              </IconButton>
-            </Box>
+            <IconButton onClick={this.openMenu.bind(this)} edge='start' color='inherit' aria-label='menu'>
+              <MenuIcon />
+            </IconButton>
+            <Box mr={2} />
             <Typography variant='h6' align='center'>KSS</Typography>
             <Box flexGrow={1} />
+            {this.state.syncIndicator ?
+              <>
+                <Typography variant='body2' align='center'>{'Syncing ' + this.state.syncText}</Typography>
+                <Box mr={2} />
+                <SyncIcon className='rotate' />
+                <Box mr={1} />
+              </>
+            :
+              <></>
+            }
             <Help />
-            <Box ml={2}>
-              <Button color='inherit'>
-                Login
-              </Button>
-            </Box>
+            <Box mr={2} />
+            <Button color='inherit'>Login</Button>
           </Toolbar>
         </AppBar>
         <Box mb={3}>

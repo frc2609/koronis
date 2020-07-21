@@ -8,7 +8,7 @@ export default class Help extends React.Component {
   render() {
     return (
       <>
-        <Route exact path='/' component={Home} />
+        <Route exact path='/home' component={Home} />
         <Route exact path='/record' component={Record} />
       </>
     );

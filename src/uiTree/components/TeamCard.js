@@ -7,7 +7,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
@@ -15,19 +14,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Carousel from 'nuka-carousel';
-
-var moment = require('moment');
-var axios = require('axios');
-var store = require('store');
 
 export default class TeamCard extends React.Component {
   constructor(props) {
@@ -91,7 +82,7 @@ export default class TeamCard extends React.Component {
   getMedia(key) {
     TbaTeam.getMedia(key).then((obj) => {
       this.setState({
-        avatarObj: (<img src={obj.avatarBaseSrc}/>),
+        avatarObj: (<img alt={obj.avatarBaseSrc} src={obj.avatarBaseSrc} />),
         mediaUrls: obj.mediaUrls
       });
     });
@@ -184,7 +175,7 @@ export default class TeamCard extends React.Component {
                   >
                     {this.state.mediaUrls.map((e, i) => {
                       return (
-                        <img key={i} src={e} />
+                        <img key={i} alt={e} src={e} />
                       );
                     })}
                   </Carousel>

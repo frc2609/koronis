@@ -27,9 +27,7 @@ export default class Main extends React.Component {
   render() {
     return (
       <div ref='bodyElem'>
-        <Route exact path='/'>
-          <Redirect push to='/home' />
-        </Route>
+        <Route exact path='/'><Redirect push to='/home' /></Route>
         <Route path='/home' component={Home} />
         <Route path='/record' component={Record} />
         <Route path='/process' component={ProcessWithRouter} />

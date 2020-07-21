@@ -1,10 +1,7 @@
 import * as Db from 'db/Db';
-import Config from 'config/Config';
-import * as TbaKey from 'sync/tba/TbaKey';
 
 var deepcopy = require('deep-copy');
 var moment = require('moment');
-var axios = require('axios');
 
 //==================================Team==================================\\
 export const insertTeam = async (inTeam) => {

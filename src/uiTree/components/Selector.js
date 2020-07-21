@@ -1,18 +1,12 @@
 import React from 'react';
 
-import serializerWorker from 'workerize-loader!engine/worker/Serializer'; // eslint-disable-line import/no-webpack-loader-syntax
-
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
-import SendString from 'engine/transfer/qrcode/SendString';
 
-var serializerInstance = new serializerWorker();
 var deepCompare = require('deep-compare');
 
 export default class Selector extends React.Component {

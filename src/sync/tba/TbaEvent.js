@@ -35,7 +35,7 @@ export const update = async () => {
         store.set('tba/events/' + store.get('settings/currentYear') + '/lastModified', response.headers['last-modified']);
       }
     }
-    for(var i = 0;i < validData.length;i++) {
+    for(var i = 0;i < validData.length;i++) { // eslint-disable-line no-redeclare
       await Interface.insertTbaEvent(validData[i]);
     }
     console.info('[TBA] Finished updating events');

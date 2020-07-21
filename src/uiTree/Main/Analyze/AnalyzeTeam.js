@@ -6,10 +6,8 @@ import * as Processor from 'engine/process/Processor';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import SelectAllIcon from '@material-ui/icons/SelectAll';
-import { FiberManualRecord, Code } from '@material-ui/icons';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Card from '@material-ui/core/Card';
@@ -23,7 +21,6 @@ import TeamCard from 'uiTree/components/TeamCard';
 import Selector from 'uiTree/components/Selector';
 import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
-var moment = require('moment');
 var deepCompare = require('deep-compare');
 var store = require('store');
 var ss = require('simple-statistics');
@@ -82,7 +79,7 @@ class AnalyzeTeam extends React.Component {
         var perProcessData = [];
         for(var j = 0;j < this.state.selectedRecords.length;j++) {
           var val = Processor.runProcess(null, [this.state.selectedRecords[j]], this.state.selectedProcesses[i]).value;
-          if(val !== NaN) {
+          if(!Number.isNaN(val)) {
             perProcessData.push(val);
           }
         }

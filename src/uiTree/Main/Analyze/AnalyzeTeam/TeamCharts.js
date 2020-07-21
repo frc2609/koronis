@@ -1,17 +1,14 @@
 import React from 'react';
 
 import * as Color from 'config/Color';
-import * as Layout from 'config/Layout';
 import * as Processor from 'engine/process/Processor';
 
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 
 var deepCompare = require('deep-compare');
-var deepcopy = require('deep-copy');
 var chart = require('chart.js');
 var moment = require('moment');
 

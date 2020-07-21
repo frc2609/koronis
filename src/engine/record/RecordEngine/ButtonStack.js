@@ -34,7 +34,7 @@ export default class ButtonStack extends React.Component {
       return e1.title.length - e2.title.length;
     });
     for(var i = 0;i < tmpButtonDefs.length;i++) {
-      var compStr = ' .,!@#$%^&*-=_+()[]{}\\/\'\"';
+      var compStr = ' .,!@#$%^&*-=_+()[]{}\\/\'\"'; // eslint-disable-line no-useless-escape
       for(var j = 0;j < this.buttonKeys.length;j++) {
         compStr += this.buttonKeys[j].key;
       }

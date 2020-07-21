@@ -51,7 +51,7 @@ export const update = async () => {
         validResponse = false;
       }
     }
-    for(var i = 0;i < validData.length;i++) {
+    for(var i = 0;i < validData.length;i++) { // eslint-disable-line no-redeclare
       await Interface.insertTbaTeam(validData[i]);
     }
     console.info('[TBA] Finished updating teams');
