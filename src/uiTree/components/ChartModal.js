@@ -18,7 +18,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { Close } from '@material-ui/icons';
 
 import Chart from 'engine/process/Chart';
-import RecordCard from 'uiTree/components/RecordCard';
+import RecordCard from 'uiTree/components/Record/RecordCard';
 
 export default class ChartModal extends React.Component {
   close() {

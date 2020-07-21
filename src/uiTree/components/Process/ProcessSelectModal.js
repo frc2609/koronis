@@ -3,6 +3,7 @@ import React from 'react';
 import * as Interface from 'db/Interface';
 
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,7 +15,7 @@ import TocIcon from '@material-ui/icons/Toc';
 import AppsIcon from '@material-ui/icons/Apps';
 import { Close } from '@material-ui/icons';
 
-import ProcessSelect from 'uiTree/components/ProcessSelect';
+import ProcessSelect from 'uiTree/components/Process/ProcessSelect';
 
 export default class ProcessSelectModal extends React.Component {
   constructor(props) {
@@ -22,8 +23,10 @@ export default class ProcessSelectModal extends React.Component {
     this.state = {
       processes: [],
       tableMode: false,
+      loading: true,
       disable: true
     }
+    this.processesSubscription = null;
   }
   select() {
     if(typeof this.props.onSelect === 'function') {
@@ -36,17 +39,26 @@ export default class ProcessSelectModal extends React.Component {
     }
   }
   refresh() {
-    this.setState({processes: []});
-    Interface.getProcesses(typeof this.props.queryObj !== 'undefined'? this.props.queryObj : {}, {lastModified: 'desc'}).then((docs) => {
-      this.setState({processes: docs});
+    if(this.processesSubscription !== null) {
+      this.processesSubscription.unsubscribe();
+    }
+    Interface.subscribeProcesses(typeof this.props.queryObj !== 'undefined'? this.props.queryObj : {}, {lastModified: 'desc'}, (docs) => {
+      this.setState({processes: docs, loading: false});
+    }).then((subscription) => {
+      this.processesSubscription = subscription;
     });
   }
   componentDidMount() {
     this.refresh();
   }
   componentDidUpdate(prevProps) {
-    if(!prevProps.open && this.props.open) {
+    if(prevProps.queryObj !== this.props.queryObj) {
       this.refresh();
+    }
+  }
+  componentWillUnmount() {
+    if(this.processesSubscription !== null) {
+      this.processesSubscription.unsubscribe();
     }
   }
   render() {
@@ -59,11 +71,14 @@ export default class ProcessSelectModal extends React.Component {
             }}>
               <Close />
             </IconButton>
-            <Typography variant='h6' style={{
-              flexGrow: 1
-            }}>
-              Select Processes
+            <Typography variant='h6'>
+              {this.props.singular ?
+                'Select Process'
+              :
+                'Select Processes'
+              }
             </Typography>
+            <Box flexGrow={1}/>
             <Button color='inherit'
               onClick={this.select.bind(this)}
             >
@@ -96,7 +111,8 @@ export default class ProcessSelectModal extends React.Component {
                 selectedProcesses.length === 0
               )});
             }}
-            onRemove={this.refresh.bind(this)}
+            singular={this.props.singular}
+            loading={this.state.loading}
             selectedProcesses={this.props.selectedProcesses}
           />
         </Container>
