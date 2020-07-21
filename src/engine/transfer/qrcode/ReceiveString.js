@@ -3,6 +3,7 @@ import React from 'react';
 import * as Layout from 'config/Layout';
 import * as StringConversion from 'engine/transfer/StringConversion';
 
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -113,19 +114,21 @@ export default class ReceiveString extends React.Component {
           </Grid>
           <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
             <Grid container spacing={4}>
-              <Grid item xs={12} style={{marginTop: '4vh'}}>
-                <Typography gutterBottom>
-                  Missing QR Code Number: #{this.state.missingIndex + 1}
-                </Typography>
-                <Typography gutterBottom>
-                  Total QR Codes scanned: {this.state.totalScanned}
-                </Typography>
-                <Typography gutterBottom>
-                   Total Data (B): {(this.state.size/8).toFixed(2)}
-                </Typography>
-                <Typography gutterBottom>
-                   Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
-                </Typography>
+              <Grid item xs={12}>
+                <Box mb={3}>
+                  <Typography gutterBottom>
+                    Missing QR Code Number: #{this.state.missingIndex + 1}
+                  </Typography>
+                  <Typography gutterBottom>
+                    Total QR Codes scanned: {this.state.totalScanned}
+                  </Typography>
+                  <Typography gutterBottom>
+                     Total Data (B): {(this.state.size/8).toFixed(2)}
+                  </Typography>
+                  <Typography gutterBottom>
+                     Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
+                  </Typography>
+                </Box>
               </Grid>
               <Grid item xs={12} style={{minWidth: '200px'}}>
                 <FormControl variant='outlined' fullWidth>

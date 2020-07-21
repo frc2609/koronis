@@ -18,7 +18,7 @@ export const update = () => {
         window.dispatchEvent(syncStartEvent);
         await Package.get();
 
-        window.syncStatus = 'Process';
+        window.syncStatus = 'Processes';
         window.dispatchEvent(syncStatusEvent);
         await Process.update();
 

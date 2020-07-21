@@ -21,9 +21,11 @@ export default class ReceiveString extends React.Component {
       error: false,
       bytes: 0,
       showMic: false,
+      visualizerWidth: 600,
       profile: 'audible'
     };
     this.listener = null;
+    this.visualizerRef = React.createRef();
     this.content = new ArrayBuffer(0);
   }
   listen() {
@@ -60,6 +62,23 @@ export default class ReceiveString extends React.Component {
     }
     this.content = new ArrayBuffer(0);
     this.setState({done: true, running: false, showMic: false});
+  }
+  refreshWidth() {
+    var elem = this.visualizerRef.current;
+    if(elem) {
+      var style = getComputedStyle(elem);
+      var width = elem.clientWidth - parseInt(style.paddingLeft) - parseInt(style.paddingRight);
+      if(width !== this.state.visualizerWidth) {
+        this.setState({visualizerWidth: width});
+      }
+    }
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    this.refreshWidth();
+    return true;
+  }
+  componentDidMount() {
+    this.refreshWidth();
   }
   render() {
     return (
@@ -131,8 +150,8 @@ export default class ReceiveString extends React.Component {
               </Button>
             </ButtonGroup>
           </Grid>
-          <Grid item xs={12} ref='visualizer'>
-            <ReactMic record={this.state.showMic} onStop={()=>{}} width={this.refs.visualizer ? this.refs.visualizer.width : 100} />
+          <Grid item xs={12} ref={this.visualizerRef}>
+            <ReactMic record={this.state.showMic} onStop={()=>{}} width={this.state.visualizerWidth} />
           </Grid>
         </Grid>
       </Container>
