@@ -76,11 +76,10 @@ export default class Settings extends React.Component {
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <Box mr={2}>
-              <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
-                <Close />
-              </IconButton>
-            </Box>
+            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
+              <Close />
+            </IconButton>
+            <Box mr={2} />
             <Typography variant='h6'>
               Edit Settings
             </Typography>

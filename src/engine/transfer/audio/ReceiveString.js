@@ -131,8 +131,8 @@ export default class ReceiveString extends React.Component {
               </Button>
             </ButtonGroup>
           </Grid>
-          <Grid item xs={12}>
-            <ReactMic record={this.state.showMic} onStop={()=>{}} />
+          <Grid item xs={12} ref='visualizer'>
+            <ReactMic record={this.state.showMic} onStop={()=>{}} width={this.refs.visualizer ? this.refs.visualizer.width : 100} />
           </Grid>
         </Grid>
       </Container>

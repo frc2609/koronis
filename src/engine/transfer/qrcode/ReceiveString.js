@@ -108,7 +108,7 @@ export default class ReceiveString extends React.Component {
                facingMode={this.state.facingMode}
               />
             :
-              ''
+              <></>
             }
           </Grid>
           <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>

@@ -96,11 +96,10 @@ export default class MatchState extends React.Component {
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <Box mr={2}>
-              <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
-                <Close />
-              </IconButton>
-            </Box>
+            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
+              <Close />
+            </IconButton>
+            <Box mr={2} />
             <Typography variant='h6'>
               Edit Match Information
             </Typography>
@@ -110,6 +109,7 @@ export default class MatchState extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
+        <Toolbar />
         <Box mb={3}>
           <Toolbar />
         </Box>
@@ -193,7 +193,7 @@ export default class MatchState extends React.Component {
               />
             </Grid>
             <Grid item xs={12}>
-               <TeamCard teamNumber={this.state.targetTeamNumber} />
+              <TeamCard teamNumber={this.state.targetTeamNumber} />
             </Grid>
           </Grid>
         </Container>
