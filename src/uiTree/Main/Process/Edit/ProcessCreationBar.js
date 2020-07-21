@@ -17,7 +17,7 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
-import ProcessSelectModal from 'uiTree/components/ProcessSelectModal';
+import Selector from 'uiTree/components/Selector';
 
 export default class ProcessCreationBar extends React.Component {
   constructor(props) {
@@ -83,49 +83,51 @@ export default class ProcessCreationBar extends React.Component {
   render() {
     return (
       <>
-        <ProcessSelectModal
-          open={this.state.openModal}
-          onClose={() => {
-            this.setState({openModal: false});
-          }}
-          onSelect={(processes) => {
-            if(processes.length > 0) {
-              var selectedProcess = processes[0];
-              this.setState({
-                openModal: false,
-                process: selectedProcess,
-                name: selectedProcess.name,
-                title: selectedProcess.title,
-                year: selectedProcess.year,
-                description: selectedProcess.description,
-                queryType: selectedProcess.queryType,
-                dataType: selectedProcess.dataType
-              });
-              if(typeof this.props.onOpen === 'function') {this.props.onOpen(selectedProcess);}
-            }
-          }}
-        />
         <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <ButtonGroup fullWidth>
-                <Button onClick={this.openModal.bind(this)}>
-                  <FolderOpenIcon />
-                  Open
-                </Button>
-                <Button onClick={this.newDoc.bind(this)}>
-                  <InsertDriveFileOutlinedIcon />
-                  New
-                </Button>
-                <Button onClick={this.save.bind(this)}>
-                  <SaveIcon />
-                  Save
-                </Button>
-                <Button onClick={this.saveNew.bind(this)}>
-                  <CreateIcon />
-                  Save as New
-                </Button>
-              </ButtonGroup>
+              <Grid container spacing={0}>
+                <Grid item xs={3}>
+                  <Selector
+                    queryBarName='openprocess'
+                    onProcessesChange={(processes) => {
+                      if(processes.length > 0) {
+                        var selectedProcess = processes[0];
+                        this.setState({
+                          openModal: false,
+                          process: selectedProcess,
+                          name: selectedProcess.name,
+                          title: selectedProcess.title,
+                          year: selectedProcess.year,
+                          description: selectedProcess.description,
+                          queryType: selectedProcess.queryType,
+                          dataType: selectedProcess.dataType
+                        });
+                        if(typeof this.props.onOpen === 'function') {this.props.onOpen(selectedProcess);}
+                      }
+                    }}
+                    showProcesses
+                    singularProcess
+                    selectedProcesses={this.state.name.length > 0 ? false : []}
+                  />
+                </Grid>
+                <Grid item xs={9}>
+                  <ButtonGroup fullWidth>
+                    <Button onClick={this.newDoc.bind(this)}>
+                      <InsertDriveFileOutlinedIcon />
+                      New Process
+                    </Button>
+                    <Button onClick={this.save.bind(this)}>
+                      <SaveIcon />
+                      Save
+                    </Button>
+                    <Button onClick={this.saveNew.bind(this)}>
+                      <CreateIcon />
+                      Save as New
+                    </Button>
+                  </ButtonGroup>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={Layout.getDefaultGrid()}>
               <TextField

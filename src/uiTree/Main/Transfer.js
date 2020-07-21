@@ -9,7 +9,7 @@ import GraphicEqIcon from '@material-ui/icons/GraphicEq';
 import ShareIcon from '@material-ui/icons/Share';
 
 import QRTransfer from 'uiTree/Main/Transfer/QRTransfer';
-import AudioTransfer from 'uiTree/Main/Transfer/AudioTransfer';
+import AudioTransferWithRouter from 'uiTree/Main/Transfer/AudioTransfer';
 import ShareData from 'uiTree/Main/Transfer/ShareData';
 
 class Transfer extends React.Component {
@@ -19,8 +19,13 @@ class Transfer extends React.Component {
       tab: 'qrcode',
       redirect: false
     };
-    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/transfer/')) {
-      this.state.tab = this.props.location.pathname.substring(this.props.location.pathname.lastIndexOf('/') + 1);
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/transfer')) {
+      if(this.props.location.pathname.includes('/transfer/audio')) {
+        this.state.tab = 'audio';
+      }
+      else if(this.props.location.pathname.includes('/transfer/share')) {
+        this.state.tab = 'share';
+      }
     }
   }
   tabHandler(event, value) {
@@ -37,12 +42,12 @@ class Transfer extends React.Component {
         {this.state.redirect ?
           <Redirect push to={'/transfer/' + this.state.tab} />
         :
-          ''
+          <></>
         }
-        <Route exact path='/transfer' component={QRTransfer} />
-        <Route exact path='/transfer/qrcode' component={QRTransfer} />
-        <Route exact path='/transfer/audio' component={AudioTransfer} />
-        <Route exact path='/transfer/share' component={ShareData} />
+        <Route exact path='/transfer'><Redirect push to='/transfer/qrcode' /></Route>
+        <Route path='/transfer/qrcode' component={QRTransfer} />
+        <Route path='/transfer/audio' component={AudioTransferWithRouter} />
+        <Route path='/transfer/share' component={ShareData} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square

@@ -7,8 +7,8 @@ import Container from '@material-ui/core/Container';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import RecordView from 'uiTree/components/RecordView';
-import RecordQueryBar from 'uiTree/components/RecordQueryBar';
+import RecordView from 'uiTree/components/Record/RecordView';
+import RecordQueryBar from 'uiTree/components/Record/RecordQueryBar';
 import RecordEngine from 'engine/record/RecordEngine';
 
 export default class Record extends React.Component {

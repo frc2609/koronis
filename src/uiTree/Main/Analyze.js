@@ -7,8 +7,8 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import GroupIcon from '@material-ui/icons/Group';
 
-import AnalyzeRecord from 'uiTree/Main/Analyze/AnalyzeRecord';
-import AnalyzeTeam from 'uiTree/Main/Analyze/AnalyzeTeam';
+import AnalyzeRecordWithRouter from 'uiTree/Main/Analyze/AnalyzeRecord';
+import AnalyzeTeamWithRouter from 'uiTree/Main/Analyze/AnalyzeTeam';
 
 class Analyze extends React.Component {
   constructor(props) {
@@ -18,7 +18,9 @@ class Analyze extends React.Component {
       redirect: false
     };
     if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/')) {
-      this.state.tab = this.props.location.pathname.substring(this.props.location.pathname.lastIndexOf('/') + 1);
+      if(this.props.location.pathname.includes('/analyze/team')) {
+        this.state.tab = 'team';
+      }
     }
   }
   tabHandler(event, value) {
@@ -32,10 +34,10 @@ class Analyze extends React.Component {
   render() {
     return (
       <>
-        {this.state.redirect ? <Redirect push to={'/analyze/' + this.state.tab} /> : ''}
-        <Route exact path='/analyze' component={AnalyzeRecord} />
-        <Route exact path='/analyze/record' component={AnalyzeRecord} />
-        <Route exact path='/analyze/team' component={AnalyzeTeam} />
+        {this.state.redirect ? <Redirect push to={'/analyze/' + this.state.tab} /> : <></>}
+        <Route exact path='/analyze'><Redirect push to='/analyze/record' /></Route>
+        <Route path='/analyze/record' component={AnalyzeRecordWithRouter} />
+        <Route path='/analyze/team' component={AnalyzeTeamWithRouter} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square
