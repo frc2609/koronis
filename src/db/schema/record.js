@@ -62,7 +62,8 @@ export const recordSchema = {
       index: true
     },
     matchType: {
-      type: 'string', //t, pf, pm, qm, ef, qf, sf, f
+      type: 'string',
+      enum: ['t', 'pf', 'pm', 'qm', 'ef', 'qf', 'sf', 'f'],
       index: true
     },
     isRedAlliance: {

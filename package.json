@@ -31,6 +31,7 @@
     "material-design-icons": "^3.0.1",
     "material-table": "^1.57.2",
     "moment": "^2.24.0",
+    "notevil": "^1.3.3",
     "nuka-carousel": "^4.6.5",
     "plotly.js": "^1.54.2",
     "pouchdb-adapter-idb": "^7.1.1",
@@ -54,11 +55,12 @@
     "tabulator-tables": "^4.5.3",
     "tocca": "^2.0.6",
     "typeface-roboto": "0.0.75",
-    "workerize-loader": "^1.1.0"
+    "workerize-loader": "^1.1.0",
+    "zstd-codec": "^0.1.2"
   },
   "homepage": ".",
   "scripts": {
-    "start": "env REACT_APP_ENV=development HTTPS=true react-scripts start",
+    "start": "env REACT_APP_ENV=development HTTPS=true react-scripts --max_old_space_size=4096 start",
     "build": "env REACT_APP_ENV=production react-scripts --max_old_space_size=4096 build",
     "devbuild": "env REACT_APP_ENV=development react-scripts --max_old_space_size=4096 build",
     "test": "env REACT_APP_ENV=production react-scripts test",
