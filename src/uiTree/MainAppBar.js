@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SyncIcon from '@material-ui/icons/Sync';
+import CloudOffIcon from '@material-ui/icons/CloudOff';
 
 import SideNav from 'uiTree/MainAppBar/SideNav';
 import Help from 'uiTree/MainAppBar/Help';
@@ -22,11 +23,13 @@ export default class MainAppBar extends React.Component {
     this.state = {
       menuState: false,
       syncIndicator: false,
-      syncText: window.syncStatus
+      syncText: window.syncStatus,
+      onlineStatus: true
     };
     this.syncStartListener = null;
     this.syncStatusListener = null;
     this.syncEndListener = null;
+    this.connectionListener = null;
   }
   syncStart() {this.setState({syncIndicator: true, syncText: window.syncStatus});}
   syncStatus() {this.setState({syncText: window.syncStatus});}
@@ -38,14 +41,19 @@ export default class MainAppBar extends React.Component {
     this.syncStartListener = this.syncStart.bind(this);
     this.syncStatusListener = this.syncStatus.bind(this);
     this.syncEndListener = this.syncEnd.bind(this);
+    this.connectionListener = () => {this.setState({onlineStatus: navigator.onLine})};
     window.addEventListener('syncstart', this.syncStartListener);
     window.addEventListener('syncstatus', this.syncStartListener);
     window.addEventListener('syncend', this.syncEndListener);
+    window.addEventListener('online', this.connectionListener);
+    window.addEventListener('offline', this.connectionListener);
   }
   componentWillUnmount() {;
     window.removeEventListener('syncstart', this.syncStartListener);
     window.removeEventListener('syncstatus', this.syncStartListener);
     window.removeEventListener('syncend', this.syncEndListener);
+    window.removeEventListener('online', this.connectionListener);
+    window.removeEventListener('offline', this.connectionListener);
   }
   render() {
     return (
@@ -64,11 +72,16 @@ export default class MainAppBar extends React.Component {
                 <Typography variant='body2' align='center'>{'Syncing ' + this.state.syncText}</Typography>
                 <Box mr={2} />
                 <SyncIcon className='rotate' />
-                <Box mr={1} />
               </>
             :
               <></>
             }
+            {!this.state.onlineStatus ?
+              <CloudOffIcon />
+            :
+              <></>
+            }
+            <Box mr={1} />
             <Help />
             <Box mr={2} />
             <Button color='inherit'>Login</Button>

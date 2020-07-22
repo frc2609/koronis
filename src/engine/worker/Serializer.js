@@ -383,15 +383,21 @@ var encodeArr = async (data) => {
       resBinArr.push(encodeProcess(data[i]));
     }
   }
+  /*
   var z = (await initZstd());
   var compressed = z.compress(Uint8Array.from(resBinArr.flat()), 15);
   return Array.from(compressed);
+  */
+  return resBinArr.flat();
 }
 
 var decodeArr = async (inBin) => {
+  /*
   var z = (await initZstd());
   var decompressed = z.decompress(Uint8Array.from(inBin));
   var bin = Array.from(decompressed);
+  */
+  var bin = inBin;
   var resArr = [];
   var arrLength = binStreamToInt(bin);
   for(var i = 0;i < arrLength;i++) {

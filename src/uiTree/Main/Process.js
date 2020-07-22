@@ -32,7 +32,11 @@ class Process extends React.Component {
   render() {
     return (
       <>
-        {this.state.redirect ? <Redirect push to={'/process/' + this.state.tab} /> : ''}
+        {this.state.redirect ?
+          <Redirect push to={'/process/' + this.state.tab} />
+        :
+          <></>
+        }
         <Route exact path='/process' component={Edit} />
         <Route exact path='/process/edit' component={Edit} />
         <Route exact path='/process/execute' component={Execute} />

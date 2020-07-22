@@ -117,7 +117,7 @@ export default class ReceiveString extends React.Component {
               <Grid item xs={12}>
                 <Box mb={3}>
                   <Typography gutterBottom>
-                    Missing QR Code Number: #{this.state.missingIndex + 1}
+                    Missing QR Code Number: #{this.state.missingIndex < 0 ? 1 : this.state.missingIndex + 1}
                   </Typography>
                   <Typography gutterBottom>
                     Total QR Codes scanned: {this.state.totalScanned}

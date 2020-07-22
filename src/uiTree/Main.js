@@ -26,7 +26,7 @@ export default class Main extends React.Component {
   }
   render() {
     return (
-      <div ref='bodyElem'>
+      <>
         <Route exact path='/'><Redirect push to='/home' /></Route>
         <Route path='/home' component={Home} />
         <Route path='/record' component={Record} />
@@ -34,7 +34,7 @@ export default class Main extends React.Component {
         <Route path='/analyze' component={AnalyzeWithRouter} />
         <Route path='/transfer' component={TransferWithRouter} />
         <Route path='/settings' component={Settings} />
-      </div>
+      </>
     );
   }
 }
