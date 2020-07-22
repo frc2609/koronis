@@ -16,7 +16,7 @@ export default class SendString extends React.Component {
     this.state = {
       running: false,
       done: false,
-      profile: 'audible'
+      profile: 'cable-64k'
     };
     this.transmitter = null;
   }

@@ -66,11 +66,10 @@ export default class ProcessSelectModal extends React.Component {
       <Dialog fullScreen open={this.props.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
-              marginRight: '4vw'
-            }}>
+            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
               <Close />
             </IconButton>
+            <Box mr={2} />
             <Typography variant='h6'>
               {this.props.singular ?
                 'Select Process'
@@ -86,7 +85,9 @@ export default class ProcessSelectModal extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '4vh'}} />
+        <Box mb={3}>
+          <Toolbar />
+        </Box>
         <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={10}></Grid>

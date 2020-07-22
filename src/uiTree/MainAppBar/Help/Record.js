@@ -7,7 +7,7 @@ import HelpModal from 'uiTree/MainAppBar/Help/HelpModal';
 export default class Record extends React.Component {
   render() {
     return (
-      <HelpModal path='/record'>
+      <HelpModal>
         <Typography variant='h6' gutterBottom>
           Main
         </Typography>

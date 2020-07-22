@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
@@ -119,40 +120,54 @@ export default class ShareString extends React.Component {
   render() {
     return (
       <Container maxWidth='xl'>
-        <Typography align='left' variant='h6' style={{marginBottom: '2vh'}}>Export</Typography>
-        <Button
-          color='primary'
-          variant='contained'
-          style={{marginBottom: '2vh', width: '100%'}}
-          onClick={this.onDownload.bind(this)}
-          disabled={(Array.isArray(this.props.data) && this.props.data.length === 0) || typeof this.props.data === 'undefined'}
-        >
-          Download
-        </Button>
-        <FormGroup row>
-          <FormControlLabel
-            style={{marginBottom: '2vh'}}
-            control={
-              <Switch
-                checked={this.state.singleDownload}
-                onChange={(e) => {
-                  this.setState({singleDownload: e.target.checked});
-                }}
-                color='primary'
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography align='left' variant='h6'>Export</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              color='primary'
+              variant='contained'
+              fullWidth
+              onClick={this.onDownload.bind(this)}
+              disabled={(Array.isArray(this.props.data) && this.props.data.length === 0) || typeof this.props.data === 'undefined'}
+            >
+              Download
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup row>
+              <FormControlLabel
+                style={{marginBottom: '2vh'}}
+                control={
+                  <Switch
+                    checked={this.state.singleDownload}
+                    onChange={(e) => {
+                      this.setState({singleDownload: e.target.checked});
+                    }}
+                    color='primary'
+                  />
+                }
+                label='Download as single JSON File'
               />
-            }
-            label='Download as single JSON File'
-          />
-        </FormGroup>
-        <Divider style={{marginBottom: '2vh'}} />
-        <Typography align='left' variant='h6' style={{marginBottom: '2vh'}}>Import</Typography>
-        <FilePond
-          ref={ref => this.filepond = ref}
-          allowMultiple={true}
-          allowRevert={false}
-          onaddfile={this.onUpload.bind(this)}
-          style={{marginBottom: '2vh'}}
-        />
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider style={{marginBottom: '2vh'}} />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography align='left' variant='h6' style={{marginBottom: '2vh'}}>Import</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <FilePond
+              ref={ref => this.filepond = ref}
+              allowMultiple={true}
+              allowRevert={false}
+              onaddfile={this.onUpload.bind(this)}
+              style={{marginBottom: '2vh'}}
+            />
+          </Grid>
+        </Grid>
       </Container>
     );
   }

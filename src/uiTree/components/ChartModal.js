@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,13 +27,10 @@ export default class ChartModal extends React.Component {
       <Dialog fullScreen open={this.props.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}
-              style={{
-                marginRight: '4vw'
-              }}
-            >
+            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
               <Close />
             </IconButton>
+            <Box mr={2} />
             <Typography variant='h6'
               style={{
                 flexGrow: 1
@@ -47,7 +45,9 @@ export default class ChartModal extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '4vh'}} />
+        <Box mb={3}>
+          <Toolbar />
+        </Box>
         <Container maxWidth='xl'>
           <Grid container spacing={2}>
             {typeof this.props.records !== 'undefined' && typeof this.props.process !== 'undefined' ?

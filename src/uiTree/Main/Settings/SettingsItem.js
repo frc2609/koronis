@@ -78,7 +78,7 @@ export default class SettingsItem extends React.Component {
             </Select>
           </FormControl>
         :
-          ''
+          <></>
         }
       </Grid>
     );

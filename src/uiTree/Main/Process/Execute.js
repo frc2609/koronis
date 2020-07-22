@@ -5,6 +5,7 @@ import * as Processor from 'engine/process/Processor';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -60,8 +61,8 @@ export default class Execute extends React.Component {
   }
   render() {
     return (
-      <>
-        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
+      <Box mb={3}>
+        <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Selector
@@ -107,7 +108,7 @@ export default class Execute extends React.Component {
             </Grid>
           </Grid>
         </Container>
-      </>
+      </Box>
     );
   }
 }

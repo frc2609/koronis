@@ -52,10 +52,11 @@ export default class ReceiveString extends React.Component {
     if(typeof this.props.onFinish === 'function') {this.props.onFinish(data);}
   }
   onScan(inStr) {
-    if(inStr !== null && inStr.length >= 7) {
+    if(inStr !== null && inStr.length >= 11) {
       var index = Number.parseInt(inStr.substring(1,4));
       var length = Number.parseInt(inStr.substring(4,7));
-      var rawStr = inStr.substring(7);
+      var dataLength = Number.parseInt(inStr.substring(7,11));
+      var rawStr = inStr.substring(11, 11 + dataLength);
       this.rawStrArr[index] = rawStr;
       var hasUndef = false;
       var totalScanned = 0;

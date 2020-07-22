@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Box from '@material-ui/core/Box';
+
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
@@ -29,12 +31,31 @@ export default class CodeEditor extends React.Component {
   }
   render() {
     return (
-      <div style={{marginBottom: '4vh', textAlign: 'left', border: '1px grey solid', height: '100%'}}>
+      <Box display='flex' mb={3} height='100%' border={1} borderColor='grey.500' textAlign='left'>
         <CodeMirror
           ref='codeMirror'
           value={this.state.currStr}
           onBeforeChange={(editor, data, value) => {this.setState({currStr: value})}}
           onChange={(editor, data, value) => {if(typeof this.props.onChange === 'function') {this.props.onChange(value)}}}
+          onKeyDown={(editor, event) => {
+            if(event.which === 83 && event.ctrlKey) {
+              event.preventDefault();
+              if(event.shiftKey) {
+                if(typeof this.props.onSaveNew === 'function') {this.props.onSaveNew()}
+              }
+              else {
+                if(typeof this.props.onSave === 'function') {this.props.onSave()}
+              }
+            }
+            else if(event.which === 78 && event.ctrlKey) {
+              event.preventDefault();
+              if(typeof this.props.onNew === 'function') {this.props.onNew()}
+            }
+            else if(event.which === 79 && event.ctrlKey) {
+              event.preventDefault();
+              if(typeof this.props.onOpen === 'function') {this.props.onOpen()}
+            }
+          }}
           options={{
             mode: 'javascript',
             matchBrackets: true,
@@ -45,7 +66,7 @@ export default class CodeEditor extends React.Component {
             lineNumbers: true
           }}
         />
-      </div>
+      </Box>
     );
   }
 }

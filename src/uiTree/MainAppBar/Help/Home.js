@@ -7,7 +7,7 @@ import HelpModal from 'uiTree/MainAppBar/Help/HelpModal';
 export default class Home extends React.Component {
   render() {
     return (
-      <HelpModal path='/home'>
+      <HelpModal>
         <Typography variant='h6' gutterBottom>
           Main
         </Typography>

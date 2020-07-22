@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
+import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -36,19 +37,21 @@ class QRTransfer extends React.Component {
         :
           <></>
         }
-        <Tabs
-          value={this.state.tab}
-          onChange={this.tabHandler.bind(this)}
-          indicatorColor='primary'
-          textColor='primary'
-          variant='fullWidth'
-          style={{
-            marginBottom: '2vh'
-          }}
-        >
-          <Tab label='Send' value='send' />
-          <Tab label='Receive' value='receive' />
-        </Tabs>
+        <Box mb={2}>
+          <Tabs
+            value={this.state.tab}
+            onChange={this.tabHandler.bind(this)}
+            indicatorColor='primary'
+            textColor='primary'
+            variant='fullWidth'
+            style={{
+              marginBottom: '2vh'
+            }}
+          >
+            <Tab label='Send' value='send' />
+            <Tab label='Receive' value='receive' />
+          </Tabs>
+        </Box>
         <Route exact path='/transfer/qrcode'><Redirect push to='/transfer/qrcode/send' /></Route>
         <Route exact path='/transfer/qrcode/send' component={QRSendData} />
         <Route exact path='/transfer/qrcode/receive' component={QRReceiveData} />

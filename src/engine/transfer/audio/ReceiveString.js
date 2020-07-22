@@ -22,7 +22,7 @@ export default class ReceiveString extends React.Component {
       bytes: 0,
       showMic: false,
       visualizerWidth: 600,
-      profile: 'audible'
+      profile: 'cable-64k'
     };
     this.listener = null;
     this.visualizerRef = React.createRef();

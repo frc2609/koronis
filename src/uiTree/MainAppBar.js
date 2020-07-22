@@ -1,7 +1,5 @@
 import React from 'react';
 
-import * as Sync from 'sync/Sync';
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -23,34 +21,27 @@ export default class MainAppBar extends React.Component {
     this.state = {
       menuState: false,
       syncIndicator: false,
-      syncText: window.syncStatus,
       onlineStatus: true
     };
     this.syncStartListener = null;
-    this.syncStatusListener = null;
     this.syncEndListener = null;
     this.connectionListener = null;
   }
-  syncStart() {this.setState({syncIndicator: true, syncText: window.syncStatus});}
-  syncStatus() {this.setState({syncText: window.syncStatus});}
+  syncStart() {this.setState({syncIndicator: true});}
   syncEnd() {this.setState({syncIndicator: false});}
   openMenu() {this.setState({menuState: true});}
   closeMenu() {this.setState({menuState: false});}
   componentDidMount() {
-    this.setState({syncIndicator: Sync.getStatus()});
     this.syncStartListener = this.syncStart.bind(this);
-    this.syncStatusListener = this.syncStatus.bind(this);
     this.syncEndListener = this.syncEnd.bind(this);
     this.connectionListener = () => {this.setState({onlineStatus: navigator.onLine})};
     window.addEventListener('syncstart', this.syncStartListener);
-    window.addEventListener('syncstatus', this.syncStartListener);
     window.addEventListener('syncend', this.syncEndListener);
     window.addEventListener('online', this.connectionListener);
     window.addEventListener('offline', this.connectionListener);
   }
   componentWillUnmount() {;
     window.removeEventListener('syncstart', this.syncStartListener);
-    window.removeEventListener('syncstatus', this.syncStartListener);
     window.removeEventListener('syncend', this.syncEndListener);
     window.removeEventListener('online', this.connectionListener);
     window.removeEventListener('offline', this.connectionListener);
@@ -68,20 +59,19 @@ export default class MainAppBar extends React.Component {
             <Typography variant='h6' align='center'>KSS</Typography>
             <Box flexGrow={1} />
             {this.state.syncIndicator ?
-              <>
-                <Typography variant='body2' align='center'>{'Syncing ' + this.state.syncText}</Typography>
-                <Box mr={2} />
+              <Box mx={1}>
                 <SyncIcon className='rotate' />
-              </>
+              </Box>
             :
               <></>
             }
             {!this.state.onlineStatus ?
-              <CloudOffIcon />
+              <Box mx={1}>
+                <CloudOffIcon />
+              </Box>
             :
               <></>
             }
-            <Box mr={1} />
             <Help />
             <Box mr={2} />
             <Button color='inherit'>Login</Button>

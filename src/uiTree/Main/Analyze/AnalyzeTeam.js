@@ -5,6 +5,7 @@ import * as Interface from 'db/Interface';
 import * as Processor from 'engine/process/Processor';
 
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import SelectAllIcon from '@material-ui/icons/SelectAll';
@@ -148,8 +149,8 @@ class AnalyzeTeam extends React.Component {
   }
   render() {
     return (
-      <>
-        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
+      <Box mb={3}>
+        <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Selector
@@ -199,85 +200,87 @@ class AnalyzeTeam extends React.Component {
                <TeamCard teamNumber={this.state.targetTeamNumber} />
             </Grid>
             <Grid item xs={12}>
-              <Card style={{marginBottom: '4vh'}}>
-                <Tabs
-                  value={this.state.tab}
-                  onChange={this.tabHandler.bind(this)}
-                  indicatorColor='primary'
-                  textColor='primary'
-                  variant='fullWidth'
-                >
-                  <Tab label='Metrics' value='metric' />
-                  <Tab label='Charts' value='mchart' />
-                  <Tab label='Custom Charts' disabled value='chart' />
-                </Tabs>
-                {this.state.redirect ?
-                  <Redirect push to={'/analyze/team/' + this.state.tab} />
-                :
-                  <></>
-                }
-                <Route exact path='/analyze/team'><Redirect push to='/analyze/team/metric' /></Route>
-                <Route path='/analyze/team/metric'>
-                  <>
-                    <MaterialTable
-                      title='Team Records'
-                      icons={tableIcons}
-                      padding='dense'
-                      color='primary'
-                      columns={this.state.recordsColumns}
-                      data={this.state.recordsData}
-                      options={{
-                        exportButton: true,
-                        filtering: true,
-                        doubleHorizontalScroll: true
-                      }}
-                    />
-                    <MaterialTable
-                      title='Team Metrics'
-                      icons={tableIcons}
-                      padding='dense'
-                      color='primary'
-                      columns={this.state.metricsColumns}
-                      data={this.state.metricsData}
-                      options={{
-                        exportButton: true,
-                        filtering: true,
-                        doubleHorizontalScroll: true
-                      }}
-                    />
-                  </>
-                </Route>
-                <Route path='/analyze/team/mchart'>
-                  <Container>
-                    <TeamCharts
-                      processes={this.state.selectedProcesses}
-                      records={this.state.selectedRecords}
-                    />
-                  </Container>
-                </Route>
-                <Route path='/analyze/team/chart'>
-                  <Grid container spacing={2}>
-                    {(typeof this.state.selectedRecords === 'undefined' || this.state.selectedRecords.length === 0) ?
-                      <Grid item xs={12}>
-                        <Typography variant='body1' align='center'>
-                          No records to display
-                        </Typography>
-                      </Grid>
-                    :
-                      this.state.selectedRecords.map((e, i) => {
-                        return (
-                          <Grid key={i} item xs={12}>
-                          </Grid>
-                        );
-                      })
-                    }
-                  </Grid>
-                </Route>
-              </Card>
+              <Box mb={3}>
+                <Card>
+                  <Tabs
+                    value={this.state.tab}
+                    onChange={this.tabHandler.bind(this)}
+                    indicatorColor='primary'
+                    textColor='primary'
+                    variant='fullWidth'
+                  >
+                    <Tab label='Metrics' value='metric' />
+                    <Tab label='Charts' value='mchart' />
+                    <Tab label='Custom Charts' disabled value='chart' />
+                  </Tabs>
+                  {this.state.redirect ?
+                    <Redirect push to={'/analyze/team/' + this.state.tab} />
+                  :
+                    <></>
+                  }
+                  <Route exact path='/analyze/team'><Redirect push to='/analyze/team/metric' /></Route>
+                  <Route path='/analyze/team/metric'>
+                    <>
+                      <MaterialTable
+                        title='Team Records'
+                        icons={tableIcons}
+                        padding='dense'
+                        color='primary'
+                        columns={this.state.recordsColumns}
+                        data={this.state.recordsData}
+                        options={{
+                          exportButton: true,
+                          filtering: true,
+                          doubleHorizontalScroll: true
+                        }}
+                      />
+                      <MaterialTable
+                        title='Team Metrics'
+                        icons={tableIcons}
+                        padding='dense'
+                        color='primary'
+                        columns={this.state.metricsColumns}
+                        data={this.state.metricsData}
+                        options={{
+                          exportButton: true,
+                          filtering: true,
+                          doubleHorizontalScroll: true
+                        }}
+                      />
+                    </>
+                  </Route>
+                  <Route path='/analyze/team/mchart'>
+                    <Container>
+                      <TeamCharts
+                        processes={this.state.selectedProcesses}
+                        records={this.state.selectedRecords}
+                      />
+                    </Container>
+                  </Route>
+                  <Route path='/analyze/team/chart'>
+                    <Grid container spacing={2}>
+                      {(typeof this.state.selectedRecords === 'undefined' || this.state.selectedRecords.length === 0) ?
+                        <Grid item xs={12}>
+                          <Typography variant='body1' align='center'>
+                            No records to display
+                          </Typography>
+                        </Grid>
+                      :
+                        this.state.selectedRecords.map((e, i) => {
+                          return (
+                            <Grid key={i} item xs={12}>
+                            </Grid>
+                          );
+                        })
+                      }
+                    </Grid>
+                  </Route>
+                </Card>
+              </Box>
             </Grid>
           </Grid>
         </Container>
-      </>
+      </Box>
     );
   }
 }

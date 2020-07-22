@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
+import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -36,19 +37,18 @@ class AudioTransfer extends React.Component {
         :
           <></>
         }
-        <Tabs
-          value={this.state.tab}
-          onChange={this.tabHandler.bind(this)}
-          indicatorColor='primary'
-          textColor='primary'
-          variant='fullWidth'
-          style={{
-            marginBottom: '2vh'
-          }}
-        >
-          <Tab label='Send' value='send' />
-          <Tab label='Receive' value='receive' />
-        </Tabs>
+        <Box mb={2}>
+          <Tabs
+            value={this.state.tab}
+            onChange={this.tabHandler.bind(this)}
+            indicatorColor='primary'
+            textColor='primary'
+            variant='fullWidth'
+          >
+            <Tab label='Send' value='send' />
+            <Tab label='Receive' value='receive' />
+          </Tabs>
+        </Box>
         <Route exact path='/transfer/audio'><Redirect push to='/transfer/audio/send' /></Route>
         <Route exact path='/transfer/audio/send' component={AudioSendData} />
         <Route exact path='/transfer/audio/receive' component={AudioReceiveData} />

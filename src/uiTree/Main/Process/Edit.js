@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as Save from 'engine/process/Save';
 
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -13,6 +14,7 @@ export default class Edit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openModal: false,
       saveAlert: false,
       process: {}
     }
@@ -60,27 +62,33 @@ export default class Edit extends React.Component {
       <>
         <ProcessCreationBar
           ref='processCreationBar'
+          openModal={this.state.openModal}
           onOpen={this.openHandler.bind(this)}
           onNew={this.newHandler.bind(this)}
           onSave={this.saveHandler.bind(this)}
           onSaveNew={this.saveNewHandler.bind(this)}
         />
-        <Container maxWidth='xl' style={{marginBottom: '4vh', height: '40vh'}}>
-          <CodeEditor
-            ref='codeEditor'
-            value={
-              typeof this.state.process === 'undefined' ?
+        <Box mb={3}>
+          <Container maxWidth='xl' style={{height: '40vh'}}>
+            <CodeEditor
+              ref='codeEditor'
+              value={typeof this.state.process === 'undefined' ?
                 ''
               :
                 this.state.process.function
-            }
-            onChange={(value) => {
-              var tmp = typeof this.state.process === 'undefined' ? {} : this.state.process;
-              tmp.function = value;
-              this.setState({process: tmp});
-            }}
-          />
-        </Container>
+              }
+              onChange={(value) => {
+                var tmp = typeof this.state.process === 'undefined' ? {} : this.state.process;
+                tmp.function = value;
+                this.setState({process: tmp, openModal: false});
+              }}
+              onOpen={() => {this.setState({openModal: true})}}
+              onNew={this.newHandler.bind(this)}
+              onSave={this.saveHandler.bind(this)}
+              onSaveNew={this.saveNewHandler.bind(this)}
+            />
+          </Container>
+        </Box>
         <Snackbar
           open={this.state.saveAlert}
           autoHideDuration={2000}

@@ -48,20 +48,22 @@ export default class SendString extends React.Component {
     this.drawIndex = 0;
     this.qrObjs = [];
     var qrcodeProperties = this.qrCodeTypeDict[this.state.qrCodeType];
-    var qrcodeStringLength = qrcodeProperties[0];
+    var qrcodeStringLength = qrcodeProperties[0] - 13;
     this.qrcodeDimensions = qrcodeProperties[1];
 
     var targetString = StringConversion.strToNumStr(this.props.targetString);
     var targetStringArr = [];
-    while(targetString.length > qrcodeStringLength - 9) {
-      targetStringArr.push(targetString.substring(0, qrcodeStringLength - 9));
-      targetString = targetString.substring(qrcodeStringLength - 9);
+    while(targetString.length > qrcodeStringLength) {
+      targetStringArr.push(targetString.substring(0, qrcodeStringLength));
+      targetString = targetString.substring(qrcodeStringLength);
     }
     if(targetString.length > 0) {
       var lastString = targetString.substring(0);
-      while(lastString.length < qrcodeStringLength - 9) {
+      /*
+      while(lastString.length < qrcodeStringLength) {
         lastString += '0';
       }
+      */
       targetStringArr.push(lastString);
     }
     //Unknown why, but last two digits break the scanner
@@ -70,7 +72,10 @@ export default class SendString extends React.Component {
       while(indexStr.length < 3) {indexStr = '0' + indexStr;}
       var lengthStr = (targetStringArr.length % 1000).toString();
       while(lengthStr.length < 3) {lengthStr = '0' + lengthStr;}
-      targetStringArr[i] = '0' + indexStr + lengthStr + targetStringArr[i];
+      var dataLengthStr = (targetStringArr[i].length % 10000).toString();
+      while(dataLengthStr.length < 4) {dataLengthStr = '0' + dataLengthStr;}
+      while(targetStringArr[i].length < qrcodeStringLength) {targetStringArr[i] += '0';}
+      targetStringArr[i] = '0' + indexStr + lengthStr + dataLengthStr + targetStringArr[i];
 
       this.qrObjs.push(qrcode(this.state.qrCodeType, 'L'));
       //this.qrObjs[i].stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];

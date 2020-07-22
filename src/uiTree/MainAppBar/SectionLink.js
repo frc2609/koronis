@@ -18,7 +18,7 @@ export default class SectionLink extends React.Component {
     return (
       <ListItem button onClick={this.handleOnClick}
         style={{
-          width: '45vw'
+          width: '250px'
         }}
       >
         <ListItemIcon>{this.props.icon}</ListItemIcon>
@@ -26,7 +26,7 @@ export default class SectionLink extends React.Component {
         {this.state.redirect ?
           <Redirect push to={this.props.to} />
         :
-          null
+          <></>
         }
       </ListItem>
     );

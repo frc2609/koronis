@@ -4,6 +4,7 @@ import * as Layout from 'config/Layout';
 import * as Package from 'sync/package/PackageCollector';
 
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
@@ -81,14 +82,15 @@ export default class ProcessCreationBar extends React.Component {
   }
   render() {
     return (
-      <>
-        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
+      <Box mb={3}>
+        <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Grid container spacing={0}>
                 <Grid item xs={3}>
                   <Selector
                     queryBarName='openprocess'
+                    openProcessModal={this.props.openModal}
                     onProcessesChange={(processes) => {
                       if(processes.length > 0) {
                         var selectedProcess = processes[0];
@@ -112,16 +114,13 @@ export default class ProcessCreationBar extends React.Component {
                 </Grid>
                 <Grid item xs={9}>
                   <ButtonGroup fullWidth>
-                    <Button onClick={this.newDoc.bind(this)}>
-                      <InsertDriveFileOutlinedIcon />
+                    <Button onClick={this.newDoc.bind(this)} startIcon={<InsertDriveFileOutlinedIcon />}>
                       New Process
                     </Button>
-                    <Button onClick={this.save.bind(this)}>
-                      <SaveIcon />
+                    <Button onClick={this.save.bind(this)} startIcon={<SaveIcon />}>
                       Save
                     </Button>
-                    <Button onClick={this.saveNew.bind(this)}>
-                      <CreateIcon />
+                    <Button onClick={this.saveNew.bind(this)} startIcon={<CreateIcon />}>
                       Save as New
                     </Button>
                   </ButtonGroup>
@@ -214,7 +213,7 @@ export default class ProcessCreationBar extends React.Component {
             />
           </Grid>
         </Container>
-      </>
+      </Box>
     );
   }
 }

@@ -34,8 +34,14 @@ export default class Selector extends React.Component {
     if(!deepCompare(prevProps.selectedRecords, this.props.selectedRecords) && this.props.selectedRecords) {
       this.setState({selectedRecords: this.props.selectedRecords});
     }
+    if(prevProps.openRecordModal !== this.props.openRecordModal) {
+      this.setState({openRecordModal: this.props.openRecordModal});
+    }
     if(!deepCompare(prevProps.selectedProcesses, this.props.selectedProcesses) && this.props.selectedProcesses) {
       this.setState({selectedProcesses: this.props.selectedProcesses});
+    }
+    if(prevProps.openProcessModal !== this.props.openProcessModal) {
+      this.setState({openProcessModal: this.props.openProcessModal});
     }
   }
   render() {

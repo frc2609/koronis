@@ -35,7 +35,7 @@ export default class Settings extends React.Component {
             type='dropdown'
           >
             {(typeof this.state.gameStates === 'undefined') ?
-              ''
+              <></>
             :
               this.state.gameStates.map((e, i) => {
                 return <MenuItem key={i} value={e.year}>{e.year + ' ' + e.nickname}</MenuItem>

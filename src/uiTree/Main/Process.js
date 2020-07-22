@@ -17,8 +17,10 @@ class Process extends React.Component {
       tab: 'edit',
       redirect: false
     };
-    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/process/')) {
-      this.state.tab = this.props.location.pathname.substring(this.props.location.pathname.lastIndexOf('/') + 1);
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/process')) {
+      if(this.props.location.pathname.includes('/process/execute')) {
+        this.state.tab = 'execute';
+      }
     }
   }
   tabHandler(event, value) {
@@ -37,9 +39,9 @@ class Process extends React.Component {
         :
           <></>
         }
-        <Route exact path='/process' component={Edit} />
-        <Route exact path='/process/edit' component={Edit} />
-        <Route exact path='/process/execute' component={Execute} />
+        <Route exact path='/process'><Redirect push to='/process/edit' /></Route>
+        <Route path='/process/edit' component={Edit} />
+        <Route path='/process/execute' component={Execute} />
         <BottomNavigation style={{backgroundColor: 'rgba(0,0,0,0)'}} />
         <Paper
           square

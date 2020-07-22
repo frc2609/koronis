@@ -46,8 +46,8 @@ export default class FullscreenModal extends React.Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.close.bind(this)} color='secondary'>No</Button>
-          <Button onClick={this.goFullscreen.bind(this)} color='primary'>Yes</Button>
+          <Button onClick={this.close.bind(this)}>No</Button>
+          <Button onClick={this.goFullscreen.bind(this)}>Yes</Button>
         </DialogActions>
       </Dialog>
     );
