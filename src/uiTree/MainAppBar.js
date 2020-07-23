@@ -59,14 +59,14 @@ export default class MainAppBar extends React.Component {
             <Typography variant='h6' align='center'>KSS</Typography>
             <Box flexGrow={1} />
             {this.state.syncIndicator ?
-              <Box mx={1}>
+              <Box m={2}>
                 <SyncIcon className='rotate' />
               </Box>
             :
               <></>
             }
             {!this.state.onlineStatus ?
-              <Box mx={1}>
+              <Box m={2}>
                 <CloudOffIcon />
               </Box>
             :

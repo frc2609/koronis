@@ -431,7 +431,15 @@ export default class RecordEngine extends React.Component {
   }
   save() {
     console.info('[Record Engine] Saving recording engine');
-    Save.saveRecord(this.gameStateDefinition, this.matchState, this.engineState, this.eventLog, this.positionLog, this.close.bind(this));
+    Save.saveRecord(this.gameStateDefinition, this.matchState, this.engineState, this.eventLog, this.positionLog).then((success) => {
+      if(success) {
+        window.globalDialog('success', 'Saved Record Successfully!');
+        this.close();
+      }
+      else {
+        window.globalDialog('error', 'Error Saving Record!');
+      }
+    });
   }
   componentDidMount() {
     this.init();

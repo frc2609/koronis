@@ -1,5 +1,7 @@
 import RxDB from 'rxdb';
 
+import Config from 'config/Config';
+
 import { teamSchema } from 'db/schema/team';
 import { recordSchema } from 'db/schema/record';
 import { processSchema } from 'db/schema/process';
@@ -16,7 +18,7 @@ var tbaMatchCollection = null;
 var eventCollection = null;
 
 const createDb = async () => {
-  db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
+  db = await RxDB.create({name: Config.environmentConfig, adapter: 'idb', ignoreDuplicate: true});
   console.info('[Db] created database');
   return db;
 }
@@ -27,7 +29,7 @@ const catchOldSchema = async (inFunc) => {
   }
   catch(err) {
     if(err.name === 'RxError') {
-      await RxDB.removeDatabase('local', 'idb');
+      await RxDB.removeDatabase(Config.environmentConfig, 'idb');
       await createDb();
       return await catchOldSchema(inFunc);
     }
@@ -145,5 +147,11 @@ export const init = async () => {
   await getProcesses();
   await getTbaMatches();
   await getEvents();
+  return null;
+}
+
+export const clear = async () =>{
+  await RxDB.removeDatabase(Config.environmentConfig, 'idb');
+  db = null;
   return null;
 }

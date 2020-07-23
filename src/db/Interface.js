@@ -84,6 +84,11 @@ export const insertRecord = async (inRecord) => {
   var prevDoc = (await recordCollection.findOne({id: currObj.id}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
+    if(!currObj.metadata) {
+      currObj.metadata = {
+        verified: false
+      };
+    }
     return (await recordCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified) {
@@ -149,6 +154,12 @@ export const insertProcess = async (inProcess) => {
   var prevDoc = (await processCollection.findOne({id: currObj.id}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
+    if(!currObj.metadata) {
+      currObj.metadata = {
+        verified: false,
+        safe: false
+      };
+    }
     return (await processCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified) {

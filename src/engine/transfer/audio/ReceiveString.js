@@ -88,7 +88,7 @@ export default class ReceiveString extends React.Component {
             {this.state.running ?
               <LinearProgress variant='query' />
             :
-              <Typography>
+              <Typography align='center'>
                 {this.state.done ?
                   this.state.error ?
                     'Error in transmission, try again'
@@ -101,7 +101,7 @@ export default class ReceiveString extends React.Component {
             }
           </Grid>
           <Grid item xs={12}>
-            <Typography>
+            <Typography align='center'>
               {this.state.bytes + ' bytes transferred'}
             </Typography>
           </Grid>

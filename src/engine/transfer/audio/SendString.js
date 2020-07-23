@@ -53,14 +53,14 @@ export default class SendString extends React.Component {
             {this.state.running ?
               <LinearProgress />
             :
-              <Typography>
+              <Typography align='center'>
                 {this.state.done ? 'Sent' : 'Ready'}
               </Typography>
             }
           </Grid>
           {typeof this.props.targetString !== 'undefined' ?
             <Grid item xs={12}>
-              <Typography>
+              <Typography align='center'>
                 {this.props.targetString.length + ' bytes to transfer'}
               </Typography>
             </Grid>

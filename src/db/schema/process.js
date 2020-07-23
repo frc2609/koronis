@@ -60,6 +60,14 @@ export const processSchema = {
     },
     function: {
       type: 'string'
+    },
+    metadata: {
+      type: 'object',
+      properties: {
+        safe: {
+          type: 'boolean'
+        }
+      }
     }
   },
   required: []

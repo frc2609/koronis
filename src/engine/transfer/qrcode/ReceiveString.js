@@ -117,16 +117,16 @@ export default class ReceiveString extends React.Component {
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <Box mb={3}>
-                  <Typography gutterBottom>
+                  <Typography align='center' gutterBottom>
                     Missing QR Code Number: #{this.state.missingIndex < 0 ? 1 : this.state.missingIndex + 1}
                   </Typography>
-                  <Typography gutterBottom>
+                  <Typography align='center' gutterBottom>
                     Total QR Codes scanned: {this.state.totalScanned}
                   </Typography>
-                  <Typography gutterBottom>
+                  <Typography align='center' gutterBottom>
                      Total Data (B): {(this.state.size/8).toFixed(2)}
                   </Typography>
-                  <Typography gutterBottom>
+                  <Typography align='center' gutterBottom>
                      Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
                   </Typography>
                 </Box>
@@ -146,7 +146,7 @@ export default class ReceiveString extends React.Component {
                 </FormControl>
               </Grid>
               <Grid item xs={12} style={{minWidth: '150px'}}>
-                <Typography gutterBottom>
+                <Typography align='center' gutterBottom>
                   Resolution
                 </Typography>
                 <Slider
@@ -159,7 +159,7 @@ export default class ReceiveString extends React.Component {
                 />
               </Grid>
               <Grid item xs={12} style={{minWidth: '150px'}}>
-                <Typography gutterBottom>
+                <Typography align='center' gutterBottom>
                   Scans Per Second
                 </Typography>
                 <Slider

@@ -81,7 +81,7 @@ export default class Settings extends React.Component {
             </IconButton>
             <Box mr={2} />
             <Typography variant='h6'>
-              Edit Settings
+              Settings
             </Typography>
             <Box flexGrow={1} />
             <Button color='inherit' onClick={this.submit.bind(this)}>

@@ -1,10 +1,14 @@
 import React from 'react';
 
 import * as Package from 'sync/package/PackageCollector';
+import * as Db from 'db/Db';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 
 import SettingsItem from 'uiTree/Main/Settings/SettingsItem';
 
@@ -29,6 +33,9 @@ export default class Settings extends React.Component {
     return (
       <Container>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography align='left' variant='h6' gutterBottom>Misc</Typography>
+          </Grid>
           <SettingsItem
             title='Current Year'
             path='/currentYear'
@@ -54,6 +61,40 @@ export default class Settings extends React.Component {
             onChange={(val) => {
               if(val === 'true') {eruda.init();}
               else {eruda.destroy();}
+            }}
+          />
+          <Grid item xs={12}>
+            <Box mb={2}>
+              <Divider />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography align='left' variant='h6' gutterBottom>Data</Typography>
+          </Grid>
+          <SettingsItem
+            title='Clear Database'
+            type='button'
+            onClick={() => {
+              window.globalDialog('Clear Database?', 'This will clear the database! Do you want to proceed?').then((res) => {
+                if(res) {
+                  Db.clear();
+                  window.location.reload();
+                }
+              });
+            }}
+          />
+          <SettingsItem
+            title='Clear All Data'
+            type='button'
+            onClick={() => {
+              window.globalDialog('Clear All Data?', 'This will clear all data! Do you want to proceed?').then((res) => {
+                if(res) {
+                  Db.clear();
+                  window.localStorage.clear();
+                  window.sessionStorage.clear();
+                  window.location.reload();
+                }
+              });
             }}
           />
         </Grid>

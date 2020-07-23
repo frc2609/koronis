@@ -165,10 +165,10 @@ export default class SendString extends React.Component {
                 <canvas ref='qrcodeCanvas' width={this.state.canvasSize} height={this.state.canvasSize}></canvas>
               }
             </div>
-            <Typography gutterBottom>
+            <Typography align='center' gutterBottom>
               Current QR Code Number: #{this.state.qrCodeArrIndex === 0 ? this.state.qrCodeArrLength : this.state.qrCodeArrIndex}
             </Typography>
-            <Typography gutterBottom>
+            <Typography align='center' gutterBottom>
               Total QR Codes to scan: {this.state.qrCodeArrLength}
             </Typography>
           </Grid>
@@ -200,7 +200,7 @@ export default class SendString extends React.Component {
                 </ButtonGroup>
               </Grid>
               <Grid item xs={12}>
-                <Typography gutterBottom>
+                <Typography align='center' gutterBottom>
                   QR Code Type
                 </Typography>
                 <Slider
@@ -213,7 +213,7 @@ export default class SendString extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography gutterBottom>
+                <Typography align='center' gutterBottom>
                   QR Codes Per Minute
                 </Typography>
                 <Slider
