@@ -16,6 +16,15 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasCtx = {};
     this.mouseIsDown = false;
 
+    this.arrowState = {
+      up: false,
+      down: false,
+      left: false,
+      right: false
+    };
+    this.keyUpListener = null;
+    this.keyDownListener = null;
+
     this.canvasState = {
       mag: 0.975,
       xSize: 0,
@@ -25,6 +34,56 @@ export default class RenderCanvas extends React.Component {
       xOffset: 0,
       yOffset: 0
     };
+  }
+  updatePosFromKey() {
+    var botX = this.props.botStateDefinition.botState.position.x;
+    var botY = this.props.botStateDefinition.botState.position.y;
+    var flip = this.props.engineState.flip ? -1 : 1;
+    if(this.arrowState.up) {
+      botY -= flip;
+    }
+    if(this.arrowState.down) {
+      botY += flip;
+    }
+    if(this.arrowState.left) {
+      botX -= flip;
+    }
+    if(this.arrowState.right) {
+      botX += flip;
+    }
+    if(this.arrowState.up || this.arrowState.down || this.arrowState.left || this.arrowState.right) {
+      this.props.renderCanvasUpdate({x: botX, y: botY});
+    }
+  }
+  keyDown(event) {
+    if(event.keyCode === 38) {
+      this.arrowState.up = true;
+    }
+    if(event.keyCode === 40) {
+      this.arrowState.down = true;
+    }
+    if(event.keyCode === 37) {
+      this.arrowState.left = true;
+    }
+    if(event.keyCode === 39) {
+      this.arrowState.right = true;
+    }
+    this.updatePosFromKey();
+  }
+  keyUp(event) {
+    if(event.keyCode === 38) {
+      this.arrowState.up = false;
+    }
+    if(event.keyCode === 40) {
+      this.arrowState.down = false;
+    }
+    if(event.keyCode === 37) {
+      this.arrowState.left = false;
+    }
+    if(event.keyCode === 39) {
+      this.arrowState.right = false;
+    }
+    this.updatePosFromKey();
   }
   mouseStart(event) {
     this.mouseIsDown = true;
@@ -200,8 +259,17 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasElement.onmousedown = this.mouseStart.bind(this);
     this.renderCanvasElement.onmousemove = this.throttle(this.mouseMove.bind(this)).bind(this);
     this.renderCanvasElement.onmouseup = this.mouseEnd.bind(this);
+    //Bind keyboard events
+    this.keyUpListener = this.keyUp.bind(this);
+    this.keyDownListener = this.keyDown.bind(this);
+    window.addEventListener('keydown', this.keyDownListener);
+    window.addEventListener('keyup', this.keyUpListener);
 
     this.resize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.keyDownListener);
+    window.removeEventListener('keyup', this.keyUpListener);
   }
   render() {
     return (

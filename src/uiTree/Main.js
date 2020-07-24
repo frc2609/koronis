@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 
 import Home from 'uiTree/Main/Home';
-import Record from 'uiTree/Main/Record';
+import RecordWithRouter from 'uiTree/Main/Record';
 import ProcessWithRouter from 'uiTree/Main/Process';
 import AnalyzeWithRouter from 'uiTree/Main/Analyze';
 import TransferWithRouter from 'uiTree/Main/Transfer';
@@ -29,7 +29,7 @@ export default class Main extends React.Component {
       <>
         <Route exact path='/'><Redirect push to='/home' /></Route>
         <Route path='/home' component={Home} />
-        <Route path='/record' component={Record} />
+        <Route path='/record' component={RecordWithRouter} />
         <Route path='/process' component={ProcessWithRouter} />
         <Route path='/analyze' component={AnalyzeWithRouter} />
         <Route path='/transfer' component={TransferWithRouter} />

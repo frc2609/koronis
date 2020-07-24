@@ -109,7 +109,6 @@ export default class MatchState extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar />
         <Box mb={3}>
           <Toolbar />
         </Box>
