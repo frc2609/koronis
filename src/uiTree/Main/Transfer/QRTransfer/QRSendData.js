@@ -4,9 +4,6 @@ import serializerWorker from 'workerize-loader!engine/worker/Serializer'; // esl
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
-import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import Selector from 'uiTree/components/Selector';
 import SendString from 'engine/transfer/qrcode/SendString';
@@ -49,13 +46,13 @@ export default class QRSendData extends React.Component {
               queryBarName='qrsenddata'
               onRecordsChange={(records) => {
                 this.setState({
-                  selectedRecords: records
+                  selectedRecords: records.map((e) => {delete e.metadata; return e})
                 });
               }}
               showRecords
               onProcessesChange={(processes) => {
                 this.setState({
-                  selectedProcesses: processes
+                  selectedProcesses: processes.map((e) => {delete e.metadata; return e})
                 });
               }}
               showProcesses

@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
+import Box from '@material-ui/core/Box';
 import { Close } from '@material-ui/icons';
 
 import { DatePicker } from '@material-ui/pickers';
@@ -95,22 +96,23 @@ export default class MatchState extends React.Component {
       <Dialog fullScreen open={this.state.open} onClose={this.close.bind(this)}>
         <AppBar position='fixed'>
           <Toolbar>
-            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)} style={{
-              marginRight: '4vw'
-            }}>
+            <IconButton color='inherit' edge='start' onClick={this.close.bind(this)}>
               <Close />
             </IconButton>
-            <Typography variant='h6' style={{
-              flexGrow: 1
-            }}>
+            <Box mr={2} />
+            <Typography variant='h6'>
               Edit Match Information
             </Typography>
+            <Box flexGrow={1} />
             <Button color='inherit' onClick={this.submit.bind(this)}>
               Save
             </Button>
           </Toolbar>
         </AppBar>
-        <Toolbar style={{marginBottom: '4vh'}} />
+        <Toolbar />
+        <Box mb={3}>
+          <Toolbar />
+        </Box>
         <Container maxWidth='xl'>
           <Grid container spacing={3}>
             <Grid item xs style={{minWidth: '200px'}}>
@@ -158,7 +160,7 @@ export default class MatchState extends React.Component {
                   ref='matchType'
                   onChange={this.matchTypeHandler.bind(this)}
                   value={this.state.matchType}
-                  fullWidth
+                  label='Match Type'
                 >
                   <MenuItem value='t'>Test</MenuItem>
                   <MenuItem value='pf'>Practice Field</MenuItem>
@@ -191,7 +193,7 @@ export default class MatchState extends React.Component {
               />
             </Grid>
             <Grid item xs={12}>
-               <TeamCard teamNumber={this.state.targetTeamNumber} />
+              <TeamCard teamNumber={this.state.targetTeamNumber} />
             </Grid>
           </Grid>
         </Container>

@@ -3,6 +3,7 @@ import React from 'react';
 import * as Layout from 'config/Layout';
 import * as StringConversion from 'engine/transfer/StringConversion';
 
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -51,10 +52,11 @@ export default class ReceiveString extends React.Component {
     if(typeof this.props.onFinish === 'function') {this.props.onFinish(data);}
   }
   onScan(inStr) {
-    if(inStr !== null && inStr.length >= 7) {
+    if(inStr !== null && inStr.length >= 11) {
       var index = Number.parseInt(inStr.substring(1,4));
       var length = Number.parseInt(inStr.substring(4,7));
-      var rawStr = inStr.substring(7);
+      var dataLength = Number.parseInt(inStr.substring(7,11));
+      var rawStr = inStr.substring(11, 11 + dataLength);
       this.rawStrArr[index] = rawStr;
       var hasUndef = false;
       var totalScanned = 0;
@@ -108,24 +110,26 @@ export default class ReceiveString extends React.Component {
                facingMode={this.state.facingMode}
               />
             :
-              ''
+              <></>
             }
           </Grid>
           <Grid item xs={Layout.isLarge() || Layout.isLandscape() ? 6 : 12} style={{marginBottom: '2vh'}}>
             <Grid container spacing={4}>
-              <Grid item xs={12} style={{marginTop: '4vh'}}>
-                <Typography gutterBottom>
-                  Missing QR Code Number: #{this.state.missingIndex + 1}
-                </Typography>
-                <Typography gutterBottom>
-                  Total QR Codes scanned: {this.state.totalScanned}
-                </Typography>
-                <Typography gutterBottom>
-                   Total Data (B): {(this.state.size/8).toFixed(2)}
-                </Typography>
-                <Typography gutterBottom>
-                   Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
-                </Typography>
+              <Grid item xs={12}>
+                <Box mb={3}>
+                  <Typography align='center' gutterBottom>
+                    Missing QR Code Number: #{this.state.missingIndex < 0 ? 1 : this.state.missingIndex + 1}
+                  </Typography>
+                  <Typography align='center' gutterBottom>
+                    Total QR Codes scanned: {this.state.totalScanned}
+                  </Typography>
+                  <Typography align='center' gutterBottom>
+                     Total Data (B): {(this.state.size/8).toFixed(2)}
+                  </Typography>
+                  <Typography align='center' gutterBottom>
+                     Data Rate (B/s): {(this.state.rate/8).toFixed(2)}
+                  </Typography>
+                </Box>
               </Grid>
               <Grid item xs={12} style={{minWidth: '200px'}}>
                 <FormControl variant='outlined' fullWidth>
@@ -134,7 +138,7 @@ export default class ReceiveString extends React.Component {
                     ref='rearCamera'
                     onChange={this.facingModeHandler.bind(this)}
                     value={this.state.facingMode}
-                    fullWidth
+                    label='Camera'
                   >
                     <MenuItem value='environment'>Rear Camera</MenuItem>
                     <MenuItem value='user'>Front Camera</MenuItem>
@@ -142,7 +146,7 @@ export default class ReceiveString extends React.Component {
                 </FormControl>
               </Grid>
               <Grid item xs={12} style={{minWidth: '150px'}}>
-                <Typography gutterBottom>
+                <Typography align='center' gutterBottom>
                   Resolution
                 </Typography>
                 <Slider
@@ -155,7 +159,7 @@ export default class ReceiveString extends React.Component {
                 />
               </Grid>
               <Grid item xs={12} style={{minWidth: '150px'}}>
-                <Typography gutterBottom>
+                <Typography align='center' gutterBottom>
                   Scans Per Second
                 </Typography>
                 <Slider

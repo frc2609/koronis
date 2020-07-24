@@ -1,18 +1,12 @@
 import React from 'react';
 
-import serializerWorker from 'workerize-loader!engine/worker/Serializer'; // eslint-disable-line import/no-webpack-loader-syntax
-
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
-import SendString from 'engine/transfer/qrcode/SendString';
 
-var serializerInstance = new serializerWorker();
 var deepCompare = require('deep-compare');
 
 export default class Selector extends React.Component {
@@ -40,8 +34,14 @@ export default class Selector extends React.Component {
     if(!deepCompare(prevProps.selectedRecords, this.props.selectedRecords) && this.props.selectedRecords) {
       this.setState({selectedRecords: this.props.selectedRecords});
     }
+    if(prevProps.openRecordModal !== this.props.openRecordModal) {
+      this.setState({openRecordModal: this.props.openRecordModal});
+    }
     if(!deepCompare(prevProps.selectedProcesses, this.props.selectedProcesses) && this.props.selectedProcesses) {
       this.setState({selectedProcesses: this.props.selectedProcesses});
+    }
+    if(prevProps.openProcessModal !== this.props.openProcessModal) {
+      this.setState({openProcessModal: this.props.openProcessModal});
     }
   }
   render() {
@@ -88,7 +88,7 @@ export default class Selector extends React.Component {
               }
             </Button>
           :
-            <></>
+            null
           }
           {this.props.showProcesses ?
             <Button onClick={() => {this.setState({openProcessModal: true})}} startIcon={<Code />}>
@@ -104,7 +104,7 @@ export default class Selector extends React.Component {
               }
             </Button>
           :
-            <></>
+            null
           }
         </ButtonGroup>
       </>

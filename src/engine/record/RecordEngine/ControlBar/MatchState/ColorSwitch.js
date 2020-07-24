@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import FormLabel from '@material-ui/core/FormLabel';
 import Switch from '@material-ui/core/Switch';
@@ -35,10 +36,12 @@ export default class ColorSwitch extends React.Component {
   render() {
     return (
       <Grid container spacing={1}>
-        <Grid item xs={4} style={{textAlign: 'right'}}>
-          <FormLabel style={{color: '#008ae6'}}>
-            Blue
-          </FormLabel>
+        <Grid item xs={4}>
+          <Box textAlign='right'>
+            <FormLabel style={{color: '#008ae6'}}>
+              Blue
+            </FormLabel>
+          </Box>
         </Grid>
         <Grid item xs={4}>
           <this.customSwitch
@@ -47,10 +50,12 @@ export default class ColorSwitch extends React.Component {
             color='default'
           />
         </Grid>
-        <Grid item xs={4} style={{textAlign: 'left'}}>
-          <FormLabel style={{color: '#dc3545'}}>
-            Red
-          </FormLabel>
+        <Grid item xs={4}>
+          <Box textAlign='left'>
+            <FormLabel style={{color: '#dc3545'}}>
+              Red
+            </FormLabel>
+          </Box>
         </Grid>
       </Grid>
     );

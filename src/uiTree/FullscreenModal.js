@@ -38,16 +38,16 @@ export default class FullscreenModal extends React.Component {
   }
   render() {
     return (
-      <Dialog open={this.state.open}>
-        <DialogTitle>Go fullscreen?</DialogTitle>
+      <Dialog open={this.state.open} onClose={() => {this.setState({dialogTrigger: false})}}>
+        <DialogTitle>Go Fullscreen?</DialogTitle>
         <DialogContent>
           <DialogContentText>
             It is recommended you go fullscreen for the best user experience. Do you want to go fullscreen?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.close.bind(this)} color='secondary'>No</Button>
-          <Button onClick={this.goFullscreen.bind(this)} color='primary'>Yes</Button>
+          <Button color='primary' onClick={this.close.bind(this)}>No</Button>
+          <Button color='primary' onClick={this.goFullscreen.bind(this)}>Yes</Button>
         </DialogActions>
       </Dialog>
     );

@@ -4,6 +4,7 @@ import * as Layout from 'config/Layout';
 import * as Package from 'sync/package/PackageCollector';
 
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
@@ -13,7 +14,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import CreateIcon from '@material-ui/icons/Create';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
@@ -82,14 +82,15 @@ export default class ProcessCreationBar extends React.Component {
   }
   render() {
     return (
-      <>
-        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
+      <Box mb={3}>
+        <Container maxWidth='xl'>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Grid container spacing={0}>
                 <Grid item xs={3}>
                   <Selector
                     queryBarName='openprocess'
+                    openProcessModal={this.props.openModal}
                     onProcessesChange={(processes) => {
                       if(processes.length > 0) {
                         var selectedProcess = processes[0];
@@ -113,16 +114,13 @@ export default class ProcessCreationBar extends React.Component {
                 </Grid>
                 <Grid item xs={9}>
                   <ButtonGroup fullWidth>
-                    <Button onClick={this.newDoc.bind(this)}>
-                      <InsertDriveFileOutlinedIcon />
+                    <Button onClick={this.newDoc.bind(this)} startIcon={<InsertDriveFileOutlinedIcon />}>
                       New Process
                     </Button>
-                    <Button onClick={this.save.bind(this)}>
-                      <SaveIcon />
+                    <Button onClick={this.save.bind(this)} startIcon={<SaveIcon />}>
                       Save
                     </Button>
-                    <Button onClick={this.saveNew.bind(this)}>
-                      <CreateIcon />
+                    <Button onClick={this.saveNew.bind(this)} startIcon={<CreateIcon />}>
                       Save as New
                     </Button>
                   </ButtonGroup>
@@ -156,18 +154,18 @@ export default class ProcessCreationBar extends React.Component {
                   onChange={this.yearHandler.bind(this)}
                   value={this.state.year}
                   variant='outlined'
-                  fullWidth
+                  label='Year'
                 >
-                <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
-                {(typeof this.state.years === 'undefined') ?
-                  ''
-                :
-                  this.state.years.map(
-                    (e, i) => {
-                      return <MenuItem key={i} value={e}>{e}</MenuItem>
-                    }
-                  )
-                }
+                  <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
+                  {(typeof this.state.years === 'undefined') ?
+                    ''
+                  :
+                    this.state.years.map(
+                      (e, i) => {
+                        return <MenuItem key={i} value={e}>{e}</MenuItem>
+                      }
+                    )
+                  }
                 </Select>
               </FormControl>
             </Grid>
@@ -178,7 +176,7 @@ export default class ProcessCreationBar extends React.Component {
                   onChange={this.queryTypeHandler.bind(this)}
                   value={this.state.queryType}
                   variant='outlined'
-                  fullWidth
+                  label='Query Type'
                 >
                   <MenuItem value='record'>Record</MenuItem>
                   <MenuItem value='match'>Match</MenuItem>
@@ -194,7 +192,7 @@ export default class ProcessCreationBar extends React.Component {
                   onChange={this.dataTypeHandler.bind(this)}
                   value={this.state.dataType}
                   variant='outlined'
-                  fullWidth
+                  label='Data Type'
                 >
                   <MenuItem value='metric'>Metric</MenuItem>
                   <MenuItem value='chart'>Chart</MenuItem>
@@ -215,7 +213,7 @@ export default class ProcessCreationBar extends React.Component {
             />
           </Grid>
         </Container>
-      </>
+      </Box>
     );
   }
 }

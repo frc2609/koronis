@@ -1,4 +1,7 @@
 import RxDB from 'rxdb';
+
+import Config from 'config/Config';
+
 import { teamSchema } from 'db/schema/team';
 import { recordSchema } from 'db/schema/record';
 import { processSchema } from 'db/schema/process';
@@ -7,7 +10,7 @@ import { eventSchema } from 'db/schema/event';
 
 RxDB.plugin(require('pouchdb-adapter-idb'));
 
-var dbCreated = null;
+var db = null;
 var teamCollection = null;
 var recordCollection = null;
 var processCollection = null;
@@ -15,66 +18,89 @@ var tbaMatchCollection = null;
 var eventCollection = null;
 
 const createDb = async () => {
-  const db = await RxDB.create({name: 'local', adapter: 'idb', ignoreDuplicate: true});
+  db = await RxDB.create({name: Config.environmentConfig, adapter: 'idb', ignoreDuplicate: true});
   console.info('[Db] created database');
   return db;
 }
 
-const createTeamCollection = async () => {
-  if(!dbCreated) {
-    dbCreated = await createDb();
+const catchOldSchema = async (inFunc) => {
+  try {
+    return await inFunc();
   }
-  teamCollection = await dbCreated.collection({
-    name: 'teams',
-    schema: teamSchema
+  catch(err) {
+    if(err.name === 'RxError') {
+      await RxDB.removeDatabase(Config.environmentConfig, 'idb');
+      await createDb();
+      return await catchOldSchema(inFunc);
+    }
+  }
+}
+
+const createTeamCollection = async () => {
+  if(!db) {
+    db = await createDb();
+  }
+  await catchOldSchema(async () => {
+    teamCollection = await db.collection({
+      name: 'teams',
+      schema: teamSchema
+    });
   });
   console.info('[Db] created collection teams');
   return teamCollection;
 }
 
 const createRecordCollection = async () => {
-  if(!dbCreated) {
-    dbCreated = await createDb();
+  if(!db) {
+    db = await createDb();
   }
-  recordCollection = await dbCreated.collection({
-    name: 'records',
-    schema: recordSchema
+  await catchOldSchema(async () => {
+    recordCollection = await db.collection({
+      name: 'records',
+      schema: recordSchema
+    });
   });
   console.info('[Db] created collection records');
   return recordCollection;
 }
 
 const createProcessCollection = async () => {
-  if(!dbCreated) {
-    dbCreated = await createDb();
+  if(!db) {
+    db = await createDb();
   }
-  processCollection = await dbCreated.collection({
-    name: 'processes',
-    schema: processSchema
+  await catchOldSchema(async () => {
+    processCollection = await db.collection({
+      name: 'processes',
+      schema: processSchema
+    });
   });
   console.info('[Db] created collection processes');
   return processCollection;
 }
 
 const createTbaMatchCollection = async () => {
-  if(!dbCreated) {
-    dbCreated = await createDb();
+  if(!db) {
+    db = await createDb();
   }
-  tbaMatchCollection = await dbCreated.collection({
-    name: 'tbamatches',
-    schema: tbaMatchSchema
+  await catchOldSchema(async () => {
+    tbaMatchCollection = await db.collection({
+      name: 'tbamatches',
+      schema: tbaMatchSchema
+    });
   });
   console.info('[Db] created collection tbaMatches');
   return tbaMatchCollection;
 }
 
 const createEventCollection = async () => {
-  if(!dbCreated) {
-    dbCreated = await createDb();
+  if(!db) {
+    db = await createDb();
   }
-  eventCollection = await dbCreated.collection({
-    name: 'events',
-    schema: eventSchema
+  await catchOldSchema(async () => {
+    eventCollection = await db.collection({
+      name: 'events',
+      schema: eventSchema
+    });
   });
   console.info('[Db] created collection events');
   return eventCollection;
@@ -121,5 +147,11 @@ export const init = async () => {
   await getProcesses();
   await getTbaMatches();
   await getEvents();
+  return null;
+}
+
+export const clear = async () =>{
+  await RxDB.removeDatabase(Config.environmentConfig, 'idb');
+  db = null;
   return null;
 }

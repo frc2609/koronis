@@ -5,11 +5,10 @@ import * as Processor from 'engine/process/Processor';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import { FiberManualRecord, Code } from '@material-ui/icons';
 
 import eruda from 'eruda';
 
@@ -62,54 +61,58 @@ export default class Execute extends React.Component {
   }
   render() {
     return (
-      <>
-        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Selector
-                queryBarName='executeprocess'
-                onRecordsChange={(records) => {
-                  this.setState({
-                    selectedRecords: records
-                  });
-                }}
-                showRecords
-                selectedRecords={this.state.selectedRecords}
-                onProcessesChange={(processes) => {
-                  this.setState({
-                    selectedProcess: processes[0]
-                  });
-                }}
-                showProcesses
-                singularProcess
-                selectedProcess={[this.state.selectedProcess]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button fullWidth
-                variant='contained'
-                color='primary'
-                onClick={this.runProcess.bind(this)}
-                disabled={
-                  this.state.selectedRecords.length === 0 ||
-                  Object.keys(this.state.selectedProcess).length === 0
-                }
-              >
-                <PlayArrowIcon />
-                Run
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Card>
-                <Typography variant='h5' align='center'>
-                  Results: {this.state.returnValue.value}
-                </Typography>
-                <div ref='targetElement'></div>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
-      </>
+      <Container maxWidth='xl'>
+        <Card>
+          <Box mb={3}>
+            <Container maxWidth='xl'>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box mt={3}>
+                    <Selector
+                      queryBarName='executeprocess'
+                      onRecordsChange={(records) => {
+                        this.setState({
+                          selectedRecords: records
+                        });
+                      }}
+                      showRecords
+                      selectedRecords={this.state.selectedRecords}
+                      onProcessesChange={(processes) => {
+                        this.setState({
+                          selectedProcess: processes[0]
+                        });
+                      }}
+                      showProcesses
+                      singularProcess
+                      selectedProcess={[this.state.selectedProcess]}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button fullWidth
+                    variant='contained'
+                    color='primary'
+                    onClick={this.runProcess.bind(this)}
+                    disabled={
+                      this.state.selectedRecords.length === 0 ||
+                      Object.keys(this.state.selectedProcess).length === 0
+                    }
+                  >
+                    <PlayArrowIcon />
+                    Run
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h5' align='center'>
+                    Results: {this.state.returnValue.value}
+                  </Typography>
+                  <div ref='targetElement'></div>
+                </Grid>
+              </Grid>
+            </Container>
+          </Box>
+        </Card>
+      </Container>
     );
   }
 }

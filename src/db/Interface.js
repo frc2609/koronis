@@ -1,10 +1,7 @@
 import * as Db from 'db/Db';
-import Config from 'config/Config';
-import * as TbaKey from 'sync/tba/TbaKey';
 
 var deepcopy = require('deep-copy');
 var moment = require('moment');
-var axios = require('axios');
 
 //==================================Team==================================\\
 export const insertTeam = async (inTeam) => {
@@ -12,11 +9,9 @@ export const insertTeam = async (inTeam) => {
   var currObj = deepcopy(inTeam);
   var prevDoc = (await teamCollection.findOne({key: currObj.key}).exec());
   if(prevDoc === null) {
-    console.info('[Interface] Inserting team');
     return (await teamCollection.insert(currObj));
   }
   else {
-    console.info('[Interface] Updating team');
     return (await prevDoc.update({$set: currObj}));
   }
 }
@@ -51,11 +46,9 @@ export const insertTbaTeam = async (inTeam) => {
 
   var prevDoc = (await teamCollection.findOne({key: currObj.key}).exec());
   if(prevDoc === null) {
-    console.info('[Interface] Inserting team');
     return (await teamCollection.insert(currObj));
   }
   else {
-    console.info('[Interface] Updating team');
     delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
@@ -72,6 +65,20 @@ export const getTeams = async (query, sort = []) => {
   }
   console.info('[Interface] Returning team query');
   return newDocs;
+}
+
+export const subscribeTeams = async (query, sort = [], onChange = () => {}) => {
+  var teamCollection = (await Db.getTeams());
+  console.info('[Interface] Returning teams query subscription');
+  return teamCollection.find(query).sort(sort).$.subscribe((docs) => {
+    var newDocs = [];
+    for(var i = 0;i < docs.length;i++) {
+      var currObj = deepcopy(docs[i].toJSON());
+      delete currObj._rev;
+      newDocs.push(currObj);
+    }
+    onChange(newDocs);
+  });
 }
 
 export const queryTeams = async (query, sort = []) => {
@@ -91,16 +98,18 @@ export const insertRecord = async (inRecord) => {
   var prevDoc = (await recordCollection.findOne({id: currObj.id}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
-    console.info('[Interface] Inserting record');
+    if(!currObj.metadata) {
+      currObj.metadata = {
+        verified: false
+      };
+    }
     return (await recordCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified) {
-    console.info('[Interface] Updating record');
     delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
   else {
-    console.info('[Interface] Aborting record insertion');
     return null;
   }
 }
@@ -108,7 +117,6 @@ export const insertRecord = async (inRecord) => {
 export const removeRecord = async (query) => {
   var recordCollection = (await Db.getRecords());
   var doc = (await recordCollection.findOne(query).exec());
-  console.info('[Interface] Removing record');
   return (await doc.remove());
 }
 
@@ -160,16 +168,19 @@ export const insertProcess = async (inProcess) => {
   var prevDoc = (await processCollection.findOne({id: currObj.id}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
-    console.info('[Interface] Inserting process');
+    if(!currObj.metadata) {
+      currObj.metadata = {
+        verified: false,
+        safe: false
+      };
+    }
     return (await processCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified) {
-    console.info('[Interface] Updating process');
     delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
   else {
-    console.info('[Interface] Aborting process insertion');
     return null;
   }
 }
@@ -177,7 +188,6 @@ export const insertProcess = async (inProcess) => {
 export const removeProcess = async (query) => {
   var processCollection = (await Db.getProcesses());
   var doc = (await processCollection.findOne(query).exec());
-  console.info('[Interface] Removing process');
   return (await doc.remove());
 }
 
@@ -220,11 +230,9 @@ export const insertEvent = async (inEvent) => {
   var currObj = deepcopy(inEvent);
   var prevDoc = (await eventCollection.findOne({key: currObj.key}).exec());
   if(prevDoc === null) {
-    console.info('[Interface] Inserting event');
     return (await eventCollection.insert(currObj));
   }
   else {
-    console.info('[Interface] Updating event');
     return (await eventCollection.update({$set: currObj}));
   }
 }
@@ -262,11 +270,9 @@ export const insertTbaEvent = async (inEvent) => {
 
   var prevDoc = (await eventCollection.findOne({key: currObj.key}).exec());
   if(prevDoc === null) {
-    console.info('[Interface] Inserting event');
     return (await eventCollection.insert(currObj));
   }
   else {
-    console.info('[Interface] Updating event');
     delete currObj._rev;
     if(typeof prevDoc.teams !== 'undefined') {currObj.teams = prevDoc.teams;}
     return (await prevDoc.update({$set: currObj}));

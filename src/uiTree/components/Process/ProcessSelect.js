@@ -92,51 +92,52 @@ export default class ProcessSelect extends React.Component {
           }
         </Grid>
       :
-        <MaterialTable
-          title='Processes'
-          icons={tableIcons}
-          style={{marginBottom: '4vh'}}
-          padding='dense'
-          color='primary'
-          columns={[
-            {field: 'lastModified', title: 'Last Modified', sortable: true,
-              render: (rowData) => {
-                return moment.unix(rowData.lastModified).format('MMM Do YYYY, HH:mm:ss')
+        <Box mb={3}>
+          <MaterialTable
+            title='Processes'
+            icons={tableIcons}
+            padding='dense'
+            color='primary'
+            columns={[
+              {field: 'lastModified', title: 'Last Modified', sortable: true,
+                render: (rowData) => {
+                  return moment.unix(rowData.lastModified).format('MMM Do YYYY, HH:mm:ss')
+                }
+              },
+              {field: 'title', title: 'Title', sortable: true,
+                cellStyle: {
+                  minWidth: '200px'
+                }
+              },
+              {field: 'description', title: 'Description', sortable: true,
+                cellStyle: {
+                  minWidth: '300px'
+                }
+              },
+              {field: 'queryType', title: 'Query Type', sortable: true},
+              {field: 'dataType', title: 'Data Type', sortable: true},
+              {field: 'year', title: 'Game Year', sortable: true,
+                render: (rowData) => {
+                  return rowData.year !== -1 ? rowData.year : 'None'
+                }
               }
-            },
-            {field: 'title', title: 'Title', sortable: true,
-              cellStyle: {
-                minWidth: '200px'
-              }
-            },
-            {field: 'description', title: 'Description', sortable: true,
-              cellStyle: {
-                minWidth: '300px'
-              }
-            },
-            {field: 'queryType', title: 'Query Type', sortable: true},
-            {field: 'dataType', title: 'Data Type', sortable: true},
-            {field: 'year', title: 'Game Year', sortable: true,
-              render: (rowData) => {
-                return rowData.year !== -1 ? rowData.year : 'None'
-              }
-            }
-          ]}
-          data={this.state.tableProcesses}
-          options={{
-            selection: true,
-            selectionProps: (rowData) => {
-              return {
-                disabled: this.props.singular && this.state.selectedProcesses.length > 0 && this.state.selectedProcesses.findIndex((e) => {return e.id === rowData.id;}) === -1
-              }
-            },
-            sorting: true
-          }}
-          onSelectionChange={(rows) => {
-            this.setState({selectedProcesses: rows});
-            if(typeof this.props.onSelect === 'function') {this.props.onSelect(rows)}
-          }}
-        />
+            ]}
+            data={this.state.tableProcesses}
+            options={{
+              selection: true,
+              selectionProps: (rowData) => {
+                return {
+                  disabled: this.props.singular && this.state.selectedProcesses.length > 0 && this.state.selectedProcesses.findIndex((e) => {return e.id === rowData.id;}) === -1
+                }
+              },
+              sorting: true
+            }}
+            onSelectionChange={(rows) => {
+              this.setState({selectedProcesses: rows});
+              if(typeof this.props.onSelect === 'function') {this.props.onSelect(rows)}
+            }}
+          />
+        </Box>
     );
   }
 }

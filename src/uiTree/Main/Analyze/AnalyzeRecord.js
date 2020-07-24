@@ -5,11 +5,10 @@ import * as Interface from 'db/Interface';
 import * as Processor from 'engine/process/Processor';
 
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import SelectAllIcon from '@material-ui/icons/SelectAll';
-import { FiberManualRecord, Code } from '@material-ui/icons';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Card from '@material-ui/core/Card';
@@ -162,108 +161,120 @@ class AnalyzeRecord extends React.Component {
             this.setState({openChartModal: false});
           }}
         />
-        <Container maxWidth='xl' style={{marginBottom: '4vh'}}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Selector
-                queryBarName='analyzerecord'
-                onRecordsChange={(records) => {
-                  this.setState({
-                    selectedRecords: records
-                  });
-                }}
-                showRecords
-                selectedRecords={this.state.selectedRecords}
-                onProcessesChange={(processes) => {
-                  this.setState({
-                    selectedProcesses: processes
-                  });
-                }}
-                showProcesses
-                selectedProcesses={this.state.selectedProcesses}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                variant='contained'
-                color='primary'
-                onClick={this.showAll.bind(this)}
-              >
-                <SelectAllIcon />
-                Show All
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Card style={{marginBottom: '4vh'}}>
-                <Tabs
-                  value={this.state.tab}
-                  onChange={this.tabHandler.bind(this)}
-                  indicatorColor='primary'
-                  textColor='primary'
-                  variant='fullWidth'
-                >
-                  <Tab label='Metrics' value='metric' />
-                  <Tab label='Charts' value='chart' />
-                </Tabs>
-                {this.state.redirect ?
-                  <Redirect push to={'/analyze/record/' + this.state.tab} />
-                :
-                  <></>
-                }
-                <Route exact path='/analyze/record'><Redirect push to='/analyze/record/metric' /></Route>
-                <Route path='/analyze/record/metric'>
-                  <MaterialTable
-                    title='Metrics'
-                    icons={tableIcons}
-                    padding='dense'
-                    color='primary'
-                    columns={this.state.columns}
-                    data={this.state.data}
-                    options={{
-                      exportButton: true,
-                      filtering: true,
-                      doubleHorizontalScroll: true
-                    }}
-                  />
-                </Route>
-                <Route path='/analyze/record/chart'>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Process(es)</TableCell>
-                        <TableCell>Chart(s)</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {this.state.selectedProcesses.map((e, i) => {
-                        if(e.dataType !== 'chart' || e.queryType !== 'record') {
-                          return (
-                            <></>
-                          );
-                        }
-                        return (
-                          <TableRow key={i}>
-                            <TableCell>{e.title}</TableCell>
-                            <TableCell>
-                              <Button
-                                onClick={() => {
-                                  this.setState({chartProcess: e, openChartModal: true});
-                                }}
-                              >
-                                Show Charts
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </Route>
+        <Box mb={3}>
+          <Container maxWidth='xl'>
+            <Box mb={3}>
+              <Card>
+                <Box my={3}>
+                  <Container maxWidth='xl'>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Selector
+                          queryBarName='analyzerecord'
+                          onRecordsChange={(records) => {
+                            this.setState({
+                              selectedRecords: records
+                            });
+                          }}
+                          showRecords
+                          selectedRecords={this.state.selectedRecords}
+                          onProcessesChange={(processes) => {
+                            this.setState({
+                              selectedProcesses: processes
+                            });
+                          }}
+                          showProcesses
+                          selectedProcesses={this.state.selectedProcesses}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Button
+                          fullWidth
+                          variant='contained'
+                          color='primary'
+                          onClick={this.showAll.bind(this)}
+                        >
+                          <SelectAllIcon />
+                          Show All
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Container>
+                </Box>
               </Card>
+            </Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Box mb={3}>
+                  <Card>
+                    <Tabs
+                      value={this.state.tab}
+                      onChange={this.tabHandler.bind(this)}
+                      indicatorColor='primary'
+                      textColor='primary'
+                      variant='fullWidth'
+                    >
+                      <Tab label='Metrics' value='metric' />
+                      <Tab label='Charts' value='chart' />
+                    </Tabs>
+                    {this.state.redirect ?
+                      <Redirect push to={'/analyze/record/' + this.state.tab} />
+                    :
+                      null
+                    }
+                    <Route exact path='/analyze/record'><Redirect push to='/analyze/record/metric' /></Route>
+                    <Route path='/analyze/record/metric'>
+                      <MaterialTable
+                        title='Metrics'
+                        icons={tableIcons}
+                        padding='dense'
+                        color='primary'
+                        columns={this.state.columns}
+                        data={this.state.data}
+                        options={{
+                          exportButton: true,
+                          filtering: true,
+                          doubleHorizontalScroll: true
+                        }}
+                      />
+                    </Route>
+                    <Route path='/analyze/record/chart'>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Process(es)</TableCell>
+                            <TableCell>Chart(s)</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {this.state.selectedProcesses.map((e, i) => {
+                            if(e.dataType !== 'chart' || e.queryType !== 'record') {
+                              return null;
+                            }
+                            return (
+                              <TableRow key={i}>
+                                <TableCell>{e.title}</TableCell>
+                                <TableCell>
+                                  <Button
+                                    onClick={() => {
+                                      this.setState({chartProcess: e, openChartModal: true});
+                                    }}
+                                  >
+                                    Show Charts
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </Route>
+                  </Card>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </Box>
       </>
     );
   }

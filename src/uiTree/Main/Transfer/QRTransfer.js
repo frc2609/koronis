@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
+import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
 import Container from '@material-ui/core/Container';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -31,29 +33,35 @@ class QRTransfer extends React.Component {
   }
   render() {
     return (
-      <>
-        {this.state.redirect ?
-          <Redirect push to={'/transfer/qrcode/' + this.state.tab} />
-        :
-          <></>
-        }
-        <Tabs
-          value={this.state.tab}
-          onChange={this.tabHandler.bind(this)}
-          indicatorColor='primary'
-          textColor='primary'
-          variant='fullWidth'
-          style={{
-            marginBottom: '2vh'
-          }}
-        >
-          <Tab label='Send' value='send' />
-          <Tab label='Receive' value='receive' />
-        </Tabs>
-        <Route exact path='/transfer/qrcode'><Redirect push to='/transfer/qrcode/send' /></Route>
-        <Route exact path='/transfer/qrcode/send' component={QRSendData} />
-        <Route exact path='/transfer/qrcode/receive' component={QRReceiveData} />
-      </>
+      <Container maxWidth='xl'>
+        <Card>
+          <Box mb={3}>
+            {this.state.redirect ?
+              <Redirect push to={'/transfer/qrcode/' + this.state.tab} />
+            :
+              <></>
+            }
+            <Box mb={3}>
+              <Tabs
+                value={this.state.tab}
+                onChange={this.tabHandler.bind(this)}
+                indicatorColor='primary'
+                textColor='primary'
+                variant='fullWidth'
+                style={{
+                  marginBottom: '2vh'
+                }}
+              >
+                <Tab label='Send' value='send' />
+                <Tab label='Receive' value='receive' />
+              </Tabs>
+            </Box>
+            <Route exact path='/transfer/qrcode'><Redirect push to='/transfer/qrcode/send' /></Route>
+            <Route exact path='/transfer/qrcode/send' component={QRSendData} />
+            <Route exact path='/transfer/qrcode/receive' component={QRReceiveData} />
+          </Box>
+        </Card>
+      </Container>
     );
   }
 }

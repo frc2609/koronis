@@ -34,7 +34,11 @@ class Analyze extends React.Component {
   render() {
     return (
       <>
-        {this.state.redirect ? <Redirect push to={'/analyze/' + this.state.tab} /> : <></>}
+        {this.state.redirect ?
+          <Redirect push to={'/analyze/' + this.state.tab} />
+        :
+          <></>
+        }
         <Route exact path='/analyze'><Redirect push to='/analyze/record' /></Route>
         <Route path='/analyze/record' component={AnalyzeRecordWithRouter} />
         <Route path='/analyze/team' component={AnalyzeTeamWithRouter} />

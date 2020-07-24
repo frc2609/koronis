@@ -2,9 +2,9 @@ import React from 'react';
 
 import * as Package from 'sync/package/PackageCollector';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
@@ -192,13 +192,13 @@ export default class RecordQueryBar extends React.Component {
   }
   render() {
     return (
-      <ExpansionPanel style={{marginBottom: '4vh'}}>
-        <ExpansionPanelSummary
+      <Accordion style={{marginBottom: '4vh'}}>
+        <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
         >
         <Typography>Filter</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           <Grid container>
             <Grid container item xs={12} spacing={2} style={{marginBottom: '4vh'}}>
               <Grid item xs={3} style={{minWidth: '150px'}}>
@@ -208,7 +208,7 @@ export default class RecordQueryBar extends React.Component {
                     ref='year'
                     onChange={this.yearHandler.bind(this)}
                     value={this.state.year}
-                    fullWidth
+                    label='Year'
                   >
                   <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
                   {(typeof this.state.gameStates === 'undefined') ? '' :
@@ -368,8 +368,8 @@ export default class RecordQueryBar extends React.Component {
               ''
             }
           </Grid>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     );
   }
 }

@@ -62,7 +62,7 @@ export const init = async () => {
 
       //Set default year
       var biggestYear = 0;
-      for(var i = 0;i < availableYears.length;i++) {
+      for(var i = 0;i < availableYears.length;i++) { // eslint-disable-line no-redeclare
         var currYear = store.get('package/' + availableYears[i] + '/gameStateDefinition').gameState.year;
         if(currYear > biggestYear) {biggestYear = currYear;}
       }

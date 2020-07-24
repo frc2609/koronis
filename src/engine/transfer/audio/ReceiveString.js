@@ -1,13 +1,9 @@
 import React from 'react';
 
-import * as Layout from 'config/Layout';
-import * as StringConversion from 'engine/transfer/StringConversion';
-
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Slider from '@material-ui/core/Slider';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import { ReactMic } from 'react-mic';
@@ -15,7 +11,6 @@ import { ReactMic } from 'react-mic';
 import ProfileSelector from 'engine/transfer/audio/ProfileSelector';
 
 var quiet = require('quietjs-bundle');
-var raf = require('raf');
 
 export default class ReceiveString extends React.Component {
   constructor(props) {
@@ -26,9 +21,11 @@ export default class ReceiveString extends React.Component {
       error: false,
       bytes: 0,
       showMic: false,
-      profile: 'audible'
+      visualizerWidth: 600,
+      profile: 'cable-64k'
     };
     this.listener = null;
+    this.visualizerRef = React.createRef();
     this.content = new ArrayBuffer(0);
   }
   listen() {
@@ -66,6 +63,23 @@ export default class ReceiveString extends React.Component {
     this.content = new ArrayBuffer(0);
     this.setState({done: true, running: false, showMic: false});
   }
+  refreshWidth() {
+    var elem = this.visualizerRef.current;
+    if(elem) {
+      var style = getComputedStyle(elem);
+      var width = elem.clientWidth - parseInt(style.paddingLeft) - parseInt(style.paddingRight);
+      if(width !== this.state.visualizerWidth) {
+        this.setState({visualizerWidth: width});
+      }
+    }
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    this.refreshWidth();
+    return true;
+  }
+  componentDidMount() {
+    this.refreshWidth();
+  }
   render() {
     return (
       <Container maxWidth='xl'>
@@ -74,7 +88,7 @@ export default class ReceiveString extends React.Component {
             {this.state.running ?
               <LinearProgress variant='query' />
             :
-              <Typography>
+              <Typography align='center'>
                 {this.state.done ?
                   this.state.error ?
                     'Error in transmission, try again'
@@ -87,7 +101,7 @@ export default class ReceiveString extends React.Component {
             }
           </Grid>
           <Grid item xs={12}>
-            <Typography>
+            <Typography align='center'>
               {this.state.bytes + ' bytes transferred'}
             </Typography>
           </Grid>
@@ -136,8 +150,8 @@ export default class ReceiveString extends React.Component {
               </Button>
             </ButtonGroup>
           </Grid>
-          <Grid item xs={12}>
-            <ReactMic record={this.state.showMic} onStop={()=>{}} />
+          <Grid item xs={12} ref={this.visualizerRef}>
+            <ReactMic record={this.state.showMic} onStop={()=>{}} width={this.state.visualizerWidth} />
           </Grid>
         </Grid>
       </Container>

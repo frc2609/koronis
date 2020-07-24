@@ -2,9 +2,9 @@ import React from 'react';
 
 import * as Save from 'engine/process/Save';
 
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import Card from '@material-ui/core/Card';
 
 import CodeEditor from 'uiTree/components/CodeEditor';
 import ProcessCreationBar from 'uiTree/Main/Process/Edit/ProcessCreationBar';
@@ -13,7 +13,7 @@ export default class Edit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      saveAlert: false,
+      openModal: false,
       process: {}
     }
   }
@@ -37,9 +37,15 @@ export default class Edit extends React.Component {
       process.title,
       process.description,
       this.state.process.function,
-      this.state.process,
-      () => {this.setState({saveAlert: true})}
-    );
+      this.state.process
+    ).then((success) => {
+      if(success) {
+        window.globalDialog('success', 'Saved Process Successfully!');
+      }
+      else {
+        window.globalDialog('error', 'Error Saving Process!');
+      }
+    });
   }
   saveNewHandler() {
     var process = this.refs.processCreationBar.getCreationObj();
@@ -51,50 +57,52 @@ export default class Edit extends React.Component {
       process.title,
       process.description,
       this.state.process.function,
-      {},
-      () => {this.setState({saveAlert: true})}
-    );
+      {}
+    ).then((success) => {
+      if(success) {
+        window.globalDialog('success', 'Saved New Process Successfully!');
+      }
+      else {
+        window.globalDialog('error', 'Error Saving New Process!');
+      }
+    });
   }
   render() {
     return (
-      <>
-        <ProcessCreationBar
-          ref='processCreationBar'
-          onOpen={this.openHandler.bind(this)}
-          onNew={this.newHandler.bind(this)}
-          onSave={this.saveHandler.bind(this)}
-          onSaveNew={this.saveNewHandler.bind(this)}
-        />
-        <Container maxWidth='xl' style={{marginBottom: '4vh', height: '40vh'}}>
-          <CodeEditor
-            ref='codeEditor'
-            value={
-              typeof this.state.process === 'undefined' ?
-                ''
-              :
-                this.state.process.function
-            }
-            onChange={(value) => {
-              var tmp = typeof this.state.process === 'undefined' ? {} : this.state.process;
-              tmp.function = value;
-              this.setState({process: tmp});
-            }}
-          />
-        </Container>
-        <Snackbar
-          open={this.state.saveAlert}
-          autoHideDuration={2000}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-          onClose={() => {this.setState({saveAlert: false})}}
-        >
-          <Alert onClose={() => {this.setState({saveAlert: false})}} severity='success'>
-            Save Successful
-          </Alert>
-        </Snackbar>
-      </>
+      <Container maxWidth='xl'>
+        <Card>
+          <Box mt={3}>
+            <ProcessCreationBar
+              ref='processCreationBar'
+              openModal={this.state.openModal}
+              onOpen={this.openHandler.bind(this)}
+              onNew={this.newHandler.bind(this)}
+              onSave={this.saveHandler.bind(this)}
+              onSaveNew={this.saveNewHandler.bind(this)}
+            />
+          </Box>
+          <Box mb={3}>
+            <Container maxWidth='xl' style={{height: '45vh'}}>
+              <CodeEditor
+                ref='codeEditor'
+                value={typeof this.state.process === 'undefined' ?
+                  ''
+                :
+                  this.state.process.function
+                }
+                onChange={(value) => {
+                  var tmp = typeof this.state.process === 'undefined' ? {} : this.state.process;
+                  tmp.function = value;
+                  this.setState({process: tmp, openModal: false});
+                }}
+                onOpen={() => {this.setState({openModal: true})}}
+                onSave={this.saveHandler.bind(this)}
+                onSaveNew={this.saveNewHandler.bind(this)}
+              />
+            </Container>
+          </Box>
+        </Card>
+      </Container>
     );
   }
 }

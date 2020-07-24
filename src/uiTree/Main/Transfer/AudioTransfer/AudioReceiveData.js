@@ -41,15 +41,13 @@ export default class AudioReceiveData extends React.Component {
   }
   render() {
     return (
-      <>
-        <Container>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <ReceiveString onFinish={this.decodeData.bind(this)} />
-            </Grid>
+      <Container>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <ReceiveString onFinish={this.decodeData.bind(this)} />
           </Grid>
-        </Container>
-      </>
+        </Grid>
+      </Container>
     );
   }
 }

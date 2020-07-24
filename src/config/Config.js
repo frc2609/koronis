@@ -14,6 +14,7 @@ if(environmentConfig === 'production') {
 else {
   console.info('[Config] App is configured for development. Version is ' + version);
   baseUrl = '/kss-client/dev';
+  environmentConfig = 'development';
   packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/dev/';
   processUrl = 'https://koronis-scouting-system.gitlab.io/kss-processes/dev/';
 }

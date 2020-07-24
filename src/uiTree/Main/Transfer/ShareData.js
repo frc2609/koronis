@@ -4,9 +4,8 @@ import * as Interface from 'db/Interface';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
-import { FiberManualRecord, Code } from '@material-ui/icons';
+import Card from '@material-ui/core/Card';
+import Box from '@material-ui/core/Box';
 
 import Selector from 'uiTree/components/Selector';
 import ShareString from 'engine/transfer/ShareString';
@@ -56,29 +55,33 @@ export default class TransferHandler extends React.Component {
   }
   render() {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Selector
-              queryBarName='sharedata'
-              onRecordsChange={(records) => {
-                this.setState({
-                  selectedRecords: records
-                });
-              }}
-              showRecords
-              onProcessesChange={(processes) => {
-                this.setState({
-                  selectedProcesses: processes
-                });
-              }}
-              showProcesses
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <ShareString data={this.state.data} onUpload={this.onImport.bind(this)} />
-          </Grid>
-        </Grid>
+      <Container maxWidth='xl'>
+        <Card>
+          <Box m={3}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Selector
+                  queryBarName='sharedata'
+                  onRecordsChange={(records) => {
+                    this.setState({
+                      selectedRecords: records
+                    });
+                  }}
+                  showRecords
+                  onProcessesChange={(processes) => {
+                    this.setState({
+                      selectedProcesses: processes
+                    });
+                  }}
+                  showProcesses
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ShareString data={this.state.data} onUpload={this.onImport.bind(this)} />
+              </Grid>
+            </Grid>
+          </Box>
+        </Card>
       </Container>
     );
   }

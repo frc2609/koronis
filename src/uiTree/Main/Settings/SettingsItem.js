@@ -3,6 +3,7 @@ import React from 'react';
 import * as Layout from 'config/Layout';
 
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -72,13 +73,17 @@ export default class SettingsItem extends React.Component {
                 this.valueHandler(e.target.value);
               }}
               value={this.state.value}
-              fullWidth
+              label={this.props.title}
             >
               {this.props.children}
             </Select>
           </FormControl>
+        : this.props.type === 'button' ?
+          <Button variant='outlined' fullWidth onClick={this.props.onClick}>
+            {this.props.title}
+          </Button>
         :
-          ''
+          <></>
         }
       </Grid>
     );

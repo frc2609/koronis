@@ -5,9 +5,6 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-var quiet = require('quietjs-bundle');
-var raf = require('raf');
-
 export default class ProfileSelector extends React.Component {
   render() {
     return (
@@ -20,7 +17,7 @@ export default class ProfileSelector extends React.Component {
             }
           }}
           value={this.props.value}
-          fullWidth
+          label='Profile'
         >
           <MenuItem value='audible'>Audible</MenuItem>
           <MenuItem value='audible-7k-channel-0'>Audible 7K Channel 0</MenuItem>
