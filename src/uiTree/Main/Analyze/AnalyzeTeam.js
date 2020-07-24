@@ -151,53 +151,63 @@ class AnalyzeTeam extends React.Component {
     return (
       <Box mb={3}>
         <Container maxWidth='xl'>
+          <Box mb={3}>
+            <Card>
+              <Box my={3}>
+                <Container maxWidth='xl'>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Selector
+                        queryBarName='analyzeteam'
+                        onRecordsChange={(records) => {
+                          this.setState({
+                            selectedRecords: records
+                          });
+                        }}
+                        showRecords
+                        selectedRecords={this.state.selectedRecords}
+                        onProcessesChange={(processes) => {
+                          this.setState({
+                            selectedProcesses: processes
+                          });
+                        }}
+                        showProcesses
+                        selectedProcesses={this.state.selectedProcesses}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                        fullWidth
+                        variant='contained'
+                        color='primary'
+                        onClick={this.showAll.bind(this)}
+                      >
+                        <SelectAllIcon />
+                        Show All
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        label='Team Number'
+                        variant='outlined'
+                        margin='normal'
+                        type='number'
+                        value={this.state.targetTeamNumber > 0 ? this.state.targetTeamNumber : ''}
+                        onChange={(e) => {
+                          store.set('analyze/team/targetTeamNumber', e.target.value);
+                          this.setState({targetTeamNumber: Number(e.target.value)});
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                </Container>
+              </Box>
+            </Card>
+          </Box>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Selector
-                queryBarName='analyzeteam'
-                onRecordsChange={(records) => {
-                  this.setState({
-                    selectedRecords: records
-                  });
-                }}
-                showRecords
-                selectedRecords={this.state.selectedRecords}
-                onProcessesChange={(processes) => {
-                  this.setState({
-                    selectedProcesses: processes
-                  });
-                }}
-                showProcesses
-                selectedProcesses={this.state.selectedProcesses}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                variant='contained'
-                color='primary'
-                onClick={this.showAll.bind(this)}
-              >
-                <SelectAllIcon />
-                Show All
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label='Team Number'
-                variant='outlined'
-                margin='normal'
-                type='number'
-                value={this.state.targetTeamNumber}
-                onChange={(e) => {
-                  store.set('analyze/team/targetTeamNumber', e.target.value);
-                  this.setState({targetTeamNumber: Number(e.target.value)});
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-               <TeamCard teamNumber={this.state.targetTeamNumber} />
+              <TeamCard teamNumber={this.state.targetTeamNumber} />
             </Grid>
             <Grid item xs={12}>
               <Box mb={3}>
@@ -216,38 +226,36 @@ class AnalyzeTeam extends React.Component {
                   {this.state.redirect ?
                     <Redirect push to={'/analyze/team/' + this.state.tab} />
                   :
-                    <></>
+                    null
                   }
                   <Route exact path='/analyze/team'><Redirect push to='/analyze/team/metric' /></Route>
                   <Route path='/analyze/team/metric'>
-                    <>
-                      <MaterialTable
-                        title='Team Records'
-                        icons={tableIcons}
-                        padding='dense'
-                        color='primary'
-                        columns={this.state.recordsColumns}
-                        data={this.state.recordsData}
-                        options={{
-                          exportButton: true,
-                          filtering: true,
-                          doubleHorizontalScroll: true
-                        }}
-                      />
-                      <MaterialTable
-                        title='Team Metrics'
-                        icons={tableIcons}
-                        padding='dense'
-                        color='primary'
-                        columns={this.state.metricsColumns}
-                        data={this.state.metricsData}
-                        options={{
-                          exportButton: true,
-                          filtering: true,
-                          doubleHorizontalScroll: true
-                        }}
-                      />
-                    </>
+                    <MaterialTable
+                      title='Team Records'
+                      icons={tableIcons}
+                      padding='dense'
+                      color='primary'
+                      columns={this.state.recordsColumns}
+                      data={this.state.recordsData}
+                      options={{
+                        exportButton: true,
+                        filtering: true,
+                        doubleHorizontalScroll: true
+                      }}
+                    />
+                    <MaterialTable
+                      title='Team Metrics'
+                      icons={tableIcons}
+                      padding='dense'
+                      color='primary'
+                      columns={this.state.metricsColumns}
+                      data={this.state.metricsData}
+                      options={{
+                        exportButton: true,
+                        filtering: true,
+                        doubleHorizontalScroll: true
+                      }}
+                    />
                   </Route>
                   <Route path='/analyze/team/mchart'>
                     <Container>

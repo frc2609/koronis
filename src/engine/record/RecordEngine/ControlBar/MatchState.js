@@ -160,7 +160,7 @@ export default class MatchState extends React.Component {
                   ref='matchType'
                   onChange={this.matchTypeHandler.bind(this)}
                   value={this.state.matchType}
-                  fullWidth
+                  label='Match Type'
                 >
                   <MenuItem value='t'>Test</MenuItem>
                   <MenuItem value='pf'>Practice Field</MenuItem>

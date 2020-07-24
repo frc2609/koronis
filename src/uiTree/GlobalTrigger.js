@@ -79,15 +79,15 @@ export default class GlobalTrigger extends React.Component {
             {this.state.alertMessage}
           </Alert>
         </Snackbar>
-        <Dialog open={this.state.dialogTrigger}>
+        <Dialog open={this.state.dialogTrigger} onClose={() => {this.setState({dialogTrigger: false})}}>
           <DialogTitle>{this.state.dialogTitle}</DialogTitle>
           <DialogContent>
             <DialogContentText>{this.state.dialogMessage}</DialogContentText>
             {this.state.dialogChildren}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => {this.setState({dialogTrigger: false})}}>No</Button>
-            <Button onClick={() => {this.setState({dialogResponse: true})}}>Yes</Button>
+            <Button color='primary' onClick={() => {this.setState({dialogTrigger: false})}}>No</Button>
+            <Button color='primary' onClick={() => {this.setState({dialogResponse: true})}}>Yes</Button>
           </DialogActions>
         </Dialog>
       </>

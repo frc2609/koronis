@@ -138,7 +138,7 @@ export default class ReceiveString extends React.Component {
                     ref='rearCamera'
                     onChange={this.facingModeHandler.bind(this)}
                     value={this.state.facingMode}
-                    fullWidth
+                    label='Camera'
                   >
                     <MenuItem value='environment'>Rear Camera</MenuItem>
                     <MenuItem value='user'>Front Camera</MenuItem>

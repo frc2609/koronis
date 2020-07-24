@@ -208,7 +208,7 @@ export default class RecordQueryBar extends React.Component {
                     ref='year'
                     onChange={this.yearHandler.bind(this)}
                     value={this.state.year}
-                    fullWidth
+                    label='Year'
                   >
                   <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
                   {(typeof this.state.gameStates === 'undefined') ? '' :

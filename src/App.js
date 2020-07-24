@@ -12,8 +12,6 @@ import GlobalTrigger from 'uiTree/GlobalTrigger';
 import MainAppBar from 'uiTree/MainAppBar';
 import Main from 'uiTree/Main';
 
-import 'App.css';
-
 export default class App extends React.Component {
   render() {
     return (

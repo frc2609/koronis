@@ -24,6 +24,7 @@ export default class TeamCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       nickname: '',
       name: '',
       schoolName: '',
@@ -36,8 +37,8 @@ export default class TeamCard extends React.Component {
       showMedia: false,
       mediaUrls: []
     };
-    this.subObj = null;
     this.onlineListener = null;
+    this.teamsSubscription = null;
   }
   blank() {
     this.setState({
@@ -55,27 +56,29 @@ export default class TeamCard extends React.Component {
   }
   refresh() {
     this.blank();
-    if(this.subObj !== null) {
-      this.subObj.unsubscribe();
+    this.setState({loading: true});
+    if(this.teamsSubscription !== null) {
+      this.teamsSubscription.unsubscribe();
     }
     if(typeof this.props.teamNumber !== 'undefined') {
-      Interface.queryTeams({teamNumber: Number(this.props.teamNumber)}, {}).then((query) => {
-        this.subObj = query.$.subscribe((teams) => {
-          if(teams.length > 0) {
-            var targetTeam = teams[0].toJSON();
-            this.getMedia(targetTeam.key);
-            this.setState({
-              nickname: targetTeam.nickname,
-              name: targetTeam.name,
-              schoolName: targetTeam.schoolName,
-              city: targetTeam.city,
-              stateProv: targetTeam.stateProv,
-              country: targetTeam.country,
-              website: targetTeam.website,
-              rookieYear: targetTeam.rookieYear
-            });
-          }
-        });
+      Interface.subscribeTeams({teamNumber: Number(this.props.teamNumber)}, {}, (teams) => {
+        if(teams.length > 0) {
+          var targetTeam = teams[0];
+          this.getMedia(targetTeam.key);
+          this.setState({
+            nickname: targetTeam.nickname,
+            name: targetTeam.name,
+            schoolName: targetTeam.schoolName,
+            city: targetTeam.city,
+            stateProv: targetTeam.stateProv,
+            country: targetTeam.country,
+            website: targetTeam.website,
+            rookieYear: targetTeam.rookieYear
+          });
+        }
+        this.setState({loading: false});
+      }).then((subscription) => {
+        this.teamsSubscription = subscription;
       });
     }
   }
@@ -98,8 +101,8 @@ export default class TeamCard extends React.Component {
     }
   }
   componentWillUnmount() {
-    if(this.subObj !== null) {
-      this.subObj.unsubscribe();
+    if(this.teamsSubscription !== null) {
+      this.teamsSubscription.unsubscribe();
     }
     if(this.onlineListener !== null) {
       window.removeEventListener('online', this.onlineListener);
@@ -135,8 +138,10 @@ export default class TeamCard extends React.Component {
             }
           />
           <CardContent style={{textAlign: 'left'}}>
-            {this.state.name === '' ?
+            {this.state.loading ?
               <LinearProgress variant='query' />
+            : this.state.name === '' ?
+              null
             :
               <>
                 <Typography variant='body2' paragraph>

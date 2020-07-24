@@ -88,7 +88,7 @@ export default class Selector extends React.Component {
               }
             </Button>
           :
-            <></>
+            null
           }
           {this.props.showProcesses ?
             <Button onClick={() => {this.setState({openProcessModal: true})}} startIcon={<Code />}>
@@ -104,7 +104,7 @@ export default class Selector extends React.Component {
               }
             </Button>
           :
-            <></>
+            null
           }
         </ButtonGroup>
       </>

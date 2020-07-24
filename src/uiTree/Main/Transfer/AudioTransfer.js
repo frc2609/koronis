@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
+import Container from '@material-ui/core/Container';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -31,28 +33,32 @@ class AudioTransfer extends React.Component {
   }
   render() {
     return (
-      <>
-        {this.state.redirect ?
-          <Redirect push to={'/transfer/audio/' + this.state.tab} />
-        :
-          <></>
-        }
-        <Box mb={2}>
-          <Tabs
-            value={this.state.tab}
-            onChange={this.tabHandler.bind(this)}
-            indicatorColor='primary'
-            textColor='primary'
-            variant='fullWidth'
-          >
-            <Tab label='Send' value='send' />
-            <Tab label='Receive' value='receive' />
-          </Tabs>
-        </Box>
-        <Route exact path='/transfer/audio'><Redirect push to='/transfer/audio/send' /></Route>
-        <Route exact path='/transfer/audio/send' component={AudioSendData} />
-        <Route exact path='/transfer/audio/receive' component={AudioReceiveData} />
-      </>
+      <Container maxWidth='xl'>
+        <Card>
+          <Box mb={3}>
+            {this.state.redirect ?
+              <Redirect push to={'/transfer/audio/' + this.state.tab} />
+            :
+              <></>
+            }
+            <Box mb={3}>
+              <Tabs
+                value={this.state.tab}
+                onChange={this.tabHandler.bind(this)}
+                indicatorColor='primary'
+                textColor='primary'
+                variant='fullWidth'
+              >
+                <Tab label='Send' value='send' />
+                <Tab label='Receive' value='receive' />
+              </Tabs>
+            </Box>
+            <Route exact path='/transfer/audio'><Redirect push to='/transfer/audio/send' /></Route>
+            <Route exact path='/transfer/audio/send' component={AudioSendData} />
+            <Route exact path='/transfer/audio/receive' component={AudioReceiveData} />
+          </Box>
+        </Card>
+      </Container>
     );
   }
 }

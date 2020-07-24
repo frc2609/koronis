@@ -163,37 +163,47 @@ class AnalyzeRecord extends React.Component {
         />
         <Box mb={3}>
           <Container maxWidth='xl'>
+            <Box mb={3}>
+              <Card>
+                <Box my={3}>
+                  <Container maxWidth='xl'>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Selector
+                          queryBarName='analyzerecord'
+                          onRecordsChange={(records) => {
+                            this.setState({
+                              selectedRecords: records
+                            });
+                          }}
+                          showRecords
+                          selectedRecords={this.state.selectedRecords}
+                          onProcessesChange={(processes) => {
+                            this.setState({
+                              selectedProcesses: processes
+                            });
+                          }}
+                          showProcesses
+                          selectedProcesses={this.state.selectedProcesses}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Button
+                          fullWidth
+                          variant='contained'
+                          color='primary'
+                          onClick={this.showAll.bind(this)}
+                        >
+                          <SelectAllIcon />
+                          Show All
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Container>
+                </Box>
+              </Card>
+            </Box>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Selector
-                  queryBarName='analyzerecord'
-                  onRecordsChange={(records) => {
-                    this.setState({
-                      selectedRecords: records
-                    });
-                  }}
-                  showRecords
-                  selectedRecords={this.state.selectedRecords}
-                  onProcessesChange={(processes) => {
-                    this.setState({
-                      selectedProcesses: processes
-                    });
-                  }}
-                  showProcesses
-                  selectedProcesses={this.state.selectedProcesses}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  onClick={this.showAll.bind(this)}
-                >
-                  <SelectAllIcon />
-                  Show All
-                </Button>
-              </Grid>
               <Grid item xs={12}>
                 <Box mb={3}>
                   <Card>
@@ -210,7 +220,7 @@ class AnalyzeRecord extends React.Component {
                     {this.state.redirect ?
                       <Redirect push to={'/analyze/record/' + this.state.tab} />
                     :
-                      <></>
+                      null
                     }
                     <Route exact path='/analyze/record'><Redirect push to='/analyze/record/metric' /></Route>
                     <Route path='/analyze/record/metric'>
@@ -239,9 +249,7 @@ class AnalyzeRecord extends React.Component {
                         <TableBody>
                           {this.state.selectedProcesses.map((e, i) => {
                             if(e.dataType !== 'chart' || e.queryType !== 'record') {
-                              return (
-                                <></>
-                              );
+                              return null;
                             }
                             return (
                               <TableRow key={i}>

@@ -73,7 +73,7 @@ export default class SettingsItem extends React.Component {
                 this.valueHandler(e.target.value);
               }}
               value={this.state.value}
-              fullWidth
+              label={this.props.title}
             >
               {this.props.children}
             </Select>

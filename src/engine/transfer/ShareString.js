@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -120,61 +119,59 @@ export default class ShareString extends React.Component {
   }
   render() {
     return (
-      <Container maxWidth='xl'>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography align='left' variant='h6' gutterBottom>Export</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              color='primary'
-              variant='contained'
-              fullWidth
-              onClick={this.onDownload.bind(this)}
-              disabled={(Array.isArray(this.props.data) && this.props.data.length === 0) || typeof this.props.data === 'undefined'}
-            >
-              Download
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Box mb={2}>
-              <FormGroup row>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={this.state.singleDownload}
-                      onChange={(e) => {
-                        this.setState({singleDownload: e.target.checked});
-                      }}
-                      color='primary'
-                    />
-                  }
-                  label='Download as single JSON File'
-                />
-              </FormGroup>
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Box mb={2}>
-              <Divider />
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography align='left' variant='h6' gutterBottom>Import</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Box mb={2}>
-              <FilePond
-                ref={ref => this.filepond = ref}
-                allowMultiple={true}
-                allowRevert={false}
-                onaddfile={this.onUpload.bind(this)}
-                style={{marginBottom: '2vh'}}
-              />
-            </Box>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography align='left' variant='h6' gutterBottom>Export</Typography>
         </Grid>
-      </Container>
+        <Grid item xs={12}>
+          <Button
+            color='primary'
+            variant='contained'
+            fullWidth
+            onClick={this.onDownload.bind(this)}
+            disabled={(Array.isArray(this.props.data) && this.props.data.length === 0) || typeof this.props.data === 'undefined'}
+          >
+            Download
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Box mb={2}>
+            <FormGroup row>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={this.state.singleDownload}
+                    onChange={(e) => {
+                      this.setState({singleDownload: e.target.checked});
+                    }}
+                    color='primary'
+                  />
+                }
+                label='Download as single JSON File'
+              />
+            </FormGroup>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <Box mb={2}>
+            <Divider />
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography align='left' variant='h6' gutterBottom>Import</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Box mb={2}>
+            <FilePond
+              ref={ref => this.filepond = ref}
+              allowMultiple={true}
+              allowRevert={false}
+              onaddfile={this.onUpload.bind(this)}
+              style={{marginBottom: '2vh'}}
+            />
+          </Box>
+        </Grid>
+      </Grid>
     );
   }
 }

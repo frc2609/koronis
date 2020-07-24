@@ -154,18 +154,18 @@ export default class ProcessCreationBar extends React.Component {
                   onChange={this.yearHandler.bind(this)}
                   value={this.state.year}
                   variant='outlined'
-                  fullWidth
+                  label='Year'
                 >
-                <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
-                {(typeof this.state.years === 'undefined') ?
-                  ''
-                :
-                  this.state.years.map(
-                    (e, i) => {
-                      return <MenuItem key={i} value={e}>{e}</MenuItem>
-                    }
-                  )
-                }
+                  <MenuItem key={-1} value={-1}><em>None</em></MenuItem>
+                  {(typeof this.state.years === 'undefined') ?
+                    ''
+                  :
+                    this.state.years.map(
+                      (e, i) => {
+                        return <MenuItem key={i} value={e}>{e}</MenuItem>
+                      }
+                    )
+                  }
                 </Select>
               </FormControl>
             </Grid>
@@ -176,7 +176,7 @@ export default class ProcessCreationBar extends React.Component {
                   onChange={this.queryTypeHandler.bind(this)}
                   value={this.state.queryType}
                   variant='outlined'
-                  fullWidth
+                  label='Query Type'
                 >
                   <MenuItem value='record'>Record</MenuItem>
                   <MenuItem value='match'>Match</MenuItem>
@@ -192,7 +192,7 @@ export default class ProcessCreationBar extends React.Component {
                   onChange={this.dataTypeHandler.bind(this)}
                   value={this.state.dataType}
                   variant='outlined'
-                  fullWidth
+                  label='Data Type'
                 >
                   <MenuItem value='metric'>Metric</MenuItem>
                   <MenuItem value='chart'>Chart</MenuItem>

@@ -67,6 +67,20 @@ export const getTeams = async (query, sort = []) => {
   return newDocs;
 }
 
+export const subscribeTeams = async (query, sort = [], onChange = () => {}) => {
+  var teamCollection = (await Db.getTeams());
+  console.info('[Interface] Returning teams query subscription');
+  return teamCollection.find(query).sort(sort).$.subscribe((docs) => {
+    var newDocs = [];
+    for(var i = 0;i < docs.length;i++) {
+      var currObj = deepcopy(docs[i].toJSON());
+      delete currObj._rev;
+      newDocs.push(currObj);
+    }
+    onChange(newDocs);
+  });
+}
+
 export const queryTeams = async (query, sort = []) => {
   var teamCollection = (await Db.getTeams());
   console.info('[Interface] Returning team query object');
