@@ -89,7 +89,7 @@ export default class ControlBar extends React.Component {
           }}
         />
         <Settings ref='settings' submit={this.props.settingsUpdate.bind(this)}/>
-        <ButtonGroup style={{height:'93%'}} variant='outlined'>
+        <ButtonGroup style={{height:'93%'}} variant='outlined' fullWidth>
           <Button style={{height:'100%'}} onClick={this.flipUpdate.bind(this)} color='primary'>
             <Flip />
           </Button>

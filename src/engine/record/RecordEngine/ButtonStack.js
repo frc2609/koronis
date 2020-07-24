@@ -464,14 +464,14 @@ export default class ButtonStack extends React.Component {
     //Bind keyboard events
     this.keyUpListener = this.keyUp.bind(this);
     this.keyDownListener = this.keyDown.bind(this);
-    window.onkeydown = this.keyDownListener;
-    window.onkeyup = this.keyUpListener;
+    window.addEventListener('keydown', this.keyDownListener);
+    window.addEventListener('keyup', this.keyUpListener);
 
     this.resize();
   }
   componentWillUnmount() {
-    window.onkeydown = null;
-    window.onkeyup = null;
+    window.removeEventListener('keydown', this.keyDownListener);
+    window.removeEventListener('keyup', this.keyUpListener);
   }
   render() {
     return (
