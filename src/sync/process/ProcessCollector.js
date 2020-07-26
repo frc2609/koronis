@@ -23,6 +23,11 @@ export const update = async () => {
           var availableProcesses = currRepoIndex.availableProcesses;
           for(var j = 0;j < availableProcesses.length;j++) {
             var currProcess = (await axios.get(Config.processUrl + availableYears[i] + '/' + availableProcesses[j])).data;
+            currProcess.metadata = {
+              verified: true,
+              unModified: true,
+              safe: true
+            };
             Interface.insertProcess(currProcess);
           }
           store.set('processes/' + availableYears[i] + '/versionNumber', currVersionNumberRepo);

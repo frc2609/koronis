@@ -64,6 +64,12 @@ export const processSchema = {
     metadata: {
       type: 'object',
       properties: {
+        verified: {
+          type: 'boolean'
+        },
+        unModified: {
+          type: 'boolean'
+        },
         safe: {
           type: 'boolean'
         }

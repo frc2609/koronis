@@ -17,7 +17,7 @@ export const saveProcess = async (inYear = -1, inQueryType = 'record', inDataTyp
     obj.user = User.getUserId();
     obj.device = User.getFingerprint();
     obj.lastModified = Math.round((Date.now())/1000);
-    obj.digitalSignature = User.genProcessDS(inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction);
+    obj.digitalSignature = await User.genProcessDS(inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction);
     if(typeof obj.changeLog === 'undefined') {
       obj.changeLog = [];
     }
@@ -34,12 +34,14 @@ export const saveProcess = async (inYear = -1, inQueryType = 'record', inDataTyp
     }
     obj.metadata = {
       verified: true,
+      unModified: true,
       safe: true
     };
     await Interface.insertProcess(obj);
     return true;
   }
   catch(err) {
+    console.error(err);
     return false;
   }
 }

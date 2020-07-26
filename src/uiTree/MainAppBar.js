@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SyncIcon from '@material-ui/icons/Sync';
@@ -12,6 +11,7 @@ import CloudOffIcon from '@material-ui/icons/CloudOff';
 
 import SideNav from 'uiTree/MainAppBar/SideNav';
 import Help from 'uiTree/MainAppBar/Help';
+import LoginUi from 'uiTree/MainAppBar/LoginUi';
 
 import 'uiTree/MainAppBar.css';
 
@@ -74,7 +74,7 @@ export default class MainAppBar extends React.Component {
             }
             <Help />
             <Box mr={2} />
-            <Button color='inherit'>Login</Button>
+            <LoginUi />
           </Toolbar>
         </AppBar>
         <Box mb={3}>

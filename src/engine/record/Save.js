@@ -25,7 +25,7 @@ export const saveRecord = async (gameStateDefinition, matchState, engineState, e
     obj.user = User.getUserId();
     obj.device = User.getFingerprint();
     obj.lastModified = Math.round((Date.now())/1000);
-    obj.digitalSignature = User.genRecordDS(
+    obj.digitalSignature = await User.genRecordDS(
       gameStateDefinition.gameState.year,
       gameStateDefinition.gameState.versionNumber,
       matchState.matchStartDate,
@@ -50,6 +50,7 @@ export const saveRecord = async (gameStateDefinition, matchState, engineState, e
     return true;
   }
   catch(err) {
+    console.error(err);
     return false;
   }
 }

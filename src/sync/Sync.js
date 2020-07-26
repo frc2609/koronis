@@ -1,5 +1,6 @@
 import * as Package from 'sync/package/PackageCollector';
 import * as Process from 'sync/process/ProcessCollector';
+import * as ProcessVerifier from 'sync/process/ProcessVerifier';
 import * as TbaTeam from 'sync/tba/TbaTeam';
 import * as TbaEvent from 'sync/tba/TbaEvent';
 
@@ -13,6 +14,7 @@ export const update = () => {
         window.dispatchEvent(syncStartEvent);
         await Package.get();
         await Process.update();
+        await ProcessVerifier.verifyProcesses();
         await TbaTeam.update();
         await TbaEvent.update();
         window.dispatchEvent(syncEndEvent);

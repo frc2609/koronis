@@ -64,13 +64,13 @@ export default class TransferHandler extends React.Component {
                   queryBarName='sharedata'
                   onRecordsChange={(records) => {
                     this.setState({
-                      selectedRecords: records
+                      selectedRecords: records.map((e) => {delete e.metadata; return e})
                     });
                   }}
                   showRecords
                   onProcessesChange={(processes) => {
                     this.setState({
-                      selectedProcesses: processes
+                      selectedProcesses: processes.map((e) => {delete e.metadata; return e})
                     });
                   }}
                   showProcesses

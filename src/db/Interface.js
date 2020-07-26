@@ -1,6 +1,8 @@
 import * as Db from 'db/Db';
+import * as Verify from 'auth/Verify';
 
 var deepcopy = require('deep-copy');
+var deepCompare = require('deep-compare');
 var moment = require('moment');
 
 //==================================Team==================================\\
@@ -171,12 +173,24 @@ export const insertProcess = async (inProcess) => {
     if(!currObj.metadata) {
       currObj.metadata = {
         verified: false,
+        unModified: false,
         safe: false
       };
     }
+    if(!currObj.metadata.verified) {
+      if(currObj.user !== '') {
+        try {
+          currObj.metadata.unModified = (await Verify.verifyProcess(currObj));
+          currObj.metadata.verified = true;
+        }
+        catch(err) {
+          currObj.metadata.unModified = false;
+        }
+      }
+    }
     return (await processCollection.insert(currObj));
   }
-  else if (prevDoc.lastModified < currObj.lastModified) {
+  else if (prevDoc.lastModified < currObj.lastModified || !deepCompare(prevDoc.metadata, currObj.metadata)) {
     delete currObj._rev;
     return (await prevDoc.update({$set: currObj}));
   }
