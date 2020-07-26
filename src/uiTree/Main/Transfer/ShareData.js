@@ -32,18 +32,22 @@ export default class TransferHandler extends React.Component {
     if(Array.isArray(data)) {
       for(var i = 0;i < data.length;i++) {
         if(typeof data[i].eventLog !== 'undefined') {
+          delete data[i].metadata;
           Interface.insertRecord(data[i]);
         }
         else if(typeof data[i].function !== 'undefined') {
+          delete data[i].metadata;
           Interface.insertProcess(data[i]);
         }
       }
     }
     else {
       if(typeof data.eventLog !== 'undefined') {
+        delete data.metadata;
         Interface.insertRecord(data);
       }
       else if(typeof data.function !== 'undefined') {
+        delete data.metadata;
         Interface.insertProcess(data);
       }
     }
@@ -64,13 +68,13 @@ export default class TransferHandler extends React.Component {
                   queryBarName='sharedata'
                   onRecordsChange={(records) => {
                     this.setState({
-                      selectedRecords: records
+                      selectedRecords: records.map((e) => {delete e.metadata; return e})
                     });
                   }}
                   showRecords
                   onProcessesChange={(processes) => {
                     this.setState({
-                      selectedProcesses: processes
+                      selectedProcesses: processes.map((e) => {delete e.metadata; return e})
                     });
                   }}
                   showProcesses

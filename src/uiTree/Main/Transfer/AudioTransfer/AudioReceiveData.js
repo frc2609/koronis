@@ -26,9 +26,11 @@ export default class AudioReceiveData extends React.Component {
     serializerInstance.serializeData(inStr, false, true).then((decoded) => {
       for(var i = 0;i < decoded.length;i++) {
         if(typeof decoded[i].eventLog !== 'undefined') {
+          delete decoded[i].metadata;
           Interface.insertRecord(decoded[i]);
         }
         else if(typeof decoded[i].function !== 'undefined') {
+          delete decoded[i].metadata;
           Interface.insertProcess(decoded[i]);
         }
       }

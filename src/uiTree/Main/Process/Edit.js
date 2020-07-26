@@ -40,10 +40,10 @@ export default class Edit extends React.Component {
       this.state.process
     ).then((success) => {
       if(success) {
-        window.globalDialog('success', 'Saved Process Successfully!');
+        window.globalAlert('success', 'Saved Process Successfully!');
       }
       else {
-        window.globalDialog('error', 'Error Saving Process!');
+        window.globalAlert('error', 'Error Saving Process!');
       }
     });
   }

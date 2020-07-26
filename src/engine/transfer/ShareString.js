@@ -116,6 +116,9 @@ export default class ShareString extends React.Component {
         }, 500);
       });
     }
+    else {
+      window.globalAlert('error', 'Failed to upload file!');
+    }
   }
   render() {
     return (
