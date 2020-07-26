@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 import ProfileSelector from 'engine/transfer/audio/ProfileSelector';
 
-var quiet = require('quietjs-bundle');
+var quiet = require('quietjs-bundle-cli');
 
 export default class SendString extends React.Component {
   constructor(props) {

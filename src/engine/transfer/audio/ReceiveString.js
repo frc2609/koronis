@@ -10,7 +10,7 @@ import { ReactMic } from 'react-mic';
 
 import ProfileSelector from 'engine/transfer/audio/ProfileSelector';
 
-var quiet = require('quietjs-bundle');
+var quiet = require('quietjs-bundle-cli');
 
 export default class ReceiveString extends React.Component {
   constructor(props) {
