@@ -1,6 +1,7 @@
 var baseUrl = '';
 var packageUrl = '';
 var processUrl = '';
+var wikiUrl = 'https://koronis-scouting-system.gitlab.io/kss-wiki/';
 var tbaUrl = 'https://www.thebluealliance.com/api/v3/';
 var environmentConfig = process.env.REACT_APP_ENV;
 var version = process.env.REACT_APP_VERSION;
@@ -25,6 +26,7 @@ const Config = {
   environmentConfig: environmentConfig,
   packageUrl: packageUrl,
   processUrl: processUrl,
+  wikiUrl: wikiUrl,
   tbaUrl: tbaUrl
 };
 export default Config;

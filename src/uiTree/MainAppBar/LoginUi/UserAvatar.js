@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as User from 'auth/User';
+
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -42,7 +44,7 @@ export default class UserAvatar extends React.Component {
           onClose={() => {this.setState({targetElem: null})}}
         >
           <MenuItem onClick={async () => {
-            await firebase.auth().signOut();
+            await User.logout();
             this.setState({targetElem: null});
           }}>Logout</MenuItem>
         </Menu>
