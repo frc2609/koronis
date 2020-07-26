@@ -169,25 +169,25 @@ export const insertProcess = async (inProcess) => {
   var currObj = deepcopy(inProcess);
   var prevDoc = (await processCollection.findOne({id: currObj.id}).exec());
 
-  if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
-    if(!currObj.metadata) {
-      currObj.metadata = {
-        verified: false,
-        unModified: false,
-        safe: false
-      };
-    }
-    if(!currObj.metadata.verified) {
-      if(currObj.user !== '') {
-        try {
-          currObj.metadata.unModified = (await Verify.verifyProcess(currObj));
-          currObj.metadata.verified = true;
-        }
-        catch(err) {
-          currObj.metadata.unModified = false;
-        }
+  if(!currObj.metadata) {
+    currObj.metadata = {
+      verified: false,
+      unModified: false,
+      safe: false
+    };
+  }
+  if(!currObj.metadata.verified) {
+    if(currObj.user !== '') {
+      try {
+        currObj.metadata.unModified = (await Verify.verifyProcess(currObj));
+        currObj.metadata.verified = true;
+      }
+      catch(err) {
+        currObj.metadata.unModified = false;
       }
     }
+  }
+  if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
     return (await processCollection.insert(currObj));
   }
   else if (prevDoc.lastModified < currObj.lastModified || !deepCompare(prevDoc.metadata, currObj.metadata)) {
