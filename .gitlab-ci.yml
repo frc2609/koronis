@@ -17,7 +17,7 @@ firebase:
     - master
 
 pages:
-  image: node:8.11.1
+  image: node:10.22.0-jessie
   stage: deploy
   script:
     - rm -rf *
