@@ -40,7 +40,7 @@
     "pouchdb-adapter-idb": "^7.1.1",
     "pouchdb-core": "^7.1.1",
     "qrcode-generator": "^1.4.4",
-    "quietjs-bundle": "0.0.7",
+    "quietjs-bundle-cli": "0.0.8",
     "raf": "^3.4.1",
     "randomcolor": "^0.5.4",
     "react": "^16.9.0",
