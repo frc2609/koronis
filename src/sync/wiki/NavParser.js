@@ -16,22 +16,33 @@ export const parseNav = async () => {
   nav = nav.substring(nav.indexOf('# KSS Wiki\n')+12,nav.indexOf('\n[Edit]'));
   arr = nav.split('\n');
   var currScope = '';
+  var currScopeCount = 0;
   for(var i = 0;i < arr.length;i++) {
-    if(arr[i] !== '' && !arr[i].includes('#')) {
+    if(arr[i].trim().length !== 0 && !arr[i].includes('#')) {
       var nestedCount = arr[i].indexOf('*') < 0 ? 0 : Math.floor(arr[i].indexOf('*') / 2);
-      console.log(arr[i])
-      console.log(parseLine(arr[i]));
-      if(nestedCount === 0) {
-        var parsed = parseLine(arr[i]);
-        currScope = parsed[0]
-        res.push({
-          path: parsed[0],
-          value: parsed[1]
-        });
+      var parsed = parseLine(arr[i]);
+      if(nestedCount === currScopeCount) {
+        currScope = currScope.substring(0,currScope.lastIndexOf('/')) + '/' + parsed[0];
+      }
+      else if(nestedCount > currScopeCount) {
+        currScope = currScope + '/' + parsed[0];
+        currScopeCount++;
       }
       else {
-        var currArr = arr[i].split('\');
+        for(var j = 0;j <= currScopeCount - nestedCount;j++) {
+          currScope = currScope.substring(0,currScope.lastIndexOf('/'));
+        }
+        currScope = currScope + '/' + parsed[0];
+        currScopeCount = nestedCount;
       }
+      res.push({
+        path: currScope.substring(1),
+        url: parsed[1]
+      });
     }
   }
+  for(var i = 0;i < res.length;i++) {
+    res[i].md = (await axios(Config.wikiUrl + res[i].url)).data;
+  }
+  console.log(res);
 }
