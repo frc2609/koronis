@@ -66,13 +66,21 @@ class Wiki extends React.Component {
                           </ListItem>
                         );
                       }
+<<<<<<< HEAD
                       return <div key={i}></div>;
+=======
+                      return <></>;
+>>>>>>> 5c2aa0ac625c67e2b3a69998fe4a937f9e9c5f25
                     })}
                   </List>
                   <List>
                     {this.state.wikiData.map((e, i) => {
                       if(e.md.length > 0) { return (<ListItem key={i}><ListItemText primary=' ‏‏‎ ‎' /></ListItem>); }
+<<<<<<< HEAD
                       return <div key={i}></div>;
+=======
+                      return <></>;
+>>>>>>> 5c2aa0ac625c67e2b3a69998fe4a937f9e9c5f25
                     })}
                   </List>
                 </Grid>
