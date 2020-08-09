@@ -1,6 +1,7 @@
 import * as Package from 'sync/package/PackageCollector';
 import * as Process from 'sync/process/ProcessCollector';
 import * as ProcessVerifier from 'sync/process/ProcessVerifier';
+import * as NavParser from 'sync/wiki/NavParser';
 import * as TbaTeam from 'sync/tba/TbaTeam';
 import * as TbaEvent from 'sync/tba/TbaEvent';
 
@@ -15,6 +16,7 @@ export const update = () => {
         await Package.get();
         await Process.update();
         await ProcessVerifier.verifyProcesses();
+        await NavParser.parseNav();
         await TbaTeam.update();
         await TbaEvent.update();
         window.dispatchEvent(syncEndEvent);
