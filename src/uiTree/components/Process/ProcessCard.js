@@ -84,16 +84,19 @@ export default class ProcessCard extends React.Component {
               {this.props.process.description}
             </Typography>
           </Box>
-          {this.props.process.metadata.verified ?
-            this.props.process.metadata.unModified ?
-              <Chip label='Verified' icon={<CheckCircleIcon />} color='primary' />
+          {this.props.process.metadata ?
+            this.props.process.metadata.verified ?
+              this.props.process.metadata.unModified ?
+                <Chip label='Verified' icon={<CheckCircleIcon />} color='primary' />
+              :
+                <Chip label='Modified' icon={<ErrorIcon />} color='primary' style={{backgroundColor: '#dc3545'}} />
             :
-              <Chip label='Modified' icon={<ErrorIcon />} color='primary' style={{backgroundColor: '#dc3545'}} />
+              this.props.process.user !== '' ?
+                <Chip label='Unverified' icon={<WarningIcon />} style={{backgroundColor: '#ffc107'}} />
+              :
+                <Chip label='Anonymous' icon={<ErrorIcon />} color='primary' style={{backgroundColor: '#dc3545'}} />
           :
-            this.props.process.user !== '' ?
-              <Chip label='Unverified' icon={<WarningIcon />} style={{backgroundColor: '#ffc107'}} />
-            :
-              <Chip label='Anonymous' icon={<ErrorIcon />} color='primary' style={{backgroundColor: '#dc3545'}} />
+            <></>
           }
         </CardContent>
       </Card>

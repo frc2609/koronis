@@ -86,3 +86,8 @@ firebase.auth().onAuthStateChanged((user) => {
     });
   }
 });
+
+export const logout = async () => {
+  store.remove('auth/user/secret');
+  await firebase.auth().signOut();
+}
