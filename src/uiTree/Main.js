@@ -7,6 +7,7 @@ import RecordWithRouter from 'uiTree/Main/Record';
 import ProcessWithRouter from 'uiTree/Main/Process';
 import AnalyzeWithRouter from 'uiTree/Main/Analyze';
 import TransferWithRouter from 'uiTree/Main/Transfer';
+import WikiWithRouter from 'uiTree/Main/Wiki';
 import Settings from 'uiTree/Main/Settings';
 
 export default class Main extends React.Component {
@@ -33,6 +34,7 @@ export default class Main extends React.Component {
         <Route path='/process' component={ProcessWithRouter} />
         <Route path='/analyze' component={AnalyzeWithRouter} />
         <Route path='/transfer' component={TransferWithRouter} />
+        <Route path='/wiki' component={WikiWithRouter} />
         <Route path='/settings' component={Settings} />
       </>
     );

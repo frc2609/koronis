@@ -1,6 +1,8 @@
 import Config from 'config/Config';
 
+var store = require('store');
 var axios = require('axios');
+var deepCompare = require('deep-compare');
 
 const parseLine = (line) => {
   var res = ['', ''];
@@ -10,7 +12,13 @@ const parseLine = (line) => {
 };
 
 export const parseNav = async () => {
-  var nav = (await axios(Config.wikiUrl + 'navigation.md')).data;
+  try {
+    var nav = (await axios(Config.wikiUrl + 'navigation.md')).data;
+  }
+  catch(err) {
+    console.info('[Wiki] Could not connect to wiki');
+    return null;
+  }
   var arr = [];
   var res = [];
   nav = nav.substring(nav.indexOf('# KSS Wiki\n')+12,nav.indexOf('\n[Edit]'));
@@ -41,8 +49,16 @@ export const parseNav = async () => {
       });
     }
   }
-  for(var i = 0;i < res.length;i++) {
-    res[i].md = (await axios(Config.wikiUrl + res[i].url)).data;
+  for(var i = 0;i < res.length;i++) { // eslint-disable-line no-redeclare
+    if(res[i].url.length > 0) {
+      res[i].md = (await axios(Config.wikiUrl + res[i].url)).data;
+    }
+    else {
+      res[i].md = '';
+    }
   }
-  console.log(res);
+  if(!deepCompare(res, store.get('wiki/data'))) {
+    store.set('wiki/data', res);
+  }
+  console.info('[Wiki] Updated with latest wiki');
 }
