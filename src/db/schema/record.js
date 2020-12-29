@@ -78,6 +78,17 @@ export const recordSchema = {
     },
     version: {
       type: 'number'
+    },
+    metadata: {
+      type: 'object',
+      properties: {
+        verified: {
+          type: 'boolean'
+        },
+        unModified: {
+          type: 'boolean'
+        }
+      }
     }
   },
   required: []

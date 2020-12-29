@@ -44,7 +44,8 @@ export const saveRecord = async (gameStateDefinition, matchState, engineState, e
     obj.positionLog = positionLog;
     obj.positionLog = await positionLogCompressorInstance.processPositionLog(obj.positionLog);
     obj.metadata = {
-      verified: true
+      verified: true,
+      unModified: true
     };
     await Interface.insertRecord(obj);
     return true;
