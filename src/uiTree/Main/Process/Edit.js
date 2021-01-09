@@ -60,10 +60,10 @@ export default class Edit extends React.Component {
       {}
     ).then((success) => {
       if(success) {
-        window.globalDialog('success', 'Saved New Process Successfully!');
+        window.globalAlert('success', 'Saved New Process Successfully!');
       }
       else {
-        window.globalDialog('error', 'Error Saving New Process!');
+        window.globalAlert('error', 'Error Saving New Process!');
       }
     });
   }

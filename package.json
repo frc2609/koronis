@@ -59,6 +59,7 @@
     "source-map-explorer": "^2.4.2",
     "store": "^2.0.12",
     "tabulator-tables": "^4.5.3",
+    "uuid": "^8.3.2",
     "workerize-loader": "^1.1.0",
     "zstd-codec": "^0.1.2"
   },
