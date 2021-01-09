@@ -4,7 +4,7 @@ import firebase from 'auth/Firebase';
 
 var CryptoJS = require('crypto-js');
 var store = require('store');
-var uuid = require('uuid/v5');
+var { v5: uuid } = require('uuid');
 
 export const getFingerprint = () => {
   var prevFingerprint = store.get('auth/user/fingerprint');

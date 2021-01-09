@@ -25,16 +25,22 @@ export const saveRecord = async (gameStateDefinition, matchState, engineState, e
     obj.user = User.getUserId();
     obj.device = User.getFingerprint();
     obj.lastModified = Math.round((Date.now())/1000);
-    obj.digitalSignature = await User.genRecordDS(
-      gameStateDefinition.gameState.year,
-      gameStateDefinition.gameState.versionNumber,
-      matchState.matchStartDate,
-      matchState.matchNumber,
-      matchState.matchType,
-      matchState.targetTeamNumber,
-      eventLog,
-      positionLog
-    );
+    try {
+      obj.digitalSignature = await User.genRecordDS(
+        gameStateDefinition.gameState.year,
+        gameStateDefinition.gameState.versionNumber,
+        matchState.matchStartDate,
+        matchState.matchNumber,
+        matchState.matchType,
+        matchState.targetTeamNumber,
+        eventLog,
+        positionLog
+      );
+    }
+    catch(err) {
+      console.info('Secret key is not available. Login is needed.');
+      console.error(err);
+    }
     obj.changeLog = [{
       id: obj.id,
       user: obj.user,

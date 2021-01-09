@@ -433,11 +433,11 @@ export default class RecordEngine extends React.Component {
     console.info('[Record Engine] Saving recording engine');
     Save.saveRecord(this.gameStateDefinition, this.matchState, this.engineState, this.eventLog, this.positionLog).then((success) => {
       if(success) {
-        window.globalDialog('success', 'Saved Record Successfully!');
+        window.globalAlert('success', 'Saved Record Successfully!');
         this.close();
       }
       else {
-        window.globalDialog('error', 'Error Saving Record!');
+        window.globalAlert('error', 'Error Saving Record!');
       }
     });
   }
