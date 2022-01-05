@@ -236,6 +236,9 @@ class AnalyzeRecord extends React.Component {
                           filtering: true,
                           doubleHorizontalScroll: true
                         }}
+                        body={{
+                          emptyDataSourceMessage: 'No metrics to display'
+                        }}
                       />
                     </Route>
                     <Route path='/analyze/record/chart'>

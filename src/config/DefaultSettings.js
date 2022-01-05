@@ -6,7 +6,8 @@ export const setDefaults = () => {
   var data = [
     {path: 'settings/currentYear', value: 0},
     {path: 'settings/tba/key', value: TbaKey.getKey()},
-    {path: 'settings/eruda/enable', value: 'false'}
+    {path: 'settings/eruda/enable', value: 'false'},
+    {path: 'settings/theme/darkMode', value: 'false'}
   ];
   for(var i = 0;i < data.length;i++) {
     var val = store.get(data[i].path);

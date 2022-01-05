@@ -14,6 +14,21 @@ export const getTheme = (isDark) => {
   return createMuiTheme({
     palette: {
       type: isDark ? 'dark' : 'light'
-    }
+    },
+    overrides: isDark ? 
+      {
+        MuiPaper: {
+          outlined: {
+            backgroundColor: '#303030'
+          }
+        },
+        MuiToolbar: {
+          root: {
+            backgroundColor: '#212121'
+          }
+        }
+      }
+    :
+      {}
   });
 };
