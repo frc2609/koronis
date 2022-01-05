@@ -60,5 +60,6 @@ export const parseNav = async () => {
   if(!deepCompare(res, store.get('wiki/data'))) {
     store.set('wiki/data', res);
   }
+  store.set('wiki/lastUpdate', Date.now());
   console.info('[Wiki] Updated with latest wiki');
 }

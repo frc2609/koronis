@@ -3,26 +3,34 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 
 import ReactMarkdown from 'react-markdown';
 
-import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
+import Popover from '@material-ui/core/Popover';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import ListIcon from '@material-ui/icons/List';
 
 var store = require('store');
 var deepCompare = require('deep-compare');
+var moment = require('moment');
 
 class Wiki extends React.Component {
+  cardRef = React.createRef();
+  menuButtonRef = React.createRef();
   constructor(props) {
     super(props);
     this.state = {
       wikiData: [],
       displayPage: '',
-      redirect: false
+      redirect: false,
+      openMenu: false
     };
   }
   refresh() {
@@ -50,55 +58,71 @@ class Wiki extends React.Component {
           <></>
         }
         <Container maxWidth='xl'>
-          <Card>
-            <Box my={2} mx={3}>
-              <Grid container spacing={2}>
-                <Grid item xs={4}>
-                  <List style={{
-                    position: 'fixed',
-                    zIndex: 1
-                  }}>
-                    {this.state.wikiData.map((e, i) => {
-                      if(e.md.length > 0) {
+          <Card ref={this.cardRef}>
+            <AppBar
+              color='transparent'
+              position='sticky'
+              style={{
+                zIndex: 1000
+              }}
+            >
+              <Toolbar>
+                <IconButton
+                  ref={this.menuButtonRef}
+                  color='inherit'
+                  onClick={() => { this.setState({ openMenu: !this.state.openMenu })}}
+                  edge='start'
+                >
+                  <ListIcon />
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+            <Box m={2}>
+              <Popover
+                anchorEl={this.menuButtonRef.current}
+                open={this.state.openMenu}
+                onClose={() => { this.setState({ openMenu: false })}}
+              >
+                <List>
+                  {this.state.wikiData.map((e, i) => {
+                    if(e.md.length > 0) {
+                      return (
+                        <ListItem button key={i} onClick={() => {this.setState({displayPage: e.path.toLowerCase(), redirect: true, openMenu: false})}}>
+                          <ListItemText primary={e.path.replace('/', ' / ')} />
+                        </ListItem>
+                      );
+                    }
+                    return <div key={i}></div>;
+                  })}
+                </List>
+              </Popover>
+              <Route exact path={'/wiki/'}>
+                <Typography>
+                  Offline ready KSS Wiki. Data is synced from <a href='https://wiki.koronis.cc/'>wiki.koronis.cc</a>.
+                  To get started, click the links on the left menu.
+                  <br/>
+                  <br/>
+                  Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
+                </Typography>
+              </Route>
+              {this.state.wikiData.map((e, i) => {
+                return (
+                  <Route key={i} exact path={'/wiki/' + e.path.toLowerCase()}>
+                    <Breadcrumbs>
+                      {e.path.split('/').map((e,i) => {
                         return (
-                          <ListItem button key={i} onClick={() => {this.setState({displayPage: e.path.toLowerCase(), redirect: true})}}>
-                            <ListItemText primary={e.path.replace('/', ' / ')} />
-                          </ListItem>
+                          <Typography key={i}>{e}</Typography>
                         );
-                      }
-                      return <div key={i}></div>;
-                    })}
-                  </List>
-                  <List>
-                    {this.state.wikiData.map((e, i) => {
-                      if(e.md.length > 0) { return (<ListItem key={i}><ListItemText primary=' ‏‏‎ ‎' /></ListItem>); }
-                      return <div key={i}></div>;
-                    })}
-                  </List>
-                </Grid>
-                <Grid item xs={8}>
-                  <Route exact path={'/wiki/'}>
+                      })}
+                    </Breadcrumbs>
+                    <ReactMarkdown source={e.md} />
+                    <br/>
                     <Typography>
-                      Offline ready KSS Wiki. Data is synced from <a href='https://wiki.koronis.cc/'>wiki.koronis.cc</a>.
-                      To get started, click the links on the left menu.
+                      Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
                     </Typography>
                   </Route>
-                  {this.state.wikiData.map((e, i) => {
-                    return (
-                      <Route key={i} exact path={'/wiki/' + e.path.toLowerCase()}>
-                        <Breadcrumbs>
-                          {e.path.split('/').map((e,i) => {
-                            return (
-                              <Typography key={i}>{e}</Typography>
-                            );
-                          })}
-                        </Breadcrumbs>
-                        <ReactMarkdown source={e.md} />
-                      </Route>
-                    );
-                  })}
-                </Grid>
-              </Grid>
+                );
+              })}
             </Box>
           </Card>
         </Container>
