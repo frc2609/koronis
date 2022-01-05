@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+
+import Paper from '@material-ui/core/Paper';
 
 import Home from 'uiTree/Main/Home';
 import RecordWithRouter from 'uiTree/Main/Record';
@@ -28,14 +30,28 @@ export default class Main extends React.Component {
   render() {
     return (
       <>
-        <Route exact path='/'><Redirect push to='/home' /></Route>
-        <Route path='/home' component={Home} />
-        <Route path='/record' component={RecordWithRouter} />
-        <Route path='/process' component={ProcessWithRouter} />
-        <Route path='/analyze' component={AnalyzeWithRouter} />
-        <Route path='/transfer' component={TransferWithRouter} />
-        <Route path='/wiki' component={WikiWithRouter} />
-        <Route path='/settings' component={Settings} />
+        <Paper
+          square
+          variant='outlined'
+          style={{
+            position: 'fixed',
+            zIndex: -100,
+            height: `${window.innerHeight}px`,
+            width: `${window.innerWidth}px`,
+            top: '0px',
+            left: '0px'
+          }}
+        />
+        <Switch>
+          <Route exact path='/'><Redirect push to='/home' /></Route>
+          <Route path='/home' component={Home} />
+          <Route path='/record' component={RecordWithRouter} />
+          <Route path='/process' component={ProcessWithRouter} />
+          <Route path='/analyze' component={AnalyzeWithRouter} />
+          <Route path='/transfer' component={TransferWithRouter} />
+          <Route path='/wiki' component={WikiWithRouter} />
+          <Route path='/settings' component={Settings} />
+        </Switch>
       </>
     );
   }

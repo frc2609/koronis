@@ -136,6 +136,9 @@ export default class ProcessSelect extends React.Component {
               this.setState({selectedProcesses: rows});
               if(typeof this.props.onSelect === 'function') {this.props.onSelect(rows)}
             }}
+            body={{
+              emptyDataSourceMessage: 'No processes to display'
+            }}
           />
         </Box>
     );

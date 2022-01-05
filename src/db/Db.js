@@ -142,11 +142,13 @@ export const getEvents = async () => {
 }
 
 export const init = async () => {
-  await getTeams();
-  await getRecords();
-  await getProcesses();
-  await getTbaMatches();
-  await getEvents();
+  let initPromises = [];
+  initPromises.push(getTeams());
+  initPromises.push(getRecords());
+  initPromises.push(getProcesses());
+  initPromises.push(getTbaMatches());
+  initPromises.push(getEvents());
+  await Promise.all(initPromises);
   return null;
 }
 

@@ -72,6 +72,22 @@ export default class Settings extends React.Component {
                 </Box>
               </Grid>
               <Grid item xs={12}>
+                <Typography align='left' variant='h6' gutterBottom>Theme</Typography>
+              </Grid>
+              <SettingsItem
+                title='Dark Mode'
+                path='/theme/darkMode'
+                type='switch'
+                onChange={(val) => {
+                  window.location.reload();
+                }}
+              />
+              <Grid item xs={12}>
+                <Box mb={2}>
+                  <Divider />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
                 <Typography align='left' variant='h6' gutterBottom>Data</Typography>
               </Grid>
               <SettingsItem

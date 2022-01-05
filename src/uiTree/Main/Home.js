@@ -12,10 +12,10 @@ export default class Home extends React.Component {
     return (
       <Container maxWidth='xl'>
         <Card>
-          <Box my={3}>
-          <Typography align='center'>
-            App is version {Config.version} is configured for {Config.environmentConfig}. This view is still a work in progress.
-          </Typography>
+          <Box m={2}>
+            <Typography align='center'>
+              App is version {Config.version} is configured for {Config.environmentConfig}. This view is still a work in progress.
+            </Typography>
           </Box>
         </Card>
       </Container>

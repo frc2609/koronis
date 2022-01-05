@@ -6,6 +6,7 @@ import * as Interface from 'db/Interface';
 import Paper from '@material-ui/core/Paper';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import Box from '@material-ui/core/Box';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FolderIcon from '@material-ui/icons/Folder';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -77,7 +78,11 @@ class Record extends React.Component {
           <Container maxWidth='xl'>
             <RecordQueryBar ref='recordQueryBar' name='record' button onSubmit={this.refresh.bind(this)}/>
             {this.state.loading ?
-              <CircularProgress />
+              <Box display='flex'> 
+                <Box mx='auto'>
+                  <CircularProgress />
+                </Box>
+              </Box>
             :
               <RecordView records={this.state.records} onRemove={this.refresh.bind(this)} />
             }

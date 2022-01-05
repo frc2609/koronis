@@ -5,6 +5,7 @@ import './index.css';
 import 'fontsource-roboto';
 
 import App from './App';
+import Splash from './Splash';
 import * as serviceWorker from './serviceWorker';
 
 import * as DefaultSettings from 'config/DefaultSettings';
@@ -13,6 +14,7 @@ import * as Sync from 'sync/Sync';
 import * as Db from 'db/Db';
 
 DefaultSettings.setDefaults();
+ReactDOM.render(<Splash />, document.getElementById('root'));
 Debug.init();
 Db.init().then(() => {
   ReactDOM.render(<App />, document.getElementById('root'));
