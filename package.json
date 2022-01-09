@@ -40,7 +40,7 @@
     "pouchdb-adapter-idb": "^7.1.1",
     "pouchdb-core": "^7.1.1",
     "qrcode-generator": "^1.4.4",
-    "quietjs-bundle-cli": "0.0.9",
+    "quietjs-bundle-cli": "^0.0.9",
     "raf": "^3.4.1",
     "randomcolor": "^0.5.4",
     "react": "^16.9.0",
@@ -60,11 +60,13 @@
     "store": "^2.0.12",
     "tabulator-tables": "^4.5.3",
     "uuid": "^8.3.2",
+    "win-node-env": "^0.4.0",
     "workerize-loader": "^1.1.0",
     "zstd-codec": "^0.1.2"
   },
   "homepage": ".",
   "scripts": {
+    "postinstall": "cd node_modules/quietjs-bundle-cli && npm run install",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "env REACT_APP_ENV=development HTTPS=true react-scripts --max_old_space_size=4096 start",
     "build": "env REACT_APP_ENV=production react-scripts --max_old_space_size=4096 build",
@@ -87,6 +89,5 @@
   },
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
-  },
-  "devDependencies": {}
+  }
 }

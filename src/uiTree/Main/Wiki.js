@@ -49,6 +49,9 @@ class Wiki extends React.Component {
       this.setState({redirect: false});
     }
   }
+  convertUrl(url) {
+    return url.toLowerCase().replace(' ','_').replace(/\?/g,'');
+  }
   render() {
     return (
       <>
@@ -87,7 +90,7 @@ class Wiki extends React.Component {
                   {this.state.wikiData.map((e, i) => {
                     if(e.md.length > 0) {
                       return (
-                        <ListItem button key={i} onClick={() => {this.setState({displayPage: e.path.toLowerCase(), redirect: true, openMenu: false})}}>
+                        <ListItem button key={i} onClick={() => {this.setState({displayPage: this.convertUrl(e.path), redirect: true, openMenu: false})}}>
                           <ListItemText primary={e.path.replace('/', ' / ')} />
                         </ListItem>
                       );
@@ -107,11 +110,11 @@ class Wiki extends React.Component {
               </Route>
               {this.state.wikiData.map((e, i) => {
                 return (
-                  <Route key={i} exact path={'/wiki/' + e.path.toLowerCase()}>
+                  <Route key={i} exact path={'/wiki/' + this.convertUrl(e.path)}>
                     <Breadcrumbs>
-                      {e.path.split('/').map((e,i) => {
+                      {this.convertUrl(e.path).split('/').map((e2, i2) => {
                         return (
-                          <Typography key={i}>{e}</Typography>
+                          <Typography key={i2}>{e2}</Typography>
                         );
                       })}
                     </Breadcrumbs>
