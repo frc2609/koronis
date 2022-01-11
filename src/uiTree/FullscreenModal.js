@@ -18,7 +18,7 @@ export default class FullscreenModal extends React.Component {
     };
   }
   goFullscreen() {
-    var elem = document.documentElement;
+    let elem = document.documentElement;
     if(elem.requestFullscreen) {elem.requestFullscreen();}
     else if(elem.mozRequestFullScreen) {elem.mozRequestFullscreen();}
     else if(elem.webkitRequestFullscreen) {elem.webkitRequestFullscreen();}
@@ -32,7 +32,7 @@ export default class FullscreenModal extends React.Component {
       this.setState({fullscreen: false, open: true});
     }
     document.documentElement.onfullscreenchange = (event) => {
-      var isFullscreen = document.fullscreenElement === event.target;
+      let isFullscreen = document.fullscreenElement === event.target;
       this.setState({fullscreen: isFullscreen, open: !isFullscreen});
     }
   }

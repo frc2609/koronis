@@ -14,8 +14,8 @@ import eruda from 'eruda';
 
 import Selector from 'uiTree/components/Selector';
 
-var isMobile = require('is-mobile');
-var store = require('store');
+const isMobile = require('is-mobile');
+const store = require('store');
 
 export default class Execute extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ export default class Execute extends React.Component {
   }
   runProcess() {
     if(typeof this.refs.targetElement !== 'undefined') {
-      var ret = Object.assign({
+      let ret = Object.assign({
           value: NaN,
           log: [],
           info: [],

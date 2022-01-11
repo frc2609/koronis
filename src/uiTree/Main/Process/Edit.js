@@ -28,7 +28,7 @@ export default class Edit extends React.Component {
     });
   }
   saveHandler() {
-    var process = this.refs.processCreationBar.getCreationObj();
+    let process = this.refs.processCreationBar.getCreationObj();
     Save.saveProcess(
       process.year,
       process.queryType,
@@ -48,7 +48,7 @@ export default class Edit extends React.Component {
     });
   }
   saveNewHandler() {
-    var process = this.refs.processCreationBar.getCreationObj();
+    let process = this.refs.processCreationBar.getCreationObj();
     Save.saveProcess(
       process.year,
       process.queryType,
@@ -91,7 +91,7 @@ export default class Edit extends React.Component {
                   this.state.process.function
                 }
                 onChange={(value) => {
-                  var tmp = typeof this.state.process === 'undefined' ? {} : this.state.process;
+                  let tmp = typeof this.state.process === 'undefined' ? {} : this.state.process;
                   tmp.function = value;
                   this.setState({process: tmp, openModal: false});
                 }}

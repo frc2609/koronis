@@ -14,7 +14,7 @@ import GlobalTrigger from 'uiTree/GlobalTrigger';
 import MainAppBar from 'uiTree/MainAppBar';
 import Main from 'uiTree/Main';
 
-var store = require('store');
+const store = require('store');
 
 export default class App extends React.Component {
   render() {

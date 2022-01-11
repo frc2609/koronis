@@ -12,7 +12,7 @@ import tableIcons from 'config/Table';
 
 import RecordCard from 'uiTree/components/Record/RecordCard';
 
-var moment = require('moment');
+const moment = require('moment');
 
 export default class RecordSelect extends React.Component {
   constructor(props) {
@@ -67,8 +67,8 @@ export default class RecordSelect extends React.Component {
                   <Grid key={i} item xs={Layout.getDefaultGrid()} style={{minWidth: '300px'}}>
                     <div
                       onClick={() => {
-                        var index = this.state.selectedRecords.findIndex((e2) => {return e2.id === e.id});
-                        var sR = this.state.selectedRecords.slice();
+                        let index = this.state.selectedRecords.findIndex((e2) => {return e2.id === e.id});
+                        let sR = this.state.selectedRecords.slice();
                         if(index === -1) {
                           sR.push(e);
                         }
@@ -108,7 +108,7 @@ export default class RecordSelect extends React.Component {
                 {field: 'teamNumber', title: 'Team Number', sortable: true},
                 {field: 'matchType', title: 'Match Type', sortable: true,
                   render: (rowData) => {
-                    var ret = 'Test';
+                    let ret = 'Test';
                     if(rowData.matchType === 't') {ret = 'Test';}
                     if(rowData.matchType === 'pf') {ret = 'Practice Field';}
                     if(rowData.matchType === 'pm') {ret = 'Practice Match';}

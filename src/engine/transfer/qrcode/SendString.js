@@ -11,8 +11,8 @@ import Slider from '@material-ui/core/Slider';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 
-var qrcode = require('qrcode-generator');
-var raf = require('raf');
+const qrcode = require('qrcode-generator');
+const raf = require('raf');
 
 export default class SendString extends React.Component {
   constructor(props) {
@@ -47,18 +47,18 @@ export default class SendString extends React.Component {
     this.drawing = false;
     this.drawIndex = 0;
     this.qrObjs = [];
-    var qrcodeProperties = this.qrCodeTypeDict[this.state.qrCodeType];
-    var qrcodeStringLength = qrcodeProperties[0] - 13;
+    let qrcodeProperties = this.qrCodeTypeDict[this.state.qrCodeType];
+    let qrcodeStringLength = qrcodeProperties[0] - 13;
     this.qrcodeDimensions = qrcodeProperties[1];
 
-    var targetString = StringConversion.strToNumStr(this.props.targetString);
-    var targetStringArr = [];
+    let targetString = StringConversion.strToNumStr(this.props.targetString);
+    let targetStringArr = [];
     while(targetString.length > qrcodeStringLength) {
       targetStringArr.push(targetString.substring(0, qrcodeStringLength));
       targetString = targetString.substring(qrcodeStringLength);
     }
     if(targetString.length > 0) {
-      var lastString = targetString.substring(0);
+      let lastString = targetString.substring(0);
       /*
       while(lastString.length < qrcodeStringLength) {
         lastString += '0';
@@ -67,12 +67,12 @@ export default class SendString extends React.Component {
       targetStringArr.push(lastString);
     }
     //Unknown why, but last two digits break the scanner
-    for(var i = 0;i < targetStringArr.length;i++) {
-      var indexStr = (i % 1000).toString();
+    for(let i = 0;i < targetStringArr.length;i++) {
+      let indexStr = (i % 1000).toString();
       while(indexStr.length < 3) {indexStr = '0' + indexStr;}
-      var lengthStr = (targetStringArr.length % 1000).toString();
+      let lengthStr = (targetStringArr.length % 1000).toString();
       while(lengthStr.length < 3) {lengthStr = '0' + lengthStr;}
-      var dataLengthStr = (targetStringArr[i].length % 10000).toString();
+      let dataLengthStr = (targetStringArr[i].length % 10000).toString();
       while(dataLengthStr.length < 4) {dataLengthStr = '0' + dataLengthStr;}
       while(targetStringArr[i].length < qrcodeStringLength) {targetStringArr[i] += '0';}
       targetStringArr[i] = '0' + indexStr + lengthStr + dataLengthStr + targetStringArr[i];
@@ -125,8 +125,8 @@ export default class SendString extends React.Component {
   }
   resize() {
     //Resize canvas if needed
-    var containerRect = this.qrcodeCanvasWrapperElement.getBoundingClientRect();
-    var height = (window.innerHeight - containerRect.top - 15);
+    let containerRect = this.qrcodeCanvasWrapperElement.getBoundingClientRect();
+    let height = (window.innerHeight - containerRect.top - 15);
     this.setState({canvasSize: Math.min(height, containerRect.width)});
   }
   componentDidMount() {

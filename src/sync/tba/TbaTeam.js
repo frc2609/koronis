@@ -2,18 +2,18 @@ import * as Interface from 'db/Interface';
 import Config from 'config/Config';
 import * as TbaKey from 'sync/tba/TbaKey';
 
-var store = require('store');
-var axios = require('axios');
+const store = require('store');
+const axios = require('axios');
 
 export const update = async () => {
   try {
-    var tbaKey = TbaKey.getKey();
-    var validResponse = true;
-    var index = 0;
-    var validData = [];
+    let tbaKey = TbaKey.getKey();
+    let validResponse = true;
+    let index = 0;
+    let validData = [];
     while(validResponse) {
-      var lastModified = store.get('tba/team/' + store.get('settings/currentYear') + '/' + index + '/lastModified');
-      var requestConfig = {
+      let lastModified = store.get('tba/team/' + store.get('settings/currentYear') + '/' + index + '/lastModified');
+      let requestConfig = {
         url: '/teams/' + store.get('settings/currentYear') + '/' + index,
         baseURL: Config.tbaUrl,
         headers: {
@@ -23,16 +23,18 @@ export const update = async () => {
       if(typeof lastModified !== 'undefined') {
         requestConfig.headers['If-Modified-Since'] = lastModified;
       }
-      var response = {
+      let response = {
         status: 304
       };
       try {
         response = (await axios.request(requestConfig));
       }
-      catch(err) {}
+      catch(err) {
+        response.status = 500;
+      }
       if(response.status === 200) {
         if(response.data.length > 0) {
-          for(var i = 0;i < response.data.length;i++) {
+          for(let i = 0;i < response.data.length;i++) {
             validData.push(response.data[i]);
           }
           store.set('tba/team/' + store.get('settings/currentYear') + '/' + index + '/lastModified', response.headers['last-modified']);
@@ -51,7 +53,7 @@ export const update = async () => {
         validResponse = false;
       }
     }
-    for(var i = 0;i < validData.length;i++) { // eslint-disable-line no-redeclare
+    for(let i = 0;i < validData.length;i++) { // eslint-disable-line no-redeclare
       await Interface.insertTbaTeam(validData[i]);
     }
     console.info('[TBA] Finished updating teams');
@@ -65,19 +67,19 @@ export const update = async () => {
 
 export const getMedia = async (key) => {
   try {
-    var tbaKey = TbaKey.getKey();
-    var requestConfig = {
+    let tbaKey = TbaKey.getKey();
+    let requestConfig = {
       url: '/team/' + key + '/media/' + store.get('settings/currentYear'),
       baseURL: Config.tbaUrl,
       headers: {
         'X-TBA-Auth-Key': tbaKey
       }
     };
-    var response = (await axios.request(requestConfig));
-    var data = response.data;
-    var avatarBaseSrc = null;
-    var mediaUrls = [];
-    for(var i = 0;i < data.length;i++) {
+    let response = (await axios.request(requestConfig));
+    let data = response.data;
+    let avatarBaseSrc = null;
+    let mediaUrls = [];
+    for(let i = 0;i < data.length;i++) {
       if(data[i].type === 'avatar') {
         avatarBaseSrc = ('data:image/png;base64,' + data[i].details.base64Image);
       }

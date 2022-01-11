@@ -38,7 +38,7 @@ export default class ProcessCreationBar extends React.Component {
     this.setState({openModal: true});
   }
   newDoc() {
-    var emptyObj = {
+    let emptyObj = {
       year: -1,
       name: '',
       title: '',
@@ -93,7 +93,7 @@ export default class ProcessCreationBar extends React.Component {
                     openProcessModal={this.props.openModal}
                     onProcessesChange={(processes) => {
                       if(processes.length > 0) {
-                        var selectedProcess = processes[0];
+                        let selectedProcess = processes[0];
                         this.setState({
                           openModal: false,
                           process: selectedProcess,

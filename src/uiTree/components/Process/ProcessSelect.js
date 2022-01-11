@@ -12,7 +12,7 @@ import tableIcons from 'config/Table';
 
 import ProcessCard from 'uiTree/components/Process/ProcessCard';
 
-var moment = require('moment');
+const moment = require('moment');
 
 export default class ProcessSelect extends React.Component {
   constructor(props) {
@@ -66,8 +66,8 @@ export default class ProcessSelect extends React.Component {
                 <Grid key={i} item xs={Layout.getDefaultGrid()} style={{minWidth: '300px'}}>
                   <div
                     onClick={() => {
-                      var index = this.state.selectedProcesses.findIndex((e2) => {return e2.id === e.id});
-                      var sR = this.state.selectedProcesses.slice();
+                      let index = this.state.selectedProcesses.findIndex((e2) => {return e2.id === e.id});
+                      let sR = this.state.selectedProcesses.slice();
                       if(index === -1) {
                         sR.push(e);
                       }

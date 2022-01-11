@@ -1,43 +1,45 @@
 import Config from 'config/Config';
-var axios = require('axios');
-var store = require('store');
-var deepcopy = require('deep-copy');
+import * as PackageInjector from 'sync/package/PackageInjector';
 
-var initialized = false;
+const axios = require('axios');
+const store = require('store');
+const deepcopy = require('deep-copy');
+
+let initialized = false;
 
 async function perYearInit(year) {
   //Get bot definition
-  var bSD = await eval('import(\"' + Config.packageUrl + year + '/bot.js\")'); // eslint-disable-line no-eval, no-useless-escape
-  var botStateDefinition = deepcopy(bSD.default);
+  let bSD = await eval('import(\"' + Config.packageUrl + year + '/bot.js\")'); // eslint-disable-line no-eval, no-useless-escape
+  let botStateDefinition = deepcopy(bSD.default);
   store.set('package/' + year + '/botStateDefinition', botStateDefinition);
 
   //Get button definitions
-  var bD = await eval('import(\"' + Config.packageUrl + year + '/button.js\")'); // eslint-disable-line no-eval, no-useless-escape
-  var buttonDefinitions = deepcopy(bD.default);
+  let bD = await eval('import(\"' + Config.packageUrl + year + '/button.js\")'); // eslint-disable-line no-eval, no-useless-escape
+  let buttonDefinitions = deepcopy(bD.default);
   store.set('package/' + year + '/buttonDefinitions', buttonDefinitions);
 
   //Get event definitions
-  var eD = await eval('import(\"' + Config.packageUrl + year + '/event.js\")'); // eslint-disable-line no-eval, no-useless-escape
-  var eventDefinitions = deepcopy(eD.default);
+  let eD = await eval('import(\"' + Config.packageUrl + year + '/event.js\")'); // eslint-disable-line no-eval, no-useless-escape
+  let eventDefinitions = deepcopy(eD.default);
   store.set('package/' + year + '/eventDefinitions', eventDefinitions);
 
   //Get field definition
-  var fD = await eval('import(\"' + Config.packageUrl + year + '/field.js\")'); // eslint-disable-line no-eval, no-useless-escape
-  var fieldStateDefinition = deepcopy(fD.default);
+  let fD = await eval('import(\"' + Config.packageUrl + year + '/field.js\")'); // eslint-disable-line no-eval, no-useless-escape
+  let fieldStateDefinition = deepcopy(fD.default);
   store.set('package/' + year + '/fieldStateDefinition', fieldStateDefinition);
 
   //Get game definition
-  var gD = await eval('import(\"' + Config.packageUrl + year + '/game.js\")'); // eslint-disable-line no-eval, no-useless-escape
-  var gameStateDefinition = deepcopy(gD.default);
+  let gD = await eval('import(\"' + Config.packageUrl + year + '/game.js\")'); // eslint-disable-line no-eval, no-useless-escape
+  let gameStateDefinition = deepcopy(gD.default);
   store.set('package/' + year + '/gameStateDefinition', gameStateDefinition);
 
   //Get status definition
-  var sD = await eval('import(\"' + Config.packageUrl + year + '/status.js\")'); // eslint-disable-line no-eval, no-useless-escape
-  var statusUpdateDefinition = deepcopy(sD.default);
+  let sD = await eval('import(\"' + Config.packageUrl + year + '/status.js\")'); // eslint-disable-line no-eval, no-useless-escape
+  let statusUpdateDefinition = deepcopy(sD.default);
   store.set('package/' + year + '/statusUpdateDefinition', statusUpdateDefinition);
 
   //Get color palette
-  var colorPalette = (await axios.get(Config.packageUrl + year + '/color.json', {responseType: 'json'})).data;
+  let colorPalette = (await axios.get(Config.packageUrl + year + '/color.json', {responseType: 'json'})).data;
   store.set('package/' + year + '/colorPalette', colorPalette);
 
   //Done loading
@@ -48,22 +50,29 @@ async function perYearInit(year) {
 export const init = async () => {
   try {
     //Check version number of repo and local
-    var repoIndex = (await axios.get(Config.packageUrl + 'index.json')).data;
-    var versionNumberRepo = repoIndex.versionNumber;
-    var versionNumberLocal = store.get('package/versionNumber');
+    let repoIndex = (await axios.get(Config.packageUrl + 'index.json')).data;
+    let availableYears = repoIndex.availableYears;
+    store.set('package/availableYears', availableYears);
+    let versionNumberRepo = repoIndex.versionNumber;
+    let versionNumberLocal = store.get('package/versionNumber');
+    //Inject test package
+    if(Config.environmentConfig === 'development') {
+      PackageInjector.inject(1);
+      availableYears.push(1);
+      versionNumberLocal = -1;
+    }
     if(versionNumberLocal !== versionNumberRepo) {
       //Get all avaiable years
-      var availableYears = repoIndex.availableYears;
-      store.set('package/availableYears', availableYears);
-
-      for(var i = 0;i < availableYears.length;i++) {
-        await perYearInit(availableYears[i]);
+      for(let i = 0;i < availableYears.length;i++) {
+        if(availableYears[i] !== 1) {
+          await perYearInit(availableYears[i]);
+        }
       }
 
       //Set default year
-      var biggestYear = 0;
-      for(var i = 0;i < availableYears.length;i++) { // eslint-disable-line no-redeclare
-        var currYear = store.get('package/' + availableYears[i] + '/gameStateDefinition').gameState.year;
+      let biggestYear = 0;
+      for(let i = 0;i < availableYears.length;i++) { // eslint-disable-line no-redeclare
+        let currYear = store.get('package/' + availableYears[i] + '/gameStateDefinition').gameState.year;
         if(currYear > biggestYear) {biggestYear = currYear;}
       }
       if(typeof store.get('settings/checkedYear') === 'undefined' || store.get('settings/checkedYear') < biggestYear) {
@@ -94,10 +103,10 @@ export const get = async () => {
   if(!initialized) {
     await init();
   }
-  var result = {};
+  let result = {};
   result.availableYears = store.get('package/availableYears');
-  for(var i = 0;i < result.availableYears.length;i++) {
-    var currYear = result.availableYears[i];
+  for(let i = 0;i < result.availableYears.length;i++) {
+    let currYear = result.availableYears[i];
     result[currYear] = {};
     result[currYear].botStateDefinition = store.get('package/' + currYear + '/botStateDefinition');
     result[currYear].buttonDefinitions = store.get('package/' + currYear + '/buttonDefinitions');
@@ -114,10 +123,10 @@ export const getByYear = async (inYear) => {
   if(!initialized) {
     await init();
   }
-  var result = {};
-  var availableYears = store.get('package/availableYears');
-  for(var i = 0;i < availableYears.length;i++) {
-    var currYear = availableYears[i];
+  let result = {};
+  let availableYears = store.get('package/availableYears');
+  for(let i = 0;i < availableYears.length;i++) {
+    let currYear = availableYears[i];
     if(store.get('package/' + currYear + '/gameStateDefinition').gameState.year === inYear) {
       result.botStateDefinition = store.get('package/' + currYear + '/botStateDefinition');
       result.buttonDefinitions = store.get('package/' + currYear + '/buttonDefinitions');
@@ -135,10 +144,10 @@ export const getYears = async () => {
   if(!initialized) {
     await init();
   }
-  var result = [];
-  var availableYears = store.get('package/availableYears');
-  for(var i = 0;i < availableYears.length;i++) {
-    var currYear = availableYears[i];
+  let result = [];
+  let availableYears = store.get('package/availableYears');
+  for(let i = 0;i < availableYears.length;i++) {
+    let currYear = availableYears[i];
     result.push(store.get('package/' + currYear + '/gameStateDefinition').gameState.year);
   }
   return result;
@@ -148,10 +157,10 @@ export const getGameStates = async () => {
   if(!initialized) {
     await init();
   }
-  var result = [];
-  var availableYears = store.get('package/availableYears');
-  for(var i = 0;i < availableYears.length;i++) {
-    var currYear = availableYears[i];
+  let result = [];
+  let availableYears = store.get('package/availableYears');
+  for(let i = 0;i < availableYears.length;i++) {
+    let currYear = availableYears[i];
     result.push(deepcopy(store.get('package/' + currYear + '/gameStateDefinition').gameState));
   }
   return result;

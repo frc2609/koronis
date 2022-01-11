@@ -14,7 +14,7 @@ import { Close } from '@material-ui/icons';
 
 import * as Package from 'sync/package/PackageCollector';
 
-var store = require('store');
+const store = require('store');
 
 export default class Settings extends React.Component {
   constructor(props) {

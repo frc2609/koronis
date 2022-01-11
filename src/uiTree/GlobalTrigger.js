@@ -39,7 +39,7 @@ export default class GlobalTrigger extends React.Component {
         dialogChildren: children,
         dialogResponse: false
       });
-      var response = await (new Promise((resolve) => {
+      let response = await (new Promise((resolve) => {
         function dialogEventHandler() {
           window.removeEventListener('globaldialogresponse', dialogEventHandler);
           resolve(this.state.dialogResponse);

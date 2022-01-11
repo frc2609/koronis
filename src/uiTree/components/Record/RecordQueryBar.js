@@ -21,7 +21,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { DatePicker } from '@material-ui/pickers';
 
-var store = require('store');
+const store = require('store');
 
 export default class RecordQueryBar extends React.Component {
   constructor(props) {
@@ -51,7 +51,7 @@ export default class RecordQueryBar extends React.Component {
       this.state.year = Number(store.get('settings/currentYear'));
     }
     if(typeof this.props.name === 'string') {
-      var obj = store.get('query/' + this.props.name);
+      let obj = store.get('query/' + this.props.name);
       if(typeof obj !== 'undefined') {
         Object.assign(this.state, obj);
       }
@@ -63,11 +63,11 @@ export default class RecordQueryBar extends React.Component {
   }
   getQueryObj() {
     this.queryObj = {};
-    var obj = this.state;
+    let obj = this.state;
     if(obj.isBlue !== obj.isRed) {
       this.queryObj.isRedAlliance = obj.isRed;
     }
-    var orArr = [];
+    let orArr = [];
     if(obj.matchTypesT) {orArr.push({matchType: {'$eq':'t'}});}
     if(obj.matchTypesPF) {orArr.push({matchType: {'$eq':'pf'}});}
     if(obj.matchTypesPM) {orArr.push({matchType: {'$eq':'pm'}});}
@@ -108,7 +108,7 @@ export default class RecordQueryBar extends React.Component {
   }
   setStore(obj) {
     if(typeof this.props.name === 'string') {
-      var newobj = {
+      let newobj = {
         year: obj.year,
         minStartDate: obj.minStartDate,
         maxStartDate: obj.maxStartDate,
@@ -133,14 +133,14 @@ export default class RecordQueryBar extends React.Component {
   }
   getStore() {
     if(typeof this.props.name === 'string') {
-      var obj = store.get('query/' + this.props.name);
+      let obj = store.get('query/' + this.props.name);
       if(typeof obj !== 'undefined') {
         this.setState(obj);
       }
     }
   }
   setDefault() {
-    var obj = {
+    let obj = {
       year: -1,
       minStartDate: 0,
       maxStartDate: 0,

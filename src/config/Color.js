@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 export const getColor = (inStr, inAlpha = 1) => {
-  var randomColor = require('randomcolor');
+  let randomColor = require('randomcolor');
   return randomColor({
     seed: inStr,
     alpha: inAlpha,

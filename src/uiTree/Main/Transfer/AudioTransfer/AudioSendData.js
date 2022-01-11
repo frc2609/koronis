@@ -8,8 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Selector from 'uiTree/components/Selector';
 import SendString from 'engine/transfer/audio/SendString';
 
-var serializerInstance = new serializerWorker();
-var deepCompare = require('deep-compare');
+const serializerInstance = new serializerWorker();
+const deepCompare = require('deep-compare');
 
 export default class AudioSendData extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class AudioSendData extends React.Component {
     }
   }
   encodeData() {
-    var commonArr= [];
+    let commonArr= [];
     commonArr.push(this.state.selectedProcesses);
     commonArr.push(this.state.selectedRecords);
     commonArr = commonArr.flat();

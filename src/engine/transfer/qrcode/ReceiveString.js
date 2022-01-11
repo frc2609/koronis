@@ -47,21 +47,21 @@ export default class ReceiveString extends React.Component {
     this.setState({delay: (1000/value)});
   }
   onFinish() {
-    var data = StringConversion.numStrToStr(this.finishedStr);
+    let data = StringConversion.numStrToStr(this.finishedStr);
     this.setState({scanning: false});
     if(typeof this.props.onFinish === 'function') {this.props.onFinish(data);}
   }
   onScan(inStr) {
     if(inStr !== null && inStr.length >= 11) {
-      var index = Number.parseInt(inStr.substring(1,4));
-      var length = Number.parseInt(inStr.substring(4,7));
-      var dataLength = Number.parseInt(inStr.substring(7,11));
-      var rawStr = inStr.substring(11, 11 + dataLength);
+      let index = Number.parseInt(inStr.substring(1,4));
+      let length = Number.parseInt(inStr.substring(4,7));
+      let dataLength = Number.parseInt(inStr.substring(7,11));
+      let rawStr = inStr.substring(11, 11 + dataLength);
       this.rawStrArr[index] = rawStr;
-      var hasUndef = false;
-      var totalScanned = 0;
-      for(var i = 0;i < length;i++) {
-        var currUndef = (typeof this.rawStrArr[i] === 'undefined');
+      let hasUndef = false;
+      let totalScanned = 0;
+      for(let i = 0;i < length;i++) {
+        let currUndef = (typeof this.rawStrArr[i] === 'undefined');
         if(!hasUndef) {
           hasUndef = currUndef;
           if(hasUndef) {
@@ -81,7 +81,7 @@ export default class ReceiveString extends React.Component {
       }
       if(!hasUndef) {
         this.finishedStr = '';
-        for(var i = 0;i < length;i++) { // eslint-disable-line no-redeclare
+        for(let i = 0;i < length;i++) { // eslint-disable-line no-redeclare
           this.finishedStr += this.rawStrArr[i];
         }
         this.onFinish();

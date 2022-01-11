@@ -14,10 +14,10 @@ import { FilePond } from 'react-filepond';
 
 import 'filepond/dist/filepond.min.css';
 
-var JSZip = require('jszip');
-var fileDownload = require('js-file-download');
-var deepcopy = require('deep-copy');
-var moment = require('moment');
+const JSZip = require('jszip');
+const fileDownload = require('js-file-download');
+const deepcopy = require('deep-copy');
+const moment = require('moment');
 
 export default class ShareString extends React.Component {
   constructor(props) {
@@ -27,24 +27,24 @@ export default class ShareString extends React.Component {
     }
   }
   onDownload() {
-    var data = this.props.data;
+    let data = this.props.data;
     if(typeof data !== 'undefined') {
-      var getRecordFilename = (tmpData) => {
+      let getRecordFilename = (tmpData) => {
         return tmpData.teamNumber + '_' + tmpData.matchType.toUpperCase() + tmpData.matchNumber + '_' + tmpData.year + '_' + tmpData.id + '.json';
       }
-      var getProcessFilename = (tmpData) => {
+      let getProcessFilename = (tmpData) => {
         return tmpData.name.trim().replace(' ', '-').toLowerCase() + '_' + tmpData.queryType + '_' + tmpData.dataType + '_' + tmpData.year + '_' + tmpData.id + '.json';
       }
 
       if(this.state.singleDownload) {
-        var tmpData = deepcopy(data);
+        let tmpData = deepcopy(data);
         if(Array.isArray(data) && data.length === 1) {
           tmpData = deepcopy(data[0]);
         }
-        var dataStr = JSON.stringify(tmpData); // eslint-disable-line no-redeclare
+        let dataStr = JSON.stringify(tmpData); // eslint-disable-line no-redeclare
 
         if(Array.isArray(data) && data.length > 1) {
-          var date = moment().toISOString(true);
+          let date = moment().toISOString(true);
           fileDownload(dataStr, 'data_' + date + '.json');
         }
         else {
@@ -57,11 +57,11 @@ export default class ShareString extends React.Component {
         }
       }
       else {
-        var zip = new JSZip();
+        let zip = new JSZip();
         if(Array.isArray(data) && data.length > 1) {
-          for(var i = 0;i < data.length;i++) {
-            var tmpData = deepcopy(data[i]); // eslint-disable-line no-redeclare
-            var dataStr = JSON.stringify(tmpData); // eslint-disable-line no-redeclare
+          for(let i = 0;i < data.length;i++) {
+            let tmpData = deepcopy(data[i]); // eslint-disable-line no-redeclare
+            let dataStr = JSON.stringify(tmpData); // eslint-disable-line no-redeclare
             if(typeof tmpData.eventLog !== 'undefined') {
               zip.folder('records');
               zip.file('records/' + getRecordFilename(tmpData), dataStr);
@@ -72,31 +72,31 @@ export default class ShareString extends React.Component {
             }
           }
           zip.generateAsync({type:'blob'}).then((content) => {
-            var date = moment().toISOString(true);
+            let date = moment().toISOString(true);
             saveAs(content, 'data_' + date + '.zip');
           });
         }
         else {
-          var tmpData = {}; // eslint-disable-line no-redeclare
+          let tmpData = {}; // eslint-disable-line no-redeclare
           if(Array.isArray(data) && data.length === 1) {
             tmpData = deepcopy(data[0]);
           }
           if(!Array.isArray(data) && typeof data === 'undefined') {
             tmpData = deepcopy(data);
           }
-          var dataStr = JSON.stringify(tmpData); // eslint-disable-line no-redeclare
+          let dataStr = JSON.stringify(tmpData); // eslint-disable-line no-redeclare
 
           if(typeof tmpData.eventLog !== 'undefined') {
             zip.file(getRecordFilename(tmpData), dataStr);
             zip.generateAsync({type:'blob'}).then((content) => {
-              var date = moment().toISOString(true);
+              let date = moment().toISOString(true);
               saveAs(content, 'data_' + date + '.zip');
             });
           }
           else if(typeof tmpData.function !== 'undefined') {
             zip.file(getProcessFilename(tmpData), dataStr);
             zip.generateAsync({type:'blob'}).then((content) => {
-              var date = moment().toISOString(true);
+              let date = moment().toISOString(true);
               saveAs(content, 'data_' + date + '.zip');
             });
           }
@@ -107,7 +107,7 @@ export default class ShareString extends React.Component {
   onUpload(error, fileObj) {
     if(!error) {
       fileObj.file.text().then((val) => {
-        var data = JSON.parse(val);
+        let data = JSON.parse(val);
         if(typeof this.props.onUpload === 'function') {
           this.props.onUpload(data);
         }

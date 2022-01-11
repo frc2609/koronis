@@ -12,7 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
-var store = require('store');
+const store = require('store');
 
 export default class SettingsItem extends React.Component {
   constructor(props) {

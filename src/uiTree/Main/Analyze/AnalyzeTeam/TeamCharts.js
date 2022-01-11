@@ -8,9 +8,9 @@ import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-var deepCompare = require('deep-compare');
-var chart = require('chart.js');
-var moment = require('moment');
+const deepCompare = require('deep-compare');
+const chart = require('chart.js');
+const moment = require('moment');
 
 export default class TeamCharts extends React.Component {
   constructor(props) {
@@ -22,14 +22,14 @@ export default class TeamCharts extends React.Component {
   }
   runCharts() {
     if(typeof this.refs.timeline !== 'undefined') {
-      var timelineCtx = this.refs.timeline.getContext('2d');
-      var timelineData = [];
+      let timelineCtx = this.refs.timeline.getContext('2d');
+      let timelineData = [];
 
-      for(var i = 0;i < this.props.processes.length;i++) {
+      for(let i = 0;i < this.props.processes.length;i++) {
         if(this.props.processes[i].queryType === 'record' && this.props.processes[i].dataType === 'metric') {
-          var perProcessData = [];
-          for(var j = 0;j < this.props.records.length;j++) {
-            var val = Processor.runProcess(null, [this.props.records[j]], this.props.processes[i]).value;
+          let perProcessData = [];
+          for(let j = 0;j < this.props.records.length;j++) {
+            let val = Processor.runProcess(null, [this.props.records[j]], this.props.processes[i]).value;
             if(!Number.isNaN(val)) {
               perProcessData.push({
                 x: moment.unix(this.props.records[j].startDate).toString(),

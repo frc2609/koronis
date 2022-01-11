@@ -21,7 +21,7 @@ import { DatePicker } from '@material-ui/pickers';
 import TeamCard from 'uiTree/components/TeamCard';
 import ColorSwitch from 'engine/record/RecordEngine/ControlBar/MatchState/ColorSwitch';
 
-var moment = require('moment');
+const moment = require('moment');
 
 export default class MatchState extends React.Component {
   constructor(props) {

@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import Selector from 'uiTree/components/Selector';
 import ShareString from 'engine/transfer/ShareString';
 
-var deepCompare = require('deep-compare');
+const deepCompare = require('deep-compare');
 
 export default class TransferHandler extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class TransferHandler extends React.Component {
     }
   }
   combineData() {
-    var commonArr= [];
+    let commonArr= [];
     commonArr.push(this.state.selectedProcesses);
     commonArr.push(this.state.selectedRecords);
     commonArr = commonArr.flat();
@@ -30,7 +30,7 @@ export default class TransferHandler extends React.Component {
   }
   onImport(data) {
     if(Array.isArray(data)) {
-      for(var i = 0;i < data.length;i++) {
+      for(let i = 0;i < data.length;i++) {
         if(typeof data[i].eventLog !== 'undefined') {
           delete data[i].metadata;
           Interface.insertRecord(data[i]);

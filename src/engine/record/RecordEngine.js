@@ -10,8 +10,8 @@ import ControlBar from 'engine/record/RecordEngine/ControlBar';
 import ButtonStack from 'engine/record/RecordEngine/ButtonStack';
 import RenderCanvas from 'engine/record/RecordEngine/RenderCanvas';
 
-var store = require('store');
-var deepcopy = require('deep-copy');
+const store = require('store');
+const deepcopy = require('deep-copy');
 
 export default class RecordEngine extends React.Component {
   constructor(props) {
@@ -145,7 +145,7 @@ export default class RecordEngine extends React.Component {
 
       //New eventDefinitions instance
       this.eventDefinitions = deepcopy(results.eventDefinitions);
-      for(var i = 0;i < this.eventDefinitions.length;i++) {
+      for(let i = 0;i < this.eventDefinitions.length;i++) {
         //Initialize watcher function from watcher string
         this.eventDefinitions[i].watcherFunct = new Function('gS', 'fS', 'bS', 'btnS', this.eventDefinitions[i].watcher); // eslint-disable-line no-new-func
         //Initialize emitter function from emitter string
@@ -156,7 +156,7 @@ export default class RecordEngine extends React.Component {
 
       //New buttonDefinitions instance
       this.buttonDefinitions = deepcopy(results.buttonDefinitions);
-      for(var i = 0;i < this.buttonDefinitions.length;i++) { // eslint-disable-line no-redeclare
+      for(let i = 0;i < this.buttonDefinitions.length;i++) { // eslint-disable-line no-redeclare
         //Initialize watcher function from watcher string
         this.buttonDefinitions[i].watcherFunct = new Function('gS', 'fS', 'bS', this.buttonDefinitions[i].watcher); // eslint-disable-line no-new-func
         //Create default properties
@@ -233,7 +233,7 @@ export default class RecordEngine extends React.Component {
       //Update time if engine is playing
       if(this.engineState.playing) {
         //Calculate timestamp from current date
-        var tmpCurrDate = Date.now();
+        let tmpCurrDate = Date.now();
         this.engineState.currTime += (tmpCurrDate - this.engineState.currDate)/1000;
         this.engineState.currDate = tmpCurrDate;
 
@@ -246,13 +246,13 @@ export default class RecordEngine extends React.Component {
       //Assigning zones
       this.botStateDefinition.botState.previousZones = deepcopy(this.botStateDefinition.botState.currentZones);
       this.botStateDefinition.botState.currentZones = [];
-      for(var i = 0;i < this.fieldStateDefinition.fieldState.zones.length;i++) {
+      for(let i = 0;i < this.fieldStateDefinition.fieldState.zones.length;i++) {
         if(typeof this.fieldStateDefinition.fieldState.zones[i].points === 'undefined') {
           if(this.botStateDefinition.botState.position.x >= this.fieldStateDefinition.fieldState.zones[i].position.x) {
             if(this.botStateDefinition.botState.position.y >= this.fieldStateDefinition.fieldState.zones[i].position.y) {
               if(this.botStateDefinition.botState.position.x <= this.fieldStateDefinition.fieldState.zones[i].position.x + this.fieldStateDefinition.fieldState.zones[i].size.x) {
                 if(this.botStateDefinition.botState.position.y <= this.fieldStateDefinition.fieldState.zones[i].position.y + this.fieldStateDefinition.fieldState.zones[i].size.y) {
-                  var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]);
+                  let tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]);
                   tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied === this.matchState.isRed;
                   this.botStateDefinition.botState.currentZones.push(tmp);
                 }
@@ -261,11 +261,11 @@ export default class RecordEngine extends React.Component {
           }
         }
         else {
-          var points = this.fieldStateDefinition.fieldState.zones[i].points;
-          var bot = this.botStateDefinition.botState.position;
-          var j = 0;
-          var k = points.length - 1;
-          var c = 0;
+          let points = this.fieldStateDefinition.fieldState.zones[i].points;
+          let bot = this.botStateDefinition.botState.position;
+          let j = 0;
+          let k = points.length - 1;
+          let c = 0;
           while(j < points.length) {
             if(
               ((points[j].y > bot.y) !== (points[k].y > bot.y)) &&
@@ -277,7 +277,7 @@ export default class RecordEngine extends React.Component {
             j++;
           }
           if(c > 0) {
-            var tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]); // eslint-disable-line no-redeclare
+            let tmp = deepcopy(this.fieldStateDefinition.fieldState.zones[i]); // eslint-disable-line no-redeclare
             tmp.isAllied = this.fieldStateDefinition.fieldState.zones[i].isAllied === this.matchState.isRed;
             this.botStateDefinition.botState.currentZones.push(tmp);
           }
@@ -305,8 +305,8 @@ export default class RecordEngine extends React.Component {
       );
 
       //Check and trigger events
-      for(var i = 0;i < this.eventDefinitions.length;i++) { // eslint-disable-line no-redeclare
-        var currWatcherState = this.eventDefinitions[i].watcherFunct(
+      for(let i = 0;i < this.eventDefinitions.length;i++) { // eslint-disable-line no-redeclare
+        let currWatcherState = this.eventDefinitions[i].watcherFunct(
           this.gameStateDefinition.gameState,
           this.fieldStateDefinition.fieldState,
           this.botStateDefinition.botState,
@@ -314,7 +314,7 @@ export default class RecordEngine extends React.Component {
         );
         if(currWatcherState && !this.eventDefinitions[i].prevWatcherState) {
           console.info('[Record Engine] Event Triggered: ' + this.eventDefinitions[i].name);
-          var emit = {};
+          let emit = {};
           Object.assign(emit, this.eventDefinitions[i].emitterFunct(
             this.gameStateDefinition.gameState,
             this.fieldStateDefinition.fieldState,
@@ -323,7 +323,7 @@ export default class RecordEngine extends React.Component {
           ));
 
           //Push triggered event to eventLog
-          var newObj = deepcopy(this.eventDefinitions[i]);
+          let newObj = deepcopy(this.eventDefinitions[i]);
           this.eventLog.push({
             id: newObj.id,
             name: newObj.name,
@@ -336,7 +336,7 @@ export default class RecordEngine extends React.Component {
       }
 
       //Push latest robot position to posLog
-      var tmpPos = this.getPositionObj();
+      let tmpPos = this.getPositionObj();
       tmpPos.timeStamp = this.botStateDefinition.botState.position.t;
       this.positionLog.push(tmpPos);
 
@@ -354,10 +354,10 @@ export default class RecordEngine extends React.Component {
     }
   }
   getPositionObj() {
-    var x = Math.round(this.botStateDefinition.botState.position.x);
+    let x = Math.round(this.botStateDefinition.botState.position.x);
     x = x < 0 ? 0 : x;
     x = x > this.fieldStateDefinition.fieldState.dimensions.x ? this.props.fieldStateDefinition.fieldState.dimensions.x : x;
-    var y = Math.round(this.botStateDefinition.botState.position.y);
+    let y = Math.round(this.botStateDefinition.botState.position.y);
     y = y < 0 ? 0 : y;
     y = y > this.fieldStateDefinition.fieldState.dimensions.x ? this.props.fieldStateDefinition.fieldState.dimensions.x : y;
     return {
@@ -372,7 +372,7 @@ export default class RecordEngine extends React.Component {
     }
   }
   resize() {
-    var containerRect = this.refs.mainContainer.getBoundingClientRect();
+    let containerRect = this.refs.mainContainer.getBoundingClientRect();
     this.refs.mainContainer.style = 'height: ' + (window.innerHeight - containerRect.top - 1) + 'px';
     if(this.settings.buttonStackWidth !== this.state.buttonStackWidth) {
       this.setState({buttonStackWidth: this.settings.buttonStackWidth});

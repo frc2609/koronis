@@ -19,7 +19,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import ErrorIcon from '@material-ui/icons/Error';
 import WarningIcon from '@material-ui/icons/Warning';
 
-var moment = require('moment');
+const moment = require('moment');
 
 export default class ProcessCard extends React.Component {
   constructor(props) {

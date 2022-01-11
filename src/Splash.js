@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-var store = require('store');
+const store = require('store');
 
 export default class Splash extends React.Component {
   constructor(props) {

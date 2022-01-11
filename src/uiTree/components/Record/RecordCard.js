@@ -17,9 +17,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
-var moment = require('moment');
-var deepcopy = require('deep-copy');
-var deepCompare = require('deep-compare');
+const moment = require('moment');
+const deepcopy = require('deep-copy');
+const deepCompare = require('deep-compare');
 
 export default class RecordCard extends React.Component {
   constructor(props) {
@@ -83,9 +83,9 @@ export default class RecordCard extends React.Component {
         this.canvasElem.width = this.canvasElem.getBoundingClientRect().width;
         this.canvasElem.height = 27/56 * this.canvasElem.width;
         this.currMultiplier = this.canvasElem.width/56;
-        var currColor = this.props.record.isRedAlliance ? 'rgb(255,0,0)' : 'rgb(0,0,255)';
-        for(var i = 0;i < this.positionLog.length;i++) {
-          var alpha = this.positionLog[i].timeStamp > this.currTime ? 0 : 1 - ((this.currTime - this.positionLog[i].timeStamp) * 0.1);
+        let currColor = this.props.record.isRedAlliance ? 'rgb(255,0,0)' : 'rgb(0,0,255)';
+        for(let i = 0;i < this.positionLog.length;i++) {
+          let alpha = this.positionLog[i].timeStamp > this.currTime ? 0 : 1 - ((this.currTime - this.positionLog[i].timeStamp) * 0.1);
           alpha = alpha < 0 ? 0 : alpha;
           alpha = alpha > 1 ? 1 : alpha;
           currColor = this.props.record.isRedAlliance ? 'rgba(255,0,0,' + alpha + ')' : 'rgba(0,0,255,' + alpha + ')';
@@ -100,8 +100,8 @@ export default class RecordCard extends React.Component {
           );
           this.ctx.fill();
         }
-        for(var i = 0;i < this.eventLog.length;i++) { // eslint-disable-line no-redeclare
-          var alpha = this.eventLog[i].timeStamp > this.currTime ? 0 : 1 - ((this.currTime - this.eventLog[i].timeStamp) * 1.5); // eslint-disable-line no-redeclare
+        for(let i = 0;i < this.eventLog.length;i++) { // eslint-disable-line no-redeclare
+          let alpha = this.eventLog[i].timeStamp > this.currTime ? 0 : 1 - ((this.currTime - this.eventLog[i].timeStamp) * 1.5); // eslint-disable-line no-redeclare
           alpha = alpha < 0 ? 0 : alpha;
           alpha = alpha > 1 ? 1 : alpha;
           currColor = Color.getColor(this.eventLog[i].name + ': ' + JSON.stringify(this.eventLog[i].variables));

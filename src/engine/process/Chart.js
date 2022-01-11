@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as Processor from 'engine/process/Processor';
 
-var deepCompare = require('deep-compare');
+const deepCompare = require('deep-compare');
 
 export default class Chart extends React.Component {
   runProcess() {

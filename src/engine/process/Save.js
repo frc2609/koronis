@@ -3,7 +3,7 @@ import * as Interface from 'db/Interface';
 
 export const saveProcess = async (inYear = -1, inQueryType = 'record', inDataType = 'metric', inName = 'default', inTitle = 'Default', inDescription = 'Default', inFunction = 'return NaN;', inObj = {}) => {
   try {
-    var obj = inObj;
+    let obj = inObj;
     if(typeof obj.id === 'undefined') {
       obj.id = User.genProcessUuid(inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction);
     }

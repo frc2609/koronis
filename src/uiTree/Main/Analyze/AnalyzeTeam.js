@@ -22,9 +22,9 @@ import TeamCard from 'uiTree/components/TeamCard';
 import Selector from 'uiTree/components/Selector';
 import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
-var deepCompare = require('deep-compare');
-var store = require('store');
-var ss = require('simple-statistics');
+const deepCompare = require('deep-compare');
+const store = require('store');
+let ss = require('simple-statistics');
 
 class AnalyzeTeam extends React.Component {
   constructor(props) {
@@ -56,8 +56,8 @@ class AnalyzeTeam extends React.Component {
   }
   runMetricProcess() {
     //Records section
-    var tmpRecordsData = [];
-    var tmpRecordsColumn = [
+    let tmpRecordsData = [];
+    let tmpRecordsColumn = [
       {field: 'title', title: 'Title', sortable: true,
         cellStyle: {
           minWidth: '200px'
@@ -75,17 +75,17 @@ class AnalyzeTeam extends React.Component {
       {field: 'interquartileRange', title: 'Interquartile Range', sortable: true},
       {field: 'range', title: 'Range', sortable: true}
     ];
-    for(var i = 0;i < this.state.selectedProcesses.length;i++) {
+    for(let i = 0;i < this.state.selectedProcesses.length;i++) {
       if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedProcesses[i].dataType === 'metric') {
-        var perProcessData = [];
-        for(var j = 0;j < this.state.selectedRecords.length;j++) {
-          var val = Processor.runProcess(null, [this.state.selectedRecords[j]], this.state.selectedProcesses[i]).value;
+        let perProcessData = [];
+        for(let j = 0;j < this.state.selectedRecords.length;j++) {
+          let val = Processor.runProcess(null, [this.state.selectedRecords[j]], this.state.selectedProcesses[i]).value;
           if(!Number.isNaN(val)) {
             perProcessData.push(val);
           }
         }
         if(perProcessData.length > 0) {
-          var recordData = {
+          let recordData = {
             title: this.state.selectedProcesses[i].title,
             mean: ss.mean(perProcessData),
             mode: ss.modeFast(perProcessData),
@@ -109,7 +109,7 @@ class AnalyzeTeam extends React.Component {
     })
   }
   getAllProcesses() {
-    var processQueryObj = {
+    let processQueryObj = {
       dataType: 'chart',
       $or: [
         {year: Number(store.get('settings/currentYear'))},

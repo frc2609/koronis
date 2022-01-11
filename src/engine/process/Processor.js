@@ -1,16 +1,16 @@
 import * as Color from 'config/Color';
 
-var deepcopy = require('deep-copy');
-var safeEval = require('notevil');
+const deepcopy = require('deep-copy');
+const safeEval = require('notevil');
 
 export function runProcess(inElem, inRecords, inProcess, secure = false) {
-  var moment = require('moment');
-  var d3 = require('d3');
-  var chart = require('chart.js');
-  var plotly = require('engine/process/Plotly');
-  var tabulator = require("tabulator-tables");
-  var color = Color;
-  var consoleTmp = {
+  const moment = require('moment');
+  let d3 = require('d3');
+  const chart = require('chart.js');
+  let plotly = require('engine/process/Plotly');
+  let tabulator = require("tabulator-tables");
+  let color = Color;
+  let consoleTmp = {
     log: (v) => {console.log(v);ret.log.push(v)},
     info: (v) => {console.info(v);ret.info.push(v)},
     table: (v) => {console.table(v);ret.table.push(v)},
@@ -18,8 +18,8 @@ export function runProcess(inElem, inRecords, inProcess, secure = false) {
     warn: (v) => {console.warn(v);ret.warn.push(v)},
     error: (v) => {console.error(v);ret.error.push(v)}
   };
-  var func = () => {};
-  var ret = {
+  let func = () => {};
+  let ret = {
     value: NaN,
     log: [],
     info: [],
@@ -28,7 +28,7 @@ export function runProcess(inElem, inRecords, inProcess, secure = false) {
     warn: [],
     error: []
   };
-  var inputRecord = deepcopy(inRecords);
+  let inputRecord = deepcopy(inRecords);
   if(inProcess.queryType === 'record') {
     inputRecord = {};
     if(inRecords.length > 0) {
@@ -37,8 +37,8 @@ export function runProcess(inElem, inRecords, inProcess, secure = false) {
   }
   if(inProcess.year !== -1) {
     if(Array.isArray(inputRecord)) {
-      var tmp = [];
-      for(var i = 0;i < inputRecord.length;i++) {
+      let tmp = [];
+      for(let i = 0;i < inputRecord.length;i++) {
         if(inputRecord[i].year === inProcess.year) {
           tmp.push(inputRecord[i]);
         }
@@ -138,7 +138,7 @@ export function runProcess(inElem, inRecords, inProcess, secure = false) {
 }
 
 export async function runProcessAsync(inElem, inRecords, inProcess) {
-  var promise = new Promise((resolve, reject) => {
+  let promise = new Promise((resolve, reject) => {
     resolve(runProcess(inElem, inRecords, inProcess));
   });
   return (await promise);

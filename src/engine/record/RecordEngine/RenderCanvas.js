@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as Layout from 'config/Layout';
 
-var raf = require('raf');
+const raf = require('raf');
 
 export default class RenderCanvas extends React.Component {
   constructor(props) {
@@ -36,9 +36,9 @@ export default class RenderCanvas extends React.Component {
     };
   }
   updatePosFromKey() {
-    var botX = this.props.botStateDefinition.botState.position.x;
-    var botY = this.props.botStateDefinition.botState.position.y;
-    var flip = this.props.engineState.flip ? -1 : 1;
+    let botX = this.props.botStateDefinition.botState.position.x;
+    let botY = this.props.botStateDefinition.botState.position.y;
+    let flip = this.props.engineState.flip ? -1 : 1;
     if(this.arrowState.up) {
       botY -= flip;
     }
@@ -91,9 +91,9 @@ export default class RenderCanvas extends React.Component {
   }
   mouseMove(event) {
     if(this.mouseIsDown && !Layout.isTouchScreen()) {
-      var rect = this.renderCanvasElement.getBoundingClientRect();
-      var x = event.clientX - rect.left;
-      var y = event.clientY - rect.top;
+      let rect = this.renderCanvasElement.getBoundingClientRect();
+      let x = event.clientX - rect.left;
+      let y = event.clientY - rect.top;
       this.coordInput(x, y);
     }
   }
@@ -101,10 +101,10 @@ export default class RenderCanvas extends React.Component {
     this.mouseIsDown = false;
   }
   touchStart(event) {
-    var rect = this.renderCanvasElement.getBoundingClientRect();
-    var index = 0;
-    var x = event.touches[index].clientX - rect.left;
-    var y = event.touches[index].clientY - rect.top;
+    let rect = this.renderCanvasElement.getBoundingClientRect();
+    let index = 0;
+    let x = event.touches[index].clientX - rect.left;
+    let y = event.touches[index].clientY - rect.top;
     while((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
       index++;
       x = event.touches[index].clientX - rect.left;
@@ -117,8 +117,8 @@ export default class RenderCanvas extends React.Component {
     event.preventDefault();
   }
   coordInput(x, y) {
-    var botX = (x/this.canvasState.xMulti) - this.canvasState.xOffset;
-    var botY = (y/this.canvasState.yMulti) - this.canvasState.yOffset;
+    let botX = (x/this.canvasState.xMulti) - this.canvasState.xOffset;
+    let botY = (y/this.canvasState.yMulti) - this.canvasState.yOffset;
     if(this.props.engineState.flip) {
       botX = this.props.fieldStateDefinition.fieldState.dimensions.x - botX;
       botY = this.props.fieldStateDefinition.fieldState.dimensions.y - botY;
@@ -150,8 +150,8 @@ export default class RenderCanvas extends React.Component {
     this.drawElements(this.props.botStateDefinition.drawnElements, this.canvasState.xMulti, this.canvasState.yMulti, this.canvasState.xOffset, this.canvasState.yOffset);
 
     //Draw the robot as a circle with crossing lines
-    var botX = this.props.botStateDefinition.botState.position.x;
-    var botY = this.props.botStateDefinition.botState.position.y;
+    let botX = this.props.botStateDefinition.botState.position.x;
+    let botY = this.props.botStateDefinition.botState.position.y;
     if(this.props.engineState.flip) {
       botX = this.props.fieldStateDefinition.fieldState.dimensions.x - this.props.botStateDefinition.botState.position.x;
       botY = this.props.fieldStateDefinition.fieldState.dimensions.y - this.props.botStateDefinition.botState.position.y;
@@ -181,14 +181,14 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasCtx.stroke();
   }
   drawElements(arr, xMulti, yMulti, xOffset, yOffset) {
-    for(var i = 0;i < arr.length;i++) {
+    for(let i = 0;i < arr.length;i++) {
       this.renderCanvasCtx.fillStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name === arr[i].style.fill;}).hex; // eslint-disable-line no-loop-func
       this.renderCanvasCtx.strokeStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name === arr[i].style.outline;}).hex; // eslint-disable-line no-loop-func
       if(typeof arr[i].points === 'undefined') {
-        var elemWidth = arr[i].size.x * xMulti;
-        var elemHeight = arr[i].size.y * yMulti;
-        var elemX = arr[i].position.x;
-        var elemY = arr[i].position.y;
+        let elemWidth = arr[i].size.x * xMulti;
+        let elemHeight = arr[i].size.y * yMulti;
+        let elemX = arr[i].position.x;
+        let elemY = arr[i].position.y;
         if(this.props.engineState.flip) {
           elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - (arr[i].position.x + arr[i].size.x);
           elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - (arr[i].position.y + arr[i].size.y);
@@ -200,9 +200,9 @@ export default class RenderCanvas extends React.Component {
       }
       else {
         this.renderCanvasCtx.beginPath();
-        for(var j = 0;j < arr[i].points.length;j++) {
-          var elemX = arr[i].points[j].x; // eslint-disable-line no-redeclare
-          var elemY = arr[i].points[j].y; // eslint-disable-line no-redeclare
+        for(let j = 0;j < arr[i].points.length;j++) {
+          let elemX = arr[i].points[j].x; // eslint-disable-line no-redeclare
+          let elemY = arr[i].points[j].y; // eslint-disable-line no-redeclare
           if(this.props.engineState.flip) {
             elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - arr[i].points[j].x;
             elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - arr[i].points[j].y;
@@ -212,8 +212,8 @@ export default class RenderCanvas extends React.Component {
           if(j === 0) { this.renderCanvasCtx.moveTo(elemX, elemY); }
           else { this.renderCanvasCtx.lineTo(elemX, elemY); }
         }
-        var elemX = arr[i].points[0].x; // eslint-disable-line no-redeclare
-        var elemY = arr[i].points[0].y; // eslint-disable-line no-redeclare
+        let elemX = arr[i].points[0].x; // eslint-disable-line no-redeclare
+        let elemY = arr[i].points[0].y; // eslint-disable-line no-redeclare
         if(this.props.engineState.flip) {
           elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - arr[i].points[0].x;
           elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - arr[i].points[0].y;

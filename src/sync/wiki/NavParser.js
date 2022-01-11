@@ -1,34 +1,35 @@
 import Config from 'config/Config';
 
-var store = require('store');
-var axios = require('axios');
-var deepCompare = require('deep-compare');
+const store = require('store');
+const axios = require('axios');
+const deepCompare = require('deep-compare');
 
 const parseLine = (line) => {
-  var res = ['', ''];
+  let res = ['', ''];
   res[0] = line.substring(line.indexOf('[')+1,line.indexOf(']'));
   res[1] = line.substring(line.indexOf('(')+1,line.indexOf(')'));
   return res;
 };
 
 export const parseNav = async () => {
+  let nav = null;
   try {
-    var nav = (await axios(Config.wikiUrl + 'navigation.md')).data;
+    nav = (await axios(Config.wikiUrl + 'navigation.md')).data;
   }
   catch(err) {
     console.info('[Wiki] Could not connect to wiki');
     return null;
   }
-  var arr = [];
-  var res = [];
+  let arr = [];
+  let res = [];
   nav = nav.substring(nav.indexOf('# KSS Wiki\n')+12,nav.indexOf('\n[Edit]'));
   arr = nav.split('\n');
-  var currScope = '';
-  var currScopeCount = 0;
-  for(var i = 0;i < arr.length;i++) {
+  let currScope = '';
+  let currScopeCount = 0;
+  for(let i = 0;i < arr.length;i++) {
     if(arr[i].trim().length !== 0 && !arr[i].includes('#')) {
-      var nestedCount = arr[i].indexOf('*') < 0 ? 0 : Math.floor(arr[i].indexOf('*') / 2);
-      var parsed = parseLine(arr[i]);
+      let nestedCount = arr[i].indexOf('*') < 0 ? 0 : Math.floor(arr[i].indexOf('*') / 2);
+      let parsed = parseLine(arr[i]);
       if(nestedCount === currScopeCount) {
         currScope = currScope.substring(0,currScope.lastIndexOf('/')) + '/' + parsed[0];
       }
@@ -37,7 +38,7 @@ export const parseNav = async () => {
         currScopeCount++;
       }
       else {
-        for(var j = 0;j <= currScopeCount - nestedCount;j++) {
+        for(let j = 0;j <= currScopeCount - nestedCount;j++) {
           currScope = currScope.substring(0,currScope.lastIndexOf('/'));
         }
         currScope = currScope + '/' + parsed[0];
@@ -49,7 +50,7 @@ export const parseNav = async () => {
       });
     }
   }
-  for(var i = 0;i < res.length;i++) { // eslint-disable-line no-redeclare
+  for(let i = 0;i < res.length;i++) { // eslint-disable-line no-redeclare
     if(res[i].url.length > 0) {
       res[i].md = (await axios(Config.wikiUrl + res[i].url)).data;
     }

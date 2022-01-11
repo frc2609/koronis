@@ -7,7 +7,7 @@ import { FiberManualRecord, Code } from '@material-ui/icons';
 import ProcessSelectModal from 'uiTree/components/Process/ProcessSelectModal';
 import RecordSelectModal from 'uiTree/components/Record/RecordSelectModal';
 
-var deepCompare = require('deep-compare');
+const deepCompare = require('deep-compare');
 
 export default class Selector extends React.Component {
   constructor(props) {

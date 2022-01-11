@@ -10,12 +10,12 @@ import { eventSchema } from 'db/schema/event';
 
 RxDB.plugin(require('pouchdb-adapter-idb'));
 
-var db = null;
-var teamCollection = null;
-var recordCollection = null;
-var processCollection = null;
-var tbaMatchCollection = null;
-var eventCollection = null;
+let db = null;
+let teamCollection = null;
+let recordCollection = null;
+let processCollection = null;
+let tbaMatchCollection = null;
+let eventCollection = null;
 
 const createDb = async () => {
   db = await RxDB.create({name: Config.environmentConfig, adapter: 'idb', ignoreDuplicate: true});

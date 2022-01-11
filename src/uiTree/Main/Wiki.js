@@ -17,9 +17,9 @@ import Popover from '@material-ui/core/Popover';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import ListIcon from '@material-ui/icons/List';
 
-var store = require('store');
-var deepCompare = require('deep-compare');
-var moment = require('moment');
+const store = require('store');
+const deepCompare = require('deep-compare');
+const moment = require('moment');
 
 class Wiki extends React.Component {
   cardRef = React.createRef();
@@ -34,7 +34,7 @@ class Wiki extends React.Component {
     };
   }
   refresh() {
-    var wikiData = store.get('wiki/data');
+    let wikiData = store.get('wiki/data');
     if(!deepCompare(wikiData, this.state.wikiData) && Array.isArray(wikiData)) {
       this.setState({
         wikiData: wikiData

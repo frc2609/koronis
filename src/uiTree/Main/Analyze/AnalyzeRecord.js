@@ -24,9 +24,9 @@ import tableIcons from 'config/Table';
 import Selector from 'uiTree/components/Selector';
 import ChartModal from 'uiTree/components/ChartModal';
 
-var moment = require('moment');
-var deepCompare = require('deep-compare');
-var store = require('store');
+const moment = require('moment');
+const deepCompare = require('deep-compare');
+const store = require('store');
 
 class AnalyzeRecord extends React.Component {
   constructor(props) {
@@ -49,8 +49,8 @@ class AnalyzeRecord extends React.Component {
     }
   }
   runMetricProcess() {
-    var tmpDataArr = [];
-    var tmpColumns = [
+    let tmpDataArr = [];
+    let tmpColumns = [
       {field: 'startDate', title: 'Date', sortable: true,
         render: (rowData) => {
           return moment.unix(rowData.startDate).format('MMM Do YYYY')
@@ -59,7 +59,7 @@ class AnalyzeRecord extends React.Component {
       {field: 'teamNumber', title: 'Team Number', sortable: true},
       {field: 'matchType', title: 'Match Type', sortable: true,
         render: (rowData) => {
-          var ret = 'Test';
+          let ret = 'Test';
           if(rowData.matchType === 't') {ret = 'Test';}
           if(rowData.matchType === 'pf') {ret = 'Practice Field';}
           if(rowData.matchType === 'pm') {ret = 'Practice Match';}
@@ -81,7 +81,7 @@ class AnalyzeRecord extends React.Component {
         render: (r) => {return r.comments.length <= 25 ? r.comments : r.comments.substr(0,25) + '...'}
       }
     ];
-    for(var i = 0;i < this.state.selectedProcesses.length;i++) {
+    for(let i = 0;i < this.state.selectedProcesses.length;i++) {
       if(this.state.selectedProcesses[i].queryType === 'record' && this.state.selectedProcesses[i].dataType === 'metric') {
         tmpColumns.push({
           title: this.state.selectedProcesses[i].title,
@@ -90,9 +90,9 @@ class AnalyzeRecord extends React.Component {
         });
       }
     }
-    for(var i = 0;i < this.state.selectedRecords.length;i++) { // eslint-disable-line no-redeclare
-      var tmpData = this.state.selectedRecords[i];
-      for(var j = 0;j < this.state.selectedProcesses.length;j++) {
+    for(let i = 0;i < this.state.selectedRecords.length;i++) { // eslint-disable-line no-redeclare
+      let tmpData = this.state.selectedRecords[i];
+      for(let j = 0;j < this.state.selectedProcesses.length;j++) {
         if(this.state.selectedProcesses[j].queryType === 'record' && this.state.selectedProcesses[j].dataType === 'metric') {
           tmpData['process_' + this.state.selectedProcesses[j].id] = Processor.runProcess(null, [this.state.selectedRecords[i]], this.state.selectedProcesses[j]).value;
         }
@@ -106,7 +106,7 @@ class AnalyzeRecord extends React.Component {
   }
   runChartProcess() {}
   getAllProcesses() {
-    var processQueryObj = {
+    let processQueryObj = {
       queryType: 'record',
       dataType: 'chart',
       $or: [

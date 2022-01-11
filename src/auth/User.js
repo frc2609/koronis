@@ -2,14 +2,14 @@ import 'clientjs';
 
 import firebase from 'auth/Firebase';
 
-var CryptoJS = require('crypto-js');
-var store = require('store');
-var { v5: uuid } = require('uuid');
+let CryptoJS = require('crypto-js');
+const store = require('store');
+let { v5: uuid } = require('uuid');
 
 export const getFingerprint = () => {
-  var prevFingerprint = store.get('auth/user/fingerprint');
+  let prevFingerprint = store.get('auth/user/fingerprint');
   if(typeof prevFingerprint === 'undefined') {
-    var client = new ClientJS(); // eslint-disable-line no-undef
+    let client = new ClientJS(); // eslint-disable-line no-undef
     prevFingerprint = client.getFingerprint();
     store.set('auth/user/fingerprint', prevFingerprint);
   }
@@ -28,7 +28,7 @@ const genNamespace = (inYear, uuidType) => {
 }
 
 export const getSecret = async () => {
-  var prevSecret = store.get('auth/user/secret');
+  let prevSecret = store.get('auth/user/secret');
   if(typeof prevFingerprint === 'undefined') {
     prevSecret = await firebase.database().ref('/secrets/' + getUserId()).once('value');
     store.set('auth/user/secret', prevSecret);
@@ -37,8 +37,8 @@ export const getSecret = async () => {
 }
 
 export const genRecordUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber, inMatchType, inTeamNumber) => {
-  var namespace = genNamespace(inYear, 'record');
-  var tmpDate = (new Date());
+  let namespace = genNamespace(inYear, 'record');
+  let tmpDate = (new Date());
   return uuid((
     inMatchStartDate.toString() +
     inMatchNumber.toString() +
@@ -51,8 +51,8 @@ export const genRecordUuid = (inYear, inVersion, inMatchStartDate, inMatchNumber
 }
 
 export const genProcessUuid = (inYear, inQueryType, inDataType, inName, inTitle, inDescription, inFunction) => {
-  var namespace = genNamespace(inYear, 'process');
-  var tmpDate = (new Date());
+  let namespace = genNamespace(inYear, 'process');
+  let tmpDate = (new Date());
   return uuid((
     inQueryType +
     inDataType +

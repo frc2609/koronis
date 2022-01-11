@@ -63,7 +63,7 @@ export default class TeamCard extends React.Component {
     if(typeof this.props.teamNumber !== 'undefined') {
       Interface.subscribeTeams({teamNumber: Number(this.props.teamNumber)}, {}, (teams) => {
         if(teams.length > 0) {
-          var targetTeam = teams[0];
+          let targetTeam = teams[0];
           this.getMedia(targetTeam.key);
           this.setState({
             nickname: targetTeam.nickname,

@@ -5,7 +5,7 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/functions';
 
-var firebaseConfig = {
+let firebaseConfig = {
   apiKey: 'AIzaSyDZWG3KLryn_4wIOCXf7SgJJPItFwSBW6Q',
   authDomain: 'koronis-scouting-system.firebaseapp.com',
   databaseURL: 'https://koronis-scouting-system.firebaseio.com',

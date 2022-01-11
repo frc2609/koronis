@@ -5,13 +5,13 @@ import * as NavParser from 'sync/wiki/NavParser';
 import * as TbaTeam from 'sync/tba/TbaTeam';
 import * as TbaEvent from 'sync/tba/TbaEvent';
 
-var syncStartEvent = new Event('syncstart');
-var syncEndEvent = new Event('syncend');
+let syncStartEvent = new Event('syncstart');
+let syncEndEvent = new Event('syncend');
 
 export const update = () => {
   try {
     if(window.navigator.onLine) {
-      var asyncUpdate = async () => {
+      let asyncUpdate = async () => {
         window.dispatchEvent(syncStartEvent);
         await Package.get();
         await Process.update();

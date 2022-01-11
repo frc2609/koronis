@@ -97,10 +97,10 @@ export default class ControlBar extends React.Component {
             ''
           :
             this.state.status.map((e, i) => {
-              var colorPaletteArr = this.props.colorPalette[e.style.palette]
-              var fill = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.fill;})].hex;
-              var outline = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.outline;})].hex;
-              var text = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.text;})].hex;
+              let colorPaletteArr = this.props.colorPalette[e.style.palette]
+              let fill = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.fill;})].hex;
+              let outline = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.outline;})].hex;
+              let text = colorPaletteArr[colorPaletteArr.findIndex((p) => {return p.name === e.style.text;})].hex;
               return (
                 <Button
                   key={i}

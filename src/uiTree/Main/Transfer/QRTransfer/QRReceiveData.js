@@ -8,8 +8,8 @@ import Grid from '@material-ui/core/Grid';
 
 import ReceiveString from 'engine/transfer/qrcode/ReceiveString';
 
-var serializerInstance = new serializerWorker();
-var deepCompare = require('deep-compare');
+const serializerInstance = new serializerWorker();
+const deepCompare = require('deep-compare');
 
 export default class QRReceiveData extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class QRReceiveData extends React.Component {
   }
   decodeData(inStr) {
     serializerInstance.serializeData(inStr, false, true).then((decoded) => {
-      for(var i = 0;i < decoded.length;i++) {
+      for(let i = 0;i < decoded.length;i++) {
         if(typeof decoded[i].eventLog !== 'undefined') {
           delete decoded[i].metadata;
           Interface.insertRecord(decoded[i]);

@@ -10,7 +10,7 @@ import { ReactMic } from 'react-mic';
 
 import ProfileSelector from 'engine/transfer/audio/ProfileSelector';
 
-var quiet = require('quietjs-bundle-cli');
+const quiet = require('quietjs-bundle-cli');
 
 export default class ReceiveString extends React.Component {
   constructor(props) {
@@ -34,7 +34,7 @@ export default class ReceiveString extends React.Component {
        profile: this.state.profile,
        onReceive: (p) => {
          this.content = quiet.mergeab(this.content, p);
-         var data = quiet.ab2str(this.content);
+         let data = quiet.ab2str(this.content);
          this.setState({bytes: data.length});
        },
        onCreateFail: () => {
@@ -50,7 +50,7 @@ export default class ReceiveString extends React.Component {
   }
   finish() {
     if(!this.state.error) {
-      var data = quiet.ab2str(this.content);
+      let data = quiet.ab2str(this.content);
       this.setState({bytes: data.length});
       if(typeof this.props.onFinish === 'function') {this.props.onFinish(data);}
     }
@@ -64,10 +64,10 @@ export default class ReceiveString extends React.Component {
     this.setState({done: true, running: false, showMic: false});
   }
   refreshWidth() {
-    var elem = this.visualizerRef.current;
+    let elem = this.visualizerRef.current;
     if(elem) {
-      var style = getComputedStyle(elem);
-      var width = elem.clientWidth - parseInt(style.paddingLeft) - parseInt(style.paddingRight);
+      let style = getComputedStyle(elem);
+      let width = elem.clientWidth - parseInt(style.paddingLeft) - parseInt(style.paddingRight);
       if(width !== this.state.visualizerWidth) {
         this.setState({visualizerWidth: width});
       }

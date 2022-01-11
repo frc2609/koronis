@@ -1,10 +1,10 @@
-var baseUrl = '';
-var packageUrl = '';
-var processUrl = '';
-var wikiUrl = 'https://koronis-scouting-system.gitlab.io/kss-wiki/';
-var tbaUrl = 'https://www.thebluealliance.com/api/v3/';
-var environmentConfig = process.env.REACT_APP_ENV;
-var version = process.env.REACT_APP_VERSION;
+let baseUrl = '';
+let packageUrl = '';
+let processUrl = '';
+let wikiUrl = 'https://koronis-scouting-system.gitlab.io/kss-wiki/';
+let tbaUrl = 'https://www.thebluealliance.com/api/v3/';
+let environmentConfig = process.env.REACT_APP_ENV;
+let version = process.env.REACT_APP_VERSION;
 
 if(environmentConfig === 'production') {
   console.info('[Config] App is configured for production. Version is ' + version);

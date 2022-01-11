@@ -1,7 +1,7 @@
 const binStrToBinArr = (inBinStr) => {
   //Will include null padding
-  var binArr = [];
-  for(var i = 0;i < inBinStr.length;i++) {
+  let binArr = [];
+  for(let i = 0;i < inBinStr.length;i++) {
     binArr.push(inBinStr.charCodeAt(i) & 255);
   }
   return binArr;
@@ -9,35 +9,35 @@ const binStrToBinArr = (inBinStr) => {
 
 const binArrToBinStr = (inBinArr) => {
   //Will be null padded to nearest 2 bytes
-  var output = '';
-  for(var i = 0;i < inBinArr.length;i++) {
+  let output = '';
+  for(let i = 0;i < inBinArr.length;i++) {
     output += String.fromCharCode(inBinArr[i] & 255);
   }
   return output;
 }
 
 const binArr3ToNumString = (inBinArr) => {
-  var output = '';
-  for(var i = 0;i < inBinArr.length;i++) {
+  let output = '';
+  for(let i = 0;i < inBinArr.length;i++) {
     output += (inBinArr[i] & 7).toString();
   }
   return output;
 }
 
 const numStringToBinArr3 = (inStr) => {
-  var output = [];
-  for(var i = 0;i < inStr.length;i++) {
+  let output = [];
+  for(let i = 0;i < inStr.length;i++) {
     output.push(Number.parseInt(inStr[i]));
   }
   return output;
 }
 
 const binArr8ToBinArr3 = (inBinArr) => {
-  var outBinArr3 = [];
-  var inBinArr8 = inBinArr.slice();
+  let outBinArr3 = [];
+  let inBinArr8 = inBinArr.slice();
   while(inBinArr8.length > 0) {
-    var b = [];
-    var o = [];
+    let b = [];
+    let o = [];
     b[0] = (inBinArr8.length > 0 ? inBinArr8[0] : 0);
     inBinArr8.splice(0, 1);
     b[1] = (inBinArr8.length > 0 ? inBinArr8[0] : 0);
@@ -58,11 +58,11 @@ const binArr8ToBinArr3 = (inBinArr) => {
 }
 
 const binArr3ToBinArr8 = (inBinArr) => {
-  var outBinArr8 = [];
-  var inBinArr3 = inBinArr.slice();
+  let outBinArr8 = [];
+  let inBinArr3 = inBinArr.slice();
   while(inBinArr3.length > 0) {
-    var b = [];
-    var o = [];
+    let b = [];
+    let o = [];
     b[0] = (inBinArr3.length > 0 ? inBinArr3[0] : 0);
     inBinArr3.splice(0, 1);
     b[1] = (inBinArr3.length > 0 ? inBinArr3[0] : 0);
@@ -88,14 +88,14 @@ const binArr3ToBinArr8 = (inBinArr) => {
 }
 
 export const strToNumStr = (inStr) => {
-  var output = binStrToBinArr(inStr);
+  let output = binStrToBinArr(inStr);
   output = binArr8ToBinArr3(output);
   output = binArr3ToNumString(output);
   return output;
 }
 
 export const numStrToStr = (inNumStr) => {
-  var output = numStringToBinArr3(inNumStr);
+  let output = numStringToBinArr3(inNumStr);
   output = binArr3ToBinArr8(output);
   output = binArrToBinStr(output);
   return output;
