@@ -5,7 +5,7 @@ export const inject = (inYear) => {
   console.info('[Package] Injecting test package');
   let botStateDefinition = {
     botState: {
-      pos: {
+      position: {
         x: 0,
         y: 13.5,
         t: 0
@@ -277,7 +277,7 @@ export const inject = (inYear) => {
       '  currZone.isAllied = !currZone.isAllied;' +
       '  newZones.push(currZone);' +
       '}' +
-      'for(let i = 0;i < newZones.length;i++) { fs.zones.push(newZones[i]) }' +
+      'for(let i = 0;i < newZones.length;i++) { fS.zones.push(newZones[i]) }' +
       'let newDrawnElements = [];' +
       'len = dE.length;' +
       'for(let i = 0;i < len;i++) {' +
@@ -285,7 +285,7 @@ export const inject = (inYear) => {
       '  currDrawnElement.position.x = dE.x - (dE[i].size.x + dE[i].position.x);' +
       '  currDrawnElement.id = i + dE.length;' +
       '  currDrawnElement.isAllied = !currDrawnElement.isAllied;' +
-      '  if(currDrawnElement.style.palette === \'red\') {currDrawn.style.palette = \'blue\';}' +
+      '  if(currDrawnElement.style.palette === \'red\') {currDrawnElement.style.palette = \'blue\';}' +
       '  newDrawnElements.push(currDrawnElement);' +
       '}' +
       'for(let i = 0;i < newDrawnElements.length;i++) { dE.push(newDrawnElements[i]) }'

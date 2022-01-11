@@ -107,6 +107,7 @@ export default class RecordEngine extends React.Component {
 
     //Initialize various variables, states, and definitions
     Package.getByYear(this.settings.currentYear).then((results) => {
+      console.log(results)
       //Get colorPalette
       this.colorPalette = deepcopy(results.colorPalette);
 
@@ -205,8 +206,14 @@ export default class RecordEngine extends React.Component {
     this.update();
   }
   renderCanvasHandler(cvsS) {
-    this.botStateDefinition.botState.position.x = cvsS.x;
-    this.botStateDefinition.botState.position.y = cvsS.y;
+    let x = cvsS.x;
+    x = x < 0 ? 0 : x;
+    x = x > this.fieldStateDefinition.fieldState.dimensions.x ? this.fieldStateDefinition.fieldState.dimensions.x : x;
+    let y = cvsS.y;
+    y = y < 0 ? 0 : y;
+    y = y > this.fieldStateDefinition.fieldState.dimensions.y ? this.fieldStateDefinition.fieldState.dimensions.y : y;
+    this.botStateDefinition.botState.position.x = x;
+    this.botStateDefinition.botState.position.y = y;
     this.update();
   }
   matchStateHandler(mS) {
@@ -356,10 +363,10 @@ export default class RecordEngine extends React.Component {
   getPositionObj() {
     let x = Math.round(this.botStateDefinition.botState.position.x);
     x = x < 0 ? 0 : x;
-    x = x > this.fieldStateDefinition.fieldState.dimensions.x ? this.props.fieldStateDefinition.fieldState.dimensions.x : x;
+    x = x > this.fieldStateDefinition.fieldState.dimensions.x ? this.fieldStateDefinition.fieldState.dimensions.x : x;
     let y = Math.round(this.botStateDefinition.botState.position.y);
     y = y < 0 ? 0 : y;
-    y = y > this.fieldStateDefinition.fieldState.dimensions.x ? this.props.fieldStateDefinition.fieldState.dimensions.x : y;
+    y = y > this.fieldStateDefinition.fieldState.dimensions.y ? this.fieldStateDefinition.fieldState.dimensions.y : y;
     return {
       x: x,
       y: y

@@ -135,13 +135,14 @@ export default class RenderCanvas extends React.Component {
     this.canvasState.xMulti = (this.canvasState.xSize/this.props.fieldStateDefinition.fieldState.dimensions.x) * this.canvasState.mag;
     this.canvasState.yMulti = (this.canvasState.ySize/this.props.fieldStateDefinition.fieldState.dimensions.y) * this.canvasState.mag;
     //Offset to show field
-    this.canvasState.xOffset = -(this.props.botStateDefinition.botState.position.x*0.25) + this.props.fieldStateDefinition.fieldState.dimensions.x*0.0625;
-    this.canvasState.yOffset = this.canvasState.yMulti*0.0125;
-    //Flip offset
+    let mockFieldWidth = this.props.fieldStateDefinition.fieldState.dimensions.x * (1 + (2 * 0.03125));
+    let canvasFieldDifference = (mockFieldWidth * this.canvasState.xMulti) - this.state.canvasSize.x;
+    let botXPercentage = this.props.botStateDefinition.botState.position.x / this.props.fieldStateDefinition.fieldState.dimensions.x;
     if(this.props.engineState.flip) {
-      this.canvasState.xOffset = -this.canvasState.xOffset;
-      this.canvasState.yOffset = -this.canvasState.yOffset;
+      botXPercentage = 1 - botXPercentage;
     }
+    this.canvasState.xOffset = -((canvasFieldDifference / this.canvasState.xMulti) * botXPercentage) + this.props.fieldStateDefinition.fieldState.dimensions.x*0.03125;
+    this.canvasState.yOffset = this.canvasState.yMulti*0.0125;
     //Draw field elements
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
     this.renderCanvasCtx.setLineDash([]);
