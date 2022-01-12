@@ -66,7 +66,6 @@
   },
   "homepage": ".",
   "scripts": {
-    "postinstall": "cd node_modules/quietjs-bundle-cli && npm run install",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "env REACT_APP_ENV=development HTTPS=true react-scripts --max_old_space_size=4096 start",
     "build": "env REACT_APP_ENV=production react-scripts --max_old_space_size=4096 build",
