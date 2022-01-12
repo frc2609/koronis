@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ThemeProvider } from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
@@ -22,14 +22,14 @@ export default class App extends React.Component {
       <div style={{flexGrow: 1}}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <CssBaseline />
-          <BrowserRouter basename={Config.baseUrl} >
+          <HashRouter basename={Config.baseUrl} >
             <ThemeProvider theme={Color.getTheme(store.get('settings/theme/darkMode') === 'true')}>
             <FullscreenModal />
             <GlobalTrigger />
             <MainAppBar />
             <Main />
             </ThemeProvider>
-          </BrowserRouter>
+          </HashRouter>
         </MuiPickersUtilsProvider>
       </div>
     );
