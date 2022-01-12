@@ -24,19 +24,12 @@ pages:
     - mkdir public
     - cd public
     - mkdir dev
-    - mkdir latest
     - cd ..
     - git clone -b dev https://gitlab.com/koronis-scouting-system/kss-client dev
-    - git clone -b master https://gitlab.com/koronis-scouting-system/kss-client prod
     - cd dev
     - npm install
     - CI=false npm run devbuild
-    - cd ../prod
-    - npm install
-    - CI=false npm run build
-    - cd ..
     - mv dev/build/* public/dev
-    - mv prod/build/* public/latest
   artifacts:
     paths:
       - public

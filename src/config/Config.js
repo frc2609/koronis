@@ -8,7 +8,7 @@ let version = process.env.REACT_APP_VERSION;
 
 if(environmentConfig === 'production') {
   console.info('[Config] App is configured for production. Version is ' + version);
-  baseUrl = '/kss-client/latest';
+  baseUrl = '/';
   packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/latest/';
   processUrl = 'https://koronis-scouting-system.gitlab.io/kss-processes/latest/';
 }
