@@ -29,6 +29,7 @@ pages:
     - cd dev
     - npm install
     - CI=false npm run devbuild
+    - cd ..
     - mv dev/build/* public/dev
   artifacts:
     paths:
