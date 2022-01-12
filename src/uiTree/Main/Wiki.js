@@ -17,6 +17,8 @@ import Popover from '@material-ui/core/Popover';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import ListIcon from '@material-ui/icons/List';
 
+import Config from 'config/Config';
+
 const store = require('store');
 const deepCompare = require('deep-compare');
 const moment = require('moment');
@@ -118,7 +120,12 @@ class Wiki extends React.Component {
                         );
                       })}
                     </Breadcrumbs>
-                    <ReactMarkdown source={e.md} />
+                    <ReactMarkdown
+                      source={e.md}
+                      transformImageUri={(src) => {
+                        return src.match(/^http[s]*:\/\//) ? src : Config.wikiUrl + e.url.match(/^[^/]+\//)[0] + src;
+                      }}
+                    />
                     <br/>
                     <Typography>
                       Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}

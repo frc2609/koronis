@@ -107,7 +107,6 @@ export default class RecordEngine extends React.Component {
 
     //Initialize various variables, states, and definitions
     Package.getByYear(this.settings.currentYear).then((results) => {
-      console.log(results)
       //Get colorPalette
       this.colorPalette = deepcopy(results.colorPalette);
 
