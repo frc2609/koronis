@@ -1,6 +1,7 @@
 {
   "short_name": "KSS",
   "name": "Koronis Scouting System",
+  "description": "Offline ready FRC scouting webapp!",
   "icons": [
     {
       "src": "favicon.ico",

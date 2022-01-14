@@ -2,7 +2,7 @@ import * as Db from 'db/Db';
 import * as Verify from 'auth/Verify';
 
 const deepcopy = require('deep-copy');
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 const moment = require('moment');
 
 //==================================Team==================================\\

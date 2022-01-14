@@ -25,7 +25,7 @@ import Selector from 'uiTree/components/Selector';
 import ChartModal from 'uiTree/components/ChartModal';
 
 const moment = require('moment');
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 const store = require('store');
 
 class AnalyzeRecord extends React.Component {

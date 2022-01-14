@@ -9,7 +9,7 @@ import Selector from 'uiTree/components/Selector';
 import SendString from 'engine/transfer/audio/SendString';
 
 const serializerInstance = new serializerWorker();
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 
 export default class AudioSendData extends React.Component {
   constructor(props) {

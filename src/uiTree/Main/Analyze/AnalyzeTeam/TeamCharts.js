@@ -8,7 +8,7 @@ import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 const chart = require('chart.js');
 const moment = require('moment');
 
