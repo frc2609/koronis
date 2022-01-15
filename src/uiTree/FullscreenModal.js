@@ -29,12 +29,20 @@ export default class FullscreenModal extends React.Component {
   }
   componentDidMount() {
     if(!((window.screen.availHeight || window.screen.height - 30) <= window.innerHeight) && !Layout.isLarge()) {
-      this.setState({fullscreen: false, open: true});
+      let isPWA = window.matchMedia('(display-mode: standalone)').matches;
+      this.setState({
+        fullscreen: isPWA,
+        open: !isPWA
+      });
     }
     document.documentElement.onfullscreenchange = (event) => {
       let isFullscreen = document.fullscreenElement === event.target;
+      if(window.matchMedia('(display-mode: standalone)').matches) {
+        isFullscreen = true;
+      }
       this.setState({fullscreen: isFullscreen, open: !isFullscreen});
     }
+    
   }
   render() {
     return (
