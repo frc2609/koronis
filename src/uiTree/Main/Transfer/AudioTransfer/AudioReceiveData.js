@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import ReceiveString from 'engine/transfer/audio/ReceiveString';
 
 const serializerInstance = new serializerWorker();
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 
 export default class AudioReceiveData extends React.Component {
   constructor(props) {

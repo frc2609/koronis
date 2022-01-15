@@ -22,7 +22,7 @@ import TeamCard from 'uiTree/components/TeamCard';
 import Selector from 'uiTree/components/Selector';
 import TeamCharts from 'uiTree/Main/Analyze/AnalyzeTeam/TeamCharts';
 
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 const store = require('store');
 let ss = require('simple-statistics');
 

@@ -2,7 +2,7 @@ import Config from 'config/Config';
 
 const store = require('store');
 const axios = require('axios');
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 
 const parseLine = (line) => {
   let res = ['', ''];

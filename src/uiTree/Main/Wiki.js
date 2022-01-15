@@ -20,7 +20,7 @@ import ListIcon from '@material-ui/icons/List';
 import Config from 'config/Config';
 
 const store = require('store');
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 const moment = require('moment');
 
 class Wiki extends React.Component {

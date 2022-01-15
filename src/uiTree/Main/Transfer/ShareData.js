@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import Selector from 'uiTree/components/Selector';
 import ShareString from 'engine/transfer/ShareString';
 
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 
 export default class TransferHandler extends React.Component {
   constructor(props) {

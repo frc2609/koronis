@@ -19,7 +19,7 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
 const moment = require('moment');
 const deepcopy = require('deep-copy');
-const deepCompare = require('deep-compare');
+const deepCompare = require('fast-deep-equal');
 
 export default class RecordCard extends React.Component {
   constructor(props) {

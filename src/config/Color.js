@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 export const getColor = (inStr, inAlpha = 1) => {
   let randomColor = require('randomcolor');
@@ -11,7 +11,7 @@ export const getColor = (inStr, inAlpha = 1) => {
 };
 
 export const getTheme = (isDark) => {
-  return createMuiTheme({
+  return createTheme({
     palette: {
       type: isDark ? 'dark' : 'light'
     },
