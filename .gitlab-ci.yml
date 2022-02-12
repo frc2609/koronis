@@ -1,6 +1,6 @@
-firebase:
-  image: rambabusaravanan/firebase
-  stage: deploy
+firebase_build:
+  image: node:12.18.2-buster
+  stage: build
   cache:
     paths:
       - node_modules/
@@ -8,6 +8,16 @@ firebase:
   script:
     - npm install
     - CI=false npm run build
+  artifacts:
+    paths:
+      - build
+  only:
+    - master
+
+firebase:
+  image: rambabusaravanan/firebase
+  stage: deploy
+  script:
     - firebase use koronis-scouting-system --token $FIREBASE_TOKEN
     - firebase deploy --only hosting -m "Pipe $CI_PIPELINE_ID Build $CI_BUILD_ID" --token $FIREBASE_TOKEN
   artifacts:
