@@ -99,6 +99,6 @@ export const getMedia = async (key) => {
   catch(err) {
     console.info('[TBA] Cannot get media for team ' + key);
     console.error(err);
-    return {};
+    throw new Error('Unable to contact TBA, cannot get media');
   }
 }

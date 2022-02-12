@@ -155,7 +155,7 @@ export default class TeamCard extends React.Component {
               </>
             }
           </CardContent>
-          {this.state.mediaUrls.length === 0 ?
+          {typeof this.state.mediaUrls === 'undefined' || this.state.mediaUrls.length === 0 ?
             <></>
           :
             <>
