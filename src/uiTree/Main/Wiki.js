@@ -92,7 +92,7 @@ class Wiki extends React.Component {
                   {this.state.wikiData.map((e, i) => {
                     if(e.md.length > 0) {
                       return (
-                        <ListItem button key={i} onClick={() => {this.setState({displayPage: this.convertUrl(e.path), redirect: true, openMenu: false})}}>
+                        <ListItem button key={i} onClick={() => {this.setState({displayPage: e.url, redirect: true, openMenu: false})}}>
                           <ListItemText primary={e.path.replace('/', ' / ')} />
                         </ListItem>
                       );
@@ -112,20 +112,24 @@ class Wiki extends React.Component {
               </Route>
               {this.state.wikiData.map((e, i) => {
                 return (
-                  <Route key={i} exact path={'/wiki/' + this.convertUrl(e.path)}>
+                  <Route key={i} exact path={'/wiki/' + e.url}>
                     <Breadcrumbs>
-                      {this.convertUrl(e.path).split('/').map((e2, i2) => {
+                      {e.path.split('/').map((e2, i2) => {
                         return (
                           <Typography key={i2}>{e2}</Typography>
                         );
                       })}
                     </Breadcrumbs>
                     <ReactMarkdown
-                      source={e.md}
+                      transformLinkUri={(src) => {
+                        return src.match(/^http[s]*:\/\//) ? src : '#' + Config.baseUrl + 'wiki/' + e.url.match(/^[^/]+\//)[0] + src;
+                      }}
                       transformImageUri={(src) => {
                         return src.match(/^http[s]*:\/\//) ? src : Config.wikiUrl + e.url.match(/^[^/]+\//)[0] + src;
                       }}
-                    />
+                    >
+                      {e.md}
+                    </ReactMarkdown>
                     <br/>
                     <Typography>
                       Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
