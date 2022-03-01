@@ -195,7 +195,7 @@ export default class ProcessCreationBar extends React.Component {
                   label='Data Type'
                 >
                   <MenuItem value='metric'>Metric</MenuItem>
-                  <MenuItem value='array'>Array</MenuItem>
+                  <MenuItem disabled value='array'>Array</MenuItem>
                   <MenuItem value='chart'>Chart</MenuItem>
                 </Select>
               </FormControl>
