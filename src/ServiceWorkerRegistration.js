@@ -31,10 +31,8 @@ export function register(config) {
       return;
     }
 
-    window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-
-      if (isLocalhost) {
+    const swUrl = `${process.env.PUBLIC_URL}/sw.js`;
+    if(isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
 
@@ -46,11 +44,12 @@ export function register(config) {
               'worker. To learn more, visit https://bit.ly/CRA-PWA'
           );
         });
-      } else {
+    }
+    else {
         // Is not localhost. Just register service worker
+      console.info('[SW] Registering service worker');
         registerValidSW(swUrl, config);
       }
-    });
   }
 }
 
@@ -73,7 +72,7 @@ function registerValidSW(swUrl, config) {
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
               console.info(
-                'New content is available and will be used when all ' +
+                '[SW] New content is available and will be used when all ' +
                   'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
               );
 
@@ -85,7 +84,7 @@ function registerValidSW(swUrl, config) {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
-              console.info('Content is cached for offline use.');
+              console.info('[SW] Content is cached for offline use.');
 
               // Execute callback
               if (config && config.onSuccess) {
@@ -97,7 +96,7 @@ function registerValidSW(swUrl, config) {
       };
     })
     .catch(error => {
-      console.error('Error during service worker registration:', error);
+      console.error('[SW] Error during service worker registration:', error);
     });
 }
 

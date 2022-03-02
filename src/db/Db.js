@@ -19,7 +19,7 @@ let eventCollection = null;
 
 const createDb = async () => {
   db = await RxDB.create({name: Config.environmentConfig, adapter: 'idb', ignoreDuplicate: true});
-  console.info('[Db] created database');
+  console.info('[DB] Created database');
   return db;
 }
 
@@ -46,7 +46,7 @@ const createTeamCollection = async () => {
       schema: teamSchema
     });
   });
-  console.info('[Db] created collection teams');
+  console.info('[DB] Created collection teams');
   return teamCollection;
 }
 
@@ -60,7 +60,7 @@ const createRecordCollection = async () => {
       schema: recordSchema
     });
   });
-  console.info('[Db] created collection records');
+  console.info('[DB] Created collection records');
   return recordCollection;
 }
 
@@ -74,7 +74,7 @@ const createProcessCollection = async () => {
       schema: processSchema
     });
   });
-  console.info('[Db] created collection processes');
+  console.info('[DB] Created collection processes');
   return processCollection;
 }
 
@@ -88,7 +88,7 @@ const createTbaMatchCollection = async () => {
       schema: tbaMatchSchema
     });
   });
-  console.info('[Db] created collection tbaMatches');
+  console.info('[DB] Created collection tbaMatches');
   return tbaMatchCollection;
 }
 
@@ -102,7 +102,7 @@ const createEventCollection = async () => {
       schema: eventSchema
     });
   });
-  console.info('[Db] created collection events');
+  console.info('[DB] Created collection events');
   return eventCollection;
 }
 

@@ -34,6 +34,7 @@ export default class CodeEditor extends React.Component {
       <Box display='flex' mb={3} height='100%' border={1} borderColor='grey.500' textAlign='left'>
         <CodeMirror
           ref='codeMirror'
+          autoScroll
           value={this.state.currStr}
           onBeforeChange={(editor, data, value) => {this.setState({currStr: value})}}
           onChange={(editor, data, value) => {if(typeof this.props.onChange === 'function') {this.props.onChange(value)}}}
@@ -63,7 +64,8 @@ export default class CodeEditor extends React.Component {
             foldGutter: true,
             gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
             tabSize: 2,
-            lineNumbers: true
+            lineNumbers: true,
+            lineWrapping: false
           }}
         />
       </Box>
