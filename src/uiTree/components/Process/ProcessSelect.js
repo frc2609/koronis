@@ -13,6 +13,7 @@ import tableIcons from 'config/Table';
 import ProcessCard from 'uiTree/components/Process/ProcessCard';
 
 const moment = require('moment');
+const deepCopy = require('deep-copy');
 
 export default class ProcessSelect extends React.Component {
   constructor(props) {
@@ -133,8 +134,12 @@ export default class ProcessSelect extends React.Component {
               sorting: true
             }}
             onSelectionChange={(rows) => {
-              this.setState({selectedProcesses: rows});
-              if(typeof this.props.onSelect === 'function') {this.props.onSelect(rows)}
+              let returnRows = deepCopy(rows);
+              for(let i = 0;i < returnRows.length;i++) {
+                delete returnRows[i].tableData;
+              }
+              this.setState({selectedProcesses: returnRows});
+              if(typeof this.props.onSelect === 'function') {this.props.onSelect(returnRows)}
             }}
             body={{
               emptyDataSourceMessage: 'No processes to display'

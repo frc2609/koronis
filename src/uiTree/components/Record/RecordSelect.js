@@ -13,6 +13,7 @@ import tableIcons from 'config/Table';
 import RecordCard from 'uiTree/components/Record/RecordCard';
 
 const moment = require('moment');
+const deepCopy = require('deep-copy');
 
 export default class RecordSelect extends React.Component {
   constructor(props) {
@@ -130,7 +131,7 @@ export default class RecordSelect extends React.Component {
                   render: (r) => {return r.comments.length <= 50 ? r.comments : r.comments.substr(0,50) + '...'}
                 }
               ]}
-              data={this.props.tableRecords}
+              data={this.state.tableRecords}
               options={{
                 selection: true,
                 selectionProps: (rowData) => {
@@ -141,8 +142,12 @@ export default class RecordSelect extends React.Component {
                 sorting: true
               }}
               onSelectionChange={(rows) => {
-                this.setState({selectedRecords: rows});
-                if(typeof this.props.onSelect === 'function') {this.props.onSelect(rows)}
+                let returnRows = deepCopy(rows);
+                for(let i = 0;i < returnRows.length;i++) {
+                  delete returnRows[i].tableData;
+                }
+                this.setState({selectedRecords: returnRows});
+                if(typeof this.props.onSelect === 'function') {this.props.onSelect(returnRows)}
               }}
             />
           </Box>
