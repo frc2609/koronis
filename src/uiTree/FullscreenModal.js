@@ -27,9 +27,12 @@ export default class FullscreenModal extends React.Component {
   close() {
     this.setState({open: false});
   }
+  isPWA() {
+    return (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://');
+  }
   componentDidMount() {
     if(!((window.screen.availHeight || window.screen.height - 30) <= window.innerHeight) && !Layout.isLarge()) {
-      let isPWA = window.matchMedia('(display-mode: standalone)').matches;
+      let isPWA = this.isPWA();
       this.setState({
         fullscreen: isPWA,
         open: !isPWA
@@ -37,7 +40,7 @@ export default class FullscreenModal extends React.Component {
     }
     document.documentElement.onfullscreenchange = (event) => {
       let isFullscreen = document.fullscreenElement === event.target;
-      if(window.matchMedia('(display-mode: standalone)').matches) {
+      if(this.isPWA()) {
         isFullscreen = true;
       }
       this.setState({fullscreen: isFullscreen, open: !isFullscreen});
