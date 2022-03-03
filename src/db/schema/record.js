@@ -18,7 +18,8 @@ export const recordSchema = {
       index: true
     },
     digitalSignature: {
-      type: 'string'
+      type: 'string',
+      default: ''
     },
     changeLog: {
       type: 'array',

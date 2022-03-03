@@ -448,6 +448,12 @@ export default class RecordEngine extends React.Component {
     });
   }
   componentDidMount() {
+    if(typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.lock === 'function') {
+      try {
+        window.screen.orientation.lock('landscape');
+      }
+      catch(err) {}
+    }
     this.init();
     this.resize();
     this.refs.controlBar.matchStateOpen();
@@ -458,6 +464,12 @@ export default class RecordEngine extends React.Component {
     window.addEventListener('resize', this.resizeListener);
   }
   componentWillUnmount() {
+    if(typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.unlock === 'function') {
+      try {
+        window.screen.orientation.unlock();
+      }
+      catch(err) {}
+    }
     window.removeEventListener('resize', this.resizeListener);
   }
   render() {

@@ -23,6 +23,7 @@ export const saveProcess = async (inYear = -1, inQueryType = 'record', inDataTyp
     catch(err) {
       console.info('Secret key is not available. Login is needed.');
       console.error(err);
+      obj.digitalSignature = '';
     }
     if(typeof obj.changeLog === 'undefined') {
       obj.changeLog = [];

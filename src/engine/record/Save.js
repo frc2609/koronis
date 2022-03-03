@@ -40,6 +40,7 @@ export const saveRecord = async (gameStateDefinition, matchState, engineState, e
     catch(err) {
       console.info('Secret key is not available. Login is needed.');
       console.error(err);
+      obj.digitalSignature = '';
     }
     obj.changeLog = [{
       id: obj.id,
