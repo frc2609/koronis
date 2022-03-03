@@ -119,19 +119,22 @@ class AnalyzeTeam extends React.Component {
     if(this.state.tab === 'metric' || this.state.tab === 'mchart') {
       processQueryObj.dataType = 'metric';
     }
-    Interface.getProcesses(processQueryObj).then((procs) => {
+    Interface.getProcesses(processQueryObj, [{ title: 'asc' }]).then((procs) => {
       this.setState({
         selectedProcesses: procs
       });
     });
   }
-  showAll() {
-    this.getAllProcesses();
-    Interface.getRecords({year: Number(store.get('settings/currentYear')), teamNumber: Number(this.state.targetTeamNumber)}).then((recs) => {
+  getAllRecords() {
+    Interface.getRecords({year: Number(store.get('settings/currentYear')), teamNumber: Number(this.state.targetTeamNumber)}, [{ startDate: 'asc' }]).then((recs) => {
       this.setState({
         selectedRecords: recs
       });
     });
+  }
+  showAll() {
+    this.getAllProcesses();
+    this.getAllRecords();
   }
   tabHandler(event, value) {
     this.setState({tab: value, redirect: true});
@@ -140,11 +143,14 @@ class AnalyzeTeam extends React.Component {
     this.showAll();
   }
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.targetTeamNumber !== this.state.targetTeamNumber || !deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
-      this.runMetricProcess();
+    if(prevState.targetTeamNumber !== this.state.targetTeamNumber) {
+      this.getAllRecords();
     }
     if(prevState.tab !== this.state.tab) {
       this.getAllProcesses();
+    }
+    if(!deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
+      this.runMetricProcess();
     }
   }
   render() {

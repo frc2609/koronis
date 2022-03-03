@@ -45,6 +45,10 @@ export default class UpdateButton extends React.Component {
           this.reg = reg;
           window.dispatchEvent(swUpdateAvailable);
         }
+        if(reg.active !== null) {
+          this.reg = reg;
+          window.dispatchEvent(swOfflineReady);
+        }
       },
     });
   }

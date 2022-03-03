@@ -58,6 +58,7 @@ export default class Selector extends React.Component {
           }}
           selectedRecords={this.state.selectedRecords}
           singular={this.props.singularRecord}
+          queryBarName={this.props.queryBarName}
         />
         <ProcessSelectModal
           open={this.state.openProcessModal}
@@ -70,7 +71,6 @@ export default class Selector extends React.Component {
           }}
           selectedProcesses={this.state.selectedProcesses}
           singular={this.props.singularProcess}
-          queryBarName={this.props.queryBarName}
         />
         <ButtonGroup fullWidth>
           {this.props.showRecords ?

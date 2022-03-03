@@ -117,7 +117,7 @@ class AnalyzeRecord extends React.Component {
     if(this.state.tab === 'metric') {
       processQueryObj.dataType = 'metric';
     }
-    Interface.getProcesses(processQueryObj).then((procs) => {
+    Interface.getProcesses(processQueryObj, [{ title: 'asc' }]).then((procs) => {
       this.setState({
         selectedProcesses: procs
       });
@@ -125,7 +125,7 @@ class AnalyzeRecord extends React.Component {
   }
   showAll() {
     this.getAllProcesses();
-    Interface.getRecords({year: store.get('settings/currentYear')}).then((recs) => {
+    Interface.getRecords({year: store.get('settings/currentYear')}, [{ startDate: 'asc' }]).then((recs) => {
       this.setState({
         selectedRecords: recs
       });

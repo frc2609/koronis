@@ -11,6 +11,8 @@ import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 
+import * as ServiceWorker from 'ServiceWorkerRegistration';
+
 import SettingsItem from 'uiTree/Main/Settings/SettingsItem';
 
 import eruda from 'eruda';
@@ -111,7 +113,10 @@ export default class Settings extends React.Component {
                       Db.clear();
                       window.localStorage.clear();
                       window.sessionStorage.clear();
-                      window.location.reload();
+                      ServiceWorker.unregister();
+                      window.setTimeout(() => {
+                        window.location.reload();
+                      }, 1000);
                     }
                   });
                 }}
