@@ -1,7 +1,6 @@
 import * as User from 'auth/User';
 import * as Interface from 'db/Interface';
-import positionLogCompressorWorker from 'workerize-loader!engine/worker/PositionLogCompressor'; // eslint-disable-line import/no-webpack-loader-syntax
-const positionLogCompressorInstance = new positionLogCompressorWorker();
+import { positionLogCompressorInstance } from 'engine/worker/WorkerInstances';
 
 export const saveRecord = async (gameStateDefinition, matchState, engineState, eventLog, positionLog) => {
   try {

@@ -77,6 +77,19 @@ export default class ControlBar extends React.Component {
   update() {
     this.setState({status: this.props.status.statusState});
   }
+  keyUp(event) {
+    if(event.key === ' ') {
+      this.start();
+      event.preventDefault();
+    }
+  }
+  componentDidMount() {
+    this.keyUpListener = this.keyUp.bind(this);
+    window.addEventListener('keyup', this.keyUpListener);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.keyUpListener);
+  }
   render() {
     return (
       <Box style={{height:'12.5%'}}>

@@ -69,6 +69,18 @@ class AnalyzeRecord extends React.Component {
           if(rowData.matchType === 'sf') {ret = 'Semifinals';}
           if(rowData.matchType === 'f') {ret = 'Final';}
           return ret;
+        },
+        customFilterAndSearch: (term, rowData) => {
+          let ret = 'Test';
+          if(rowData.matchType === 't') {ret = 'Test';}
+          if(rowData.matchType === 'pf') {ret = 'Practice Field';}
+          if(rowData.matchType === 'pm') {ret = 'Practice Match';}
+          if(rowData.matchType === 'qm') {ret = 'Qualification';}
+          if(rowData.matchType === 'ef') {ret = 'Eighth-finals';}
+          if(rowData.matchType === 'qf') {ret = 'Quarterfinals';}
+          if(rowData.matchType === 'sf') {ret = 'Semifinals';}
+          if(rowData.matchType === 'f') {ret = 'Final';}
+          return term.toLowerCase() === ret.toLowerCase();
         }
       },
       {field: 'matchNumber', title: 'Match Number', sortable: true},
@@ -117,7 +129,7 @@ class AnalyzeRecord extends React.Component {
     if(this.state.tab === 'metric') {
       processQueryObj.dataType = 'metric';
     }
-    Interface.getProcesses(processQueryObj, [{ title: 'asc' }]).then((procs) => {
+    Interface.getProcesses(processQueryObj, 'title').then((procs) => {
       this.setState({
         selectedProcesses: procs
       });
@@ -125,7 +137,7 @@ class AnalyzeRecord extends React.Component {
   }
   showAll() {
     this.getAllProcesses();
-    Interface.getRecords({year: store.get('settings/currentYear')}, [{ startDate: 'asc' }]).then((recs) => {
+    Interface.getRecords({year: store.get('settings/currentYear')}, 'startDate').then((recs) => {
       this.setState({
         selectedRecords: recs
       });
@@ -233,6 +245,7 @@ class AnalyzeRecord extends React.Component {
                         data={this.state.data}
                         options={{
                           exportButton: true,
+                          sorting: true,
                           filtering: true,
                           doubleHorizontalScroll: true
                         }}

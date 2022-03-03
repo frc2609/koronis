@@ -119,6 +119,18 @@ export default class RecordSelect extends React.Component {
                     if(rowData.matchType === 'sf') {ret = 'Semifinals';}
                     if(rowData.matchType === 'f') {ret = 'Final';}
                     return ret;
+                  },
+                  customFilterAndSearch: (term, rowData) => {
+                    let ret = 'Test';
+                    if(rowData.matchType === 't') {ret = 'Test';}
+                    if(rowData.matchType === 'pf') {ret = 'Practice Field';}
+                    if(rowData.matchType === 'pm') {ret = 'Practice Match';}
+                    if(rowData.matchType === 'qm') {ret = 'Qualification';}
+                    if(rowData.matchType === 'ef') {ret = 'Eighth-finals';}
+                    if(rowData.matchType === 'qf') {ret = 'Quarterfinals';}
+                    if(rowData.matchType === 'sf') {ret = 'Semifinals';}
+                    if(rowData.matchType === 'f') {ret = 'Final';}
+                    return term.toLowerCase() === ret.toLowerCase();
                   }
                 },
                 {field: 'matchNumber', title: 'Match Number', sortable: true},
@@ -139,7 +151,8 @@ export default class RecordSelect extends React.Component {
                     disabled: this.props.singular && this.state.selectedRecords.length > 0 && this.state.selectedRecords.findIndex((e) => {return e.id === rowData.id;}) === -1
                   }
                 },
-                sorting: true
+                sorting: true,
+                filtering: true
               }}
               onSelectionChange={(rows) => {
                 let returnRows = deepCopy(rows);

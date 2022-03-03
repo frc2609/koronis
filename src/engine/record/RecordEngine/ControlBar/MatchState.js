@@ -184,7 +184,7 @@ export default class MatchState extends React.Component {
                 variant='outlined'
                 multiline
                 fullWidth
-                rowsMax='5'
+                maxRows='5'
                 label='Comments'
                 placeholder='Enter Comments Here'
                 value={this.state.comments}

@@ -102,7 +102,7 @@ export default class ProcessSelect extends React.Component {
             columns={[
               {field: 'lastModified', title: 'Last Modified', sortable: true,
                 render: (rowData) => {
-                  return moment.unix(rowData.lastModified).format('MMM Do YYYY, HH:mm:ss')
+                  return moment.unix(rowData.lastModified).format('MMM Do YYYY')
                 }
               },
               {field: 'title', title: 'Title', sortable: true,
@@ -131,7 +131,8 @@ export default class ProcessSelect extends React.Component {
                   disabled: this.props.singular && this.state.selectedProcesses.length > 0 && this.state.selectedProcesses.findIndex((e) => {return e.id === rowData.id;}) === -1
                 }
               },
-              sorting: true
+              sorting: true,
+              filtering: true
             }}
             onSelectionChange={(rows) => {
               let returnRows = deepCopy(rows);

@@ -119,14 +119,14 @@ class AnalyzeTeam extends React.Component {
     if(this.state.tab === 'metric' || this.state.tab === 'mchart') {
       processQueryObj.dataType = 'metric';
     }
-    Interface.getProcesses(processQueryObj, [{ title: 'asc' }]).then((procs) => {
+    Interface.getProcesses(processQueryObj, 'title').then((procs) => {
       this.setState({
         selectedProcesses: procs
       });
     });
   }
   getAllRecords() {
-    Interface.getRecords({year: Number(store.get('settings/currentYear')), teamNumber: Number(this.state.targetTeamNumber)}, [{ startDate: 'asc' }]).then((recs) => {
+    Interface.getRecords({year: Number(store.get('settings/currentYear')), teamNumber: Number(this.state.targetTeamNumber)}, 'startDate').then((recs) => {
       this.setState({
         selectedRecords: recs
       });
@@ -245,6 +245,7 @@ class AnalyzeTeam extends React.Component {
                       data={this.state.recordsData}
                       options={{
                         exportButton: true,
+                        sorting: true,
                         filtering: true,
                         doubleHorizontalScroll: true
                       }}
@@ -258,6 +259,7 @@ class AnalyzeTeam extends React.Component {
                       data={this.state.metricsData}
                       options={{
                         exportButton: true,
+                        sorting: true,
                         filtering: true,
                         doubleHorizontalScroll: true
                       }}

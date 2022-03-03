@@ -54,7 +54,8 @@ export const processSchema = {
       type: 'string'
     },
     title: {
-      type: 'string'
+      type: 'string',
+      index: true
     },
     description: {
       type: 'string'

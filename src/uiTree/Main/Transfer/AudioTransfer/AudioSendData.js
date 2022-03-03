@@ -1,6 +1,6 @@
 import React from 'react';
 
-import serializerWorker from 'workerize-loader!engine/worker/Serializer'; // eslint-disable-line import/no-webpack-loader-syntax
+import { serializerInstance } from 'engine/worker/WorkerInstances';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import Selector from 'uiTree/components/Selector';
 import SendString from 'engine/transfer/audio/SendString';
 
-const serializerInstance = new serializerWorker();
 const deepCompare = require('fast-deep-equal');
 
 export default class AudioSendData extends React.Component {

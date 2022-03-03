@@ -1,14 +1,13 @@
 import React from 'react';
 
 import * as Interface from 'db/Interface';
-import serializerWorker from 'workerize-loader!engine/worker/Serializer'; // eslint-disable-line import/no-webpack-loader-syntax
+import { serializerInstance } from 'engine/worker/WorkerInstances';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
 import ReceiveString from 'engine/transfer/audio/ReceiveString';
 
-const serializerInstance = new serializerWorker();
 const deepCompare = require('fast-deep-equal');
 
 export default class AudioReceiveData extends React.Component {
