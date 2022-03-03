@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import Config from 'config/Config';
 
@@ -11,6 +12,53 @@ import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 
 import UpdateButton from 'uiTree/Main/Home/UpdateButton';
+
+class QuickStart extends React.Component {
+  render() {
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant='h6'>
+            Getting Started!
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={7}>
+              <Typography variant='body2' component='p'>
+                Get started with KSS by recording data. Read the wiki tutorials for a walkthrough of KSS.
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Button
+                    fullWidth
+                    variant='outlined'
+                    color='primary'
+                    onClick={() => { this.props.history.push('/wiki/tutorial/getting_started.md'); }}
+                  >
+                    Wiki Tutorial
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    onClick={() => { this.props.history.push('/record/record'); }}
+                  >
+                    Start Recording
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  }
+}
+
+const QuickStartRouter = withRouter(QuickStart);
 
 class DiscordJoin extends React.Component {
   render() {
@@ -71,14 +119,17 @@ export default class Home extends React.Component {
           <Grid item xs={6}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <DiscordJoin />
+                <QuickStartRouter />
+              </Grid>
+              <Grid item xs={12}>
+                <AppVer />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <AppVer />
+                <DiscordJoin />
               </Grid>
             </Grid>
           </Grid>
@@ -86,6 +137,9 @@ export default class Home extends React.Component {
       </Hidden>
       <Hidden mdUp>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <QuickStartRouter />
+          </Grid>
           <Grid item xs={12}>
             <DiscordJoin />
           </Grid>

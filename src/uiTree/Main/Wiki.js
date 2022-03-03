@@ -111,6 +111,7 @@ class Wiki extends React.Component {
                 </Typography>
               </Route>
               {this.state.wikiData.map((e, i) => {
+                if(e.md.length <= 0) { return null; }
                 return (
                   <Route key={i} exact path={'/wiki/' + e.url}>
                     <Breadcrumbs>
@@ -122,10 +123,22 @@ class Wiki extends React.Component {
                     </Breadcrumbs>
                     <ReactMarkdown
                       transformLinkUri={(src) => {
-                        return src.match(/^http[s]*:\/\//) ? src : '#' + Config.baseUrl + 'wiki/' + e.url.match(/^[^/]+\//)[0] + src;
+                        try {
+                          return src.match(/^http[s]*:\/\//) ? src : '#' + Config.baseUrl + 'wiki/' + e.url.match(/^[^/]+\//)[0] + src;
+                        }
+                        catch(err) {
+                          console.error(err);
+                          return src;
+                        }
                       }}
                       transformImageUri={(src) => {
-                        return src.match(/^http[s]*:\/\//) ? src : Config.wikiUrl + e.url.match(/^[^/]+\//)[0] + src;
+                        try {
+                          return src.match(/^http[s]*:\/\//) ? src : Config.wikiUrl + e.url.match(/^[^/]+\//)[0] + src;
+                        }
+                        catch(err) {
+                          console.error(err);
+                          return src;
+                        }
                       }}
                     >
                       {e.md}
