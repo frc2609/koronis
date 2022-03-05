@@ -29,7 +29,7 @@ const genNamespace = (inYear, uuidType) => {
 
 export const getSecret = async () => {
   let prevSecret = store.get('auth/user/secret');
-  if(typeof prevFingerprint === 'undefined') {
+  if(typeof prevFingerprint === 'undefined' && navigator.onLine) {
     prevSecret = await firebase.database().ref('/secrets/' + getUserId()).once('value');
     store.set('auth/user/secret', prevSecret);
   }
