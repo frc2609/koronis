@@ -1,3 +1,4 @@
+/*
 const ZstdCodec = require('zstd-codec').ZstdCodec;
 let zsimple = null;
 
@@ -14,6 +15,7 @@ let initZstd = () => {
     }
   });
 }
+*/
 
 let boolToBin = (inBool) => {
   return inBool ? [1] : [0];
@@ -383,17 +385,21 @@ let encodeArr = async (data) => {
       resBinArr.push(encodeProcess(data[i]));
     }
   }
+  /*
   let z = (await initZstd());
   let compressed = z.compress(Uint8Array.from(resBinArr.flat()), 15);
   return Array.from(compressed);
-  //return resBinArr.flat();
+  */
+  return resBinArr.flat();
 }
 
 let decodeArr = async (inBin) => {
+  /*
   let z = (await initZstd());
   let decompressed = z.decompress(Uint8Array.from(inBin));
   let bin = Array.from(decompressed);
-  //let bin = inBin;
+  */
+  let bin = inBin;
   let resArr = [];
   let arrLength = binStreamToInt(bin);
   for(let i = 0;i < arrLength;i++) {
