@@ -245,6 +245,7 @@ class AnalyzeTeam extends React.Component {
                       data={this.state.recordsData}
                       options={{
                         exportButton: true,
+                        exportAllData: true,
                         sorting: true,
                         filtering: true,
                         doubleHorizontalScroll: true
@@ -259,6 +260,7 @@ class AnalyzeTeam extends React.Component {
                       data={this.state.metricsData}
                       options={{
                         exportButton: true,
+                        exportAllData: true,
                         sorting: true,
                         filtering: true,
                         doubleHorizontalScroll: true

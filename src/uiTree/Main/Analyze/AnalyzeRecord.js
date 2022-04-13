@@ -245,6 +245,7 @@ class AnalyzeRecord extends React.Component {
                         data={this.state.data}
                         options={{
                           exportButton: true,
+                          exportAllData: true,
                           sorting: true,
                           filtering: true,
                           doubleHorizontalScroll: true
