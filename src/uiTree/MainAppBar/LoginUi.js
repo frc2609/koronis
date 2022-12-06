@@ -7,7 +7,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 import UserAvatar from 'uiTree/MainAppBar/LoginUi/UserAvatar';
 
-import firebase from 'auth/Firebase';
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider } from 'firebase/auth';
+import fbapp from 'auth/Firebase';
 import * as firebaseui from 'firebaseui';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
@@ -23,9 +24,9 @@ export default class LoginUi extends React.Component {
     this.uiConfig = {
       signInFlow: 'popup',
       signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
+        GoogleAuthProvider.PROVIDER_ID,
+        FacebookAuthProvider.PROVIDER_ID,
+        EmailAuthProvider.PROVIDER_ID
       ],
       credentialHelper: firebaseui.auth.CredentialHelper.YOLO,
       tosUrl: 'https://koronis-scouting-sys.flycricket.io/terms.html',
@@ -37,7 +38,7 @@ export default class LoginUi extends React.Component {
     this.unregisterAuthObserver = null;
   }
   componentDidMount() {
-    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
+    this.unregisterAuthObserver = getAuth(fbapp).onAuthStateChanged((user) => {
       this.setState({loggedIn: !!user})
     });
   }
@@ -57,7 +58,7 @@ export default class LoginUi extends React.Component {
             <Box mb={3}>
               <StyledFirebaseAuth
                 uiConfig={this.uiConfig}
-                firebaseAuth={firebase.auth()}
+                firebaseAuth={getAuth(fbapp)}
               />
             </Box>
           </DialogContent>

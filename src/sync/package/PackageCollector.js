@@ -1,7 +1,7 @@
 import Config from 'config/Config';
 import * as PackageInjector from 'sync/package/PackageInjector';
 
-const axios = require('axios');
+const axios = require('axios').default;
 const store = require('store');
 const deepcopy = require('deep-copy');
 

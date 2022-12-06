@@ -1,8 +1,8 @@
 import Config from 'config/Config';
 import * as Interface from 'db/Interface';
 
+const axios = require('axios').default;
 const store = require('store');
-const axios = require('axios');
 
 export const update = async () => {
   try {

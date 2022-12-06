@@ -1,11 +1,12 @@
 export const recordSchema = {
   title: 'record',
   version: 0,
+  primaryKey: 'id',
   type: 'object',
   properties: {
     id: {
       type: 'string',
-      primary: true
+      maxLength: 100
     },
     user: {
       type: 'string'
@@ -14,8 +15,7 @@ export const recordSchema = {
       type: 'integer'
     },
     lastModified: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     digitalSignature: {
       type: 'string',
@@ -51,21 +51,18 @@ export const recordSchema = {
       }
     },
     startDate: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     teamNumber: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     matchNumber: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     matchType: {
       type: 'string',
       enum: ['t', 'pf', 'pm', 'qm', 'ef', 'qf', 'sf', 'f'],
-      index: true
+      maxLength: 10
     },
     isRedAlliance: {
       type: 'boolean'
@@ -74,8 +71,7 @@ export const recordSchema = {
       type: 'string'
     },
     year: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     version: {
       type: 'number'
@@ -92,5 +88,13 @@ export const recordSchema = {
       }
     }
   },
-  required: []
+  required: [],
+  indexes: [
+    'lastModified',
+    'startDate',
+    'teamNumber',
+    'matchNumber',
+    'matchType',
+    'year'
+  ]
 };

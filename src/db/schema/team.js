@@ -1,16 +1,17 @@
 export const teamSchema = {
-  keyCompression: true,
   title: 'team',
   version: 0,
+  primaryKey: 'key',
   type: 'object',
   properties: {
     key: {
-      type: 'string' ,
-      primary: true
+      type: 'string',
+      maxLength: 100
     },
     teamNumber: {
       type: 'integer',
-      index: true
+      minimum: 0,
+      maximum: 100000
     },
     nickname: {
       type: 'string'
@@ -37,5 +38,8 @@ export const teamSchema = {
       type: 'integer'
     }
   },
-  required: []
+  required: [],
+  indexes: [
+    'teamNumber'
+  ]
 };

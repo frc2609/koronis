@@ -1,11 +1,12 @@
 export const tbaMatchSchema = {
   title: 'tbaMatch',
   version: 0,
+  primaryKey: 'key',
   type: 'object',
   properties: {
     key: {
       type: 'string',
-      primary: true
+      maxLength: 100
     },
     lastModified: {
       type: 'integer'
@@ -84,8 +85,7 @@ export const tbaMatchSchema = {
       type: 'integer'
     },
     actualTime: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     predictedTime: {
       type: 'integer'
@@ -108,5 +108,8 @@ export const tbaMatchSchema = {
       }
     }
   },
-  required: []
+  required: [],
+  indexes: [
+    'actualTime'
+  ]
 };

@@ -1,6 +1,8 @@
 import 'clientjs';
 
-import firebase from 'auth/Firebase';
+import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
+import fbapp from 'auth/Firebase';
 
 let CryptoJS = require('crypto-js');
 const store = require('store');
@@ -17,7 +19,7 @@ export const getFingerprint = () => {
 }
 
 export const getUserId = () => {
-  return firebase.auth().currentUser ? firebase.auth().currentUser.uid : '';
+  return getAuth(fbapp).currentUser ? getAuth(fbapp).currentUser.uid : '';
 }
 
 const genNamespace = (inYear, uuidType) => {
@@ -30,7 +32,7 @@ const genNamespace = (inYear, uuidType) => {
 export const getSecret = async () => {
   let prevSecret = store.get('auth/user/secret');
   if(typeof prevFingerprint === 'undefined' && navigator.onLine) {
-    prevSecret = await firebase.database().ref('/secrets/' + getUserId()).once('value');
+    prevSecret = await getDatabase(fbapp).ref('/secrets/' + getUserId()).once('value');
     store.set('auth/user/secret', prevSecret);
   }
   return prevSecret;
@@ -79,7 +81,7 @@ export const genProcessDS = async (inYear, inQueryType, inDataType, inName, inTi
   ).toString(CryptoJS.enc.Base64);
 }
 
-firebase.auth().onAuthStateChanged((user) => {
+getAuth(fbapp).onAuthStateChanged((user) => {
   if(user) {
     getSecret().then((val) => {
       console.info('[Auth] Got user secret key for digital signatures');
@@ -89,5 +91,5 @@ firebase.auth().onAuthStateChanged((user) => {
 
 export const logout = async () => {
   store.remove('auth/user/secret');
-  await firebase.auth().signOut();
+  await getAuth(fbapp).signOut();
 }

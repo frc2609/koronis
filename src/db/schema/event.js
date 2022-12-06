@@ -1,11 +1,12 @@
 export const eventSchema = {
   title: 'event',
   version: 0,
+  primaryKey: 'key',
   type: 'object',
   properties: {
     key: {
       type: 'string',
-      primary: true
+      maxLength: 100
     },
     nickname: {
       type: 'string'
@@ -14,20 +15,16 @@ export const eventSchema = {
       type: 'string'
     },
     year: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     week: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     startDate: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     endDate: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     lat: {
       type: 'number'
@@ -42,5 +39,11 @@ export const eventSchema = {
       }
     }
   },
-  required: []
+  required: [],
+  indexes: [
+    'year',
+    'week',
+    'startDate',
+    'endDate'
+  ]
 };

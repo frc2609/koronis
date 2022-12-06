@@ -1,9 +1,9 @@
 import * as Color from 'config/Color';
+import Interpreter from 'js-interpreter';
 
 const deepcopy = require('deep-copy');
-const safeEval = require('notevil');
 
-export function runProcess(inElem, inRecords, inProcess, secure = false) {
+export function runProcess(inElem, inRecords, inProcess, secure = false, maxTime = 1000) {
   const moment = require('moment');
   let d3 = require('d3');
   const chart = require('chart.js');
@@ -52,7 +52,7 @@ export function runProcess(inElem, inRecords, inProcess, secure = false) {
     }
   }
   try {
-    if(!secure) {
+    if(secure) {
       /* eslint-disable */
       func = new Function(
         'moment',
@@ -92,32 +92,23 @@ export function runProcess(inElem, inRecords, inProcess, secure = false) {
         warn: (v) => {},
         error: (v) => {}
       };
-      func = safeEval.Function(
-        'moment',
-        'd3',
-        'chart',
-        'plotly',
-        'tabulator',
-        'color',
-        'console',
-        'returnData',
-        'data',
-        'targetElement',
-        '\"use strict\";' + inProcess.function
-      );
       if(inProcess.dataType !== 'chart') {
-        func = safeEval.Function(
-          'console',
-          'data',
-          '\"use strict\";' + inProcess.function
-        );
+        func = new Interpreter(`
+"use strict";
+let data = ${JSON.stringify(inputRecord)};
+(() => {
+${inProcess.function}
+})();
+`);
       }
       /* eslint-enable */
-      if(inProcess.dataType !== 'chart') {
-        ret.value = func(consoleTmp, inputRecord);
-      }
       else {
-        ret.value = func(moment, d3, chart, plotly, tabulator, color, consoleTmp, ret, inputRecord, inElem);
+        throw new Error('Processes with data type of chart must be marked as secure before execution!');
+      }
+      if(inProcess.dataType !== 'chart') {
+        let startDate = Date.now();
+        while(Date.now() < startDate + maxTime && !func.step()) {}
+        ret.value = func.value;
       }
     }
     //Filter out non number results and standardize on NaN as a non number result

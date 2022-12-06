@@ -1,11 +1,6 @@
-import * as firebase from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 
-import 'firebase/analytics';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/functions';
-
-let firebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyDZWG3KLryn_4wIOCXf7SgJJPItFwSBW6Q',
   authDomain: 'koronis-scouting-system.firebaseapp.com',
   databaseURL: 'https://koronis-scouting-system.firebaseio.com',
@@ -16,7 +11,6 @@ let firebaseConfig = {
   measurementId: 'G-62Y7LD3Y72'
 };
 
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+const fbapp = initializeApp(firebaseConfig);
 
-export default firebase;
+export default fbapp;

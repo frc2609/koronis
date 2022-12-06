@@ -1,5 +1,5 @@
 firebase_build:
-  image: node:12.18.2-buster
+  image: node:18
   stage: build
   cache:
     paths:
@@ -27,22 +27,13 @@ firebase:
     - master
 
 pages:
-  image: node:12.18.2-buster
+  image: node:18
   stage: deploy
   script:
-    - rm -rf *
-    - mkdir public
-    - cd public
-    - mkdir dev
-    - cd ..
-    - git clone -b dev https://gitlab.com/koronis-scouting-system/kss-client dev
-    - cd dev
     - npm install
     - CI=false npm run devbuild
-    - cd ..
-    - mv dev/build/* public/dev
   artifacts:
     paths:
-      - public
+      - build
   only:
     - dev

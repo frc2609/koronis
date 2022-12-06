@@ -1,11 +1,12 @@
 export const processSchema = {
   title: 'process',
   version: 0,
+  primaryKey: 'id',
   type: 'object',
   properties: {
     id: {
       type: 'string',
-      primary: true
+      maxLength: 100
     },
     user: {
       type: 'string'
@@ -14,8 +15,7 @@ export const processSchema = {
       type: 'integer'
     },
     lastModified: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     digitalSignature: {
       type: 'string',
@@ -39,8 +39,7 @@ export const processSchema = {
       }
     },
     year: {
-      type: 'integer',
-      index: true
+      type: 'integer'
     },
     queryType: {
       type: 'string',
@@ -55,7 +54,7 @@ export const processSchema = {
     },
     title: {
       type: 'string',
-      index: true
+      maxLength: 1000
     },
     description: {
       type: 'string'
@@ -78,5 +77,10 @@ export const processSchema = {
       }
     }
   },
-  required: []
+  required: [],
+  indexes: [
+    'lastModified',
+    'year',
+    'title'
+  ]
 };
