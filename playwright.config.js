@@ -15,7 +15,7 @@ const { devices } = require('@playwright/test');
 const config = {
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 10 * 60 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -27,19 +27,17 @@ const config = {
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
+  /* Retry in CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  webServer: {
-    command: 'npm run start',
-    url: 'https://localhost:3000',
-    ignoreHTTPSErrors: true,
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
+  reporter: [
+    [
+      'html',
+      { open: process.env.CI ? 'never' : 'always' }
+    ]
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -48,69 +46,83 @@ const config = {
     baseURL: 'https://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'Desktop Chrome',
       use: {
         ...devices['Desktop Chrome'],
+        viewport: {
+          height: 1080,
+          width: 1980
+        }
       },
     },
 
     {
-      name: 'firefox',
+      name: 'Desktop Firefox',
       use: {
         ...devices['Desktop Firefox'],
+        viewport: {
+          height: 1080,
+          width: 1980
+        }
       },
     },
 
     {
-      name: 'webkit',
+      name: 'Desktop Safari',
       use: {
         ...devices['Desktop Safari'],
+        viewport: {
+          height: 1080,
+          width: 1980
+        }
+      },
+    },
+    {
+      name: 'Tablet Landscape Chrome',
+      use: {
+        ...devices['Galaxy Tab S4 landscape'],
+      },
+    },
+    {
+      name: 'Tablet Portrait Chrome',
+      use: {
+        ...devices['Galaxy Tab S4'],
       },
     },
 
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
-    //   },
-    // },
+    {
+      name: 'Mobile Chrome',
+      use: {
+        ...devices['Pixel 5'],
+      },
+    },
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 12'],
+      },
+    },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
+  outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
+  webServer: {
+    command: 'npm run start',
+    url: 'https://localhost:3000',
+    ignoreHTTPSErrors: true,
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI,
+  },
 };
 
 module.exports = config;

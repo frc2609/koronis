@@ -25,9 +25,20 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>KSS</title>
+    <script>
+      //Dummy code to allow testing on webkit
+      if(!window.AudioContext && !window.webkitAudioContext) {
+        class AudioContext {
+          createAnalyser() {}
+        };
+        window.AudioContext = AudioContext;
+      }
+    </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <p>You need to enable JavaScript to run KSS!</p>
+    </noscript>
     <div id="root"></div>
   </body>
 </html>

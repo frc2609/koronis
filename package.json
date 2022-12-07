@@ -9,7 +9,9 @@
     "build": "cross-env REACT_APP_ENV=production react-scripts --max_old_space_size=4096 --openssl-legacy-provider build",
     "build-dev": "cross-env REACT_APP_ENV=development react-scripts --max_old_space_size=4096 --openssl-legacy-provider build",
     "test": "playwright test",
-    "test-report": "playwright show-report"
+    "test-update": "playwright test --update-snapshots",
+    "test-report": "playwright show-report",
+    "test-codegen": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on https://localhost:3000 && playwright codegen https://localhost:3000 --ignore-https-errors\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -84,9 +86,11 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
+    "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "react-error-overlay": "6.0.9",
     "source-map-explorer": "^2.4.2",
+    "wait-on": "^6.0.1",
     "workerize-loader": "^1.1.0"
   }
 }

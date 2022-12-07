@@ -1,6 +1,7 @@
 import { createRxDatabase, removeRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/dexie';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
+import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
 
 import Config from 'config/Config';
 
@@ -11,6 +12,7 @@ import { tbaMatchSchema } from 'db/schema/tbaMatch';
 import { eventSchema } from 'db/schema/event';
 
 addRxPlugin(RxDBQueryBuilderPlugin);
+addRxPlugin(RxDBUpdatePlugin);
 
 let db = null;
 let teamCollection = null;

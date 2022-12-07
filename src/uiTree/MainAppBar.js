@@ -60,14 +60,14 @@ export default class MainAppBar extends React.Component {
             <Box flexGrow={1} />
             {this.state.syncIndicator ?
               <Box m={2}>
-                <SyncIcon className='rotate' />
+                <SyncIcon aria-label='sync-status' className='rotate' />
               </Box>
             :
               <></>
             }
             {!this.state.onlineStatus ?
               <Box m={2}>
-                <CloudOffIcon />
+                <CloudOffIcon aria-label='offline-status' />
               </Box>
             :
               <></>
