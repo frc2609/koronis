@@ -41,6 +41,7 @@ test:
     - npx playwright install --with-deps
     - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
+    when: on_failure
     paths:
       - test-results
       - playwright-report
