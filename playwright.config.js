@@ -21,7 +21,7 @@ const config = {
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000
+    timeout: 5 * 1000
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -120,7 +120,7 @@ const config = {
     command: 'npm run start',
     url: 'https://localhost:3000',
     ignoreHTTPSErrors: true,
-    timeout: 120 * 1000,
+    timeout: 10 * 60 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 };
