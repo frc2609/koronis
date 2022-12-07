@@ -1,4 +1,6 @@
 image: node:18
+variables:
+  NODE_OPTIONS: "--openssl-legacy-provider"
 stages:
   - install
   - build
@@ -32,6 +34,8 @@ firebase_build:
 test:
   image: mcr.microsoft.com/playwright:v1.28.0-focal
   stage: test
+  variables:
+    NODE_OPTIONS: ""
   parallel: 10
   script:
     - npx playwright install --with-deps

@@ -5,9 +5,9 @@
   "homepage": ".",
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "cross-env REACT_APP_ENV=development HTTPS=true react-scripts --max_old_space_size=4096 --openssl-legacy-provider start",
-    "build": "cross-env REACT_APP_ENV=production react-scripts --max_old_space_size=4096 --openssl-legacy-provider build",
-    "build-dev": "cross-env REACT_APP_ENV=development react-scripts --max_old_space_size=4096 --openssl-legacy-provider build",
+    "start": "cross-env REACT_APP_ENV=development HTTPS=true react-scripts --max_old_space_size=4096 start",
+    "build": "cross-env REACT_APP_ENV=production react-scripts --max_old_space_size=4096 build",
+    "build-dev": "cross-env REACT_APP_ENV=development react-scripts --max_old_space_size=4096 build",
     "test": "playwright test",
     "test-update": "playwright test --update-snapshots",
     "test-report": "playwright show-report",
