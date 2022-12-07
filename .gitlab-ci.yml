@@ -31,7 +31,7 @@ pages:
   stage: deploy
   script:
     - npm install
-    - CI=false npm run devbuild
+    - CI=false npm run build-dev
   artifacts:
     paths:
       - build
