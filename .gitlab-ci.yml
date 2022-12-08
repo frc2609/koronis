@@ -36,10 +36,23 @@ test:
   stage: test
   variables:
     NODE_OPTIONS: ""
-  parallel: 24
+  parallel:
+    matrix:
+      - PROJECT:
+          - Desktop Chrome
+          - Desktop Firefox
+          - Desktop Safari
+          - Tablet Landscape Chrome
+          - Tablet Portrait Chrome
+          - Mobile Landscape Chrome
+          - Mobile Portrait Chrome
+          - Mobile Landscape Safari
+          - Mobile Portrait Safari
+        SHARD_INDEX: [1,2,3]
+        SHARD_TOTAL: 3
   script:
     - npx playwright install --with-deps
-    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+    - npx playwright test --project=$PROJECT --shard=$SHARD_INDEX/$SHARD_TOTAL
   artifacts:
     when: on_failure
     paths:
