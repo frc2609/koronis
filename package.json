@@ -7,6 +7,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "cross-env REACT_APP_ENV=development REACT_APP_DISABLE_SW=true craco --max_old_space_size=4096 start",
     "start-pwa": "cross-env REACT_APP_ENV=development craco --max_old_space_size=4096 start",
+    "start-test": "cross-env REACT_APP_ENV=development HTTPS=true craco --max_old_space_size=4096 start",
     "build": "cross-env REACT_APP_ENV=production craco --max_old_space_size=4096 build",
     "build-dev": "cross-env REACT_APP_ENV=development craco --max_old_space_size=4096 build",
     "test": "playwright test",

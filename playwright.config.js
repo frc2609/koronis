@@ -30,7 +30,7 @@ const config = {
   /* Retry in CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : '90%',
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     [
@@ -43,7 +43,7 @@ const config = {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
@@ -52,6 +52,7 @@ const config = {
 
   /* Configure projects for major browsers */
   projects: [
+    /* Test against desktop viewports. */
     {
       name: 'Desktop Chrome',
       use: {
@@ -62,7 +63,6 @@ const config = {
         }
       },
     },
-
     {
       name: 'Desktop Firefox',
       use: {
@@ -73,7 +73,6 @@ const config = {
         }
       },
     },
-
     {
       name: 'Desktop Safari',
       use: {
@@ -84,6 +83,8 @@ const config = {
         }
       },
     },
+
+    /* Test against mobile tablet viewports. */
     {
       name: 'Tablet Landscape Chrome',
       use: {
@@ -129,10 +130,11 @@ const config = {
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run start-pwa',
-    url: 'http://localhost:3000',
+    command: 'npm run start-test',
+    url: 'https://localhost:3000',
     timeout: 10 * 60 * 1000,
     reuseExistingServer: !process.env.CI,
+    ignoreHTTPSErrors: true
   },
 };
 

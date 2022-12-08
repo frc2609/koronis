@@ -29,7 +29,7 @@ export const update = () => {
 
 export const init = () => {
   window.addEventListener('online', update);
-  window.addEventListener('offline', () => {window.dispatchEvent(syncEndEvent)});
-  window.setInterval(update, 5*60*1000); //Update every 5 miniutes
+  window.addEventListener('offline', () => { window.dispatchEvent(syncEndEvent); });
+  window.setInterval(update, 10*60*1000); //Update every 10 minutes
   update();
 }

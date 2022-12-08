@@ -7,6 +7,15 @@ test('Top level hamburger menu works', async ({ page }) => {
   await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
+  //Navigating to settings page
+  await page.getByRole('button', { name: 'menu' }).click();
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await expect(page.getByRole('button', { name: 'Clear All Data' })).toBeVisible();
+  //Settings page has loaded
+  await page.locator('label:has-text("Current Year") ~ div > div').click();
+  await page.getByRole('option', { name: '1 Test' }).click();
+  await expect(page).toHaveScreenshot('settings.png', { maxDiffPixelRatio: 0.025 });
+
   //Navigating to record page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Record' }).click();
@@ -41,13 +50,4 @@ test('Top level hamburger menu works', async ({ page }) => {
   await expect(page.getByText('Offline ready KSS Wiki. Data is synced from wiki.koronis.cc.')).toBeVisible();
   //Wiki page has loaded
   await expect(page).toHaveScreenshot('wiki.png', { maxDiffPixelRatio: 0.025 });
-
-  //Navigating to settings page
-  await page.getByRole('button', { name: 'menu' }).click();
-  await page.getByRole('button', { name: 'Settings' }).click();
-  await expect(page.getByRole('button', { name: 'Clear All Data' })).toBeVisible();
-  //Settings page has loaded
-  await page.locator('label:has-text("Current Year") ~ div > div').click();
-  await page.getByRole('option', { name: '1 Test' }).click();
-  await expect(page).toHaveScreenshot('settings.png', { maxDiffPixelRatio: 0.025 });
 });

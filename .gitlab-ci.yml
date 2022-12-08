@@ -48,11 +48,9 @@ test:
           - Mobile Portrait Chrome
           - Mobile Landscape Safari
           - Mobile Portrait Safari
-        SHARD_INDEX: [1,2,3]
-        SHARD_TOTAL: 3
   script:
     - npx playwright install --with-deps
-    - npx playwright test --project=$PROJECT --shard=$SHARD_INDEX/$SHARD_TOTAL
+    - npx playwright test --project=$PROJECT
   artifacts:
     when: on_failure
     paths:

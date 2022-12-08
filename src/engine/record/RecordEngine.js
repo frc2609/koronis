@@ -450,7 +450,7 @@ export default class RecordEngine extends React.Component {
   componentDidMount() {
     if(typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.lock === 'function') {
       try {
-        window.screen.orientation.lock('landscape');
+        window.screen.orientation.lock('landscape').catch(err => {});
       }
       catch(err) {}
     }
@@ -466,7 +466,7 @@ export default class RecordEngine extends React.Component {
   componentWillUnmount() {
     if(typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.unlock === 'function') {
       try {
-        window.screen.orientation.unlock();
+        window.screen.orientation.unlock().catch(err => {});
       }
       catch(err) {}
     }
