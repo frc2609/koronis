@@ -71,7 +71,11 @@ export default class UpdateButton extends React.Component {
           <>
             <Grid item xs={12}>
               <Typography variant='body2' component='p'>
-                Caching app for offline functionality...
+                {process.env.REACT_APP_DISABLE_SW !== 'true' ?
+                  'Caching app for offline functionality...'
+                :
+                  'App caching is disabled for development purposes.'
+                }
               </Typography>
             </Grid>
           </>
