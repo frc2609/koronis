@@ -74,7 +74,7 @@ export default class UpdateButton extends React.Component {
                 {process.env.REACT_APP_DISABLE_SW !== 'true' ?
                   'Caching app for offline functionality...'
                 :
-                  'App caching is disabled for development purposes.'
+                  'Offline mode is disabled for development purposes.'
                 }
               </Typography>
             </Grid>

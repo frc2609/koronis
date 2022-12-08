@@ -47,6 +47,7 @@ const config = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
+    ignoreHTTPSErrors: true
   },
 
   /* Configure projects for major browsers */
@@ -107,6 +108,18 @@ const config = {
       name: 'Mobile Safari',
       use: {
         ...devices['iPhone 12'],
+      },
+    },
+    {
+      name: 'Mobile Landscape Chrome',
+      use: {
+        ...devices['Pixel 5 landscape'],
+      },
+    },
+    {
+      name: 'Mobile Landscape Safari',
+      use: {
+        ...devices['iPhone 12 landscape'],
       },
     },
   ],

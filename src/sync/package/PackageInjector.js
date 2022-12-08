@@ -1,6 +1,5 @@
 const store = require('store');
 
-//Currently not being used
 export const inject = (inYear) => {
   console.info('[Package] Injecting test package');
   let botStateDefinition = {

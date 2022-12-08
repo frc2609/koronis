@@ -10,7 +10,6 @@ export const init = () => {
   window.d = () => {
     let debugData = client.getBrowserData();
     console.log('=======DEBUG DATA=======');
-    console.table(debugData);
     console.log(JSON.stringify(debugData));
     console.log('=======DEBUG DATA=======');
     copy(JSON.stringify(debugData));

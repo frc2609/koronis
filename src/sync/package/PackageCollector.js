@@ -105,6 +105,9 @@ export const get = async () => {
   }
   let result = {};
   result.availableYears = store.get('package/availableYears');
+  if(!Array.isArray(result.availableYears)) {
+    result.availableYears = [];
+  }
   for(let i = 0;i < result.availableYears.length;i++) {
     let currYear = result.availableYears[i];
     result[currYear] = {};
@@ -125,7 +128,7 @@ export const getByYear = async (inYear) => {
   }
   let result = {};
   let availableYears = store.get('package/availableYears');
-  for(let i = 0;i < availableYears.length;i++) {
+  for(let i = 0;Array.isArray(availableYears) && i < availableYears.length;i++) {
     let currYear = availableYears[i];
     if(store.get('package/' + currYear + '/gameStateDefinition').gameState.year === inYear) {
       result.botStateDefinition = store.get('package/' + currYear + '/botStateDefinition');
@@ -146,7 +149,7 @@ export const getYears = async () => {
   }
   let result = [];
   let availableYears = store.get('package/availableYears');
-  for(let i = 0;i < availableYears.length;i++) {
+  for(let i = 0;Array.isArray(availableYears) && i < availableYears.length;i++) {
     let currYear = availableYears[i];
     result.push(store.get('package/' + currYear + '/gameStateDefinition').gameState.year);
   }
@@ -159,7 +162,7 @@ export const getGameStates = async () => {
   }
   let result = [];
   let availableYears = store.get('package/availableYears');
-  for(let i = 0;i < availableYears.length;i++) {
+  for(let i = 0;Array.isArray(availableYears) && i < availableYears.length;i++) {
     let currYear = availableYears[i];
     result.push(deepcopy(store.get('package/' + currYear + '/gameStateDefinition').gameState));
   }

@@ -1,7 +1,7 @@
 import Config from 'config/Config';
 
+const axios = require('axios').default;
 const store = require('store');
-const axios = require('axios');
 const deepCompare = require('fast-deep-equal');
 
 const parseLine = (line) => {
@@ -18,6 +18,7 @@ export const parseNav = async () => {
   }
   catch(err) {
     console.info('[Wiki] Could not connect to wiki');
+    console.error(err);
     return null;
   }
   let arr = [];

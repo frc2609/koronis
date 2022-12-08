@@ -2,8 +2,8 @@ import * as Interface from 'db/Interface';
 import Config from 'config/Config';
 import * as TbaKey from 'sync/tba/TbaKey';
 
+const axios = require('axios').default;
 const store = require('store');
-const axios = require('axios');
 
 export const update = async () => {
   try {

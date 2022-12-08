@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('Top level hamburger menu works', async ({ page }) => {
   //Waiting for homepage to load
   await page.goto('/', { timeout: 1 * 60 * 1000 });
-  await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 5 * 60 * 1000 });
+  await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
   await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
@@ -47,5 +47,7 @@ test('Top level hamburger menu works', async ({ page }) => {
   await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.getByRole('button', { name: 'Clear All Data' })).toBeVisible();
   //Settings page has loaded
+  await page.locator('label:has-text("Current Year") ~ div > div').click();
+  await page.getByRole('option', { name: '1 Test' }).click();
   await expect(page).toHaveScreenshot('settings.png', { maxDiffPixelRatio: 0.025 });
 });

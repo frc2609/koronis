@@ -36,7 +36,7 @@ test:
   stage: test
   variables:
     NODE_OPTIONS: ""
-  parallel: 10
+  parallel: 24
   script:
     - npx playwright install --with-deps
     - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
