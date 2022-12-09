@@ -50,7 +50,7 @@ test:
           - Mobile Portrait Safari
   script:
     - npx playwright install --with-deps
-    - npx playwright test --project=$PROJECT
+    - npx playwright test --project="$PROJECT"
   artifacts:
     when: on_failure
     paths:
