@@ -14,40 +14,40 @@ test('Top level hamburger menu works', async ({ page }) => {
   //Settings page has loaded
   await page.locator('label:has-text("Current Year") ~ div > div').click();
   await page.getByRole('option', { name: '1 Test' }).click();
-  await expect(page).toHaveScreenshot('settings.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('settings.png');
 
   //Navigating to record page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Record' }).click();
   await expect(page.getByText('No records to display')).toBeVisible();
   //Record page has loaded
-  await expect(page).toHaveScreenshot('record.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('record.png');
 
   //Navigating to process page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Process' }).click();
   await expect(page.getByRole('button', { name: 'Select Process' })).toBeVisible();
   //Process page has loaded
-  await expect(page).toHaveScreenshot('process.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('process.png');
 
   //Navigating to analyze page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Analyze' }).click();
   await expect(page.getByRole('button', { name: 'Select Records' })).toBeVisible();
   //Analyze page has loaded
-  await expect(page).toHaveScreenshot('analyze.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('analyze.png');
 
   //Navigating to transfer page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Transfer' }).click();
   await expect(page.getByRole('button', { name: 'Select Records' })).toBeVisible();
   //Transfer page has loaded
-  await expect(page).toHaveScreenshot('transfer.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('transfer.png');
 
   //Navigating to wiki page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Wiki' }).click();
   await expect(page.getByText('Offline ready KSS Wiki. Data is synced from wiki.koronis.cc.')).toBeVisible();
   //Wiki page has loaded
-  await expect(page).toHaveScreenshot('wiki.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('wiki.png');
 });

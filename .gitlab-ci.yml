@@ -58,6 +58,7 @@ test:
     paths:
       - test-results
       - playwright-report
+      - tests
     expire_in: 1 hour
 
 pages:

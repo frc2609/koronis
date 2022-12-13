@@ -32,5 +32,5 @@ test('Record page navbar works', async ({ page }) => {
   await expect(page.getByRole('dialog').locator('div').filter({ hasText: 'CommentsComments' }).nth(2)).toBeVisible();
   await page.getByRole('button').first().click();
   //Navigated to recording page
-  await expect(page).toHaveScreenshot('recorder.png', { maxDiffPixelRatio: 0.025 });
+  await expect(page).toHaveScreenshot('recorder.png');
 });
