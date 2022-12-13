@@ -4,6 +4,7 @@ variables:
 stages:
   - install
   - build
+  - pretest
   - test
   - deploy
 
@@ -31,13 +32,26 @@ firebase_build:
   only:
     - master
 
+update_test:
+  image: mcr.microsoft.com/playwright:v1.28.0-focal
+  stage: pretest
+  when: manual
+  allow_failure: true
+  tags:
+    - non-shared
+  script:
+    - npx playwright install --with-deps
+    - npm run test-update
+  artifacts:
+    paths:
+      - tests
+    expire_in: 1 hour
+
 test:
   image: mcr.microsoft.com/playwright:v1.28.0-focal
   stage: test
   tags:
     - non-shared
-  variables:
-    NODE_OPTIONS: ""
   parallel:
     matrix:
       - PROJECT:
@@ -58,7 +72,6 @@ test:
     paths:
       - test-results
       - playwright-report
-      - tests
     expire_in: 1 hour
 
 pages:
