@@ -10,13 +10,21 @@
     "start-test": "cross-env REACT_APP_ENV=development HTTPS=true craco --max_old_space_size=4096 start",
     "build": "cross-env REACT_APP_ENV=production craco --max_old_space_size=4096 build",
     "build-dev": "cross-env REACT_APP_ENV=development craco --max_old_space_size=4096 build",
-    "test": "playwright test",
-    "test-update": "playwright test --update-snapshots",
-    "test-report": "playwright show-report",
-    "test-codegen": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && playwright codegen http://localhost:3000\""
+    "unit-test": "craco test --env=node",
+    "regression-test": "playwright test",
+    "regression-test-update": "playwright test --update-snapshots",
+    "regression-test-report": "playwright show-report",
+    "regression-test-codegen": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && playwright codegen http://localhost:3000\""
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/tests/"
+    ]
   },
   "browserslist": {
     "production": [
@@ -90,6 +98,7 @@
     "@playwright/test": "^1.28.1",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
+    "jest-matcher-deep-close-to": "^3.0.2",
     "react-error-overlay": "6.0.9",
     "source-map-explorer": "^2.4.2",
     "wait-on": "^6.0.1",

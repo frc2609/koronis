@@ -43,13 +43,20 @@ update_test:
     NODE_OPTIONS: ""
   script:
     - npx playwright install --with-deps
-    - npm run test-update
+    - npm run regression-test-update
   artifacts:
     paths:
       - tests
     expire_in: 1 hour
 
-test:
+unit_test:
+  stage: test
+  tags:
+    - non-shared
+  script:
+    - npm run unit-test
+
+regression_test:
   image: mcr.microsoft.com/playwright:v1.28.0-focal
   stage: test
   tags:
@@ -59,15 +66,15 @@ test:
   parallel:
     matrix:
       - PROJECT:
-          - Desktop Chrome
-          - Desktop Firefox
-          - Desktop Safari
-          - Tablet Landscape Chrome
-          - Tablet Portrait Chrome
-          - Mobile Landscape Chrome
-          - Mobile Portrait Chrome
-          - Mobile Landscape Safari
-          - Mobile Portrait Safari
+        - Desktop Chrome
+        - Desktop Firefox
+        - Desktop Safari
+        - Tablet Landscape Chrome
+        - Tablet Portrait Chrome
+        - Mobile Landscape Chrome
+        - Mobile Portrait Chrome
+        - Mobile Landscape Safari
+        - Mobile Portrait Safari
   script:
     - npx playwright install --with-deps
     - npx playwright test --project="$PROJECT"
