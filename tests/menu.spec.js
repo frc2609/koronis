@@ -47,7 +47,8 @@ test('Top level hamburger menu works', async ({ page }) => {
   //Navigating to wiki page
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Wiki' }).click();
-  await expect(page.getByText('Offline ready KSS Wiki. Data is synced from wiki.koronis.cc.')).toBeVisible();
+  let wikiText = page.getByText('Offline ready KSS Wiki. Data is synced from wiki.koronis.cc.');
+  await expect(wikiText).toBeVisible();
   //Wiki page has loaded
-  await expect(page).toHaveScreenshot('wiki.png');
+  await expect(page).toHaveScreenshot('wiki.png', { mask: [wikiText] });
 });
