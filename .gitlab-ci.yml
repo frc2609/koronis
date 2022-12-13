@@ -39,6 +39,8 @@ update_test:
   allow_failure: true
   tags:
     - non-shared
+  variables:
+    NODE_OPTIONS: ""
   script:
     - npx playwright install --with-deps
     - npm run test-update
@@ -52,6 +54,8 @@ test:
   stage: test
   tags:
     - non-shared
+  variables:
+    NODE_OPTIONS: ""
   parallel:
     matrix:
       - PROJECT:
