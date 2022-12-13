@@ -129,6 +129,7 @@ class AnalyzeRecord extends React.Component {
     if(this.state.tab === 'metric') {
       processQueryObj.dataType = 'metric';
     }
+    console.log(processQueryObj)
     Interface.getProcesses(processQueryObj, 'title').then((procs) => {
       this.setState({
         selectedProcesses: procs

@@ -9,7 +9,7 @@ const moment = require('moment');
 export const insertTeam = async (inTeam) => {
   let teamCollection = (await Db.getTeams());
   let currObj = deepcopy(inTeam);
-  let prevDoc = (await teamCollection.findOne({key: currObj.key}).exec());
+  let prevDoc = (await teamCollection.findOne({ selector: { key: currObj.key }}).exec());
   if(prevDoc === null) {
     return (await teamCollection.insert(currObj));
   }
@@ -46,7 +46,7 @@ export const insertTbaTeam = async (inTeam) => {
     }
   });
 
-  let prevDoc = (await teamCollection.findOne({key: currObj.key}).exec());
+  let prevDoc = (await teamCollection.findOne({ selector: { key: currObj.key }}).exec());
   if(prevDoc === null) {
     return (await teamCollection.insert(currObj));
   }
@@ -56,9 +56,9 @@ export const insertTbaTeam = async (inTeam) => {
   }
 }
 
-export const getTeams = async (query, sort = []) => {
+export const getTeams = async (query, sort = undefined) => {
   let teamCollection = (await Db.getTeams());
-  let docs = (await teamCollection.find(query).sort(sort).exec());
+  let docs = (await teamCollection.find({ selector: query }).sort(sort).exec());
   let newDocs = [];
   for(let i = 0;i < docs.length;i++) {
     let currObj = deepcopy(docs[i].toJSON());
@@ -69,10 +69,10 @@ export const getTeams = async (query, sort = []) => {
   return newDocs;
 }
 
-export const subscribeTeams = async (query, sort = [], onChange = () => {}) => {
+export const subscribeTeams = async (query, sort = undefined, onChange = () => {}) => {
   let teamCollection = (await Db.getTeams());
   console.info('[Interface] Returning teams query subscription');
-  return teamCollection.find(query).sort(sort).$.subscribe((docs) => {
+  return teamCollection.find({ selector: query }).sort(sort).$.subscribe((docs) => {
     let newDocs = [];
     for(let i = 0;i < docs.length;i++) {
       let currObj = deepcopy(docs[i].toJSON());
@@ -83,10 +83,10 @@ export const subscribeTeams = async (query, sort = [], onChange = () => {}) => {
   });
 }
 
-export const queryTeams = async (query, sort = []) => {
+export const queryTeams = async (query, sort = undefined) => {
   let teamCollection = (await Db.getTeams());
   console.info('[Interface] Returning team query object');
-  return teamCollection.find(query).sort(sort);
+  return teamCollection.find({ selector: query }).sort(sort);
 }
 
 //==================================Record==================================\\
@@ -97,7 +97,7 @@ export const insertRecord = async (inRecord) => {
   let oldPositionLog = deepcopy(currObj.positionLog);
   currObj.eventLog = oldEventLog.map((e) => {return JSON.stringify(e)});
   currObj.positionLog = oldPositionLog.map((e) => {return JSON.stringify(e)});
-  let prevDoc = (await recordCollection.findOne({id: currObj.id}).exec());
+  let prevDoc = (await recordCollection.findOne({ selector: { id: currObj.id }}).exec());
 
   if(prevDoc === null || typeof prevDoc.lastModified === 'undefined') {
     if(!currObj.metadata) {
@@ -118,13 +118,13 @@ export const insertRecord = async (inRecord) => {
 
 export const removeRecord = async (query) => {
   let recordCollection = (await Db.getRecords());
-  let doc = (await recordCollection.findOne(query).exec());
+  let doc = (await recordCollection.findOne({ selector: query }).exec());
   return (await doc.remove());
 }
 
-export const getRecords = async (query, sort = []) => {
+export const getRecords = async (query, sort = undefined) => {
   let recordCollection = (await Db.getRecords());
-  let docs = (await recordCollection.find(query).sort(sort).exec());
+  let docs = (await recordCollection.find({ selector: query }).sort(sort).exec());
   let newDocs = [];
   for(let i = 0;i < docs.length;i++) {
     let currObj = deepcopy(docs[i].toJSON());
@@ -139,10 +139,10 @@ export const getRecords = async (query, sort = []) => {
   return newDocs;
 }
 
-export const subscribeRecords = async (query, sort = [], onChange = () => {}) => {
+export const subscribeRecords = async (query, sort = undefined, onChange = () => {}) => {
   let recordCollection = (await Db.getRecords());
   console.info('[Interface] Returning records query subscription');
-  return recordCollection.find(query).sort(sort).$.subscribe((docs) => {
+  return recordCollection.find({ selector: query }).sort(sort).$.subscribe((docs) => {
     let newDocs = [];
     for(let i = 0;i < docs.length;i++) {
       let currObj = deepcopy(docs[i].toJSON());
@@ -157,17 +157,17 @@ export const subscribeRecords = async (query, sort = [], onChange = () => {}) =>
   });
 }
 
-export const queryRecords = async (query, sort = []) => {
+export const queryRecords = async (query, sort = undefined) => {
   let recordCollection = (await Db.getRecords());
   console.info('[Interface] Returning record query object');
-  return recordCollection.find(query).sort(sort);
+  return recordCollection.find({ selector: query }).sort(sort);
 }
 
 //==================================Process==================================\\
 export const insertProcess = async (inProcess) => {
   let processCollection = (await Db.getProcesses());
   let currObj = deepcopy(inProcess);
-  let prevDoc = (await processCollection.findOne({id: currObj.id}).exec());
+  let prevDoc = (await processCollection.findOne({ selector: { id: currObj.id }}).exec());
 
   if(!currObj.metadata) {
     currObj.metadata = {
@@ -201,13 +201,13 @@ export const insertProcess = async (inProcess) => {
 
 export const removeProcess = async (query) => {
   let processCollection = (await Db.getProcesses());
-  let doc = (await processCollection.findOne(query).exec());
+  let doc = (await processCollection.findOne({ selector: query }).exec());
   return (await doc.remove());
 }
 
-export const getProcesses = async (query, sort = []) => {
+export const getProcesses = async (query, sort = undefined) => {
   let processCollection = (await Db.getProcesses());
-  let docs = (await processCollection.find(query).sort(sort).exec());
+  let docs = (await processCollection.find({ selector: query }).sort(sort).exec());
   let newDocs = [];
   for(let i = 0;i < docs.length;i++) {
     let currObj = deepcopy(docs[i].toJSON());
@@ -218,10 +218,10 @@ export const getProcesses = async (query, sort = []) => {
   return newDocs;
 }
 
-export const subscribeProcesses = async (query, sort = [], onChange = () => {}) => {
+export const subscribeProcesses = async (query, sort = undefined, onChange = () => {}) => {
   let processCollection = (await Db.getProcesses());
   console.info('[Interface] Returning process query subscription');
-  return processCollection.find(query).sort(sort).$.subscribe((docs) => {
+  return processCollection.find({ selector: query }).sort(sort).$.subscribe((docs) => {
     let newDocs = [];
     for(let i = 0;i < docs.length;i++) {
       let currObj = deepcopy(docs[i].toJSON());
@@ -232,17 +232,17 @@ export const subscribeProcesses = async (query, sort = [], onChange = () => {}) 
   });
 }
 
-export const queryProcesses = async (query, sort = []) => {
+export const queryProcesses = async (query, sort = undefined) => {
   let processCollection = (await Db.getProcesses());
   console.info('[Interface] Returning process query object');
-  return processCollection.find(query).sort(sort);
+  return processCollection.find({ selector: query }).sort(sort);
 }
 
 //==================================Event==================================\\
 export const insertEvent = async (inEvent) => {
   let eventCollection = (await Db.getEvents());
   let currObj = deepcopy(inEvent);
-  let prevDoc = (await eventCollection.findOne({key: currObj.key}).exec());
+  let prevDoc = (await eventCollection.findOne({ selector: { key: currObj.key }}).exec());
   if(prevDoc === null) {
     return (await eventCollection.insert(currObj));
   }
@@ -282,7 +282,7 @@ export const insertTbaEvent = async (inEvent) => {
     }
   });
 
-  let prevDoc = (await eventCollection.findOne({key: currObj.key}).exec());
+  let prevDoc = (await eventCollection.findOne({ selector: { key: currObj.key }}).exec());
   if(prevDoc === null) {
     return (await eventCollection.insert(currObj));
   }
@@ -293,9 +293,9 @@ export const insertTbaEvent = async (inEvent) => {
   }
 }
 
-export const getEvents = async (query, sort = []) => {
+export const getEvents = async (query, sort = undefined) => {
   let eventCollection = (await Db.getEvents());
-  let docs = (await eventCollection.find(query).sort(sort).exec());
+  let docs = (await eventCollection.find({ selector: query }).sort(sort).exec());
   let newDocs = [];
   for(let i = 0;i < docs.length;i++) {
     let currObj = deepcopy(docs[i].toJSON());
@@ -306,14 +306,14 @@ export const getEvents = async (query, sort = []) => {
   return newDocs;
 }
 
-export const queryEvents = async (query, sort = []) => {
+export const queryEvents = async (query, sort = undefined) => {
   let eventCollection = (await Db.getEvents());
   console.info('[Interface] Returning event query object');
-  return eventCollection.find(query).sort(sort);
+  return eventCollection.find({ selector: query }).sort(sort);
 }
 
 /* WIP
-export const getTbaRecords = async (query, sort = []) => {
+export const getTbaRecords = async (query, sort = undefined) => {
   let newDocs = deepcopy(await getRecords(query, sort));
   for(let i = 0;i < newDocs.length;i++) {
     newDocs[i].tbaData = (await getTbaMatch(newDocs[i]));
@@ -345,7 +345,7 @@ export const syncTbaMatch = async (key) => { //return tba data
       'X-TBA-Auth-Key': tbaKey
     }
   };
-  let prevDoc = (await tbaMatchCollection.findOne({key: key}).exec());
+  let prevDoc = (await tbaMatchCollection.findOne({ selector { key: key }}).exec());
   if(prevDoc !== null) {
     requestConfig.headers['If-Modified-Since'] = moment.unix(prevDoc.lastModified).toDate().toGMTString();
   }
