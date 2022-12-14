@@ -9,6 +9,7 @@ import Tab from '@material-ui/core/Tab';
 
 import QRSendData from 'uiTree/Main/Transfer/QRTransfer/QRSendData';
 import QRReceiveData from 'uiTree/Main/Transfer/QRTransfer/QRReceiveData';
+import MinVersion from 'uiTree/components/MinVersion';
 
 class QRTransfer extends React.Component {
   constructor(props) {
@@ -59,6 +60,9 @@ class QRTransfer extends React.Component {
             <Route exact path='/transfer/qrcode'><Redirect push to='/transfer/qrcode/send' /></Route>
             <Route exact path='/transfer/qrcode/send' component={QRSendData} />
             <Route exact path='/transfer/qrcode/receive' component={QRReceiveData} />
+          </Box>
+          <Box mb={3} textAlign='center'>
+            <MinVersion />
           </Box>
         </Card>
       </Container>

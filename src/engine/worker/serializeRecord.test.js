@@ -1,12 +1,12 @@
 import * as Serializer from './Serializer';
 import { toBeDeepCloseTo } from 'jest-matcher-deep-close-to';
 
-expect.extend({toBeDeepCloseTo});
+expect.extend({ toBeDeepCloseTo });
 
 const testRecord = {
   "startDate":1641076380,
   "id":"dbc16569-840a-584f-b75f-5086710d37ae",
-  "year":0,
+  "year":-1,
   "version":0,
   "teamNumber":1,
   "matchNumber":1,
