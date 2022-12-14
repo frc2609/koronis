@@ -45,6 +45,7 @@ update_test:
     - npx playwright install --with-deps
     - npm run regression-test-update
   artifacts:
+    when: always
     paths:
       - tests
     expire_in: 1 hour
