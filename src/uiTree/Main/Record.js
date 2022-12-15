@@ -24,13 +24,10 @@ class Record extends React.Component {
       loading: true,
       records: []
     };
-    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/record')) {
-      if(this.props.location.pathname.includes('/record/record')) {
-        this.state.tab = 'record';
-      }
-    }
     this.queryObj = {};
     this.recordsSubscription = null;
+    this.routeHandler = this.routeHandler.bind(this);
+    window.addEventListener('hashchange', this.routeHandler);
   }
   refresh() {
     this.setState({loading: true, records: []});
@@ -46,8 +43,22 @@ class Record extends React.Component {
       this.recordsSubscription = subscription;
     });
   }
+  routeHandler() {
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/record')) {
+      if(this.props.location.pathname.includes('/record/record')) {
+        this.setState({ tab: 'record', redirect: false });
+      }
+      else {
+        this.setState({ tab: 'view', redirect: false }); 
+      }
+    }
+  }
+  tabHandler(event, value) {
+    this.setState({tab: value, redirect: true});
+  }
   componentDidMount() {
     this.refresh();
+    this.routeHandler();
   }
   componentDidUpdate(prevProps) {
     if(prevProps.queryObj !== this.props.queryObj) {
@@ -57,13 +68,11 @@ class Record extends React.Component {
       this.setState({redirect: false});
     }
   }
-  tabHandler(event, value) {
-    this.setState({tab: value, redirect: true});
-  }
   componentWillUnmount() {
     if(this.recordsSubscription !== null) {
       this.recordsSubscription.unsubscribe();
     }
+    window.removeEventListener('hashchange', this.routeHandler);
   }
   render() {
     return (

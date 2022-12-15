@@ -42,18 +42,15 @@ class AnalyzeRecord extends React.Component {
       chartSelectedProcesses: [],
       chartProcess: {}
     };
-    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/record')) {
-      if(this.props.location.pathname.includes('/analyze/record/chart')) {
-        this.state.tab = 'chart';
-      }
-    }
+    this.routeHandler = this.routeHandler.bind(this);
+    window.addEventListener('hashchange', this.routeHandler);
   }
   runMetricProcess() {
     let tmpDataArr = [];
     let tmpColumns = [
       {field: 'startDate', title: 'Date', sortable: true,
         render: (rowData) => {
-          return moment.unix(rowData.startDate).format('MMM Do YYYY')
+          return moment.unix(rowData.startDate).format('MMM Do YYYY');
         }
       },
       {field: 'teamNumber', title: 'Team Number', sortable: true},
@@ -90,7 +87,9 @@ class AnalyzeRecord extends React.Component {
         cellStyle: {
           minWidth: '200px'
         },
-        render: (r) => {return r.comments.length <= 25 ? r.comments : r.comments.substr(0,25) + '...'}
+        render: (r) => {
+          return r.comments.length <= 25 ? r.comments : r.comments.substr(0,25) + '...';
+        }
       }
     ];
     for(let i = 0;i < this.state.selectedProcesses.length;i++) {
@@ -144,11 +143,22 @@ class AnalyzeRecord extends React.Component {
       });
     });
   }
+  routeHandler() {
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/record')) {
+      if(this.props.location.pathname.includes('/analyze/record/chart')) {
+        this.setState({ tab: 'chart', redirect: false });
+      }
+      else {
+        this.setState({ tab: 'metric', redirect: false });
+      }
+    }
+  }
   tabHandler(event, value) {
-    this.setState({tab: value, redirect: true});
+    this.setState({ tab: value, redirect: true });
   }
   componentDidMount() {
     this.showAll();
+    this.routeHandler();
   }
   componentDidUpdate(prevProps, prevState) {
     if(!deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
@@ -162,6 +172,9 @@ class AnalyzeRecord extends React.Component {
     if(prevState.tab !== this.state.tab) {
       this.getAllProcesses();
     }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this.routeHandler);
   }
   render() {
     return (
