@@ -18,6 +18,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import ListIcon from '@material-ui/icons/List';
 
 import Config from 'config/Config';
+import WikiNavBar from 'uiTree/Main/Wiki/WikiNavBar';
 
 const store = require('store');
 const deepCompare = require('fast-deep-equal');
@@ -80,6 +81,7 @@ class Wiki extends React.Component {
                 >
                   <ListIcon />
                 </IconButton>
+                <WikiNavBar wikiData={this.state.wikiData} />
               </Toolbar>
             </AppBar>
             <Box m={2}>
@@ -92,7 +94,7 @@ class Wiki extends React.Component {
                   {this.state.wikiData.map((e, i) => {
                     if(e.md.length > 0) {
                       return (
-                        <ListItem button key={i} onClick={() => {this.setState({displayPage: e.url, redirect: true, openMenu: false})}}>
+                        <ListItem button key={i} onClick={() => { this.setState({displayPage: e.url, redirect: true, openMenu: false}); }}>
                           <ListItemText primary={e.path.replace('/', ' / ')} />
                         </ListItem>
                       );
@@ -106,8 +108,6 @@ class Wiki extends React.Component {
                   Offline ready KSS Wiki. Data is synced from <a href='https://wiki.koronis.cc/'>wiki.koronis.cc</a>.
                   To get started, click the links on the left menu.
                   <br/>
-                  <br/>
-                  Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
                 </Typography>
               </Route>
               {this.state.wikiData.map((e, i) => {
@@ -143,13 +143,13 @@ class Wiki extends React.Component {
                     >
                       {e.md}
                     </ReactMarkdown>
-                    <br/>
-                    <Typography>
-                      Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
-                    </Typography>
                   </Route>
                 );
               })}
+              <br/>
+              <Typography variant='body2'>
+                Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
+              </Typography>
             </Box>
           </Card>
         </Container>
