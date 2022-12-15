@@ -41,9 +41,22 @@ update_test:
     - non-shared
   variables:
     NODE_OPTIONS: ""
+  parallel:
+    matrix:
+      - PROJECT:
+        - Desktop Chrome
+        - Desktop Firefox
+        - Desktop Safari
+        - Tablet Landscape Chrome
+        - Tablet Portrait Chrome
+        - Mobile Landscape Chrome
+        - Mobile Portrait Chrome
+        - Mobile Landscape Safari
+        - Mobile Portrait Safari
   script:
     - npx playwright install --with-deps
-    - npm run regression-test-update
+    - find src/tests/ -type f -exec rm -rf {}\;
+    - npx playwright test --update-snapshots --project="$PROJECT"
   artifacts:
     when: always
     paths:
