@@ -55,7 +55,7 @@ update_test:
         - Mobile Portrait Safari
   script:
     - npx playwright install --with-deps
-    - find tests/ -type f | xargs rm -rf
+    - find tests/ -type d | xargs rm -rf
     - npx playwright test --update-snapshots --project="$PROJECT"
   artifacts:
     when: always
