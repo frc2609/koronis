@@ -1,31 +1,40 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
+import WikiButton from 'uiTree/Main/Wiki/WikiButton';
 
 const deepCopy = require('deep-copy');
+const deepCompare = require('fast-deep-equal');
 
 export default class WikiNavBar extends React.Component {
-  addNestedData(inMap, urlArr, pathArr, index) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      wikiMap: this.transformWikiData(),
+      selected: -1
+    };
+  }
+  addNestedData(inMap, urlArr, pathArr, index, builtUrlArr = []) {
     if(urlArr.length <= 0) {
       return inMap;
     }
     let firstUrl = pathArr[0].toLowerCase().replace(' ', '_').replace(/[^a-z0-9]/gi, '');
     let newUrlArr = deepCopy(urlArr);
-    newUrlArr.splice(0, 1);
+    let newBuiltUrlArr = deepCopy(builtUrlArr);
+    newBuiltUrlArr.push(newUrlArr.splice(0, 1));
     let firstPath = pathArr[0];
     let newPathArr = deepCopy(pathArr);
     newPathArr.splice(0, 1);
-    let currUrl = urlArr.join('/');
     if(typeof inMap[firstUrl] === 'undefined') {
       inMap[firstUrl] = {};
     }
     inMap[firstUrl].name = firstPath;
+    let currUrl = newBuiltUrlArr.join('/');
     inMap[firstUrl].url = currUrl;
     inMap[firstUrl].index = index;
     if(typeof inMap[firstUrl].children === 'undefined') {
       inMap[firstUrl].children = {};
     }
-    inMap[firstUrl].children = this.addNestedData(deepCopy(inMap[firstUrl].children), newUrlArr, newPathArr, index);
+    inMap[firstUrl].children = this.addNestedData(deepCopy(inMap[firstUrl].children), newUrlArr, newPathArr, index, newBuiltUrlArr);
     return inMap;
   }
   transformWikiData() {
@@ -40,16 +49,22 @@ export default class WikiNavBar extends React.Component {
     }
     return wikiMap;
   }
+  componentDidUpdate(prevProps, prevState) {
+    if(!deepCompare(prevProps.wikiData, this.props.wikiData)) {
+      this.setState({
+        wikiMap: this.transformWikiData()
+      });
+    }
+  }
   render() {
-    let wikiMap = this.transformWikiData();
-    console.log(wikiMap)
     return (
       <>
-        {Object.keys(wikiMap).map((e, i) => {
+        {Object.keys(this.state.wikiMap).sort((e1, e2) => this.state.wikiMap[e1].index - this.state.wikiMap[e2].index).map((e, i) => {
           return (
-            <Button key={i}>
-              {wikiMap[e].name}
-            </Button>
+            <WikiButton
+              key={i}
+              wikiMap={this.state.wikiMap[e]}
+            />
           );
         })}
       </>

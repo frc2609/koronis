@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
+import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -73,15 +74,19 @@ class Wiki extends React.Component {
               }}
             >
               <Toolbar>
-                <IconButton
-                  ref={this.menuButtonRef}
-                  color='inherit'
-                  onClick={() => { this.setState({ openMenu: !this.state.openMenu })}}
-                  edge='start'
-                >
-                  <ListIcon />
-                </IconButton>
-                <WikiNavBar wikiData={this.state.wikiData} />
+                <Hidden mdUp>
+                  <IconButton
+                    ref={this.menuButtonRef}
+                    color='inherit'
+                    onClick={() => { this.setState({ openMenu: !this.state.openMenu })}}
+                    edge='start'
+                  >
+                    <ListIcon />
+                  </IconButton>
+                </Hidden>
+                <Hidden smDown>
+                  <WikiNavBar wikiData={this.state.wikiData} />
+                </Hidden>
               </Toolbar>
             </AppBar>
             <Box m={2}>
