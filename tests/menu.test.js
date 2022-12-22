@@ -41,8 +41,9 @@ test('Top level hamburger menu works', async ({ page }) => {
   await page.getByRole('button', { name: 'menu' }).click();
   await page.getByRole('button', { name: 'Transfer' }).click();
   await expect(page.getByRole('button', { name: 'Select Records' })).toBeVisible();
+  let minVersionText = page.getByText('Minimum compatible version');
   //Transfer page has loaded
-  await expect(page).toHaveScreenshot('transfer.png');
+  await expect(page).toHaveScreenshot('transfer.png', { mask: [minVersionText] });
 
   //Navigating to wiki page
   await page.getByRole('button', { name: 'menu' }).click();
