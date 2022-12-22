@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
-import WikiSublist from 'uiTree/Main/Wiki/WikiSublist';
+import WikiList from 'uiTree/Main/Wiki/WikiList';
 
 class WikiButton extends React.Component {
   buttonRef = React.createRef();
@@ -33,7 +33,7 @@ class WikiButton extends React.Component {
         >
           {this.props.wikiMap.name}
         </Button>
-        <WikiSublist
+        <WikiList
           anchorRef={this.buttonRef}
           wikiMap={this.props.wikiMap.children}
           selected={this.state.selected}

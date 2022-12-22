@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 
 import WikiListButton from 'uiTree/Main/Wiki/WikiListButton';
 
-export default class WikiSublist extends React.Component {
+export default class WikiList extends React.Component {
   render() {
     return (
       <Popover
