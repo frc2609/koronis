@@ -1,6 +1,7 @@
 image: node:18
 variables:
   NODE_OPTIONS: "--openssl-legacy-provider"
+  DEBUG: "pw:webserver"
 stages:
   - install
   - build
