@@ -4,6 +4,7 @@ test('Record page navbar works', async ({ page }) => {
   //Waiting for homepage to load
   await page.goto('/', { timeout: 1 * 60 * 1000 });
   await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
+  await page.waitForEvent('syncend');
   await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
@@ -39,6 +40,7 @@ test('Record page url routing works', async ({ page }) => {
   //Waiting for homepage to load
   await page.goto('/', { timeout: 1 * 60 * 1000 });
   await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
+  await page.waitForEvent('syncend');
   await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
