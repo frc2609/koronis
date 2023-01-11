@@ -33,6 +33,17 @@ firebase_build:
   only:
     - master
 
+testing_build:
+  stage: build
+  script:
+    - npm run build-dev
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
+  except:
+    - master
+
 update_test:
   image: mcr.microsoft.com/playwright:v1.28.0-focal
   stage: pretest
@@ -103,7 +114,6 @@ regression_test:
 pages:
   stage: deploy
   script:
-    - npm run build-dev
     - rm -rf public/
     - mv build/ public/
   artifacts:

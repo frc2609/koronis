@@ -14,7 +14,6 @@ module.exports = {
 
             let foundInjectManifest = false;
             webpackConfig.plugins.forEach((plugin) => {
-              console.log(plugin.constructor.name)
               if(plugin.constructor.name === 'InjectManifest') {
                 plugin.config = workboxConfig.InjectManifest(plugin.config);
                 foundInjectManifest = true;
@@ -30,8 +29,8 @@ module.exports = {
               })));
             }
           } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `[craco-workbox]`);
-            console.log('\x1b[31m%s\x1b[0m', error.stack);
+            console.err('\x1b[31m%s\x1b[0m', `[craco-workbox]`);
+            console.err('\x1b[31m%s\x1b[0m', error.stack);
             process.exit(1);
           }
         }
