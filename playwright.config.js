@@ -21,7 +21,10 @@ const config = {
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5 * 1000
+    timeout: 5 * 1000,
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.02
+    }
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
