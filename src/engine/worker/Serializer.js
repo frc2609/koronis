@@ -1,22 +1,3 @@
-/*
-const ZstdCodec = require('zstd-codec').ZstdCodec;
-let zsimple = null;
-
-let initZstd = () => {
-  return new Promise((resolve) => {
-    if(zsimple === null) {
-      ZstdCodec.run((zstd) => {
-        zsimple = new zstd.Simple();
-        resolve(zsimple);
-      });
-    }
-    else {
-      resolve(zsimple);
-    }
-  });
-}
-*/
-
 let boolToBin = (inBool) => {
   return inBool ? [1] : [0];
 }
@@ -31,7 +12,7 @@ let binStreamToBool = (inBinStream) => {
   return output;
 }
 
-let intToBin = (inInteger) => {
+let uintToBin = (inInteger) => {
   let actualInteger = Math.abs(inInteger % 65536);
   let binArr = [];
   binArr.push(actualInteger >>> 8);
@@ -39,14 +20,14 @@ let intToBin = (inInteger) => {
   return binArr;
 }
 
-let binToInt = (inBin) => {
+let binToUint = (inBin) => {
   let firstByte = (inBin.length > 0 ? inBin[0] << 8 : 0);
   let secondByte = (inBin.length > 1 ? inBin[1] : 0);
   return (firstByte + secondByte) >>> 0;
 }
 
-let binStreamToInt = (inBinStream) => {
-  let output = binToInt(inBinStream);
+let binStreamToUint = (inBinStream) => {
+  let output = binToUint(inBinStream);
   inBinStream.splice(0, 2);
   return output;
 }
@@ -165,7 +146,7 @@ let strToBin = (inString) => {
       binArr.push(actualString.charCodeAt(i));
     }
     else {
-      binArr = binArr.concat(intToBin(actualString.charCodeAt(i)));
+      binArr = binArr.concat(uintToBin(actualString.charCodeAt(i)));
     }
   }
   return binArr;
@@ -205,11 +186,11 @@ let binStreamToStr = (inBinStream) => {
 let encodeRecord = (record) => {
   let resBinArr = [];
   resBinArr.push(strToBin(record.id));
-  resBinArr.push(intToBin(record.year));
-  resBinArr.push(intToBin(record.version));
+  resBinArr.push(strToBin(record.year.toString()));
+  resBinArr.push(uintToBin(record.version));
   resBinArr.push(dateToBin(record.startDate));
-  resBinArr.push(intToBin(record.teamNumber));
-  resBinArr.push(intToBin(record.matchNumber));
+  resBinArr.push(uintToBin(record.teamNumber));
+  resBinArr.push(uintToBin(record.matchNumber));
   resBinArr.push(strToBin(record.matchType));
   resBinArr.push(boolToBin(record.isRedAlliance));
   resBinArr.push(strToBin(record.comments));
@@ -217,21 +198,21 @@ let encodeRecord = (record) => {
   resBinArr.push(dateToBin(record.device));
   resBinArr.push(dateToBin(record.lastModified));
   resBinArr.push(strToBin(record.digitalSignature));
-  resBinArr.push(intToBin(record.changeLog.length));
+  resBinArr.push(uintToBin(record.changeLog.length));
   for(let i = 0;i < record.changeLog.length;i++) {
     resBinArr.push(strToBin(record.changeLog[i].user));
     resBinArr.push(dateToBin(record.changeLog[i].modificationTime));
     resBinArr.push(strToBin(record.changeLog[i].id));
   }
-  resBinArr.push(intToBin(record.eventLog.length));
+  resBinArr.push(uintToBin(record.eventLog.length));
   for(let i = 0;i < record.eventLog.length;i++) {
-    resBinArr.push(intToBin(record.eventLog[i].id));
+    resBinArr.push(uintToBin(record.eventLog[i].id));
     resBinArr.push(strToBin(record.eventLog[i].name));
     resBinArr.push(strToBin(JSON.stringify(record.eventLog[i].variables)));
     resBinArr.push(strToBin(JSON.stringify(record.eventLog[i].position)));
     resBinArr.push(numToBin(record.eventLog[i].timeStamp));
   }
-  resBinArr.push(intToBin(record.positionLog.length));
+  resBinArr.push(uintToBin(record.positionLog.length));
   for(let i = 0;i < record.positionLog.length;i++) {
     resBinArr.push(posToBin(record.positionLog[i]));
   }
@@ -242,11 +223,11 @@ let decodeRecord = (inBin, stream = false) => {
   let bin = !stream ? inBin.slice() : inBin;
   let resObj = {};
   resObj.id = binStreamToStr(bin);
-  resObj.year = binStreamToInt(bin);
-  resObj.version = binStreamToInt(bin);
+  resObj.year = Number(binStreamToStr(bin));
+  resObj.version = binStreamToUint(bin);
   resObj.startDate = binStreamToDate(bin);
-  resObj.teamNumber = binStreamToInt(bin);
-  resObj.matchNumber = binStreamToInt(bin);
+  resObj.teamNumber = binStreamToUint(bin);
+  resObj.matchNumber = binStreamToUint(bin);
   resObj.matchType = binStreamToStr(bin);
   resObj.isRedAlliance = binStreamToBool(bin);
   resObj.comments = binStreamToStr(bin);
@@ -254,7 +235,7 @@ let decodeRecord = (inBin, stream = false) => {
   resObj.device = binStreamToDate(bin);
   resObj.lastModified = binStreamToDate(bin);
   resObj.digitalSignature = binStreamToStr(bin);
-  let changeLogLength = binStreamToInt(bin);
+  let changeLogLength = binStreamToUint(bin);
   resObj.changeLog = [];
   for(let i = 0;i < changeLogLength;i++) {
     let currChangeLogObj = {};
@@ -263,18 +244,18 @@ let decodeRecord = (inBin, stream = false) => {
     currChangeLogObj.id = binStreamToStr(bin);
     resObj.changeLog.push(currChangeLogObj);
   }
-  let eventLogLength = binStreamToInt(bin);
+  let eventLogLength = binStreamToUint(bin);
   resObj.eventLog = [];
   for(let i = 0;i < eventLogLength;i++) {
     let currEventLogObj = {};
-    currEventLogObj.id = binStreamToInt(bin);
+    currEventLogObj.id = binStreamToUint(bin);
     currEventLogObj.name = binStreamToStr(bin);
     currEventLogObj.variables = JSON.parse(binStreamToStr(bin));
     currEventLogObj.position = JSON.parse(binStreamToStr(bin));
     currEventLogObj.timeStamp = binStreamToNum(bin);
     resObj.eventLog.push(currEventLogObj);
   }
-  let positionLogLength = binStreamToInt(bin);
+  let positionLogLength = binStreamToUint(bin);
   resObj.positionLog = [];
   for(let i = 0;i < positionLogLength;i++) {
     let currPositionLogObj = {};
@@ -286,7 +267,7 @@ let decodeRecord = (inBin, stream = false) => {
 
 let encodeArrRecord = (records) => {
   let resBinArr = [];
-  resBinArr.push(intToBin(records.length));
+  resBinArr.push(uintToBin(records.length));
   for(let i = 0;i < records.length;i++) {
     resBinArr.push(encodeRecord(records[i]));
   }
@@ -296,7 +277,7 @@ let encodeArrRecord = (records) => {
 let decodeArrRecord = (inBin) => {
   let bin = inBin;
   let resArr = [];
-  let arrLength = binStreamToInt(bin);
+  let arrLength = binStreamToUint(bin);
   for(let i = 0;i < arrLength;i++) {
     resArr.push(decodeRecord(bin, true));
   }
@@ -306,7 +287,7 @@ let decodeArrRecord = (inBin) => {
 let encodeProcess = (process) => {
   let resBinArr = [];
   resBinArr.push(strToBin(process.id));
-  resBinArr.push(intToBin(process.year));
+  resBinArr.push(strToBin(process.year.toString()));
   resBinArr.push(strToBin(process.queryType));
   resBinArr.push(strToBin(process.dataType));
   resBinArr.push(strToBin(process.name));
@@ -317,7 +298,7 @@ let encodeProcess = (process) => {
   resBinArr.push(dateToBin(process.device));
   resBinArr.push(dateToBin(process.lastModified));
   resBinArr.push(strToBin(process.digitalSignature));
-  resBinArr.push(intToBin(process.changeLog.length));
+  resBinArr.push(uintToBin(process.changeLog.length));
   for(let i = 0;i < process.changeLog.length;i++) {
     resBinArr.push(strToBin(process.changeLog[i].user));
     resBinArr.push(dateToBin(process.changeLog[i].modificationTime));
@@ -330,7 +311,7 @@ let decodeProcess = (inBin, stream = false) => {
   let bin = !stream ? inBin.slice() : inBin;
   let resObj = {};
   resObj.id = binStreamToStr(bin);
-  resObj.year = binStreamToInt(bin);
+  resObj.year = Number(binStreamToStr(bin));
   resObj.queryType = binStreamToStr(bin);
   resObj.dataType = binStreamToStr(bin);
   resObj.name = binStreamToStr(bin);
@@ -341,7 +322,7 @@ let decodeProcess = (inBin, stream = false) => {
   resObj.device = binStreamToDate(bin);
   resObj.lastModified = binStreamToDate(bin);
   resObj.digitalSignature = binStreamToStr(bin);
-  let changeLogLength = binStreamToInt(bin);
+  let changeLogLength = binStreamToUint(bin);
   resObj.changeLog = [];
   for(let i = 0;i < changeLogLength;i++) {
     let currChangeLogObj = {};
@@ -355,7 +336,7 @@ let decodeProcess = (inBin, stream = false) => {
 
 let encodeArrProcess = (processes) => {
   let resBinArr = [];
-  resBinArr.push(intToBin(processes.length));
+  resBinArr.push(uintToBin(processes.length));
   for(let i = 0;i < processes.length;i++) {
     resBinArr.push(encodeProcess(processes[i]));
   }
@@ -365,7 +346,7 @@ let encodeArrProcess = (processes) => {
 let decodeArrProcess = (inBin) => {
   let bin = inBin;
   let resArr = [];
-  let arrLength = binStreamToInt(bin);
+  let arrLength = binStreamToUint(bin);
   for(let i = 0;i < arrLength;i++) {
     resArr.push(decodeProcess(bin, true));
   }
@@ -374,36 +355,26 @@ let decodeArrProcess = (inBin) => {
 
 let encodeArr = async (data) => {
   let resBinArr = [];
-  resBinArr.push(intToBin(data.length));
+  resBinArr.push(uintToBin(data.length));
   for(let i = 0;i < data.length;i++) {
     if(typeof data[i].eventLog !== 'undefined') {
-      resBinArr.push(intToBin(0));
+      resBinArr.push(uintToBin(0));
       resBinArr.push(encodeRecord(data[i]));
     }
     else if(typeof data[i].function !== 'undefined') {
-      resBinArr.push(intToBin(1));
+      resBinArr.push(uintToBin(1));
       resBinArr.push(encodeProcess(data[i]));
     }
   }
-  /*
-  let z = (await initZstd());
-  let compressed = z.compress(Uint8Array.from(resBinArr.flat()), 15);
-  return Array.from(compressed);
-  */
   return resBinArr.flat();
 }
 
 let decodeArr = async (inBin) => {
-  /*
-  let z = (await initZstd());
-  let decompressed = z.decompress(Uint8Array.from(inBin));
-  let bin = Array.from(decompressed);
-  */
   let bin = inBin;
   let resArr = [];
-  let arrLength = binStreamToInt(bin);
+  let arrLength = binStreamToUint(bin);
   for(let i = 0;i < arrLength;i++) {
-    let type = binStreamToInt(bin);
+    let type = binStreamToUint(bin);
     if(type === 0) {
       resArr.push(decodeRecord(bin, true));
     }
