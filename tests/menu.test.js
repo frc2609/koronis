@@ -84,7 +84,7 @@ test('Top level url routing works', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Select Records' })).toBeVisible();
   //Used to prevent search tooltip from showing
   let viewport = page.viewportSize();
-  await page.mouse.click(5, viewport.y - 5);
+  await page.mouse.click(5, Math.round(viewport.y - 5));
   //Analyze page has loaded
   await expect(page).toHaveScreenshot('analyze.png');
 
