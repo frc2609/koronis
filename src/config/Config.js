@@ -5,6 +5,7 @@ let wikiUrl = 'https://koronis-scouting-system.gitlab.io/kss-wiki/';
 let tbaUrl = 'https://www.thebluealliance.com/api/v3/';
 let environmentConfig = process.env.REACT_APP_ENV;
 let version = process.env.REACT_APP_VERSION;
+let minVersion = '1.3.3';
 
 if(environmentConfig === 'production') {
   console.info('[Config] App is configured for production. Version is ' + version);
@@ -20,6 +21,7 @@ else {
 
 const Config = {
   version: version,
+  minVersion: minVersion,
   baseUrl: baseUrl,
   environmentConfig: environmentConfig,
   packageUrl: packageUrl,

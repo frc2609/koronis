@@ -17,19 +17,33 @@ class Process extends React.Component {
       tab: 'edit',
       redirect: false
     };
+    this.routeHandler = this.routeHandler.bind(this);
+    window.addEventListener('hashchange', this.routeHandler);
+  }
+  routeHandler() {
     if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/process')) {
       if(this.props.location.pathname.includes('/process/execute')) {
-        this.state.tab = 'execute';
+        this.setState({ tab: 'execute', redirect: false });
+      }
+      else {
+        this.setState({ tab: 'edit', redirect: false });
       }
     }
+
   }
   tabHandler(event, value) {
-    this.setState({tab: value, redirect: true});
+    this.setState({ tab: value, redirect: true });
+  }
+  componentDidMount() {
+    this.routeHandler();
   }
   componentDidUpdate(prevProps, prevState) {
     if(this.state.redirect) {
-      this.setState({redirect: false});
+      this.setState({ redirect: false });
     }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this.routeHandler);
   }
   render() {
     return (

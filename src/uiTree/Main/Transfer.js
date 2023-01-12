@@ -19,22 +19,35 @@ class Transfer extends React.Component {
       tab: 'qrcode',
       redirect: false
     };
+    this.routeHandler = this.routeHandler.bind(this);
+    window.addEventListener('hashchange', this.routeHandler);
+  }
+  routeHandler() {
     if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/transfer')) {
       if(this.props.location.pathname.includes('/transfer/audio')) {
-        this.state.tab = 'audio';
+        this.setState({ tab: 'audio', redirect: false });
       }
       else if(this.props.location.pathname.includes('/transfer/share')) {
-        this.state.tab = 'share';
+        this.setState({ tab: 'share', redirect: false });
+      }
+      else {
+        this.setState({ tab: 'qrcode', redirect: false });
       }
     }
   }
   tabHandler(event, value) {
     this.setState({tab: value, redirect: true});
   }
+  componentDidMount() {
+    this.routeHandler();
+  }
   componentDidUpdate(prevProps, prevState) {
     if(this.state.redirect) {
       this.setState({redirect: false});
     }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this.routeHandler);
   }
   render() {
     return (

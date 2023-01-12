@@ -9,6 +9,7 @@ import Tab from '@material-ui/core/Tab';
 
 import QRSendData from 'uiTree/Main/Transfer/QRTransfer/QRSendData';
 import QRReceiveData from 'uiTree/Main/Transfer/QRTransfer/QRReceiveData';
+import MinVersion from 'uiTree/components/MinVersion';
 
 class QRTransfer extends React.Component {
   constructor(props) {
@@ -17,19 +18,32 @@ class QRTransfer extends React.Component {
       tab: 'send',
       redirect: false
     };
+    this.routeHandler = this.routeHandler.bind(this);
+    window.addEventListener('hashchange', this.routeHandler);
+  }
+  routeHandler() {
     if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/transfer/qrcode')) {
       if(this.props.location.pathname.includes('/transfer/qrcode/receive')) {
-        this.state.tab = 'receive';
+        this.setState({ tab: 'receive', redirect: false });
+      }
+      else {
+        this.setState({ tab: 'send', redirect: false });
       }
     }
   }
   tabHandler(event, value) {
-    this.setState({tab: value, redirect: true});
+    this.setState({ tab: value, redirect: true });
+  }
+  componentDidMount() {
+    this.routeHandler();
   }
   componentDidUpdate(prevProps, prevState) {
     if(this.state.redirect) {
       this.setState({redirect: false});
     }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this.routeHandler);
   }
   render() {
     return (
@@ -59,6 +73,9 @@ class QRTransfer extends React.Component {
             <Route exact path='/transfer/qrcode'><Redirect push to='/transfer/qrcode/send' /></Route>
             <Route exact path='/transfer/qrcode/send' component={QRSendData} />
             <Route exact path='/transfer/qrcode/receive' component={QRReceiveData} />
+          </Box>
+          <Box mb={3} textAlign='center'>
+            <MinVersion />
           </Box>
         </Card>
       </Container>

@@ -45,14 +45,8 @@ class AnalyzeTeam extends React.Component {
     if(typeof store.get('analyze/team/targetTeamNumber') !== 'undefined') {
       this.state.targetTeamNumber = Number(store.get('analyze/team/targetTeamNumber'));
     }
-    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/team')) {
-      if(this.props.location.pathname.includes('/analyze/team/mchart')) {
-        this.state.tab = 'mchart';
-      }
-      else if(this.props.location.pathname.includes('/analyze/team/chart')) {
-        this.state.tab = 'chart';
-      }
-    }
+    this.routeHandler = this.routeHandler.bind(this);
+    window.addEventListener('hashchange', this.routeHandler);
   }
   runMetricProcess() {
     //Records section
@@ -106,7 +100,7 @@ class AnalyzeTeam extends React.Component {
     this.setState({
       recordsData: tmpRecordsData,
       recordsColumns: tmpRecordsColumn
-    })
+    });
   }
   getAllProcesses() {
     let processQueryObj = {
@@ -136,11 +130,25 @@ class AnalyzeTeam extends React.Component {
     this.getAllProcesses();
     this.getAllRecords();
   }
+  routeHandler() {
+    if(typeof this.props.location !== 'undefined' && typeof this.props.location.pathname === 'string' && this.props.location.pathname.includes('/analyze/team')) {
+      if(this.props.location.pathname.includes('/analyze/team/mchart')) {
+        this.setState({ tab: 'mchart', redirect: false });
+      }
+      else if(this.props.location.pathname.includes('/analyze/team/chart')) {
+        this.setState({ tab: 'chart', redirect: false });
+      }
+      else {
+        this.setState({ tab: 'metric', redirect: false });
+      }
+    }
+  }
   tabHandler(event, value) {
-    this.setState({tab: value, redirect: true});
+    this.setState({ tab: value, redirect: true });
   }
   componentDidMount() {
     this.showAll();
+    this.routeHandler();
   }
   componentDidUpdate(prevProps, prevState) {
     if(prevState.targetTeamNumber !== this.state.targetTeamNumber) {
@@ -152,6 +160,9 @@ class AnalyzeTeam extends React.Component {
     if(!deepCompare(prevState.selectedRecords, this.state.selectedRecords) || !deepCompare(prevState.selectedProcesses, this.state.selectedProcesses)) {
       this.runMetricProcess();
     }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this.routeHandler);
   }
   render() {
     return (
