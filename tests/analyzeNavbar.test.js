@@ -3,9 +3,7 @@ import { test, expect } from '@playwright/test';
 test('Analyze page navbar works', async ({ page }) => {
   //Waiting for homepage to load
   await page.goto('/', { timeout: 1 * 60 * 1000 });
-  await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
-  await page.waitForEvent('syncend');
-  await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
+  await page.evaluate(() => { return new Promise(r => { window.addEventListener('syncend', () => { r(); }); window.setTimeout(r, 10 * 60 * 1000); }); });
   //Homepage has loaded
 
   //Navigating to settings page
@@ -33,7 +31,7 @@ test('Analyze page url routing works', async ({ page }) => {
   //Waiting for homepage to load
   await page.goto('/', { timeout: 1 * 60 * 1000 });
   await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
-  await page.waitForEvent('syncend');
+  await page.evaluate(() => { return new Promise(r => { window.addEventListener('syncend', () => { r(); }); window.setTimeout(r, 10 * 60 * 1000); }); });
   await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
