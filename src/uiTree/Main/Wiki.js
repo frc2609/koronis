@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
+import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,6 +19,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import ListIcon from '@material-ui/icons/List';
 
 import Config from 'config/Config';
+import WikiNavBar from 'uiTree/Main/Wiki/WikiNavBar';
 
 const store = require('store');
 const deepCompare = require('fast-deep-equal');
@@ -72,14 +74,19 @@ class Wiki extends React.Component {
               }}
             >
               <Toolbar>
-                <IconButton
-                  ref={this.menuButtonRef}
-                  color='inherit'
-                  onClick={() => { this.setState({ openMenu: !this.state.openMenu })}}
-                  edge='start'
-                >
-                  <ListIcon />
-                </IconButton>
+                <Hidden mdUp>
+                  <IconButton
+                    ref={this.menuButtonRef}
+                    color='inherit'
+                    onClick={() => { this.setState({ openMenu: !this.state.openMenu })}}
+                    edge='start'
+                  >
+                    <ListIcon />
+                  </IconButton>
+                </Hidden>
+                <Hidden smDown>
+                  <WikiNavBar wikiData={this.state.wikiData} />
+                </Hidden>
               </Toolbar>
             </AppBar>
             <Box m={2}>
@@ -92,7 +99,7 @@ class Wiki extends React.Component {
                   {this.state.wikiData.map((e, i) => {
                     if(e.md.length > 0) {
                       return (
-                        <ListItem button key={i} onClick={() => {this.setState({displayPage: e.url, redirect: true, openMenu: false})}}>
+                        <ListItem button key={i} onClick={() => { this.setState({displayPage: e.url, redirect: true, openMenu: false}); }}>
                           <ListItemText primary={e.path.replace('/', ' / ')} />
                         </ListItem>
                       );
@@ -106,8 +113,6 @@ class Wiki extends React.Component {
                   Offline ready KSS Wiki. Data is synced from <a href='https://wiki.koronis.cc/'>wiki.koronis.cc</a>.
                   To get started, click the links on the left menu.
                   <br/>
-                  <br/>
-                  Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
                 </Typography>
               </Route>
               {this.state.wikiData.map((e, i) => {
@@ -143,13 +148,13 @@ class Wiki extends React.Component {
                     >
                       {e.md}
                     </ReactMarkdown>
-                    <br/>
-                    <Typography>
-                      Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
-                    </Typography>
                   </Route>
                 );
               })}
+              <br/>
+              <Typography variant='body2'>
+                Last updated {moment(store.get('wiki/lastUpdate')).fromNow()}
+              </Typography>
             </Box>
           </Card>
         </Container>
