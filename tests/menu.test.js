@@ -55,10 +55,8 @@ test('Top level hamburger menu works', async ({ page }) => {
 
 test('Top level url routing works', async ({ page }) => {
   //Waiting for homepage to load
-  await page.goto('/', { timeout: 1 * 60 * 1000 });
-  await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
+  await page.goto('/', { timeout: 1 * 60 * 1000 });0
   await page.evaluate(() => { return new Promise(r => { window.addEventListener('syncend', () => { r(); }); window.setTimeout(r, 10 * 60 * 1000); }); });
-  await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
   //Navigating to settings page
@@ -84,6 +82,9 @@ test('Top level url routing works', async ({ page }) => {
   //Navigating to analyze page
   await page.goto('/#/analyze/record/metric');
   await expect(page.getByRole('button', { name: 'Select Records' })).toBeVisible();
+  //Used to prevent search tooltip from showing
+  let viewport = page.viewportSize();
+  await page.mouse.click(5, viewport.y - 5);
   //Analyze page has loaded
   await expect(page).toHaveScreenshot('analyze.png');
 

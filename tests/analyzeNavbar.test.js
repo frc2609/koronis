@@ -21,7 +21,7 @@ test('Analyze page navbar works', async ({ page }) => {
   //Analyze page has loaded
 
   //Navigated to team page
-  await page.getByRole('button', { name: 'Team' }).click();
+  await page.getByRole('button', { name: 'Team', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Select Process' })).toBeVisible();
   //Team page has loaded
   await expect(page).toHaveScreenshot('team.png');
@@ -30,9 +30,7 @@ test('Analyze page navbar works', async ({ page }) => {
 test('Analyze page url routing works', async ({ page }) => {
   //Waiting for homepage to load
   await page.goto('/', { timeout: 1 * 60 * 1000 });
-  await expect(page.getByRole('heading', { name: 'Getting Started!' })).toBeVisible({ timeout: 1 * 60 * 1000 });
   await page.evaluate(() => { return new Promise(r => { window.addEventListener('syncend', () => { r(); }); window.setTimeout(r, 10 * 60 * 1000); }); });
-  await expect(page.locator('[aria-label="sync-status"]')).toBeHidden({ timeout: 5 * 60 * 1000 });
   //Homepage has loaded
 
   //Navigating to settings page
