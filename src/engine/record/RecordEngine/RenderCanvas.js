@@ -8,7 +8,7 @@ export default class RenderCanvas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canvasSize: {x: 100,y: 100}
+      canvasSize: { x: 100, y: 100 }
     };
     this.wrapperOffset = 5;
     this.renderCanvasElement = {};
@@ -39,48 +39,48 @@ export default class RenderCanvas extends React.Component {
     let botX = this.props.botStateDefinition.botState.position.x;
     let botY = this.props.botStateDefinition.botState.position.y;
     let flip = this.props.engineState.flip ? -1 : 1;
-    if(this.arrowState.up) {
+    if (this.arrowState.up) {
       botY -= flip;
     }
-    if(this.arrowState.down) {
+    if (this.arrowState.down) {
       botY += flip;
     }
-    if(this.arrowState.left) {
+    if (this.arrowState.left) {
       botX -= flip;
     }
-    if(this.arrowState.right) {
+    if (this.arrowState.right) {
       botX += flip;
     }
-    if(this.arrowState.up || this.arrowState.down || this.arrowState.left || this.arrowState.right) {
-      this.props.renderCanvasUpdate({x: botX, y: botY});
+    if (this.arrowState.up || this.arrowState.down || this.arrowState.left || this.arrowState.right) {
+      this.props.renderCanvasUpdate({ x: botX, y: botY });
     }
   }
   keyDown(event) {
-    if(event.keyCode === 38) {
+    if (event.keyCode === 38) {
       this.arrowState.up = true;
     }
-    if(event.keyCode === 40) {
+    if (event.keyCode === 40) {
       this.arrowState.down = true;
     }
-    if(event.keyCode === 37) {
+    if (event.keyCode === 37) {
       this.arrowState.left = true;
     }
-    if(event.keyCode === 39) {
+    if (event.keyCode === 39) {
       this.arrowState.right = true;
     }
     this.updatePosFromKey();
   }
   keyUp(event) {
-    if(event.keyCode === 38) {
+    if (event.keyCode === 38) {
       this.arrowState.up = false;
     }
-    if(event.keyCode === 40) {
+    if (event.keyCode === 40) {
       this.arrowState.down = false;
     }
-    if(event.keyCode === 37) {
+    if (event.keyCode === 37) {
       this.arrowState.left = false;
     }
-    if(event.keyCode === 39) {
+    if (event.keyCode === 39) {
       this.arrowState.right = false;
     }
     this.updatePosFromKey();
@@ -90,7 +90,7 @@ export default class RenderCanvas extends React.Component {
     this.mouseMove(event);
   }
   mouseMove(event) {
-    if(this.mouseIsDown && !Layout.isTouchScreen()) {
+    if (this.mouseIsDown && !Layout.isTouchScreen()) {
       let rect = this.renderCanvasElement.getBoundingClientRect();
       let x = event.clientX - rect.left;
       let y = event.clientY - rect.top;
@@ -105,7 +105,7 @@ export default class RenderCanvas extends React.Component {
     let index = 0;
     let x = event.touches[index].clientX - rect.left;
     let y = event.touches[index].clientY - rect.top;
-    while((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
+    while ((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
       index++;
       x = event.touches[index].clientX - rect.left;
       y = event.touches[index].clientY - rect.top;
@@ -117,32 +117,32 @@ export default class RenderCanvas extends React.Component {
     event.preventDefault();
   }
   coordInput(x, y) {
-    let botX = (x/this.canvasState.xMulti) - this.canvasState.xOffset;
-    let botY = (y/this.canvasState.yMulti) - this.canvasState.yOffset;
-    if(this.props.engineState.flip) {
+    let botX = (x / this.canvasState.xMulti) - this.canvasState.xOffset;
+    let botY = (y / this.canvasState.yMulti) - this.canvasState.yOffset;
+    if (this.props.engineState.flip) {
       botX = this.props.fieldStateDefinition.fieldState.dimensions.x - botX;
       botY = this.props.fieldStateDefinition.fieldState.dimensions.y - botY;
     }
-    this.props.renderCanvasUpdate({x: botX, y: botY});
+    this.props.renderCanvasUpdate({ x: botX, y: botY });
     this.update.bind(this)();
   }
   draw() {
     //Clear the canvas
     this.renderCanvasCtx.clearRect(0, 0, this.state.canvasSize.x, this.state.canvasSize.y);
     //Set size and multipliers
-    this.canvasState.xSize = this.state.canvasSize.y * (this.props.fieldStateDefinition.fieldState.dimensions.x/this.props.fieldStateDefinition.fieldState.dimensions.y);
+    this.canvasState.xSize = this.state.canvasSize.y * (this.props.fieldStateDefinition.fieldState.dimensions.x / this.props.fieldStateDefinition.fieldState.dimensions.y);
     this.canvasState.ySize = this.state.canvasSize.y;
-    this.canvasState.xMulti = (this.canvasState.xSize/this.props.fieldStateDefinition.fieldState.dimensions.x) * this.canvasState.mag;
-    this.canvasState.yMulti = (this.canvasState.ySize/this.props.fieldStateDefinition.fieldState.dimensions.y) * this.canvasState.mag;
+    this.canvasState.xMulti = (this.canvasState.xSize / this.props.fieldStateDefinition.fieldState.dimensions.x) * this.canvasState.mag;
+    this.canvasState.yMulti = (this.canvasState.ySize / this.props.fieldStateDefinition.fieldState.dimensions.y) * this.canvasState.mag;
     //Offset to show field
     let mockFieldWidth = this.props.fieldStateDefinition.fieldState.dimensions.x * (1 + (2 * 0.03125));
     let canvasFieldDifference = (mockFieldWidth * this.canvasState.xMulti) - this.state.canvasSize.x;
     let botXPercentage = this.props.botStateDefinition.botState.position.x / this.props.fieldStateDefinition.fieldState.dimensions.x;
-    if(this.props.engineState.flip) {
+    if (this.props.engineState.flip) {
       botXPercentage = 1 - botXPercentage;
     }
-    this.canvasState.xOffset = -((canvasFieldDifference / this.canvasState.xMulti) * botXPercentage) + this.props.fieldStateDefinition.fieldState.dimensions.x*0.03125;
-    this.canvasState.yOffset = this.canvasState.yMulti*0.0125;
+    this.canvasState.xOffset = -((canvasFieldDifference / this.canvasState.xMulti) * botXPercentage) + this.props.fieldStateDefinition.fieldState.dimensions.x * 0.03125;
+    this.canvasState.yOffset = this.canvasState.yMulti * 0.0125;
     //Draw field elements
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
     this.renderCanvasCtx.setLineDash([]);
@@ -153,7 +153,7 @@ export default class RenderCanvas extends React.Component {
     //Draw the robot as a circle with crossing lines
     let botX = this.props.botStateDefinition.botState.position.x;
     let botY = this.props.botStateDefinition.botState.position.y;
-    if(this.props.engineState.flip) {
+    if (this.props.engineState.flip) {
       botX = this.props.fieldStateDefinition.fieldState.dimensions.x - this.props.botStateDefinition.botState.position.x;
       botY = this.props.fieldStateDefinition.fieldState.dimensions.y - this.props.botStateDefinition.botState.position.y;
     }
@@ -163,7 +163,7 @@ export default class RenderCanvas extends React.Component {
     //Draw crossing lines
     this.renderCanvasCtx.strokeStyle = 'rgb(0,0,0,0.5)'
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.6;
-    this.renderCanvasCtx.setLineDash([Math.min(this.canvasState.xMulti, this.canvasState.yMulti)*0.75, Math.min(this.canvasState.xMulti, this.canvasState.yMulti)*0.75]);
+    this.renderCanvasCtx.setLineDash([Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.75, Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.75]);
     this.renderCanvasCtx.beginPath();
     this.renderCanvasCtx.moveTo(0, botY);
     this.renderCanvasCtx.lineTo(this.state.canvasSize.x, botY);
@@ -177,20 +177,20 @@ export default class RenderCanvas extends React.Component {
     this.renderCanvasCtx.lineWidth = Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 0.35;
     this.renderCanvasCtx.setLineDash([]);
     this.renderCanvasCtx.beginPath();
-    this.renderCanvasCtx.arc(botX, botY, Math.min(this.canvasState.xMulti, this.canvasState.yMulti)*1.25, 0, Math.PI * 2, false);
+    this.renderCanvasCtx.arc(botX, botY, Math.min(this.canvasState.xMulti, this.canvasState.yMulti) * 1.25, 0, Math.PI * 2, false);
     this.renderCanvasCtx.fill();
     this.renderCanvasCtx.stroke();
   }
   drawElements(arr, xMulti, yMulti, xOffset, yOffset) {
-    for(let i = 0;i < arr.length;i++) {
-      this.renderCanvasCtx.fillStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name === arr[i].style.fill;}).hex; // eslint-disable-line no-loop-func
-      this.renderCanvasCtx.strokeStyle = this.props.colorPalette[arr[i].style.palette].find((e) => {return e.name === arr[i].style.outline;}).hex; // eslint-disable-line no-loop-func
-      if(typeof arr[i].points === 'undefined') {
+    for (let i = 0; i < arr.length; i++) {
+      this.renderCanvasCtx.fillStyle = this.props.colorPalette[arr[i].style.palette].find((e) => { return e.name === arr[i].style.fill; }).hex; // eslint-disable-line no-loop-func
+      this.renderCanvasCtx.strokeStyle = this.props.colorPalette[arr[i].style.palette].find((e) => { return e.name === arr[i].style.outline; }).hex; // eslint-disable-line no-loop-func
+      if (typeof arr[i].points === 'undefined') {
         let elemWidth = arr[i].size.x * xMulti;
         let elemHeight = arr[i].size.y * yMulti;
         let elemX = arr[i].position.x;
         let elemY = arr[i].position.y;
-        if(this.props.engineState.flip) {
+        if (this.props.engineState.flip) {
           elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - (arr[i].position.x + arr[i].size.x);
           elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - (arr[i].position.y + arr[i].size.y);
         }
@@ -201,27 +201,27 @@ export default class RenderCanvas extends React.Component {
       }
       else {
         this.renderCanvasCtx.beginPath();
-        for(let j = 0;j < arr[i].points.length;j++) {
+        for (let j = 0; j < arr[i].points.length; j++) {
           let elemX = arr[i].points[j].x; // eslint-disable-line no-redeclare
           let elemY = arr[i].points[j].y; // eslint-disable-line no-redeclare
-          if(this.props.engineState.flip) {
+          if (this.props.engineState.flip) {
             elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - arr[i].points[j].x;
             elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - arr[i].points[j].y;
           }
           elemX = (elemX + xOffset) * xMulti;
           elemY = (elemY + yOffset) * yMulti;
-          if(j === 0) { this.renderCanvasCtx.moveTo(elemX, elemY); }
+          if (j === 0) { this.renderCanvasCtx.moveTo(elemX, elemY); }
           else { this.renderCanvasCtx.lineTo(elemX, elemY); }
         }
         let elemX = arr[i].points[0].x; // eslint-disable-line no-redeclare
         let elemY = arr[i].points[0].y; // eslint-disable-line no-redeclare
-        if(this.props.engineState.flip) {
+        if (this.props.engineState.flip) {
           elemX = this.props.fieldStateDefinition.fieldState.dimensions.x - arr[i].points[0].x;
           elemY = this.props.fieldStateDefinition.fieldState.dimensions.y - arr[i].points[0].y;
         }
         elemX = (elemX + xOffset) * xMulti;
         elemY = (elemY + yOffset) * yMulti;
-        if(arr[i].points.length > 0) { this.renderCanvasCtx.lineTo(elemX, elemY); }
+        if (arr[i].points.length > 0) { this.renderCanvasCtx.lineTo(elemX, elemY); }
         this.renderCanvasCtx.fill();
         this.renderCanvasCtx.stroke();
       }
@@ -233,15 +233,15 @@ export default class RenderCanvas extends React.Component {
   }
   resize() {
     //Resize canvas if needed
-    if(this.renderCanvasWrapperElement.offsetWidth !== this.state.canvasSize.x + this.wrapperOffset || this.renderCanvasWrapperElement.offsetHeight !== this.state.canvasSize.y + this.wrapperOffset) {
-      this.setState({canvasSize: {x: this.renderCanvasWrapperElement.offsetWidth - this.wrapperOffset, y: this.renderCanvasWrapperElement.offsetHeight - this.wrapperOffset}});
+    if (this.renderCanvasWrapperElement.offsetWidth !== this.state.canvasSize.x + this.wrapperOffset || this.renderCanvasWrapperElement.offsetHeight !== this.state.canvasSize.y + this.wrapperOffset) {
+      this.setState({ canvasSize: { x: this.renderCanvasWrapperElement.offsetWidth - this.wrapperOffset, y: this.renderCanvasWrapperElement.offsetHeight - this.wrapperOffset } });
     }
   }
   throttle(fn) {
     let lastCall = 0;
-    return function(...args) {
+    return function (...args) {
       const now = (new Date()).getTime();
-      if(now - lastCall < this.props.settings.updateInterval) {
+      if (now - lastCall < this.props.settings.updateInterval) {
         return;
       }
       lastCall = now;
@@ -274,7 +274,7 @@ export default class RenderCanvas extends React.Component {
   }
   render() {
     return (
-      <div ref='renderCanvasWrapper' style={{width: '100%', height: '100%'}}>
+      <div ref='renderCanvasWrapper' style={{ width: '100%', height: '100%' }}>
         <canvas ref='renderCanvas' width={this.state.canvasSize.x} height={this.state.canvasSize.y}></canvas>
       </div>
     );

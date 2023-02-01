@@ -7,7 +7,7 @@ export default class ButtonStack extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canvasSize: {x: 100,y: 100}
+      canvasSize: { x: 100, y: 100 }
     };
     this.wrapperOffset = 5;
     this.buttonStackElement = {};
@@ -16,7 +16,7 @@ export default class ButtonStack extends React.Component {
 
     this.buttonInitialized = false;
     this.buttonStates = [];
-    this.touchState = {x: 0, y: 0};
+    this.touchState = { x: 0, y: 0 };
 
     this.buttonKeys = [];
     this.keyUpListener = null;
@@ -25,7 +25,7 @@ export default class ButtonStack extends React.Component {
   init() {
     this.buttonInitialized = false;
     this.buttonStates = [];
-    this.touchState = {x: 0, y: 0};
+    this.touchState = { x: 0, y: 0 };
 
     this.buttonKeys = [];
     let tmpButtonDefs = deepcopy(this.props.buttonDefinitions);
@@ -33,14 +33,14 @@ export default class ButtonStack extends React.Component {
     tmpButtonDefs.sort((e1, e2) => {
       return e1.title.length - e2.title.length;
     });
-    for(let i = 0;i < tmpButtonDefs.length;i++) {
+    for (let i = 0; i < tmpButtonDefs.length; i++) {
       let compStr = ' .,!@#$%^&*-=_+()[]{}\\/\'\"'; // eslint-disable-line no-useless-escape
-      for(let j = 0;j < this.buttonKeys.length;j++) {
+      for (let j = 0; j < this.buttonKeys.length; j++) {
         compStr += this.buttonKeys[j].key;
       }
       let str = tmpButtonDefs[i].title.toLowerCase();
-      for(let j = 0;j < str.length;j++) { // eslint-disable-line no-redeclare
-        if(!compStr.includes(str.charAt(j))) {
+      for (let j = 0; j < str.length; j++) { // eslint-disable-line no-redeclare
+        if (!compStr.includes(str.charAt(j))) {
           this.buttonKeys.push({
             id: tmpButtonDefs[i].id,
             key: str.charAt(j)
@@ -56,11 +56,11 @@ export default class ButtonStack extends React.Component {
   getButtonStr(id, str) {
     let newStr = '';
     let containsChar = false;
-    for(let i = 0;i < str.length;i++) {
-      for(let j = 0;j < this.buttonKeys.length;j++) {
-        if(id === this.buttonKeys[j].id) {
-          if(!containsChar) {
-            if(str.charAt(i).toLowerCase() === this.buttonKeys[j].key) {
+    for (let i = 0; i < str.length; i++) {
+      for (let j = 0; j < this.buttonKeys.length; j++) {
+        if (id === this.buttonKeys[j].id) {
+          if (!containsChar) {
+            if (str.charAt(i).toLowerCase() === this.buttonKeys[j].key) {
               containsChar = true;
               newStr += '(' + str.charAt(i) + ')';
             }
@@ -74,18 +74,18 @@ export default class ButtonStack extends React.Component {
         }
       }
     }
-    return newStr;
+    return str;
   }
   keyDown(event) {
-    if(this.props.focused) {
+    if (this.props.focused) {
       let id = -1;
-      for(let i = 0;i < this.buttonKeys.length;i++) {
-        if(this.buttonKeys[i].key === event.key) {
+      for (let i = 0; i < this.buttonKeys.length; i++) {
+        if (this.buttonKeys[i].key === event.key) {
           id = this.buttonKeys[i].id;
         }
       }
-      for(let i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
-        if(this.buttonStates[i].id === id && this.buttonStates[i].visible) {
+      for (let i = 0; i < this.buttonStates.length; i++) { // eslint-disable-line no-redeclare
+        if (this.buttonStates[i].id === id && this.buttonStates[i].visible) {
           this.buttonStates[i].selected = true;
         }
       }
@@ -94,16 +94,16 @@ export default class ButtonStack extends React.Component {
     }
   }
   keyUp(event) {
-    if(this.props.focused) {
+    if (this.props.focused) {
       let btnS = [];
       let id = -1;
-      for(let i = 0;i < this.buttonKeys.length;i++) {
-        if(this.buttonKeys[i].key === event.key) {
+      for (let i = 0; i < this.buttonKeys.length; i++) {
+        if (this.buttonKeys[i].key === event.key) {
           id = this.buttonKeys[i].id;
         }
       }
-      for(let i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
-        if(this.buttonStates[i].id === id && this.buttonStates[i].selected) {
+      for (let i = 0; i < this.buttonStates.length; i++) { // eslint-disable-line no-redeclare
+        if (this.buttonStates[i].id === id && this.buttonStates[i].selected) {
           this.buttonStates[i].selected = false;
           btnS.push(deepcopy(this.buttonStates[i]));
         }
@@ -118,7 +118,7 @@ export default class ButtonStack extends React.Component {
     let index = 0;
     let x = event.touches[index].clientX - rect.left;
     let y = event.touches[index].clientY - rect.top;
-    while((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
+    while ((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
       index++;
       x = event.touches[index].clientX - rect.left;
       y = event.touches[index].clientY - rect.top;
@@ -126,19 +126,19 @@ export default class ButtonStack extends React.Component {
     this.touchState.x = x;
     this.touchState.y = y;
     let offset = 10;
-    for(let i = 0;i < this.buttonStates.length;i++) {
-      if(this.buttonStates[i].position.y <= y && this.buttonStates[i].visible) {
-        if(this.buttonStates[i].position.y + this.buttonStates[i].size.y >= y) {
-          if(this.buttonStates[i].position.x <= x) {
-            if(this.buttonStates[i].position.x + this.buttonStates[i].size.x >= x) {
+    for (let i = 0; i < this.buttonStates.length; i++) {
+      if (this.buttonStates[i].position.y <= y && this.buttonStates[i].visible) {
+        if (this.buttonStates[i].position.y + this.buttonStates[i].size.y >= y) {
+          if (this.buttonStates[i].position.x <= x) {
+            if (this.buttonStates[i].position.x + this.buttonStates[i].size.x >= x) {
               this.buttonStates[i].selected = true;
-              if(y + offset < this.buttonStates[i].size.y - this.buttonStates[i].position.y) {
-                if(y + offset > this.buttonStates[i].size.y/2 + this.buttonStates[i].position.y) {
+              if (y + offset < this.buttonStates[i].size.y - this.buttonStates[i].position.y) {
+                if (y + offset > this.buttonStates[i].size.y / 2 + this.buttonStates[i].position.y) {
                   //this.buttonStates[i].size.y = (y + offset) - this.buttonStates[i].position.y;
                 }
               }
-              if(x + offset < this.buttonStates[i].size.x - this.buttonStates[i].position.x) {
-                if(x + offset > this.buttonStates[i].size.x/2 + this.buttonStates[i].position.x) {
+              if (x + offset < this.buttonStates[i].size.x - this.buttonStates[i].position.x) {
+                if (x + offset > this.buttonStates[i].size.x / 2 + this.buttonStates[i].position.x) {
                   //this.buttonStates[i].size.x = (x + offset) - this.buttonStates[i].position.x;
                 }
               }
@@ -155,7 +155,7 @@ export default class ButtonStack extends React.Component {
     let index = 0;
     let x = event.touches[index].clientX - rect.left;
     let y = event.touches[index].clientY - rect.top;
-    while((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
+    while ((x < 0 || y < 0 || x > rect.right || y > rect.bottom) && index < event.touches.length - 1) {
       index++;
       x = event.touches[index].clientX - rect.left;
       y = event.touches[index].clientY - rect.top;
@@ -167,12 +167,12 @@ export default class ButtonStack extends React.Component {
   }
   touchEnd(event) {
     let btnS = [];
-    for(let i = 0;i < this.buttonStates.length;i++) {
-      if(this.buttonStates[i].selected) {
-        if(this.buttonStates[i].position.y <= this.touchState.y) {
-          if(this.buttonStates[i].position.y + this.buttonStates[i].size.y >= this.touchState.y) {
-            if(this.buttonStates[i].position.x <= this.touchState.x) {
-              if(this.buttonStates[i].position.x + this.buttonStates[i].size.x >= this.touchState.x) {
+    for (let i = 0; i < this.buttonStates.length; i++) {
+      if (this.buttonStates[i].selected) {
+        if (this.buttonStates[i].position.y <= this.touchState.y) {
+          if (this.buttonStates[i].position.y + this.buttonStates[i].size.y >= this.touchState.y) {
+            if (this.buttonStates[i].position.x <= this.touchState.x) {
+              if (this.buttonStates[i].position.x + this.buttonStates[i].size.x >= this.touchState.x) {
                 btnS.push(deepcopy(this.buttonStates[i]));
               }
             }
@@ -187,21 +187,21 @@ export default class ButtonStack extends React.Component {
   }
   draw() {
     this.buttonStackCtx.clearRect(0, 0, this.state.canvasSize.x, this.state.canvasSize.y);
-    for(let i = 0;i < this.buttonStates.length;i++) {
-      if(this.buttonStates[i].visible) {
-        this.buttonStackCtx.font = (Math.round(this.state.canvasSize.y/15) + 'px Arial');
-        this.buttonStackCtx.lineWidth = this.state.canvasSize.y/40;
+    for (let i = 0; i < this.buttonStates.length; i++) {
+      if (this.buttonStates[i].visible) {
+        this.buttonStackCtx.font = (Math.round(this.state.canvasSize.y / 15) + 'px Arial');
+        this.buttonStackCtx.lineWidth = this.state.canvasSize.y / 100;
         let colorPaletteArr = [];
         let buttonStyleObj = {};
-        if(this.buttonStates[i].selected) {
+        if (this.buttonStates[i].selected) {
           buttonStyleObj = this.buttonStates[i].style.depressed;
         }
         else {
           buttonStyleObj = this.buttonStates[i].style.released;
         }
         colorPaletteArr = this.props.colorPalette[buttonStyleObj.palette];
-        this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name === buttonStyleObj.fill})].hex; // eslint-disable-line no-loop-func
-        this.buttonStackCtx.strokeStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name === buttonStyleObj.outline})].hex; // eslint-disable-line no-loop-func
+        this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => { return e.name === buttonStyleObj.fill })].hex; // eslint-disable-line no-loop-func
+        this.buttonStackCtx.strokeStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => { return e.name === buttonStyleObj.outline })].hex; // eslint-disable-line no-loop-func
         this.buttonStackCtx.fillRect(
           this.buttonStates[i].position.x,
           this.buttonStates[i].position.y,
@@ -209,18 +209,18 @@ export default class ButtonStack extends React.Component {
           this.buttonStates[i].size.y
         );
         this.buttonStackCtx.strokeRect(
-          this.buttonStates[i].position.x,
-          this.buttonStates[i].position.y,
-          this.buttonStates[i].size.x,
-          this.buttonStates[i].size.y
+          this.buttonStates[i].position.x + this.buttonStackCtx.lineWidth / 2,
+          this.buttonStates[i].position.y + this.buttonStackCtx.lineWidth / 2,
+          this.buttonStates[i].size.x - this.buttonStackCtx.lineWidth,
+          this.buttonStates[i].size.y - this.buttonStackCtx.lineWidth
         );
         this.buttonStackCtx.textAlign = 'center';
         this.buttonStackCtx.textBaseline = 'middle';
-        this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => {return e.name === buttonStyleObj.text})].hex; // eslint-disable-line no-loop-func
+        this.buttonStackCtx.fillStyle = colorPaletteArr[colorPaletteArr.findIndex((e) => { return e.name === buttonStyleObj.text })].hex; // eslint-disable-line no-loop-func
         this.buttonStackCtx.fillText(
           this.getButtonStr(this.buttonStates[i].id, this.buttonStates[i].title),
-          this.buttonStates[i].position.x + this.buttonStates[i].size.x/2,
-          this.buttonStates[i].position.y + this.buttonStates[i].size.y/2,
+          this.buttonStates[i].position.x + this.buttonStates[i].size.x / 2,
+          this.buttonStates[i].position.y + this.buttonStates[i].size.y / 2,
           this.buttonStates[i].size.x * 0.8
         );
       }
@@ -231,12 +231,12 @@ export default class ButtonStack extends React.Component {
     this.resize();
 
     //Set buttonStates
-    if(!this.buttonInitialized) {
+    if (!this.buttonInitialized) {
       this.buttonStates = deepcopy(this.props.buttonDefinitions);
       this.buttonInitialized = true;
     }
     //Check which buttons should be visible
-    for(let i = 0;i < this.buttonStates.length;i++) {
+    for (let i = 0; i < this.buttonStates.length; i++) {
       this.buttonStates[i].visible = (
         this.buttonStates[i].watcherFunct(
           this.props.gameStateDefinition.gameState,
@@ -247,13 +247,13 @@ export default class ButtonStack extends React.Component {
     }
     //Create button groups
     let buttonGroups = [];
-    for(let i = 0;i < this.buttonStates.length;i++) { // eslint-disable-line no-redeclare
-      if(this.buttonStates[i].visible) {
-        let buttonGroupIndex = buttonGroups.findIndex((e) => {return e.group === this.buttonStates[i].group}); // eslint-disable-line no-loop-func
-        if(buttonGroupIndex !== -1) {
+    for (let i = 0; i < this.buttonStates.length; i++) { // eslint-disable-line no-redeclare
+      if (this.buttonStates[i].visible) {
+        let buttonGroupIndex = buttonGroups.findIndex((e) => { return e.group === this.buttonStates[i].group }); // eslint-disable-line no-loop-func
+        if (buttonGroupIndex !== -1) {
           buttonGroups[buttonGroupIndex].buttonIds.push(this.buttonStates[i].id);
           //Assign max VW
-          if(this.buttonStates[i].verticalWeight > buttonGroups[buttonGroupIndex].verticalWeight && !buttonGroups[buttonGroupIndex].selected) {
+          if (this.buttonStates[i].verticalWeight > buttonGroups[buttonGroupIndex].verticalWeight && !buttonGroups[buttonGroupIndex].selected) {
             buttonGroups[buttonGroupIndex].verticalWeight = this.buttonStates[i].verticalWeight;
           }
         }
@@ -266,9 +266,9 @@ export default class ButtonStack extends React.Component {
             positionY: 0,
             sizeY: 0
           });
-          buttonGroupIndex = buttonGroups.findIndex((e) => {return e.group === this.buttonStates[i].group}); // eslint-disable-line no-loop-func
+          buttonGroupIndex = buttonGroups.findIndex((e) => { return e.group === this.buttonStates[i].group }); // eslint-disable-line no-loop-func
         }
-        if(this.buttonStates[i].selected && !buttonGroups[buttonGroupIndex].selected) {
+        if (this.buttonStates[i].selected && !buttonGroups[buttonGroupIndex].selected) {
           buttonGroups[buttonGroupIndex].verticalWeight = this.buttonStates[i].verticalWeight;
           buttonGroups[buttonGroupIndex].selected = this.buttonStates[i].selected;
           buttonGroups[buttonGroupIndex].positionY = this.buttonStates[i].position.y;
@@ -279,8 +279,8 @@ export default class ButtonStack extends React.Component {
     //Get sum of usable space and total VW
     let availableCanvas = this.state.canvasSize.y;
     let totalVerticalWeights = 0;
-    for(let i = 0;i < buttonGroups.length;i++) { // eslint-disable-line no-redeclare
-      if(!buttonGroups[i].selected) {
+    for (let i = 0; i < buttonGroups.length; i++) { // eslint-disable-line no-redeclare
+      if (!buttonGroups[i].selected) {
         totalVerticalWeights += buttonGroups[i].verticalWeight;
       }
       else {
@@ -289,27 +289,27 @@ export default class ButtonStack extends React.Component {
     }
     //Map unselected button groups
     let currHeight = 0;
-    for(let i = 0;i < buttonGroups.length;i++) { // eslint-disable-line no-redeclare
-      if(!buttonGroups[i].selected) {
+    for (let i = 0; i < buttonGroups.length; i++) { // eslint-disable-line no-redeclare
+      if (!buttonGroups[i].selected) {
         buttonGroups[i].positionY = currHeight;
-        buttonGroups[i].sizeY = buttonGroups[i].verticalWeight * (availableCanvas/totalVerticalWeights);
+        buttonGroups[i].sizeY = buttonGroups[i].verticalWeight * (availableCanvas / totalVerticalWeights);
         currHeight += buttonGroups[i].sizeY;
       }
     }
     //Insert selected button groups
-    let selectedButtonGroup = buttonGroups.findIndex((e) => {return e.selected;});
+    let selectedButtonGroup = buttonGroups.findIndex((e) => { return e.selected; });
     while (selectedButtonGroup !== -1) {
       let targetTop = buttonGroups[selectedButtonGroup].positionY;
       let targetBottom = targetTop + buttonGroups[selectedButtonGroup].sizeY;
-      for(let i = 0;i < buttonGroups.length;i++) { // eslint-disable-line no-redeclare
-        if(!buttonGroups[i].selected) {
+      for (let i = 0; i < buttonGroups.length; i++) { // eslint-disable-line no-redeclare
+        if (!buttonGroups[i].selected) {
           let currTop = buttonGroups[i].positionY;
           let currBottom = currTop + buttonGroups[i].sizeY;
-          let currMid = (currTop + currBottom)/2;
-          if(targetBottom > currTop && targetTop < currBottom) {
+          let currMid = (currTop + currBottom) / 2;
+          if (targetBottom > currTop && targetTop < currBottom) {
             let newTop = 0;
             let newBottom = 0;
-            if(currMid < targetTop) {
+            if (currMid < targetTop) {
               newTop = currTop;
               newBottom = targetTop;
             }
@@ -318,8 +318,8 @@ export default class ButtonStack extends React.Component {
               newBottom = newTop + (currBottom - currTop);
               //Push the stack down
               let pushAmount = targetBottom - currTop;
-              for(let j = 0;j < buttonGroups.length;j++) {
-                if(buttonGroups[j].positionY > buttonGroups[i].positionY && j !== i && !buttonGroups[j].selected) {
+              for (let j = 0; j < buttonGroups.length; j++) {
+                if (buttonGroups[j].positionY > buttonGroups[i].positionY && j !== i && !buttonGroups[j].selected) {
                   buttonGroups[j].positionY += pushAmount;
                 }
               }
@@ -329,37 +329,37 @@ export default class ButtonStack extends React.Component {
           }
         }
       }
-      selectedButtonGroup = buttonGroups.findIndex((e, i) => {return e.selected && i > selectedButtonGroup;}); // eslint-disable-line no-loop-func
+      selectedButtonGroup = buttonGroups.findIndex((e, i) => { return e.selected && i > selectedButtonGroup; }); // eslint-disable-line no-loop-func
     }
     //Sort from top to bottom
-    buttonGroups.sort((e1, e2) => {return e1.positionY - e2.positionY});
+    buttonGroups.sort((e1, e2) => { return e1.positionY - e2.positionY });
     //Fill gaps
-    for(let i = 0;i < buttonGroups.length;i++) { // eslint-disable-line no-redeclare
-      if(i < buttonGroups.length - 1) {
-        buttonGroups[i].sizeY = buttonGroups[i+1].positionY - buttonGroups[i].positionY;
+    for (let i = 0; i < buttonGroups.length; i++) { // eslint-disable-line no-redeclare
+      if (i < buttonGroups.length - 1) {
+        buttonGroups[i].sizeY = buttonGroups[i + 1].positionY - buttonGroups[i].positionY;
       }
       else {
         buttonGroups[i].sizeY = this.state.canvasSize.y - buttonGroups[i].positionY;
       }
     }
     //One last sort
-    buttonGroups.sort((e1, e2) => {return e1.positionY - e2.positionY});
+    buttonGroups.sort((e1, e2) => { return e1.positionY - e2.positionY });
 
     //Sort out buttons in buttonGroups
-    for(let i = 0;i < buttonGroups.length;i++) { // eslint-disable-line no-redeclare
+    for (let i = 0; i < buttonGroups.length; i++) { // eslint-disable-line no-redeclare
       //Get current buttons in current buttonGroup
       let currButtons = [];
-      for(let j = 0;j < buttonGroups[i].buttonIds.length;j++) {// eslint-disable-line no-redeclare
-        let currButtonIndex = this.buttonStates.findIndex((e) => {return e.id === buttonGroups[i].buttonIds[j];}); // eslint-disable-line no-loop-func
-        if(currButtonIndex !== -1) {
+      for (let j = 0; j < buttonGroups[i].buttonIds.length; j++) {// eslint-disable-line no-redeclare
+        let currButtonIndex = this.buttonStates.findIndex((e) => { return e.id === buttonGroups[i].buttonIds[j]; }); // eslint-disable-line no-loop-func
+        if (currButtonIndex !== -1) {
           currButtons.push(this.buttonStates[currButtonIndex]);
         }
       }
       //Get sum of usable space and total HW
       let availableCanvas = this.state.canvasSize.x; // eslint-disable-line no-redeclare
       let totalHorizontalWeights = 0;
-      for(let j = 0;j < currButtons.length;j++) { // eslint-disable-line no-redeclare
-        if(!currButtons[j].selected) {
+      for (let j = 0; j < currButtons.length; j++) { // eslint-disable-line no-redeclare
+        if (!currButtons[j].selected) {
           totalHorizontalWeights += currButtons[j].horizontalWeight;
         }
         else {
@@ -368,30 +368,30 @@ export default class ButtonStack extends React.Component {
       }
       //Map unselected buttons and set vertical position and size
       let currWidth = 0;
-      for(let j = 0;j < currButtons.length;j++) { // eslint-disable-line no-redeclare
+      for (let j = 0; j < currButtons.length; j++) { // eslint-disable-line no-redeclare
         currButtons[j].position.y = buttonGroups[i].positionY;
         currButtons[j].size.y = buttonGroups[i].sizeY;
-        if(!currButtons[j].selected) {
+        if (!currButtons[j].selected) {
           currButtons[j].position.x = currWidth;
-          currButtons[j].size.x = currButtons[j].horizontalWeight * (availableCanvas/totalHorizontalWeights);
+          currButtons[j].size.x = currButtons[j].horizontalWeight * (availableCanvas / totalHorizontalWeights);
           currWidth += currButtons[j].size.x;
         }
       }
 
       //Insert selected button
-      let selectedButton = currButtons.findIndex((e) => {return e.selected;});
+      let selectedButton = currButtons.findIndex((e) => { return e.selected; });
       while (selectedButton !== -1) {
         let targetLeft = currButtons[selectedButton].position.x;
         let targetRight = targetLeft + currButtons[selectedButton].size.x;
-        for(let j = 0;j < currButtons.length;j++) { // eslint-disable-line no-redeclare
-          if(!currButtons[j].selected) {
+        for (let j = 0; j < currButtons.length; j++) { // eslint-disable-line no-redeclare
+          if (!currButtons[j].selected) {
             let currLeft = currButtons[j].position.x;
             let currRight = currLeft + currButtons[j].size.x;
-            let currMid = (currLeft + currRight)/2; // eslint-disable-line no-redeclare
-            if(targetRight > currLeft && targetLeft < currRight) {
+            let currMid = (currLeft + currRight) / 2; // eslint-disable-line no-redeclare
+            if (targetRight > currLeft && targetLeft < currRight) {
               let newLeft = 0;
               let newRight = 0;
-              if(currMid < targetLeft) {
+              if (currMid < targetLeft) {
                 newLeft = currLeft;
                 newRight = targetLeft;
               }
@@ -400,8 +400,8 @@ export default class ButtonStack extends React.Component {
                 newRight = newLeft + (currRight - currLeft);
                 //Push the stack down
                 let pushAmount = targetRight - currLeft; // eslint-disable-line no-redeclare
-                for(let k = 0;k < currButtons.length;k++) {
-                  if(currButtons[k].position.x > currButtons[j].position.x && k !== j && !currButtons[k].selected) {
+                for (let k = 0; k < currButtons.length; k++) {
+                  if (currButtons[k].position.x > currButtons[j].position.x && k !== j && !currButtons[k].selected) {
                     currButtons[k].position.x += pushAmount;
                   }
                 }
@@ -411,37 +411,37 @@ export default class ButtonStack extends React.Component {
             }
           }
         }
-        selectedButton = currButtons.findIndex((e, i) => {return e.selected && i > selectedButton;}); // eslint-disable-line no-loop-func
+        selectedButton = currButtons.findIndex((e, i) => { return e.selected && i > selectedButton; }); // eslint-disable-line no-loop-func
       }
 
       //Sort from left to right
-      currButtons.sort((e1, e2) => {return e1.position.x - e2.position.x});
+      currButtons.sort((e1, e2) => { return e1.position.x - e2.position.x });
       //Fill gaps
-      for(let j = 0;j < currButtons.length;j++) { // eslint-disable-line no-redeclare
-        if(j < currButtons.length - 1) {
-          currButtons[j].size.x = currButtons[j+1].position.x - currButtons[j].position.x;
+      for (let j = 0; j < currButtons.length; j++) { // eslint-disable-line no-redeclare
+        if (j < currButtons.length - 1) {
+          currButtons[j].size.x = currButtons[j + 1].position.x - currButtons[j].position.x;
         }
         else {
           currButtons[j].size.x = this.state.canvasSize.x - currButtons[j].position.x;
         }
       }
       //One last sort
-      currButtons.sort((e1, e2) => {return e1.position.x - e2.position.x});
+      currButtons.sort((e1, e2) => { return e1.position.x - e2.position.x });
     }
     //Call the draw function
     raf(this.draw.bind(this));
   }
   resize() {
     //Resize canvas if needed
-    if(this.buttonStackWrapperElement.offsetWidth !== this.state.canvasSize.x + this.wrapperOffset || this.buttonStackWrapperElement.offsetHeight !== this.state.canvasSize.y + this.wrapperOffset) {
-      this.setState({canvasSize: {x: this.buttonStackWrapperElement.offsetWidth - this.wrapperOffset, y: this.buttonStackWrapperElement.offsetHeight - this.wrapperOffset}});
+    if (this.buttonStackWrapperElement.offsetWidth !== this.state.canvasSize.x + this.wrapperOffset || this.buttonStackWrapperElement.offsetHeight !== this.state.canvasSize.y + this.wrapperOffset) {
+      this.setState({ canvasSize: { x: this.buttonStackWrapperElement.offsetWidth - this.wrapperOffset, y: this.buttonStackWrapperElement.offsetHeight - this.wrapperOffset } });
     }
   }
   throttle(fn) {
     let lastCall = 0;
-    return function(...args) {
+    return function (...args) {
       const now = (new Date()).getTime();
-      if(now - lastCall < this.props.settings.updateInterval) {
+      if (now - lastCall < this.props.settings.updateInterval) {
         return;
       }
       lastCall = now;
@@ -449,7 +449,7 @@ export default class ButtonStack extends React.Component {
     };
   }
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.buttonDefinitions !== this.props.buttonDefinitions) {
+    if (prevProps.buttonDefinitions !== this.props.buttonDefinitions) {
       this.init();
     }
   }
@@ -475,7 +475,7 @@ export default class ButtonStack extends React.Component {
   }
   render() {
     return (
-      <div ref='buttonStackWrapper' style={{width: '100%', height: '100%'}}>
+      <div ref='buttonStackWrapper' style={{ width: '100%', height: '100%' }}>
         <canvas ref='buttonStack' width={this.state.canvasSize.x} height={this.state.canvasSize.y}></canvas>
       </div>
     );

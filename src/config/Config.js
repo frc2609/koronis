@@ -7,15 +7,15 @@ let environmentConfig = process.env.REACT_APP_ENV;
 let version = process.env.REACT_APP_VERSION;
 let minVersion = '1.3.3';
 
-if(environmentConfig === 'production') {
+if (environmentConfig === 'production') {
   console.info('[Config] App is configured for production. Version is ' + version);
-  packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/latest/';
+  packageUrl = '/config';
   processUrl = 'https://koronis-scouting-system.gitlab.io/kss-processes/latest/';
 }
 else {
   console.info('[Config] App is configured for development. Version is ' + version);
   environmentConfig = 'development';
-  packageUrl = 'https://koronis-scouting-system.gitlab.io/kss-packages/dev/';
+  packageUrl = '/config/';
   processUrl = 'https://koronis-scouting-system.gitlab.io/kss-processes/dev/';
 }
 

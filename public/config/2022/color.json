@@ -1,0 +1,46 @@
+{
+  "field": [
+    {"name":"Light Grey","hex":"#cdcdcd"},
+    {"name":"Dark Grey","hex":"#363636"},
+    {"name":"Transparent","hex":"rgba(0,0,0,0)"},
+    {"name":"White","hex":"#ffffff"},
+    {"name":"Black","hex":"#000000"}
+  ],
+  "button": [
+    {"name":"Very Light Blue","hex":"#b3e0ff"},
+    {"name":"Light Blue","hex":"#4db8ff"},
+    {"name":"Blue","hex":"#008ae6"},
+    {"name":"Dark Blue","hex":"#004d80"},
+    {"name":"Very Light Red","hex":"#f4bec3"},
+    {"name":"Light Red","hex":"#e46774"},
+    {"name":"Red","hex":"#dc3545"},
+    {"name":"Dark Red","hex":"#981b27"},
+    {"name":"Very Light Green","hex":"#9fdf9f"},
+    {"name":"Light Green","hex":"#53c653"},
+    {"name":"Green","hex":"#339933"},
+    {"name":"Dark Green","hex":"#194d19"},
+    {"name":"Yellow","hex":"#ffbf00"},
+    {"name":"Dark Yellow","hex":"#cc9900"},
+    {"name":"Transparent","hex":"rgba(0,0,0,0)"},
+    {"name":"White","hex":"#ffffff"},
+    {"name":"Black","hex":"#000000"}
+  ],
+  "red": [
+    {"name":"Light Team Color","hex":"#f6acac"},
+    {"name":"Dark Team Color","hex":"#d63333"},
+    {"name":"Light Grey","hex":"#cdcdcd"},
+    {"name":"Dark Grey","hex":"#363636"},
+    {"name":"Transparent","hex":"rgba(0,0,0,0)"},
+    {"name":"White","hex":"#ffffff"},
+    {"name":"Black","hex":"#000000"}
+  ],
+  "blue": [
+    {"name":"Light Team Color","hex":"#acacf6"},
+    {"name":"Dark Team Color","hex":"#3333d6"},
+    {"name":"Light Grey","hex":"#cdcdcd"},
+    {"name":"Dark Grey","hex":"#363636"},
+    {"name":"Transparent","hex":"rgba(0,0,0,0)"},
+    {"name":"White","hex":"#ffffff"},
+    {"name":"Black","hex":"#000000"}
+  ]
+}
