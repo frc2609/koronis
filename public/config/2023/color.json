@@ -28,7 +28,8 @@
     { "name": "Purple", "hex": "#8A2BE2" },
     { "name": "Dark Purple", "hex": "#451571" },
     { "name": "Light Purple", "hex": "#c495f0" },
-    { "name": "Light Grey", "hex": "#cdcdcd" }
+    { "name": "Light Grey", "hex": "#cdcdcd" },
+    { "name": "Grey", "hex": "#5b5b5b" }
   ],
   "red": [
     { "name": "Light Team Color", "hex": "#f6acac" },
