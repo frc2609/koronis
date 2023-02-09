@@ -1,0 +1,24 @@
+{
+  "availableProcesses": [
+    "accuracy-score-all_record_metric_2020_2ce404e4-9b9b-5cda-ba82-1f94803cf095.json",
+    "accuracy-score-bottom_record_metric_2020_cc0f3105-7db5-5d4a-837f-bc1b668a1bc8.json",
+    "accuracy-score-inner_record_metric_2020_74c95897-92c7-5e4d-b005-9bf4ac461104.json",
+    "accuracy-score-outer_record_metric_2020_163ba398-04d0-5ead-942a-7568cab2dccc.json",
+    "power-cell-score_record_metric_2020_9bfd0106-ccd8-51a0-95d8-b6aca57270b5.json",
+    "ratio-inner-outer_record_metric_2020_5be4e315-ca69-5f68-811e-83560a315fad.json",
+    "total-pickup-all_record_metric_2020_849e43c1-5f49-5b8a-9244-bf42fdf98b13.json",
+    "total-score-all_record_metric_2020_ed6f8d25-75e9-5ce5-bbd0-1a9312241adb.json",
+    "total-score-bottom_record_metric_2020_6c3b67fd-7f78-55fb-a441-d06b40a5661e.json",
+    "total-score-inner_record_metric_2020_c15fdf16-5b64-5666-a5d4-49caaef36d44.json",
+    "total-score-outer_record_metric_2020_6eeb9c7f-25bb-5d49-94ea-6e3352d77975.json",
+    "climb-attempt-length_record_metric_2020_3165bddc-7ad8-5893-92d0-9a2860fb50ab.json",
+    "climb-fail-length_record_metric_2020_4a8bd0e8-9fca-5799-8ee5-f6f1cc5fa14b.json",
+    "climb-success-length_record_metric_2020_487abd29-d484-5b29-8a1c-b66294db8309.json",
+    "did-auto-line_record_metric_2020_a172458d-74cb-5df7-adb0-7bea67c50780.json",
+    "did-balance_record_metric_2020_7129ae58-7a03-5416-9955-5d4299db0a0f.json",
+    "did-climb_record_metric_2020_5574f55b-41b5-5a3d-891d-f40cb3e2deed.json",
+    "did-climb-attempt_record_metric_2020_4eb00f64-d047-5b8a-aeb1-b786ad8a9d11.json",
+    "did-park_record_metric_2020_0870c452-b152-5487-9720-a43db03d8b58.json"
+  ],
+  "versionNumber": 1646365584131
+}
