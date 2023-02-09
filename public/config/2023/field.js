@@ -222,64 +222,7 @@ let fieldStateDefinition = {
         outline: 'Dark Grey',
         text: 'Black'
       }
-    },
-    {
-      id: 12,
-      name: 'grid_1_tag',
-      size: { x: 0, y: 0 },
-      position: { x: 0, y: 0 },
-      points: [
-        { x: 2.25, y: 12.25 },
-        { x: 2.25, y: 9.75 },
-        { x: 1.75, y: 10.25 },
-        { x: 2.25, y: 9.75 },
-        { x: 2.75, y: 10.25 },
-        { x: 2.25, y: 9.75 },
-
-      ],
-      style: {
-        palette: 'blue',
-        fill: 'Dark Team Color',
-        outline: 'Black',
-        text: 'Black'
-      }
-    },
-    {
-      id: 13,
-      name: 'grid_coop_tag',
-      size: { x: 0, y: 0 },
-      position: { x: 0, y: 0 },
-      points: [
-        { x: 2.25, y: 15.5 },
-        { x: 1.5, y: 16.75 },
-        { x: 2.25, y: 18 },
-        { x: 3, y: 16.75 }
-
-      ],
-      style: {
-        palette: 'blue',
-        fill: 'Black',
-        outline: 'Black',
-        text: 'Black'
-      }
-    },
-    {
-      id: 14,
-      name: 'grid_2_tag',
-      size: { x: 0, y: 0 },
-      position: { x: 0, y: 0 },
-      points: [
-        { x: 2.25, y: 22 },
-        { x: 1.5, y: 24 },
-        { x: 3, y: 24 }
-      ],
-      style: {
-        palette: 'blue',
-        fill: 'Black',
-        outline: 'Black',
-        text: 'Black'
-      }
-    },
+    }
   ],
   init: ( //Mirror both zones and drawn elements across the y and x axis in the middle
     'var newZones = [];' +
