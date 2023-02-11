@@ -64,7 +64,7 @@
     "fontsource-roboto": "^2.2.6",
     "is-mobile": "^2.2.0",
     "js-file-download": "^0.4.9",
-    "js-interpreter": "^3.0.1",
+    "js-interpreter": "4.0.0",
     "jsqr": "^1.2.0",
     "jszip": "^3.2.2",
     "libfec": "^1.1.0",
