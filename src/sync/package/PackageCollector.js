@@ -50,9 +50,7 @@ async function perYearInit(year) {
 export const init = async () => {
   try {
     //Check version number of repo and local
-    console.info("Here")
     let repoIndex = (await axios.get(Config.packageUrl + 'index.json')).data;
-    console.info("Not Here")
     let availableYears = repoIndex.availableYears;
     store.set('package/availableYears', availableYears);
     let versionNumberRepo = repoIndex.versionNumber;
@@ -84,7 +82,6 @@ export const init = async () => {
       if (typeof store.get('settings/currentYear') === 'undefined') {
         store.set('settings/currentYear', biggestYear);
       }
-      console.info('~~~~~~~~~~', biggestYear)
 
       //Store new versionNumber to local store
       initialized = true;

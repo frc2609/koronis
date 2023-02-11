@@ -10,35 +10,39 @@ export const update = async () => {
     let repoIndex = (await axios.get(Config.processUrl + 'index.json')).data;
     let versionNumberRepo = repoIndex.versionNumber;
     let versionNumberLocal = store.get('processes/versionNumber');
-    if(versionNumberRepo !== versionNumberLocal) {
-      //Get available years
-      let availableYears = repoIndex.availableYears;
-      for(let i = 0;i < availableYears.length;i++) {
-        //Get current year index
-        let currRepoIndex = (await axios.get(Config.processUrl + availableYears[i] + '/index.json')).data;
-        let currVersionNumberRepo = currRepoIndex.versionNumber;
-        let currVersionNumberLocal = store.get('processes/' + availableYears[i] + '/versionNumber');
-        if(currVersionNumberRepo !== currVersionNumberLocal) {
-          //Get current year
-          let availableProcesses = currRepoIndex.availableProcesses;
-          for(let j = 0;j < availableProcesses.length;j++) {
-            let currProcess = (await axios.get(Config.processUrl + availableYears[i] + '/' + availableProcesses[j])).data;
-            currProcess.metadata = {
-              verified: true,
-              unModified: true,
-              safe: true
-            };
-            Interface.insertProcess(currProcess);
-          }
-          store.set('processes/' + availableYears[i] + '/versionNumber', currVersionNumberRepo);
+    console.log(versionNumberLocal, versionNumberRepo)
+
+    // if(versionNumberRepo !== versionNumberLocal) {
+
+    //Get available years
+    let availableYears = repoIndex.availableYears;
+
+    for(let i = 0;i < availableYears.length;i++) {
+      //Get current year index
+      let currRepoIndex = (await axios.get(Config.processUrl + availableYears[i] + '/index.json')).data;
+      let currVersionNumberRepo = currRepoIndex.versionNumber;
+      let currVersionNumberLocal = store.get('processes/' + availableYears[i] + '/versionNumber');
+      // if(currVersionNumberRepo !== currVersionNumberLocal) {
+        //Get current year
+        let availableProcesses = currRepoIndex.availableProcesses;
+        for(let j = 0;j < availableProcesses.length;j++) {
+          let currProcess = (await axios.get(Config.processUrl + availableYears[i] + '/' + availableProcesses[j])).data;
+          currProcess.metadata = {
+            verified: true,
+            unModified: true,
+            safe: true
+          };
+          Interface.insertProcess(currProcess);
         }
-      }
-      store.set('processes/versionNumber', versionNumberRepo);
-      console.info('[Processes] Processes updated');
+        store.set('processes/' + availableYears[i] + '/versionNumber', currVersionNumberRepo);
+      // }
     }
-    else {
-      console.info('[Processes] No new processes to update');
-    }
+    store.set('processes/versionNumber', versionNumberRepo);
+    console.info('[Processes] Processes updated');
+    // }
+    // else {
+    //   console.info('[Processes] No new processes to update');
+    // }
   }
   catch(err) {
     console.info('[Processes] Cannot get latest processes');
